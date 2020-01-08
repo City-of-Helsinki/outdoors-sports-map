@@ -4,3 +4,5 @@ flow-typed
 .idea
 log/capistrano.log
 yarn-error.log
+xeno
+.nvmrc
