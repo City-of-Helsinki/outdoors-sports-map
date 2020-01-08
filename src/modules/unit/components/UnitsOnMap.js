@@ -15,12 +15,12 @@ export const UnitsOnMap = ({units, selectedUnit, openUnit, zoomLevel}) => {
 
   return(
     <div className="units-on-map">
-    {
-      !isEmpty(unitsInOrder) && unitsInOrder.map(
-        (unit, index) =>
-          <SingleUnitOnMap isSelected={selectedUnit && selectedUnit.id === unit.id} unit={unit} zoomLevel={zoomLevel} key={`${unit.id}:${getUnitQuality(unit)}:${index === originalLength}`} openUnit={openUnit} />
-      )
-    }
+      {
+        !isEmpty(unitsInOrder) && unitsInOrder.map(
+          (unit, index) =>
+            <SingleUnitOnMap isSelected={selectedUnit && selectedUnit.id === unit.id} unit={unit} zoomLevel={zoomLevel} key={`${unit.id}:${getUnitQuality(unit)}:${index === originalLength}`} openUnit={openUnit} />
+        )
+      }
     </div>
   );
 };

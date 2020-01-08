@@ -13,9 +13,9 @@ const SortSelectorDropdown = translate()(({active, values, onSelect, t}) =>
       </span>
     </Dropdown.Toggle>
     <Dropdown.Menu>
-    {values && values.map((key) =>
-      <MenuItem key={key} eventKey={key} onSelect={onSelect}>{t(`UNIT.SORT.${key.toUpperCase()}`)}</MenuItem>
-    )}
+      {values && values.map((key) =>
+        <MenuItem key={key} eventKey={key} onSelect={onSelect}>{t(`UNIT.SORT.${key.toUpperCase()}`)}</MenuItem>
+      )}
     </Dropdown.Menu>
   </Dropdown>
 );

@@ -52,9 +52,9 @@ export class FeedbackModal extends Component {
                 <FormControl componentClass="textarea" placeholder={t('MAP.FEEDBACK.FEEDBACK')} onChange={(e) => this.setState({feedback: e.target.value})}/>
               </FormGroup>
               <FormGroup>
-                  <Checkbox inline className="feedback-modal__checkbox" onChange={() => this.toggleEmailInput()}>
+                <Checkbox inline className="feedback-modal__checkbox" onChange={() => this.toggleEmailInput()}>
                   {t('MAP.FEEDBACK.WANT_ANSWER')}
-                  </Checkbox>
+                </Checkbox>
               </FormGroup>
               {emailInputOpen && <FormGroup><FormControl className="feedback-modal__email" type="email" placeholder={t('MAP.FEEDBACK.EMAIL')} onChange={(e) => this.setState({email: e.target.value})}/></FormGroup>}
               <Button bsStyle="primary" type="submit">{t('MAP.FEEDBACK.SEND')}</Button>

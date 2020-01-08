@@ -23,16 +23,16 @@ class UnitListItem extends Component {
     const context = this.context;
 
     return (
-    <Link to={`/unit/${unit.id}`} onClick={(e) => {e.preventDefault(); handleClick();}} className="list-view-item">
-      <div className="list-view-item__unit-marker"><UnitIcon unit={unit}/></div>
-      <div className="list-view-item__unit-details">
-        <div className="list-view-item__unit-name">{unitHelpers.getAttr(unit.name, context.getActiveLanguage())}</div>
-        <ObservationStatus unit={unit}/>
-      </div>
-      <div className="list-view-item__unit-open">
+      <Link to={`/unit/${unit.id}`} onClick={(e) => {e.preventDefault(); handleClick();}} className="list-view-item">
+        <div className="list-view-item__unit-marker"><UnitIcon unit={unit}/></div>
+        <div className="list-view-item__unit-details">
+          <div className="list-view-item__unit-name">{unitHelpers.getAttr(unit.name, context.getActiveLanguage())}</div>
+          <ObservationStatus unit={unit}/>
+        </div>
+        <div className="list-view-item__unit-open">
           <SMIcon icon="forward"/>
-      </div>
-    </Link>);
+        </div>
+      </Link>);
   }
 }
 
@@ -121,10 +121,10 @@ class ListView extends Component {
             {isLoading && <Loading/>}
             {units && units.map( (unit) =>
               <UnitListItem
-              unit={unit}
-              services={services}
-              key={unit.id}
-              handleClick={() => openUnit(unit.id)}/>)}
+                unit={unit}
+                services={services}
+                key={unit.id}
+                handleClick={() => openUnit(unit.id)}/>)}
             {
               units.length !== totalUnits &&
               <a style={{display: 'block', textAlign: 'center', cursor: 'pointer', 'margin': '18px auto 10px'}} onClick={this.loadMoreUnits}>

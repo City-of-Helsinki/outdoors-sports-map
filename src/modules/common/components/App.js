@@ -6,18 +6,18 @@ import TranslationProvider from './translation/TranslationProvider';
 import {routerPaths} from '../constants';
 
 const routes = (
-    <Route path="/">
-      <IndexRoute component={HomeContainer}/>
-      <Route path={routerPaths.singleUnit} component={HomeContainer}/>
-    </Route>
+  <Route path="/">
+    <IndexRoute component={HomeContainer}/>
+    <Route path={routerPaths.singleUnit} component={HomeContainer}/>
+  </Route>
 );
 
 const App = ({store, history}) => (
-    <Provider store={store}>
-      <TranslationProvider>
-        <Router history={history} routes={routes} key={Math.random()}/>
-      </TranslationProvider>
-    </Provider>
+  <Provider store={store}>
+    <TranslationProvider>
+      <Router history={history} routes={routes} key={Math.random()}/>
+    </TranslationProvider>
+  </Provider>
 );
 
 export default App;

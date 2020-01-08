@@ -30,13 +30,13 @@ class UserLocationMarker extends Component {
   render() {
     const {...rest} = this.props;
     return (
-    <Marker
-      ref="location"
-      icon={createIcon()}
-      zIndexOffset={1000}
-      draggable={true}
-      onDragEnd={this.handleDragEnd}
-      {...rest}/>);
+      <Marker
+        ref="location"
+        icon={createIcon()}
+        zIndexOffset={1000}
+        draggable={true}
+        onDragEnd={this.handleDragEnd}
+        {...rest}/>);
   }
 }
 

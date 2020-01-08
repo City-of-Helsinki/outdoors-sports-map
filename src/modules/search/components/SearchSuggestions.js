@@ -14,7 +14,7 @@ const SearchSuggestions = translate()(({units, addresses, services, openAllResul
         {addresses.map((address) =>
           <AddressSuggestion key={address.properties.id} address={address} handleClick={handleAddressClick} />
         )}
-        </div>
+      </div>
       : null
     }
   </div>
