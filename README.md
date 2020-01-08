@@ -4,6 +4,7 @@ Helsingin kaupungin Ulkoliikuntakartta.
 
 ## Getting started
 
+- On Linux, node-sass currently requires node v11
 - Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
 - Clone this project
 - Run `yarn` to install dependencies
