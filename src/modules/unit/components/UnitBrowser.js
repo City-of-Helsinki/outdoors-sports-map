@@ -141,7 +141,7 @@ class UnitBrowser extends Component {
         </div>
         {t('UNIT.TMP_MESSAGE').length > 0 &&
         <div className="unit-browser__tmp_msg"
-        dangerouslySetInnerHTML={{__html: t('UNIT.TMP_MESSAGE')}}>
+          dangerouslySetInnerHTML={{__html: t('UNIT.TMP_MESSAGE')}}>
         </div>
         }
       </div>

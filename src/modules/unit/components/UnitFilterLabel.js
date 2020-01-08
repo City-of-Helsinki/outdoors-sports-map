@@ -6,7 +6,6 @@ const filterNameToLabel = (filterName) => {
     case 'sport': return 'UNIT.FILTER_SPORT';
     case 'status': return 'UNIT.FILTER_STATUS';
   }
-  console.log(`UnitFilterLabel: Unknown filter "${filterName}"`);
   return '';
 };
 
