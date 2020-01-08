@@ -12,6 +12,9 @@
     "test": "jest",
     "prepush": "yarn lint && yarn test"
   },
+  "jest": {
+    "setupTestFrameworkScriptFile": "./src/setupTests.js"
+  },
   "repository": {
     "url": "git+https://github.com/digiaonline/outdoors-sports-map.git",
     "type": "git"
@@ -37,7 +40,7 @@
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.6",
     "react-dom": "^15.4.1",
-    "react-i18next": "^1.10.1",
+    "react-i18next": "7.13.0",
     "react-leaflet": "^1.0.0",
     "react-markdown": "^2.4.6",
     "react-redux": "^4.4.5",
@@ -62,6 +65,8 @@
     "clean-webpack-plugin": "^0.1.13",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.25.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-15": "^1.4.1",
     "eslint": "^3.7.1",
     "eslint-plugin-flowtype": "^2.21.0",
     "eslint-plugin-react": "^6.4.1",
@@ -76,6 +81,7 @@
     "node-sass": "^4.11.0",
     "postcss-loader": "^1.0.0",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-test-renderer": "15",
     "regenerator-runtime": "^0.10.5",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
