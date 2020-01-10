@@ -1,6 +1,5 @@
 import path from 'path';
 import webpack from 'webpack';
-import DashboardPlugin from 'webpack-dashboard/plugin';
 import { smart as merge } from 'webpack-merge';
 import common from './common';
 
@@ -30,9 +29,10 @@ export default merge({
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new DashboardPlugin()
   ],
   devServer: {
+    host: '0.0.0.0',  // for Docker
+    port: 5000,
     hot: true,
     quiet: true,
     historyApiFallback: true,

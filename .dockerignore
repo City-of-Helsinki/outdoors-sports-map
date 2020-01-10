@@ -1,0 +1,5 @@
+*
+
+!docker-entrypoint.sh
+!package*.json
+!*yarn*

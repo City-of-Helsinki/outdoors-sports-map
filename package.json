@@ -8,7 +8,7 @@
     "fetch-types": "flow-typed install",
     "flow": "flow",
     "lint": "eslint ./src",
-    "start": "webpack-dashboard -c cyan -- node -r babel-register node_modules/.bin/webpack-dev-server --port=5000 --config=config/webpack/development.js",
+    "start": "node -r babel-register node_modules/.bin/webpack-dev-server --config=config/webpack/development.js",
     "test": "jest",
     "prepush": "yarn lint && yarn test"
   },
@@ -80,7 +80,6 @@
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
-    "webpack-dashboard": "^0.2.0",
     "webpack-dev-server": "^1.16.2",
     "webpack-hot-middleware": "^2.12.2",
     "webpack-merge": "^0.15.0"
