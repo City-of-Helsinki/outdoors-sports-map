@@ -9,25 +9,13 @@ ENV NPM_CONFIG_LOGLEVEL warn
 ENV NPM_CONFIG_PREFIX=/app/.npm-global
 ENV PATH=$PATH:/app/.npm-global/bin
 
-ENV YARN_VERSION 1.19.1
-RUN yarn policies set-version $YARN_VERSION
-
 COPY --chown=appuser:appuser docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
-
-# Use non-root user
-USER appuser
-
-# =============================
-FROM appbase AS development
-# =============================
-
-ENV DEV_SERVER=1
 
 # Copy package.json and package-lock.json/yarn.lock files
 COPY --chown=appuser:appuser package*.json *yarn* ./
 
-# Install npm depepndencies
+# Install npm dependencies
 ENV PATH /app/node_modules/.bin:$PATH
 
 USER root
@@ -39,6 +27,31 @@ RUN yarn && yarn cache clean --force
 USER root
 RUN apt-cleanup.sh build-essential
 
+# Use non-root user
+USER appuser
 COPY --chown=appuser:appuser . /app/.
 
-USER appuser
+# =============================
+FROM appbase AS development
+# =============================
+
+ENV DEV_SERVER=1
+
+# ===================================
+FROM appbase as staticbuilder
+# ===================================
+
+RUN yarn build
+
+# ===================================
+FROM appbase as production
+# ===================================
+
+USER root
+RUN apt-install.sh nginx
+
+COPY --from=staticbuilder --chown=root:root /app/dist /usr/share/nginx/html
+
+COPY .prod/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
