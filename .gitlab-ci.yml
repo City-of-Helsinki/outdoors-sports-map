@@ -1,0 +1,26 @@
+# Mandatory include
+include:
+  - project: 'city-of-helsinki/kuva/ci-cd-config/ci-configuration'
+    ref: v1
+    file: '/.gitlab-ci-template.yml'
+
+# These variables are available for all stages
+variables:
+  SERVICE_PORT: "80"
+
+# Build stage must be included and it must extend .build.
+build:
+  extends: .build
+
+review:
+  variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-review"
+
+staging:
+  variables:
+    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-staging"
+  # By default the staging environment is created from the master-branch.
+  # Here we define that it should be created from the branch called "develop" instead.
+  only:
+    refs:
+      - develop
