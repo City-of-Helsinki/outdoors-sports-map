@@ -1,8 +1,8 @@
+.nvmrc
+.idea
+flow-typed
 dist
 node_modules
-flow-typed
-.idea
 log/capistrano.log
 yarn-error.log
 xeno
-.nvmrc
