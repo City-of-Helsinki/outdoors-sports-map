@@ -3,9 +3,9 @@ import type {UnitState} from '../unit/constants';
 import type {ServiceState} from '../service/constants';
 import type {SearchState} from '../search/constants';
 
-export const API_URL = 'https://api.hel.fi/servicemap/v2'; // 'http://servicemat.hel.ninja/servicemap/v1';
-export const DIGITRANSIT_API_URL = 'https://api.digitransit.fi/geocoding/v1';
-export const APP_NAME = 'outdoors-sports-map';
+export const API_BASE_URL = process.env.API_URL;
+export const DIGITRANSIT_API_BASE_URL = process.env.DIGITRANSIT_API_URL;
+export const APP_NAME = process.env.APP_NAME;
 
 export const DEFAULT_LANG = 'fi';
 

@@ -26,12 +26,6 @@ export default merge({
   },
   plugins: [
     new CleanPlugin(['./dist'], { root: context }),
-    new webpack.DefinePlugin({
-      'NODE_ENV': JSON.stringify('production')
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compressor: { warnings: false }

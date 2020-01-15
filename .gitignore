@@ -1,4 +1,5 @@
 .nvmrc
+.env
 .idea
 flow-typed
 dist

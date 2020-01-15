@@ -4,9 +4,13 @@ include:
     ref: v2
     file: '/.gitlab-ci-template.yml'
 
+# Read GitLab project's environment variables and pass them to docker build
 # These variables are available for all stages
 variables:
   SERVICE_PORT: "80"
+  API_URL: "$API_URL"
+  DIGITRANSIT_API_URL: "$DIGITRANSIT_API_URL"
+  APP_NAME: "$APP_NAME"
 
 # Build stage must be included and it must extend .build.
 build:
