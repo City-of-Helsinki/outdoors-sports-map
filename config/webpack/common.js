@@ -66,7 +66,7 @@ export default {
     }]),
     new webpack.optimize.OccurenceOrderPlugin(),
     new Dotenv({
-      systemvars: true  // Variables from npm scripts
+      systemvars: true  // Variables from npm scripts and from CI pipeline
     })
   ],
   postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
