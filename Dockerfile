@@ -39,6 +39,10 @@ ENV DEV_SERVER=1
 FROM appbase as staticbuilder
 # ===================================
 
+ARG API_URL
+ARG DIGITRANSIT_API_URL
+ARG APP_NAME
+
 COPY --chown=appuser:appuser . /app/.
 
 RUN yarn build

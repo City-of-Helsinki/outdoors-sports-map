@@ -8,9 +8,9 @@ include:
 # These variables are available for all stages
 variables:
   SERVICE_PORT: "80"
-  API_URL: "$API_URL"
-  DIGITRANSIT_API_URL: "$DIGITRANSIT_API_URL"
-  APP_NAME: "$APP_NAME"
+  DOCKER_BUILD_ARG_API_URL: "https://api.hel.fi/servicemap/v2"
+  DOCKER_BUILD_ARG_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
+  DOCKER_BUILD_ARG_APP_NAME: "outdoors-sports-map"
 
 # Build stage must be included and it must extend .build.
 build:
