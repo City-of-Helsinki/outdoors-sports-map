@@ -2,6 +2,8 @@
 FROM helsinkitest/node:10-slim AS appbase
 # ===============================================
 
+# This image sets working directory to /app
+
 # Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
 ENV NPM_CONFIG_LOGLEVEL warn
 
@@ -15,9 +17,6 @@ ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
 # Copy package.json and package-lock.json/yarn.lock files
 COPY --chown=appuser:appuser package*.json *yarn* ./
 
-# Install npm dependencies
-ENV PATH /app/node_modules/.bin:$PATH
-
 USER root
 RUN apt-install.sh build-essential
 
@@ -29,7 +28,6 @@ RUN apt-cleanup.sh build-essential
 
 # Use non-root user
 USER appuser
-COPY --chown=appuser:appuser . /app/.
 
 # =============================
 FROM appbase AS development
@@ -41,6 +39,8 @@ ENV DEV_SERVER=1
 FROM appbase as staticbuilder
 # ===================================
 
+COPY --chown=appuser:appuser . /app/.
+
 RUN yarn build
 
 # ===================================
@@ -51,7 +51,6 @@ USER root
 RUN apt-install.sh nginx
 
 COPY --from=staticbuilder --chown=root:root /app/dist /usr/share/nginx/html
-
 COPY .prod/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
