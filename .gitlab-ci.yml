@@ -1,7 +1,7 @@
 # Mandatory include
 include:
   - project: 'city-of-helsinki/kuva/ci-cd-config/ci-configuration'
-    ref: v1
+    ref: v2
     file: '/.gitlab-ci-template.yml'
 
 # These variables are available for all stages
