@@ -4,16 +4,16 @@ The Outdoor Exercise Map is an open communications channel for checking the cond
 
 ## Development
 
-Follow the instructions to set up local development environment. Altertanively, you can use Docker [see below](#development-with-docker)
+Follow the instructions to set up local development environment. Altertanively, you can use Docker ([see below](#development-with-docker)).
 
 ### Prerequisites
 
-- On Linux, `node-sass` currently requires Node.js v11
+- On Linux, `node-sass` currently requires Node.js v11 or older
 - Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
 
 ### Setup
 
-After cloning this repository, create a new `.env` file from the provided `.env.example` file.
+After cloning this repository, create a new `.env` file from the provided `.env.example` file:
 
 ```
 cp .env.example .env
@@ -27,26 +27,26 @@ To start development server, run:
 yarn start
 ```
 
-The application is now available at [http://localhost:5000](http://localhost:5000/)
+The application is now available at [http://localhost:5000](http://localhost:5000/).
 
 ## Development with Docker
 
 Install and configure [Docker](https://www.docker.com/).
 
-Build the project
+Build the project:
 
 ```
 cp .env.example .env
 docker-compose build
 ```
 
-Start the application
+Start the application:
 
 ```
 docker-compose up
 ```
 
-The application is now available at [http://localhost:5000](http://localhost:5000/)
+The application is now available at [http://localhost:5000](http://localhost:5000/).
 
 ### Starting dockerized production environment
 
@@ -62,4 +62,4 @@ Start docker container with:
 docker container run -p 80:80 -d outdoors-sports-map
 ```
 
-The application is now available at [http://localhost](http://localhost/)
+The application is now available at [http://localhost](http://localhost/).
