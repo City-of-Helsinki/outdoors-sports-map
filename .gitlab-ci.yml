@@ -12,13 +12,7 @@ variables:
 build:
   extends: .build
 
-review:
-  variables:
-    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-review"
-
 staging:
-  variables:
-    DOCKER_IMAGE_NAME: "$CI_PROJECT_NAME-staging"
   # By default the staging environment is created from the master-branch.
   # Here we define that it should be created from the branch called "develop" instead.
   only:
