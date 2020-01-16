@@ -5,6 +5,8 @@ import CleanPlugin from 'clean-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import common from './common';
 
+const Dotenv = require('dotenv-webpack');
+
 const context = path.resolve(__dirname, '../..');
 const extractStylesPlugin = new ExtractTextPlugin('[name].[hash].css');
 
@@ -26,16 +28,14 @@ export default merge({
   },
   plugins: [
     new CleanPlugin(['./dist'], { root: context }),
-    new webpack.DefinePlugin({
-      'NODE_ENV': JSON.stringify('production')
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compressor: { warnings: false }
     }),
-    extractStylesPlugin
+    extractStylesPlugin,
+    new Dotenv({
+      silent: true, // There is not .env file in production
+      systemvars: true, // Variables from CI pipeline
+    }),
   ]
 }, common);
