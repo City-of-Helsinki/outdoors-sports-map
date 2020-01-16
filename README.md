@@ -52,9 +52,15 @@ The application is now available at [http://localhost:5000](http://localhost:500
 
 Make sure port `80` is free.
 
-Build docker image with:
+Pass build-time variables (replace `VAR_X` with actual variable name) to docker image and build with:
+
 ```
-docker build -t outdoors-sports-map .
+source .env
+docker build \
+--no-cache \
+--build-arg <VAR_1>=${<VAR_1>} \
+--build-arg <VAR_N>=${<VAR_N>} \
+-t outdoors-sports-map .
 ```
 
 Start docker container with:
