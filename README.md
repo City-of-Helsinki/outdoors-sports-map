@@ -52,7 +52,7 @@ The application is now available at [http://localhost:5000](http://localhost:500
 
 Make sure port `80` is free.
 
-Pass build-time variables (replace `<VAR_X>` with actual variable name) to docker image and build with:
+Pass build-time variables (replace `<VAR_X>` with actual variable name from `.env` file) to docker image and build with:
 
 ```
 source .env
