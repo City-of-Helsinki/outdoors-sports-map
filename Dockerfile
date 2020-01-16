@@ -36,7 +36,7 @@ FROM appbase AS development
 ENV DEV_SERVER=1
 
 # ===================================
-FROM appbase as staticbuilder
+FROM appbase AS staticbuilder
 # ===================================
 
 ARG API_URL
@@ -48,13 +48,10 @@ COPY --chown=appuser:appuser . /app/.
 RUN yarn build
 
 # ===================================
-FROM appbase as production
+FROM nginx:1.17 AS production
 # ===================================
 
-USER root
-RUN apt-install.sh nginx
-
-COPY --from=staticbuilder --chown=root:root /app/dist /usr/share/nginx/html
+COPY --from=staticbuilder --chown=nginx:nginx /app/dist /usr/share/nginx/html
 COPY .prod/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
