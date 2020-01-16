@@ -57,7 +57,6 @@ Pass build-time variables (replace `<VAR_X>` with actual variable name from `.en
 ```
 source .env
 docker build \
---no-cache \
 --build-arg <VAR_1>=${<VAR_1>} \
 --build-arg <VAR_N>=${<VAR_N>} \
 -t outdoors-sports-map .
