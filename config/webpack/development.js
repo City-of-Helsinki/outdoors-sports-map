@@ -3,6 +3,8 @@ import webpack from 'webpack';
 import { smart as merge } from 'webpack-merge';
 import common from './common';
 
+const Dotenv = require('dotenv-webpack');
+
 const context = path.resolve(__dirname, '../..');
 
 export default merge({
@@ -26,6 +28,9 @@ export default merge({
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    new Dotenv({
+      systemvars: true, // Variables from npm scripts
+    }),
   ],
   devServer: {
     host: '0.0.0.0',  // for Docker

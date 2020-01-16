@@ -4,8 +4,6 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 
-const Dotenv = require('dotenv-webpack');
-
 const context = path.resolve(__dirname, '../..');
 
 export default {
@@ -65,9 +63,6 @@ export default {
       from: './favicon'
     }]),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new Dotenv({
-      systemvars: true  // Variables from npm scripts and from CI pipeline
-    })
   ],
   postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
 };
