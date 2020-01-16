@@ -1,8 +1,9 @@
 import path from 'path';
 import webpack from 'webpack';
-import DashboardPlugin from 'webpack-dashboard/plugin';
 import { smart as merge } from 'webpack-merge';
 import common from './common';
+
+const Dotenv = require('dotenv-webpack');
 
 const context = path.resolve(__dirname, '../..');
 
@@ -25,14 +26,15 @@ export default merge({
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'NODE_ENV': JSON.stringify('development')
-    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new DashboardPlugin()
+    new Dotenv({
+      systemvars: true, // Variables from npm scripts
+    }),
   ],
   devServer: {
+    host: '0.0.0.0',  // for Docker
+    port: 5000,
     hot: true,
     quiet: true,
     historyApiFallback: true,

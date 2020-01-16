@@ -1,26 +1,70 @@
-# outdoors-sports-map
+# Outdoor Exercise Map
 
-Helsingin kaupungin Ulkoliikuntakartta.
+The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo and Vantaa. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks and ice-skating fields maintained by the cities 
 
-## Getting started
+## Development
 
+Follow the instructions to set up local development environment. Altertanively, you can use Docker ([see below](#development-with-docker)).
+
+### Prerequisites
+
+- On Linux, `node-sass` currently requires Node.js v11 or older
 - Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
-- Clone this project
-- Run `yarn` to install dependencies
-- Run `yarn start` to start up the development server
 
-The application is now available at http://localhost:5000/
+### Setup
 
-## Deploying
-
-* Install Capistrano by running the following commands:
+After cloning this repository, create a new `.env` file from the provided `.env.example` file:
 
 ```
-gem install capistrano
+cp .env.example .env
 ```
 
-* Place the `outdoors-sports-map` private SSH key in the `cap/keys` directory. Ask your coworkers if you 
-don't have the file.
-* Run `cap production deploy` from the project's root directory
+### Running the development environment
 
-If you want to deploy a branch, run e.g. `BRANCH=develop cap production deploy` instead.
+To start development server, run:
+
+```
+yarn start
+```
+
+The application is now available at [http://localhost:5000](http://localhost:5000/).
+
+## Development with Docker
+
+Install and configure [Docker](https://www.docker.com/).
+
+Build the project:
+
+```
+cp .env.example .env
+docker-compose build
+```
+
+Start the application:
+
+```
+docker-compose up
+```
+
+The application is now available at [http://localhost:5000](http://localhost:5000/).
+
+### Starting dockerized production environment
+
+Make sure port `80` is free.
+
+Pass build-time variables (replace `<VAR_X>` with actual variable name from `.env` file) to docker image and build with:
+
+```
+source .env
+docker build \
+--build-arg <VAR_1>=${<VAR_1>} \
+--build-arg <VAR_N>=${<VAR_N>} \
+-t outdoors-sports-map .
+```
+
+Start docker container with:
+```
+docker container run -p 80:80 -d outdoors-sports-map
+```
+
+The application is now available at [http://localhost](http://localhost/).

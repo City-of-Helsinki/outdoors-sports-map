@@ -1,6 +1,5 @@
 import path from 'path';
 import webpack from 'webpack';
-import DashboardPlugin from 'webpack-dashboard/plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import autoprefixer from 'autoprefixer';
@@ -63,7 +62,7 @@ export default {
     new CopyWebpackPlugin([{
       from: './favicon'
     }]),
-    new webpack.optimize.OccurenceOrderPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
   ],
   postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
 };

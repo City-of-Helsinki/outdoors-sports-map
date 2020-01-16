@@ -1,0 +1,12 @@
+*
+
+!.babelrc
+!.prod/
+!assets/
+!config/
+!docker-entrypoint.sh
+!favicon/
+!locales/
+!package*.json
+!src/
+!*yarn*
