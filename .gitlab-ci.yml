@@ -21,6 +21,7 @@ test:
   variables:
     DEBUG: 1
   before_script:
+    - apk add --update curl && rm -rf /var/cache/apk/*
     # Install yarn as outlined in (https://yarnpkg.com/lang/en/docs/install/#alternatives-stable)
     - curl -o- -L https://yarnpkg.com/install.sh | bash
     # Make available in the current terminal
