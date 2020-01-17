@@ -21,6 +21,8 @@ test:
   variables:
     DEBUG: 1
   script:
+    - set_env_from_devops docker_test_image BUILT_DOCKER_TEST_IMAGE
+    - devops test_setup
     - yarn test
 
 staging:
