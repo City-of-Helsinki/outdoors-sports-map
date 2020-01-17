@@ -9,11 +9,15 @@
     "flow": "flow",
     "lint": "eslint ./src",
     "start": "cross-env NODE_ENV=development node -r babel-register node_modules/.bin/webpack-dev-server --config=config/webpack/development.js",
-    "test": "jest",
-    "prepush": "yarn lint && yarn test"
+    "test": "jest"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./src/setupTests.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint"
+    }
   },
   "repository": {
     "url": "git+https://github.com/digiaonline/outdoors-sports-map.git",
@@ -77,7 +81,7 @@
     "flow-bin": "^0.46.0",
     "flow-typed": "^2.0.0",
     "html-webpack-plugin": "^2.22.0",
-    "husky": "^0.13.3",
+    "husky": "^4.0.10",
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "node-sass": "^4.11.0",
