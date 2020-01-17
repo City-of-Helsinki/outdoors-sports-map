@@ -71,4 +71,4 @@ The application is now available at [http://localhost](http://localhost/).
 
 ## Environments
 
-Test environment: https://ulkoliikunta.test.kuva.hel.ninja/
+Test environment: [https://ulkoliikunta.test.kuva.hel.ninja](https://ulkoliikunta.test.kuva.hel.ninja/).
