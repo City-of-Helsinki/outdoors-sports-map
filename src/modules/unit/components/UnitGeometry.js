@@ -17,7 +17,7 @@ class UnitGeometry extends React.Component {
             opacity={isSelected ? 1 : 0}
             data={unit.geometry}
             {...rest}
-           />
+          />
         }
         <GeoJSON // Click area
           className="unit-geometry__click-area"

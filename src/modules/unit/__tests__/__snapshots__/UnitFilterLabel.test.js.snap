@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders snapshot correctly 1`] = `"<div class=\\"unit-filter-label\\"><span>UNIT.FILTER_SPORT:</span></div>"`;

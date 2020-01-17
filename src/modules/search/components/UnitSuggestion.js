@@ -4,7 +4,7 @@ import ObservationStatus from '../../unit/components/ObservationStatus';
 import {getAttr} from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
 
-const UnitSuggestion = ({unit, handleClick, services, ...rest}, context) =>
+const UnitSuggestion = ({unit, handleClick, ...rest}, context) =>
   <Link to={`/unit/${unit.id}`} onClick={(e) => {e.preventDefault(); handleClick();}} className="search-suggestions__result" {...rest}>
     <div className="search-suggestions__result-icon">
       <UnitIcon unit={unit}/>
@@ -22,7 +22,6 @@ UnitSuggestion.contextTypes = {
 UnitSuggestion.propTypes = {
   unit: PropTypes.object.isRequired,
   handleClick: PropTypes.func,
-  services: PropTypes.object.isRequired,
 };
 
 export default UnitSuggestion;

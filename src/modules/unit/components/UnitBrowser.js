@@ -113,14 +113,14 @@ class UnitBrowser extends Component {
     return (
       <div className={`unit-browser ${isExpanded ? 'expanded' : ''}`} style={params.unitId ? {display: 'none'} : null}>
         <div id="always-visible" className="unit-browser__fixed">
-        <Header
-          expand={this.expand}
-          collapse={this.collapse}
-          setView={setView}
-          openUnit={openUnit}
-          isExpanded={isExpanded}
-        />
-        {!isLoading &&
+          <Header
+            expand={this.expand}
+            collapse={this.collapse}
+            setView={setView}
+            openUnit={openUnit}
+            isExpanded={isExpanded}
+          />
+          {!isLoading &&
           <UnitFilters
             filters={[{
               name: 'sport',
@@ -134,14 +134,14 @@ class UnitBrowser extends Component {
             }]}
             updateFilter={this.updateQueryParameter}
           />}
-        {!isLoading && Object.keys(address).length !== 0 && <AddressBar handleClick={setView} address={address} />}
-      </div>
+          {!isLoading && Object.keys(address).length !== 0 && <AddressBar handleClick={setView} address={address} />}
+        </div>
         <div className="unit-browser__content" style={{maxHeight: contentMaxHeight}}>
           <ListView filter={`${currentSportFilter};${currentStatusFilter}`} isVisible={isExpanded && !singleUnitSelected} isLoading={isLoading || isSearching} units={units} services={services} position={position} openUnit={openUnit} leafletMap={leafletMap}/>
         </div>
         {t('UNIT.TMP_MESSAGE').length > 0 &&
         <div className="unit-browser__tmp_msg"
-        dangerouslySetInnerHTML={{__html: t('UNIT.TMP_MESSAGE')}}>
+          dangerouslySetInnerHTML={{__html: t('UNIT.TMP_MESSAGE')}}>
         </div>
         }
       </div>

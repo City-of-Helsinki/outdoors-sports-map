@@ -9,8 +9,15 @@
     "flow": "flow",
     "lint": "eslint ./src",
     "start": "cross-env NODE_ENV=development node -r babel-register node_modules/.bin/webpack-dev-server --config=config/webpack/development.js",
-    "test": "jest",
-    "prepush": "yarn lint && yarn test"
+    "test": "jest"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "./src/setupTests.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint"
+    }
   },
   "repository": {
     "url": "git+https://github.com/digiaonline/outdoors-sports-map.git",
@@ -37,7 +44,7 @@
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.6",
     "react-dom": "^15.4.1",
-    "react-i18next": "^1.10.1",
+    "react-i18next": "7.13.0",
     "react-leaflet": "^1.0.0",
     "react-markdown": "^2.4.6",
     "react-redux": "^4.4.5",
@@ -52,7 +59,7 @@
   "devDependencies": {
     "autoprefixer": "^6.5.1",
     "babel-core": "^6.17.0",
-    "babel-eslint": "^7.0.0",
+    "babel-eslint": "^10.0.3",
     "babel-jest": "^20.0.3",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
@@ -64,7 +71,9 @@
     "cross-env": "^6.0.3",
     "css-loader": "^0.25.0",
     "dotenv-webpack": "^1.7.0",
-    "eslint": "^3.7.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-15": "^1.4.1",
+    "eslint": "^6.8.0",
     "eslint-plugin-flowtype": "^2.21.0",
     "eslint-plugin-react": "^6.4.1",
     "exports-loader": "^0.6.3",
@@ -72,12 +81,13 @@
     "flow-bin": "^0.46.0",
     "flow-typed": "^2.0.0",
     "html-webpack-plugin": "^2.22.0",
-    "husky": "^0.13.3",
+    "husky": "^4.0.10",
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "node-sass": "^4.11.0",
     "postcss-loader": "^1.0.0",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-test-renderer": "15",
     "regenerator-runtime": "^0.10.5",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",

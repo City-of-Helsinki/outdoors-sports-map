@@ -10,7 +10,7 @@ export const isOnSeason = (date: SeasonDelimiter, season: Season) =>
 export const isBefore = (date: SeasonDelimiter, compare: SeasonDelimiter): boolean =>
   date.month < compare.month || date.month === compare.month && date.day < compare.day;
 export const isAfter = (date: SeasonDelimiter, compare: SeasonDelimiter): boolean =>
-    date.month > compare.month || date.month === compare.month && date.day > compare.day;
+  date.month > compare.month || date.month === compare.month && date.day > compare.day;
 export const isBetweenDelimiters = (date: SeasonDelimiter, start: SeasonDelimiter, end: SeasonDelimiter): boolean => {
   const endBeforeStart = isBefore(end, start);
   const dateBeforeStart = isBefore(date, start);

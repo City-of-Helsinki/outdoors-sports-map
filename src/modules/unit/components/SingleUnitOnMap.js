@@ -34,8 +34,8 @@ export class SingleUnitOnMap extends Component{
 
     return(
       <div>
-      <UnitMarker unit={unit} zoomLevel={zoomLevel} isSelected={isSelected} handleClick={this.handleClick} {...rest}/>
-      {geometry && <UnitGeometry unit={unit} onClick={this.handleClick} isSelected={isSelected}/> }
+        <UnitMarker unit={unit} zoomLevel={zoomLevel} isSelected={isSelected} handleClick={this.handleClick} {...rest}/>
+        {geometry && <UnitGeometry unit={unit} onClick={this.handleClick} isSelected={isSelected}/> }
       </div>
     );
   }

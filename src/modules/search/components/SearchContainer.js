@@ -3,7 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as selectors from '../selectors';
 import {getIsLoading as getIsUnitLoading} from '../../unit/selectors';
-import {getServicesObject} from '../../service/selectors';
 import {searchUnits, fetchUnitSuggestions, clearSearch} from '../actions';
 import {setLocation} from '../../map/actions';
 import SearchBar from './SearchBar';
@@ -18,7 +17,6 @@ class SearchContainer extends Component {
   static propTypes = {
     unitSuggestions: PropTypes.array,
     searchUnits: PropTypes.func,
-    services: PropTypes.object.isRequired,
     fetchUnitSuggestions: PropTypes.func,
     searchDisabled: PropTypes.bool,
     onSearch: PropTypes.func,
@@ -68,7 +66,7 @@ class SearchContainer extends Component {
   }
 
   render() {
-    const {unitSuggestions, addresses, services, isActive, searchDisabled, openUnit} = this.props;
+    const {unitSuggestions, addresses, isActive, searchDisabled, openUnit} = this.props;
     const {searchPhrase, showSuggestions} = this.state;
 
     return (
@@ -85,7 +83,6 @@ class SearchContainer extends Component {
           <SearchSuggestions
             openAllResults={this.search}
             units={unitSuggestions}
-            services={services}
             openUnit={openUnit}
             handleAddressClick={this.handleAddressClick}
             addresses={addresses}
@@ -98,7 +95,6 @@ class SearchContainer extends Component {
 
 const mapStateToProps = (state) => ({
   unitSuggestions: selectors.getUnitSuggestions(state),
-  services: getServicesObject(state),
   isActive: selectors.getIsActive(state),
   searchDisabled: getIsUnitLoading(state),
   addresses: selectors.getAddresses(state),

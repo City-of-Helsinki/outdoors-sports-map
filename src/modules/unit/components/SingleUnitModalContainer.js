@@ -38,20 +38,20 @@ const ModalHeader = ({handleClick, unit, services, isLoading, activeLang, t}) =>
         </div>
         {unit
           ? <div className="modal-header-description">
-              <UnitIcon unit={unit} alt={getServiceName(unit.services, services, activeLang())}/>
-              <div>
-                <p>
+            <UnitIcon unit={unit} alt={getServiceName(unit.services, services, activeLang())}/>
+            <div>
+              <p>
                 {
                   getServiceName(unit.services, services, activeLang())
                 }
-                </p>
-                <p>
+              </p>
+              <p>
                 {unitAddress ? `${unitAddress}, ` : ''}
                 {unitZIP ? `${unitZIP} ` : ''}
                 <span style={{textTransform: 'capitalize'}}>{unitMunicipality || ''}</span>
-                </p>
-              </div>
+              </p>
             </div>
+          </div>
           : null
         }
       </div>
@@ -82,26 +82,26 @@ const LocationInfo = ({unit, t, activeLang}) =>
 const NoticeInfo = ({unit, t, activeLang}) => {
   const notice = getObservation(unit, 'notice');
   return ( notice ?
-  <ModalBodyBox title={t('MODAL.NOTICE')}>
-    <StatusUpdated time={getObservationTime(notice)} t={t}/>
-    <ReactMarkdown
-      source={getAttr(notice.value, activeLang())}
-      softBreak="br"
-      escapeHtml
-      allowedTypes={['Text', 'Paragraph', 'Softbreak']}
-    />
-  </ModalBodyBox>
-  :
-  null
+    <ModalBodyBox title={t('MODAL.NOTICE')}>
+      <StatusUpdated time={getObservationTime(notice)} t={t}/>
+      <ReactMarkdown
+        source={getAttr(notice.value, activeLang())}
+        softBreak="br"
+        escapeHtml
+        allowedTypes={['Text', 'Paragraph', 'Softbreak']}
+      />
+    </ModalBodyBox>
+    :
+    null
   );
 };
 
 const LocationRoute = ({routeUrl, t}) =>
-    <ModalBodyBox title={t('MODAL.ROUTE_HERE')}>
-      <a target="_blank" href={routeUrl}>
-        {t('MODAL.GET_ROUTE')}
-      </a>
-    </ModalBodyBox>;
+  <ModalBodyBox title={t('MODAL.ROUTE_HERE')}>
+    <a target="_blank" href={routeUrl}>
+      {t('MODAL.GET_ROUTE')}
+    </a>
+  </ModalBodyBox>;
 
 // TODO
 // const LocationWeather = ({t}) =>
