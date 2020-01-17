@@ -20,6 +20,11 @@ test:
   extends: .test
   variables:
     DEBUG: 1
+  before_script:
+    # Install yarn as outlined in (https://yarnpkg.com/lang/en/docs/install/#alternatives-stable)
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    # Make available in the current terminal
+    - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
   script:
     - set_env_from_devops docker_test_image BUILT_DOCKER_TEST_IMAGE
     - devops test_setup
