@@ -68,3 +68,7 @@ docker container run -p 80:80 -d outdoors-sports-map
 ```
 
 The application is now available at [http://localhost](http://localhost/).
+
+## Environments
+
+Test environment: https://ulkoliikunta.test.kuva.hel.ninja/
