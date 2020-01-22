@@ -1,18 +1,10 @@
-// import path from 'path';
-const path = require('path');
-// import webpack from 'webpack';
-// import {smart as merge} from 'webpack-merge';
 const merge = require('webpack-merge');
-// import CleanPlugin from 'clean-webpack-plugin';
-// import common from './common';
 const common = require('./common');
-
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const context = path.resolve(__dirname, '../..');
 const extractStylesPlugin = new MiniCssExtractPlugin({
   filename: '[name].[hash].css',
 });
@@ -28,15 +20,12 @@ export default merge.smart(common, {
   module: {
     rules: [
       {
-        // test: /\.scss$/,
         test: /\.(sa|sc|c)ss$/,
-        include: path.join(context, 'src'), // FIXME?
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
           },
           'css-loader',
-          'postcss-loader',
           'sass-loader?sourceMap=true',
         ],
       },
@@ -54,7 +43,6 @@ export default merge.smart(common, {
     ],
   },
   plugins: [
-    // new CleanWebpackPlugin(['./dist'], {root: context}),
     new CleanWebpackPlugin(),
     extractStylesPlugin,
     new Dotenv({
