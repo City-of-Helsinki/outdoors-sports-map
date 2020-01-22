@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {hot} from 'react-hot-loader';
 import createStore from '../../../bootstrap/createStore';
 import App from './App';
 
@@ -20,4 +21,4 @@ class Root extends Component {
   }
 }
 
-export default Root;
+export default hot(module)(Root);

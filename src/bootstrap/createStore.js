@@ -32,13 +32,6 @@ export const createStore = () =>
     }, () => resolve(store));
 
     sagaMiddleware.run(rootSaga);
-
-    if (__DEV__ && module.hot) {
-      module.hot.accept('./createRootReducer', () => {
-        const newRootReducer = require('./createRootReducer').default();
-        store.replaceReducer(newRootReducer);
-      });
-    }
   });
 
 export default createStore;
