@@ -19,7 +19,7 @@ build:
 test:
   extends: .test
   # Pipeline will use official Node.js image when running the tests.
-  image: node:10
+  image: node:12
   script:
     - yarn
     - yarn test

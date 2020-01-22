@@ -1,5 +1,5 @@
 # ===============================================
-FROM helsinkitest/node:10-slim AS appbase
+FROM helsinkitest/node:12-slim AS appbase
 # ===============================================
 
 # This image sets working directory to /app
