@@ -41,15 +41,17 @@ module.exports = {
         test: /\.(ttf|eot|svg)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: {
           loader: 'file-loader',
-          options: {
-            esModule: false,
-          },
         },
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
         use: {
           loader: 'url-loader?prefix=img/&limit=5000',
+          options: {
+            // Resolve img src correctly
+            // https://stackoverflow.com/a/59075858
+            esModule: false,
+          },
         },
       },
       {
