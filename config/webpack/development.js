@@ -39,7 +39,27 @@ module.exports = merge.smart(common, {
         test: /\.(sa|sc|c)ss$/,
         use: [
           'style-loader',
-          'sass-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [
+                require('autoprefixer'),  // FIXME
+              ],
+              sourceMap: true,
+            },
+          },
         ],
       },
     ],
