@@ -19,13 +19,11 @@
     }
   },
   "repository": {
-    "url": "git+https://github.com/digiaonline/outdoors-sports-map.git",
+    "url": "https://github.com/City-of-Helsinki/outdoors-sports-map.git",
     "type": "git"
   },
-  "author": "Christoffer Niska <christofferniska@gmail.com>",
-  "contributors": [
-    "Ville Vaarala <ville.l.vaarala@gmail.com>"
-  ],
+  "author": "Jukka-Pekka Salo <jpsalo@zoho.com>",
+  "contributors": [],
   "dependencies": {
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-polyfill": "^6.16.0",
