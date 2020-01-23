@@ -3,7 +3,7 @@ const common = require('./common');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const extractStylesPlugin = new MiniCssExtractPlugin({
   filename: '[name].[hash].css',
@@ -32,12 +32,12 @@ export default merge.smart(common, {
     ],
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          // default
-          // https://webpack.js.org/migrate/3/#uglifyjsplugin-warnings
-          warnings: false,  // FIXME?
+      new TerserPlugin({
+        terserOptions: {
+          warnings: false,
+          sourceMap: true,
         },
       }),
     ],
