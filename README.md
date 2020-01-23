@@ -62,14 +62,14 @@ docker build \
 -t outdoors-sports-map .
 ```
 
-_(You can add `--no-cache` to the command if you don't want to use cache from previous build.)_
+_(you can add `--no-cache` to the command if you don't want to use cache from previous build)_
 
 Start docker container with:
 ```
 docker container run -p 80:80 -d outdoors-sports-map
 ```
 
-_(You can add `--name outdoors-sports-map` to the command for easier referencing.)_
+_(you can add `--name outdoors-sports-map` to the command for easier referencing)_
 
 The application is now available at [http://localhost](http://localhost/).
 
