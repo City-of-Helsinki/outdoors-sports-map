@@ -1,6 +1,7 @@
 const Dotenv = require('dotenv-webpack');
 const merge = require('webpack-merge');
 const common = require('./common.js');
+const postcssPresetEnv = require('postcss-preset-env');
 
 module.exports = merge.smart(common, {
   mode: 'development',
@@ -54,10 +55,14 @@ module.exports = merge.smart(common, {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                require('autoprefixer'),  // FIXME
-              ],
+              ident: 'postcss',
               sourceMap: true,
+              plugins: () => [
+                postcssPresetEnv({
+                  // Consider using `browserslist`
+                  browsers: 'last 2 versions',
+                }),
+              ],
             },
           },
         ],

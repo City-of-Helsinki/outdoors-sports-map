@@ -5,6 +5,7 @@ const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const postcssPresetEnv = require('postcss-preset-env');
 
 export default merge.smart(common, {
   mode: 'production',
@@ -37,10 +38,14 @@ export default merge.smart(common, {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                require('autoprefixer'),  // FIXME
-              ],
+              ident: 'postcss',
               sourceMap: true,
+              plugins: () => [
+                postcssPresetEnv({
+                  // Consider using `browserslist`
+                  browsers: 'last 2 versions',
+                }),
+              ],
             },
           },
         ],
