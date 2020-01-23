@@ -8,7 +8,7 @@ Follow the instructions to set up local development environment. Altertanively, 
 
 ### Prerequisites
 
-- On Linux, `node-sass` currently requires Node.js v11 or older
+- Preferably use current Node.js LTS
 - Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
 
 ### Setup
