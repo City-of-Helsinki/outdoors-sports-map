@@ -27,7 +27,6 @@
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/polyfill": "^7.0.0",
-    "babel-plugin-dev-expression": "^0.2.1",
     "bootstrap": "^3.3.7",
     "date-fns": "^1.28.5",
     "i18next": "^3.4.4",
