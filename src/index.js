@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import {createElement} from 'react';
 import {render} from 'react-dom';
 import {browserHistory} from 'react-router';
