@@ -8,7 +8,7 @@
     "flow": "flow",
     "lint": "eslint ./src",
     "start": "cross-env NODE_ENV=development node -r @babel/register node_modules/.bin/webpack-dev-server --config=config/webpack/development.js",
-    "test": "jest --watchAll --coverage"
+    "test": "jest --coverage"
   },
   "jest": {
     "setupFilesAfterEnv": ["./src/setupTests.js"]
