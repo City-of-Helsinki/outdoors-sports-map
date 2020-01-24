@@ -40,6 +40,8 @@ cp .env.example .env
 docker-compose build
 ```
 
+_(you can add `--no-cache` to the command if you don't want to use cache from previous build)_
+
 Start the application:
 
 ```
