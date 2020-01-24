@@ -32,7 +32,6 @@ module.exports = merge.smart(common, {
             // It enables caching results in ./node_modules/.cache/babel-loader/
             // directory for faster rebuilds.
             cacheDirectory: true,
-            plugins: ['react-hot-loader/babel'],
           },
         },
       },
