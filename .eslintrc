@@ -1,36 +1,17 @@
 {
   "extends": [
-    "eslint:recommended",
-    "plugin:flowtype/recommended",
-    "plugin:react/recommended"
+    "airbnb",
+    "plugin:flowtype/recommended"
   ],
   "env": {
+    // explicit environment
     "browser": true,
     "es6": true,
-    "node": true,
-    "jest": true
-  },
-  "globals": {
-    "__DEV__": true
+    "jest": true,
+    "node": false
   },
   "parser": "babel-eslint",
-  "rules": {
-    "array-bracket-spacing": [2, "never"],
-    "arrow-parens": ["error", "always"],
-    "comma-dangle": [2, "always-multiline"],
-    "eol-last": [2, "never"],
-    "indent": [2, 2, {"SwitchCase": 1}],
-    "no-console": 0,
-    "no-multiple-empty-lines": 2,
-    "object-curly-spacing": [2, "never"],
-    "quotes": [2, "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
-    "semi": [2, "always"],
-    "display-name": 0,
-    "require-yield": 0,
-    "react/prop-types": 0
-  },
   "plugins": [
-    "react",
     "flowtype"
   ]
 }
