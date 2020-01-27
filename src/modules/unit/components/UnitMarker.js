@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Marker} from 'react-leaflet';
-import {Icon} from 'leaflet';
-import {getUnitIcon, getUnitPosition, getUnitSport} from '../helpers';
-import {UNIT_ICON_WIDTH, UnitFilters} from '../constants';
-import {MAX_ZOOM} from '../../map/constants';
+import React, { Component } from 'react';
+import { Marker } from 'react-leaflet';
+import { Icon } from 'leaflet';
+import { getUnitIcon, getUnitPosition, getUnitSport } from '../helpers';
+import { UNIT_ICON_WIDTH, UnitFilters } from '../constants';
+import { MAX_ZOOM } from '../../map/constants';
 import UnitPopup from './UnitPopup';
 
 const POPUP_OFFSET = 4;
@@ -19,8 +19,8 @@ class UnitMarker extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {isSelected} = this.props;
-    if(!isSelected && nextProps.isSelected) {
+    const { isSelected } = this.props;
+    if (!isSelected && nextProps.isSelected) {
       this.closePopup();
     }
   }
@@ -64,7 +64,9 @@ class UnitMarker extends Component {
   }
 
   render() {
-    const {unit, isSelected, handleClick, ...rest} = this.props;
+    const {
+      unit, isSelected, handleClick, ...rest
+    } = this.props;
     return (
       <Marker
         ref="marker"
@@ -73,8 +75,9 @@ class UnitMarker extends Component {
         onClick={handleClick}
         onMouseOver={this.openPopup}
         onMouseOut={this.closePopup}
-        {...rest}>
-        <UnitPopup unit={unit} offset={this._getPopupOffset(unit)}/>
+        {...rest}
+      >
+        <UnitPopup unit={unit} offset={this._getPopupOffset(unit)} />
       </Marker>
     );
   }

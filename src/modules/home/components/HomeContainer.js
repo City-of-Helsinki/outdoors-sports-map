@@ -1,26 +1,26 @@
 // @flow
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router';
-import {fetchUnits} from '../../unit/actions';
-import {fetchServices} from '../../service/actions';
-import {setLocation} from '../../map/actions';
-import {changeLanguage} from '../../language/actions';
-import {getStoredLang} from '../../language/helpers';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { fetchUnits } from '../../unit/actions';
+import { fetchServices } from '../../service/actions';
+import { setLocation } from '../../map/actions';
+import { changeLanguage } from '../../language/actions';
+import { getStoredLang } from '../../language/helpers';
 import * as fromMap from '../../map/selectors';
 import * as fromSearch from '../../search/selectors';
 import * as fromUnit from '../../unit/selectors';
 import * as fromService from '../../service/selectors';
 import * as fromLanguage from '../../language/selectors';
-import {getIsLoading} from '../selectors';
-import {getDefaultFilters} from '../../unit/helpers';
+import { getIsLoading } from '../selectors';
+import { getDefaultFilters } from '../../unit/helpers';
 import MapView from '../../unit/components/MapView.js';
 import UnitBrowser from '../../unit/components/UnitBrowser.js';
 import SingleUnitModalContainer from '../../unit/components/SingleUnitModalContainer';
-import {locations} from '../constants.js';
-import {arrayifyQueryValue} from '../../common/helpers';
-import {SUPPORTED_LANGUAGES} from '../../language/constants';
+import { locations } from '../constants.js';
+import { arrayifyQueryValue } from '../../common/helpers';
+import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
 type Props = {
   fetchUnits: () => void,
@@ -47,7 +47,6 @@ type DefaultProps = {
 };
 
 export class HomeContainer extends Component<DefaultProps, Props, void> {
-
   static defaultProps = {
     unitData: [],
     position: locations.HELSINKI,
@@ -56,6 +55,7 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
   props: Props;
 
   leafletMap = null;
+
   initialPosition = undefined;
 
   getChildContext() {
@@ -72,16 +72,15 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
     // this.pollUnitsInterval = setInterval(this.fetchUnits, POLL_INTERVAL);
     this.initialPosition = this.props.position;
 
-    if(!getStoredLang()) {
+    if (!getStoredLang()) {
       // $FlowFixMe
       const userLang = navigator.language || navigator.userLanguage;
 
-      if(userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
+      if (userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
         this.handleChangeLanguage(SUPPORTED_LANGUAGES.Svenska);
-
-      } else if(userLang.includes(SUPPORTED_LANGUAGES.English)) {
+      } else if (userLang.includes(SUPPORTED_LANGUAGES.English)) {
         this.handleChangeLanguage(SUPPORTED_LANGUAGES.English);
-      } else if(userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
+      } else if (userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
         this.handleChangeLanguage(SUPPORTED_LANGUAGES.Suomi);
       }
     }
@@ -100,7 +99,7 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if(nextProps.activeLanguage !== this.props.activeLanguage) {
+    if (nextProps.activeLanguage !== this.props.activeLanguage) {
       this.forceUpdate();
     }
   }
@@ -122,7 +121,7 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
   }
 
   openUnit = (unitId: string) => {
-    const {router, location: {query}}: Props = this.props;
+    const { router, location: { query } }: Props = this.props;
     router.push({
       pathname: `/unit/${unitId}`,
       query,
@@ -130,16 +129,14 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
   }
 
   closeUnit = () => {
-    const {router, location: {query}} = this.props;
+    const { router, location: { query } } = this.props;
     router.push({
       pathname: '/',
       query,
     });
   }
 
-  getActiveLanguage = () => {
-    return this.props.activeLanguage;
-  }
+  getActiveLanguage = () => this.props.activeLanguage
 
   render() {
     const {
@@ -153,7 +150,7 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
       activeLanguage,
       params,
       location: {
-        query: {filter},
+        query: { filter },
       },
     } = this.props;
     const activeFilter = filter ? arrayifyQueryValue(filter) : getDefaultFilters();
@@ -208,7 +205,7 @@ HomeContainer.childContextTypes = {
 const mapStateToProps = (state, props: Props) => ({
   unitData: fromUnit.getVisibleUnits(state, props.location.query),
   serviceData: fromService.getServicesObject(state),
-  selectedUnit: fromUnit.getUnitById(state, {id: props.params.unitId}),
+  selectedUnit: fromUnit.getUnitById(state, { id: props.params.unitId }),
   activeLanguage: fromLanguage.getLanguage(state),
   isLoading: getIsLoading(state),
   mapCenter: fromMap.getLocation(state),
@@ -217,9 +214,10 @@ const mapStateToProps = (state, props: Props) => ({
   isSearching: fromSearch.getIsFetching(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({fetchUnits, fetchServices, setLocation, changeLanguage}, dispatch);
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+  fetchUnits, fetchServices, setLocation, changeLanguage,
+}, dispatch);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
-  HomeContainer
+  HomeContainer,
 ));

@@ -1,5 +1,5 @@
 // @flow
-import {normalizeActionName} from '../common/helpers';
+import { normalizeActionName } from '../common/helpers';
 
 export const SearchActions = {
   CLEAR: normalizeActionName('search/CLEAR'),

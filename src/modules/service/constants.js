@@ -1,6 +1,6 @@
 // @flow
-import {Schema} from 'normalizr';
-import {normalizeActionName} from '../common/helpers';
+import { Schema } from 'normalizr';
+import { normalizeActionName } from '../common/helpers';
 
 export const UnitServices = {
   MECHANICALLY_FROZEN_ICE: 695,
@@ -47,4 +47,4 @@ export type ServiceState = {
   all: Array<string>
 };
 
-export const serviceSchema = new Schema('service'/*, {}*/);
+export const serviceSchema = new Schema('service'/* , {} */);

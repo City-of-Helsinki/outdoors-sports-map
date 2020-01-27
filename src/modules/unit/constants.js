@@ -1,6 +1,6 @@
 // @flow
-import {Schema} from 'normalizr';
-import {normalizeActionName} from '../common/helpers';
+import { Schema } from 'normalizr';
+import { normalizeActionName } from '../common/helpers';
 
 export const UNIT_PIN_HEIGHT = 40;
 export const UNIT_HANDLE_HEIGHT = 32;
@@ -107,10 +107,10 @@ export const UnitActions = {
   SEARCH_REQUEST: normalizeActionName('unit/SEARCH_REQUEST'),
   SEARCH_RECEIVE: normalizeActionName('unit/SEARCH_RECEIVE'),
   FETCH_SEARCH_SUGGESTIONS: normalizeActionName(
-    'unit/FETCH_SEARCH_SUGGESTIONS'
+    'unit/FETCH_SEARCH_SUGGESTIONS',
   ),
   RECEIVE_SEARCH_SUGGESTIONS: normalizeActionName(
-    'unit/RECEIVE_SEARCH_SUGGESTIONS'
+    'unit/RECEIVE_SEARCH_SUGGESTIONS',
   ),
   SEND_FEEDBACK: normalizeActionName('unit/SEND_FEEDBACK'),
 };
@@ -125,4 +125,4 @@ export type UnitState = {
   searchResults: Array<string>
 };
 
-export const unitSchema = new Schema('unit' /*, {}*/);
+export const unitSchema = new Schema('unit' /* , {} */);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {translate} from 'react-i18next';
+import { translate } from 'react-i18next';
 
 const filterNameToLabel = (filterName) => {
   switch (filterName) {
@@ -9,14 +9,17 @@ const filterNameToLabel = (filterName) => {
   return '';
 };
 
-const UnitFilterLabel = ({filterName, t}) => {
+const UnitFilterLabel = ({ filterName, t }) => {
   const message = filterNameToLabel(filterName);
   if (!message) {
     return null;
   }
   return (
     <div className="unit-filter-label">
-      <span>{t(message)}:</span>
+      <span>
+        {t(message)}
+:
+      </span>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 // @flow
 import keys from 'lodash/keys';
-import {combineReducers} from 'redux';
-import {handleActions} from 'redux-actions';
-import {ServiceActions} from './constants';
-import type {EntityAction} from '../common/constants';
+import { combineReducers } from 'redux';
+import { handleActions } from 'redux-actions';
+import { ServiceActions } from './constants';
+import type { EntityAction } from '../common/constants';
 
 const isFetchingReducer = handleActions({
   [ServiceActions.FETCH]: () => true,
@@ -14,17 +14,15 @@ const isFetchingReducer = handleActions({
 const fetchErrorReducer = handleActions({
   [ServiceActions.FETCH]: () => null,
   [ServiceActions.RECEIVE]: () => null,
-  [ServiceActions.FETCH_ERROR]: (state: Object, {payload: {error}}) => error,
+  [ServiceActions.FETCH_ERROR]: (state: Object, { payload: { error } }) => error,
 }, null);
 
 const byIdReducer = handleActions({
-  [ServiceActions.RECEIVE]: (state: Object, {payload: {entities}}: EntityAction) =>
-    ({...entities.service}),
+  [ServiceActions.RECEIVE]: (state: Object, { payload: { entities } }: EntityAction) => ({ ...entities.service }),
 }, {});
 
 const all = handleActions({
-  [ServiceActions.RECEIVE]: (state: Object, {payload: {entities}}: EntityAction) =>
-    [...keys(entities.service)],
+  [ServiceActions.RECEIVE]: (state: Object, { payload: { entities } }: EntityAction) => [...keys(entities.service)],
 }, []);
 
 const reducer = combineReducers({

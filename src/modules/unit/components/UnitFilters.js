@@ -1,7 +1,7 @@
-//@flow
+// @flow
 import React from 'react';
-import {translate} from 'react-i18next';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { translate } from 'react-i18next';
+import { Grid, Row, Col } from 'react-bootstrap';
 import get from 'lodash/get';
 import UnitFilterButton from './UnitFilterButton';
 import UnitFilterLabelButton from './UnitFilterLabelButton';
@@ -20,7 +20,9 @@ type UnitFilterProps = {
   secondaryOptions: ?Array<string>,
 };
 
-const FilterOptionsRow = ({t, className, filterName, options, onSelect}) => (
+const FilterOptionsRow = ({
+  t, className, filterName, options, onSelect,
+}) => (
   <Row className={`${className} filter-options-row`}>
     {options.map((option) => (
       <Col className="unit-filters__option" xs={6} key={option}>
@@ -54,24 +56,25 @@ export class UnitFiltersComponent extends React.Component {
   }
 
   onMenuSelect = (key: string, value: string): void => {
-    this.setState({expandedFilter: null});
+    this.setState({ expandedFilter: null });
     this.props.updateFilter(key, value);
   }
 
   toggleExpandedFilter = (filter) => {
     const isFilterActive = filterEquals(filter, this.state.expandedFilter);
-    this.setState({expandedFilter: isFilterActive ? null : filter});
+    this.setState({ expandedFilter: isFilterActive ? null : filter });
   }
 
   render() {
-    const {filters, t} = this.props;
-    const {expandedFilter} = this.state;
+    const { filters, t } = this.props;
+    const { expandedFilter } = this.state;
 
-    const FilterOptions = ({filter}: {filter: UnitFilterProps}) => (
+    const FilterOptions = ({ filter }: {filter: UnitFilterProps}) => (
       <Grid className="unit-filters__options">
         <FilterOptionsRow filterName={filter.name} className="unit-filters__options" options={filter.options} onSelect={this.onMenuSelect} t={t} />
-        {filter.secondaryOptions && <Row componentClass="hr" className="unit-filters__options-separator"/>}
-        {filter.secondaryOptions &&
+        {filter.secondaryOptions && <Row componentClass="hr" className="unit-filters__options-separator" />}
+        {filter.secondaryOptions
+          && (
           <FilterOptionsRow
             className="unit-filters__options secondary"
             filterName={filter.name}
@@ -79,7 +82,7 @@ export class UnitFiltersComponent extends React.Component {
             onSelect={this.onMenuSelect}
             t={t}
           />
-        }
+          )}
       </Grid>
     );
 
@@ -102,7 +105,6 @@ export class UnitFiltersComponent extends React.Component {
       </div>
     );
   }
-
 }
 
 export default translate()(UnitFiltersComponent);

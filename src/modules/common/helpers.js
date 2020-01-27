@@ -1,9 +1,8 @@
 // @flow
-import {APP_NAME} from './constants';
-import type {QueryValue} from './constants';
+import { APP_NAME } from './constants';
+import type { QueryValue } from './constants';
 
-export const normalizeActionName = (name: string): string =>
-  `${APP_NAME}/${name}`;
+export const normalizeActionName = (name: string): string => `${APP_NAME}/${name}`;
 
 export const arrayifyQueryValue = (queryValue: QueryValue): Array<string> => {
   // Handle undefined
@@ -11,7 +10,7 @@ export const arrayifyQueryValue = (queryValue: QueryValue): Array<string> => {
     return [];
   }
   // Handle single values
-  else if (!Array.isArray(queryValue)){
+  if (!Array.isArray(queryValue)) {
     return [queryValue];
   }
   // It's an array
@@ -19,6 +18,6 @@ export const arrayifyQueryValue = (queryValue: QueryValue): Array<string> => {
 };
 
 export const isRetina = () => (
-  window.devicePixelRatio > 1 ||
-	(window.matchMedia && window.matchMedia('(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)').matches)
+  window.devicePixelRatio > 1
+	|| (window.matchMedia && window.matchMedia('(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)').matches)
 );

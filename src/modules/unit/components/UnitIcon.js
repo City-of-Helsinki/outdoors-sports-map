@@ -1,12 +1,12 @@
 import React from 'react';
-import {getUnitSport} from '../helpers';
-import {UnitFilters} from '../constants';
+import { getUnitSport } from '../helpers';
+import { UnitFilters } from '../constants';
 import OSMIcon from '../../home/components/OSMIcon';
 
-const UnitIcon = ({unit}) => {
+const UnitIcon = ({ unit }) => {
   let icon = 'status-unknown';
 
-  switch(getUnitSport(unit)) {
+  switch (getUnitSport(unit)) {
     case UnitFilters.ICE_SKATING:
       icon = 'iceskate';
       break;
