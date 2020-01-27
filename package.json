@@ -11,7 +11,9 @@
     "test": "jest --coverage"
   },
   "jest": {
-    "setupFilesAfterEnv": ["./src/setupTests.js"]
+    "setupFilesAfterEnv": [
+      "./src/setupTests.js"
+    ]
   },
   "husky": {
     "hooks": {
