@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Modal} from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
+import breaks from 'remark-breaks';
 import SMIcon from '../../home/components/SMIcon';
 import {
   getAttr,
@@ -86,9 +87,12 @@ const NoticeInfo = ({unit, t, activeLang}) => {
       <StatusUpdated time={getObservationTime(notice)} t={t}/>
       <ReactMarkdown
         source={getAttr(notice.value, activeLang())}
-        softBreak="br"
-        escapeHtml
-        allowedTypes={['Text', 'Paragraph', 'Softbreak']}
+        // Insert a break for each newline character
+        // https://github.com/rexxars/react-markdown/issues/105#issuecomment-346103734
+        plugins={[breaks]}
+        break="br"
+        escapeHtml={true}
+        allowedTypes={['text', 'paragraph', 'break']}
       />
     </ModalBodyBox>
     :
