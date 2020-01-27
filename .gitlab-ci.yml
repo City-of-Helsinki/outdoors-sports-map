@@ -22,7 +22,7 @@ test:
   image: node:12
   script:
     - yarn
-    - yarn test
+    - yarn test --ci --runInBand --updateSnapshot
 
 staging:
   # By default the staging environment is created from the master-branch.
