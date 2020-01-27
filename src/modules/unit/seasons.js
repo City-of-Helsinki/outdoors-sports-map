@@ -1,7 +1,7 @@
 // @flow
 import type {SeasonDelimiter, Season} from './constants';
-import getDate from 'date-fns/get_date';
-import getMonth from 'date-fns/get_month';
+import getDate from 'date-fns/getDate';
+import getMonth from 'date-fns/getMonth';
 
 export const isOnSeason = (date: SeasonDelimiter, season: Season) =>
   isBetweenDelimiters(date, season.start, season.end);
