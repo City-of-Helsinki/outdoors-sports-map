@@ -23,6 +23,18 @@ module.exports = merge.smart(common, {
   module: {
     rules: [
       {
+        enforce: 'pre', // check files before transpiling
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            // Warnings on errors
+            emitWarning: true,
+          },
+        },
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {

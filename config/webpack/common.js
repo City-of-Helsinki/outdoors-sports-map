@@ -1,8 +1,9 @@
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
-const context = path.resolve(__dirname, '../../');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const context = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
@@ -23,6 +24,14 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        enforce: 'pre', // check files before transpiling
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'eslint-loader',
+        },
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
