@@ -10,8 +10,31 @@
     "jest": true,
     "node": false
   },
+  "globals": {
+    "module": true,
+    "process": true,
+  },
   "parser": "babel-eslint",
+  "rules": {
+    "max-len": ["warn", { "code": 120 }],
+    "no-mixed-operators": ["off"],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-underscore-dangle": ["off"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+  },
   "plugins": [
     "flowtype"
-  ]
+  ],
+  "settings": {
+    "react": {
+      // set to `detect` in >15.4
+      "version": "15.4",
+    },
+    "import/resolver": {
+      // for aliases
+      "webpack": {
+        "config": "./config/webpack/common.js",
+      }
+    },
+  },
 }
