@@ -1,4 +1,4 @@
-import { normalizeActionName } from '../common/helpers.js';
+import { normalizeActionName } from '../common/helpers';
 
 export const MAP_URL = 'https://tiles.hel.ninja/styles/hel-osm-light/{z}/{x}/{y}.png';
 export const MAP_RETINA_URL = MAP_URL.replace('.png', '@3x.png');

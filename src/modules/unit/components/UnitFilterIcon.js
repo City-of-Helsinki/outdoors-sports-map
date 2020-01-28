@@ -1,3 +1,8 @@
+/*
+   eslint-disable
+   react/jsx-props-no-spreading,
+*/
+
 // @flow
 import React from 'react';
 import OSMIcon from '../../home/components/OSMIcon';

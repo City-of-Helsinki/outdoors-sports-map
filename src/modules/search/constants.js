@@ -1,4 +1,5 @@
 // @flow
+// eslint-disable-next-line import/no-cycle
 import { normalizeActionName } from '../common/helpers';
 
 export const SearchActions = {

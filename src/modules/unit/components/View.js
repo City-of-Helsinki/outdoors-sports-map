@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 
 export const View = ({
@@ -7,3 +9,5 @@ export const View = ({
     {children}
   </div>
 );
+
+export default View;

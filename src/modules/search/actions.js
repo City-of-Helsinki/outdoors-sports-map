@@ -13,6 +13,7 @@ export const searchUnits = (input: string, params: Object): Action => {
     service: `${values(UnitServices).join(',')}`,
   };
 
+  // eslint-disable-next-line no-param-reassign
   params = { ...init, ...params };
   return createAction(SearchActions.FETCH_UNITS)({ params });
 };

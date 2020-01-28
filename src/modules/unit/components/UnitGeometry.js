@@ -1,6 +1,13 @@
+/*
+   eslint-disable
+   react/jsx-props-no-spreading,
+   react/no-string-refs,
+   react/prop-types,
+*/
+
 import React from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { getUnitQuality } from '../helpers.js';
+import { getUnitQuality } from '../helpers';
 
 class UnitGeometry extends React.Component {
   render() {

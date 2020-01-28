@@ -3,8 +3,6 @@ import getDate from 'date-fns/getDate';
 import getMonth from 'date-fns/getMonth';
 import type { SeasonDelimiter, Season } from './constants';
 
-export const isOnSeason = (date: SeasonDelimiter, season: Season) => isBetweenDelimiters(date, season.start, season.end);
-
 
 export const isBefore = (date: SeasonDelimiter, compare: SeasonDelimiter): boolean => date.month < compare.month || date.month === compare.month && date.day < compare.day;
 export const isAfter = (date: SeasonDelimiter, compare: SeasonDelimiter): boolean => date.month > compare.month || date.month === compare.month && date.day > compare.day;
@@ -19,6 +17,8 @@ export const isBetweenDelimiters = (date: SeasonDelimiter, start: SeasonDelimite
 
   return !isBefore(adjustedDate, start) && !isAfter(adjustedDate, adjustedEnd);
 };
+
+export const isOnSeason = (date: SeasonDelimiter, season: Season) => isBetweenDelimiters(date, season.start, season.end);
 
 export const getSeasonDelimiter = (date: Date): SeasonDelimiter => ({
   day: getDate(date),

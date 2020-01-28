@@ -15,6 +15,7 @@ class Root extends Component {
   }
 
   render() {
+    // eslint-disable-next-line react/prop-types
     const { history } = this.props;
     const { store } = this.state;
     return store ? <App store={store} history={history} /> : null;

@@ -1,5 +1,6 @@
 // @flow
 import type { AppState } from '../common/constants';
+// eslint-disable-next-line import/no-cycle
 import { getUnitById } from '../unit/selectors';
 
 export const getIsActive = (state: AppState): boolean => state.search.isActive;

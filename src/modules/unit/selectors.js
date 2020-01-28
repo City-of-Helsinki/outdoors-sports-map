@@ -5,6 +5,7 @@ import memoize from 'lodash/memoize';
 
 import type { AppState } from '../common/constants';
 import { UnitFilters } from './constants';
+// eslint-disable-next-line import/no-cycle
 import { getIsActive as getSearchActive, getUnitResultIDs } from '../search/selectors';
 import { getDefaultStatusFilter, getDefaultSportFilter } from './helpers';
 
@@ -35,9 +36,10 @@ export const getVisibleUnits = memoize(_getVisibleUnits, (state: AppState, query
 
 export const getSearchResults = (state: AppState/* , props: Object */) => state.unit.searchResults.map((id) => getUnitById(state, { id }));
 
-export const getSearchSuggestions = (state: AppState): Array<Object> =>
+export const getSearchSuggestions = (state: AppState): Array<Object> => (
   // $FlowFixMe
-  state.unit.searchSuggestions.map((id) => getUnitById(state, { id }));
+  state.unit.searchSuggestions.map((id) => getUnitById(state, { id }))
+);
 
 export const getIsFetchingUnits = (state: AppState) => state.unit.isFetching;
 

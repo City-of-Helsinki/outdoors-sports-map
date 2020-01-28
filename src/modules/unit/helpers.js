@@ -11,7 +11,7 @@ import get from 'lodash/get';
 
 import { LatLng, GeoJSON } from 'leaflet';
 import * as GeometryUtil from 'leaflet-geometryutil';
-import { createRequest, createUrl } from '../api/helpers.js';
+import { createRequest, createUrl } from '../api/helpers';
 import {
   UnitServices, IceSkatingServices, SkiingServices, SwimmingServices,
 } from '../service/constants';
@@ -80,6 +80,7 @@ export const createReittiopasUrl = (unit, lang) => {
 
 export const getUnitSport = (unit: Object) => {
   if (unit.services && unit.services.length) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const service of unit.services) {
       if (IceSkatingServices.includes(service)) {
         return UnitFilters.ICE_SKATING;
@@ -115,6 +116,7 @@ export const getUnitQuality = (unit: Object): string => {
 };
 
 export const getOpeningHours = (unit: Object, activeLang: string): string => {
+  // eslint-disable-next-line no-restricted-syntax
   for (const service of unit.services) {
     if (service === UnitServices.MECHANICALLY_FROZEN_ICE && unit.connections && unit.connections[1]) {
       return (getAttr(unit.connections[1].name, activeLang) || '');
@@ -138,6 +140,7 @@ export const getUnitIconURL = (unit: Object, selected: ?boolean = false, retina:
   const onOff = selected ? 'on' : 'off';
   const resolution = retina ? '@2x' : '';
 
+  // eslint-disable-next-line global-require, import/no-dynamic-require
   return require(`@assets/markers/${sport}-${quality}-${onOff}${resolution}.png`);
 };
 
@@ -154,6 +157,7 @@ export const getUnitIcon = (unit: Object, selected: ?boolean = false) => (
   }
 );
 
+// eslint-disable-next-line global-require, import/no-dynamic-require
 export const getFilterIconURL = (filter: String) => (filter ? require(`@assets/icons/icon-white-${filter}@2x.png`) : '');
 
 /**

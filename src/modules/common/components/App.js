@@ -12,6 +12,7 @@ const routes = (
   </Route>
 );
 
+// eslint-disable-next-line react/prop-types
 const App = ({ store, history }) => (
   <Provider store={store}>
     <TranslationProvider>

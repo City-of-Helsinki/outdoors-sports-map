@@ -1,3 +1,18 @@
+/*
+   eslint-disable
+   max-classes-per-file,
+   jsx-a11y/anchor-is-valid,
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/no-static-element-interactions,
+   react/forbid-prop-types,
+   react/destructuring-assignment,
+   react/no-unused-prop-types,
+   react/no-access-state-in-setstate,
+   react/prop-types,
+   react/require-default-props,
+   react/static-property-placement,
+*/
+
 import React, { Component, PropTypes } from 'react';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router';
@@ -7,7 +22,7 @@ import values from 'lodash/values';
 import SMIcon from '../../home/components/SMIcon';
 import * as unitHelpers from '../helpers';
 import { SortKeys, UNIT_BATCH_SIZE } from '../constants';
-import { View } from './View.js';
+import { View } from './View';
 import Loading from '../../home/components/Loading';
 import ObservationStatus from './ObservationStatus';
 import SortSelectorDropdown from './SortSelectorDropdown';

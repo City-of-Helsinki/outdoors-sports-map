@@ -1,4 +1,14 @@
 // @flow
+
+/*
+   eslint-disable
+   react/default-props-match-prop-types,
+   react/destructuring-assignment,
+   react/no-string-refs,
+   react/require-default-props,
+   react/static-property-placement,
+*/
+
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -6,19 +16,19 @@ import { withRouter } from 'react-router';
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
 import { setLocation } from '../../map/actions';
-import { changeLanguage } from '../../language/actions';
-import { getStoredLang } from '../../language/helpers';
+import changeLanguage from '../../language/actions';
+import getStoredLang from '../../language/helpers';
 import * as fromMap from '../../map/selectors';
 import * as fromSearch from '../../search/selectors';
 import * as fromUnit from '../../unit/selectors';
 import * as fromService from '../../service/selectors';
-import * as fromLanguage from '../../language/selectors';
-import { getIsLoading } from '../selectors';
+import getLanguage from '../../language/selectors';
+import getIsLoading from '../selectors';
 import { getDefaultFilters } from '../../unit/helpers';
-import MapView from '../../unit/components/MapView.js';
-import UnitBrowser from '../../unit/components/UnitBrowser.js';
+import MapView from '../../unit/components/MapView';
+import UnitBrowser from '../../unit/components/UnitBrowser';
 import SingleUnitModalContainer from '../../unit/components/SingleUnitModalContainer';
-import { locations } from '../constants.js';
+import { locations } from '../constants';
 import { arrayifyQueryValue } from '../../common/helpers';
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
@@ -46,7 +56,7 @@ type DefaultProps = {
   unitData: Object[],
 };
 
-export class HomeContainer extends Component<DefaultProps, Props, void> {
+class HomeContainer extends Component<DefaultProps, Props, void> {
   static defaultProps = {
     unitData: [],
     position: locations.HELSINKI,
@@ -86,18 +96,6 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
     }
   }
 
-  fetchUnits = () => {
-    this.props.fetchUnits({
-      lat: this.props.position[0],
-      lon: this.props.position[1],
-    });
-  }
-
-  componentWillUnmount() {
-    // TODO: Poll /observation, not /unit. => Normalize observations to store.
-    // clearInterval(this.pollUnitsInterval);
-  }
-
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.activeLanguage !== this.props.activeLanguage) {
       this.forceUpdate();
@@ -106,6 +104,18 @@ export class HomeContainer extends Component<DefaultProps, Props, void> {
 
   componentDidUpdate() {
     this.leafletMap = this.refs.map.getWrappedInstance().refs.map.leafletElement;
+  }
+
+  componentWillUnmount() {
+    // TODO: Poll /observation, not /unit. => Normalize observations to store.
+    // clearInterval(this.pollUnitsInterval);
+  }
+
+  fetchUnits = () => {
+    this.props.fetchUnits({
+      lat: this.props.position[0],
+      lon: this.props.position[1],
+    });
   }
 
   handleChangeLanguage = (language: string) => {
@@ -206,7 +216,7 @@ const mapStateToProps = (state, props: Props) => ({
   unitData: fromUnit.getVisibleUnits(state, props.location.query),
   serviceData: fromService.getServicesObject(state),
   selectedUnit: fromUnit.getUnitById(state, { id: props.params.unitId }),
-  activeLanguage: fromLanguage.getLanguage(state),
+  activeLanguage: getLanguage(state),
   isLoading: getIsLoading(state),
   mapCenter: fromMap.getLocation(state),
   position: fromMap.getLocation(state),

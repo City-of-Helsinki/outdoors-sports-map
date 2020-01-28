@@ -1,3 +1,13 @@
+/*
+   eslint-disable
+   class-methods-use-this,
+   jsx-a11y/mouse-events-have-key-events,
+   react/destructuring-assignment,
+   react/jsx-props-no-spreading,
+   react/no-string-refs,
+   react/prop-types,
+*/
+
 import React, { Component } from 'react';
 import { Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
@@ -25,20 +35,16 @@ class UnitMarker extends Component {
     }
   }
 
-  openPopup() {
-    this.refs.marker.leafletElement.openPopup();
-  }
-
-  closePopup() {
-    this.refs.marker.leafletElement.closePopup();
-  }
-
   getIconWidth(zoomLevel) {
     return zoomLevel / MAX_ZOOM * UNIT_ICON_WIDTH;
   }
 
   getIconHeight(icon, zoomLevel) {
     return zoomLevel / MAX_ZOOM * icon.height;
+  }
+
+  closePopup() {
+    this.refs.marker.leafletElement.closePopup();
   }
 
   _createIcon(unit, isSelected) {
@@ -53,6 +59,10 @@ class UnitMarker extends Component {
       iconSize: [iconWidth, iconHeight],
       iconAnchor: [iconWidth / 2, anchorHeight],
     });
+  }
+
+  openPopup() {
+    this.refs.marker.leafletElement.openPopup();
   }
 
   _getAnchorHeight(iconHeight, unit) {

@@ -1,4 +1,13 @@
 // @flow
+
+/*
+   eslint-disable
+   react/destructuring-assignment,
+   react/prop-types,
+   react/state-in-constructor,
+   react/static-property-placement,
+*/
+
 import React from 'react';
 import { translate } from 'react-i18next';
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -6,18 +15,17 @@ import get from 'lodash/get';
 import UnitFilterButton from './UnitFilterButton';
 import UnitFilterLabelButton from './UnitFilterLabelButton';
 
-
-type UnitFiltersProps = {
-  filters: Array<UnitFilterProps>,
-  t: () => string,
-  updateFilter: (filter: string, value: string) => void,
-};
-
 type UnitFilterProps = {
   name: string,
   active: string,
   options: Array<string>,
   secondaryOptions: ?Array<string>,
+};
+
+type UnitFiltersProps = {
+  filters: Array<UnitFilterProps>,
+  t: () => string,
+  updateFilter: (filter: string, value: string) => void,
 };
 
 const FilterOptionsRow = ({

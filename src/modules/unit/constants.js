@@ -1,5 +1,6 @@
 // @flow
 import { Schema } from 'normalizr';
+// eslint-disable-next-line import/no-cycle
 import { normalizeActionName } from '../common/helpers';
 
 export const UNIT_PIN_HEIGHT = 40;

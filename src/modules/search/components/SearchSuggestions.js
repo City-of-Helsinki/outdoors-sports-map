@@ -1,3 +1,10 @@
+/*
+   eslint-disable
+   jsx-a11y/anchor-is-valid,
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/no-static-element-interactions,
+*/
+
 import React from 'react';
 import { translate } from 'react-i18next';
 import UnitSuggestion from './UnitSuggestion';

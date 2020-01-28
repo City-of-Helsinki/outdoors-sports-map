@@ -1,12 +1,27 @@
 // @flow
+
+/*
+   eslint-disable
+   jsx-a11y/alt-text,
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/no-static-element-interactions,
+   react/button-has-type,
+   react/forbid-prop-types,
+   react/destructuring-assignment,
+   react/prop-types,
+   react/require-default-props,
+   react/state-in-constructor,
+   react/static-property-placement,
+*/
+
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import values from 'lodash/values';
 import { translate } from 'react-i18next';
-import ListView from './ListView.js';
+import ListView from './ListView';
 import SMIcon from '../../home/components/SMIcon';
-import { StatusFilters } from '../constants.js';
-import UnitFilters from './UnitFilters.js';
+import { StatusFilters } from '../constants';
+import UnitFilters from './UnitFilters';
 import SearchContainer from '../../search/components/SearchContainer';
 
 import {
@@ -16,6 +31,8 @@ import {
   getDefaultStatusFilter,
   getDefaultSportFilter,
 } from '../helpers';
+
+const addressBarMarker = require('@assets/markers/location.svg');
 
 const ActionButton = ({ action, icon, isActive }) => (
   <button className={`action-button ${isActive ? 'is-active' : ''}`} onClick={action}>
@@ -37,7 +54,7 @@ const Header = ({
 
 const AddressBar = ({ address, handleClick }, context) => (
   <div className="address-bar__container" onClick={() => handleClick(address.location.coordinates.slice().reverse())}>
-    <img className="address-bar__marker" src={require('../../../../assets/markers/location.svg')} height="20px" width="16px" />
+    <img className="address-bar__marker" src={addressBarMarker} height="20px" width="16px" />
     {address && getAddressToDisplay(address, context.getActiveLanguage())}
   </div>
 );
@@ -152,6 +169,7 @@ class UnitBrowser extends Component {
         && (
         <div
           className="unit-browser__tmp_msg"
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: t('UNIT.TMP_MESSAGE') }}
         />
         )}

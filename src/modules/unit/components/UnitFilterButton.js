@@ -6,14 +6,15 @@ import UnitFilterIcon from './UnitFilterIcon';
 import DropdownIndicator from './DropdownIndicator';
 import { UnitFilters } from '../constants';
 
-
 const UnitFilterButton = ({
+  // eslint-disable-next-line react/prop-types
   t, filterName, className, showDropdownIndicator = false, ...rest
 }: {
   t: () => string,
   filterName: string,
   className: string
 }) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
   <Button className={`unit-filter-button ${className}`} {...rest}>
     <UnitFilterIcon className="unit-filter-button__icon" filter={filterName} />
     <span className="unit-filter-button__name">

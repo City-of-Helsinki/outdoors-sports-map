@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import { Popup } from 'react-leaflet';
 import { translate } from 'react-i18next';
 import { getAttr, getUnitQuality, getCondition } from '../helpers';
 
-export const UnitPopup = ({ unit, offset, t }, { getActiveLanguage: getLang }) => {
+const UnitPopup = ({ unit, offset, t }, { getActiveLanguage: getLang }) => {
   const condition = getCondition(unit);
   const conditionLabel = condition ? getAttr(condition.name, getLang()) : t('UNIT.UNKNOWN');
   return (

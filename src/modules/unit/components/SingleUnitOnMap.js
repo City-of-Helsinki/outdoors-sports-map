@@ -1,21 +1,20 @@
+/*
+   eslint-disable
+   react/jsx-props-no-spreading,
+   react/prop-types,
+*/
+
 import React, { Component } from 'react';
 import L from 'leaflet';
 import { getUnitQuality } from '../helpers';
 import UnitMarker from './UnitMarker';
 import UnitGeometry from './UnitGeometry';
 
-export class SingleUnitOnMap extends Component {
+class SingleUnitOnMap extends Component {
   constructor(props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(e) {
-    const { unit, openUnit } = this.props;
-    L.DomEvent.stopPropagation(e);
-
-    openUnit(unit.id);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -25,6 +24,13 @@ export class SingleUnitOnMap extends Component {
     const isZoomUpdated = zoomLevel !== nextProps.zoomLevel;
 
     return isQualityUpdated || isSelectedUpdated || isZoomUpdated;
+  }
+
+  handleClick(e) {
+    const { unit, openUnit } = this.props;
+    L.DomEvent.stopPropagation(e);
+
+    openUnit(unit.id);
   }
 
   render() {

@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import isEmpty from 'lodash/isEmpty';
 import SingleUnitOnMap from './SingleUnitOnMap';
 import { sortByCondition, getUnitQuality } from '../helpers';
 
-export const UnitsOnMap = ({
+const UnitsOnMap = ({
   units, selectedUnit, openUnit, zoomLevel,
 }) => {
   let unitsInOrder = units.slice();

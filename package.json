@@ -12,7 +12,7 @@
   },
   "jest": {
     "setupFilesAfterEnv": [
-      "./src/setupTests.js"
+      "./src/jest.setup.js"
     ]
   },
   "husky": {

@@ -1,4 +1,19 @@
 // @flow
+
+/*
+   eslint-disable
+   jsx-a11y/anchor-is-valid,
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/no-static-element-interactions,
+   react/destructuring-assignment,
+   react/forbid-prop-types,
+   react/no-string-refs,
+   react/prop-types,
+   react/require-default-props,
+   react/state-in-constructor,
+   react/static-property-placement,
+*/
+
 import React, { Component, PropTypes } from 'react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import { translate } from 'react-i18next';
@@ -13,7 +28,7 @@ import { SUPPORTED_LANGUAGES } from '../../language/constants';
 import {
   MAP_URL, MAP_RETINA_URL, DEFAULT_ZOOM, MIN_ZOOM, MAX_ZOOM, BOUNDARIES,
 } from '../../map/constants';
-import { latLngToArray } from '../../map/helpers';
+import latLngToArray from '../../map/helpers';
 import { getUnitPosition } from '../helpers';
 import UnitsOnMap from './UnitsOnMap';
 import UserLocationMarker from '../../map/components/UserLocationMarker';
@@ -37,16 +52,16 @@ class MapView extends Component {
     window.addEventListener('resize', this.updateIsMobile);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateIsMobile);
-  }
-
   componentWillReceiveProps(nextProps) {
     const { selectedUnit } = this.props;
     if (nextProps.selectedUnit
       && (!selectedUnit || selectedUnit.id !== nextProps.selectedUnit.id)) {
       this.centerMapToUnit(nextProps.selectedUnit);
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateIsMobile);
   }
 
   centerMapToUnit = (unit: Object) => {
@@ -189,7 +204,7 @@ const InfoMenu = ({
       {t('MAP.INFO_MENU.ABOUT_SERVICE')}
     </InfoMenuItem>
     <InfoMenuItem handleClick={() => null}>
-      <a target="_blank" href="http://osm.org/copyright" style={{ padding: 1 }}>
+      <a target="_blank" href="http://osm.org/copyright" rel="noopener noreferrer" style={{ padding: 1 }}>
 &copy;
         {t('MAP.ATTRIBUTION')}
         {' '}
@@ -219,6 +234,7 @@ const AboutModal = ({ closeModal, t }) => (
       <div className="about-modal-controls">
         <SMIcon icon="close" onClick={() => closeModal()} />
       </div>
+      {/* eslint-disable-next-line react/no-danger */}
       <div className="about-modal-content" dangerouslySetInnerHTML={{ __html: t('MAP.ABOUT') }} />
     </div>
   </div>

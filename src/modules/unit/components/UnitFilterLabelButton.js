@@ -1,3 +1,8 @@
+/*
+   eslint-disable
+   react/prop-types,
+*/
+
 import React from 'react';
 import { translate } from 'react-i18next';
 

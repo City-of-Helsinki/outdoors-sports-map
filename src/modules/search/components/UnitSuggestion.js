@@ -1,3 +1,11 @@
+/*
+   eslint-disable
+   react/forbid-prop-types,
+   react/destructuring-assignment,
+   react/jsx-props-no-spreading,
+   react/require-default-props,
+*/
+
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import ObservationStatus from '../../unit/components/ObservationStatus';

@@ -1,3 +1,14 @@
+/*
+   eslint-disable
+   class-methods-use-this,
+   jsx-a11y/anchor-is-valid,
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/no-static-element-interactions,
+   react/destructuring-assignment,
+   react/jsx-props-no-spreading,
+   react/prop-types,
+*/
+
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
@@ -14,7 +25,7 @@ import {
   getObservationTime,
   createReittiopasUrl,
 } from '../helpers';
-import { getServiceName } from '../../service/helpers';
+import getServiceName from '../../service/helpers';
 import ObservationStatus, { StatusUpdated } from './ObservationStatus';
 import UnitIcon from './UnitIcon';
 
@@ -140,7 +151,7 @@ const NoticeInfo = ({ unit, t, activeLang }) => {
 
 const LocationRoute = ({ routeUrl, t }) => (
   <ModalBodyBox title={t('MODAL.ROUTE_HERE')}>
-    <a target="_blank" href={routeUrl}>
+    <a target="_blank" href={routeUrl} rel="noopener noreferrer">
       {t('MODAL.GET_ROUTE')}
     </a>
   </ModalBodyBox>
@@ -183,7 +194,7 @@ const ModalBodyBox = ({
   </div>
 );
 
-export class SingleUnitModalContainer extends Component {
+class SingleUnitModalContainer extends Component {
   shouldShowInfo(unit) {
     const hasExtensions = unit.extensions && (unit.extensions.length || unit.extensions.lighting || unit.extensions.skiing_technique);
     return hasExtensions || unit.phone || unit.url;

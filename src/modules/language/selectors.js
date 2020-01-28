@@ -1,1 +1,2 @@
-export const getLanguage = (state) => state.language;
+const getLanguage = (state) => state.language;
+export default getLanguage;

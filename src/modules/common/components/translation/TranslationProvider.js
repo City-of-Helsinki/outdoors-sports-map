@@ -1,3 +1,9 @@
+/*
+   eslint-disable
+   react/destructuring-assignment,
+   react/prop-types,
+*/
+
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
@@ -5,7 +11,7 @@ import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
-import { getLanguage } from '../../../language/selectors';
+import getLanguage from '../../../language/selectors';
 import { DEFAULT_LANG } from '../../constants';
 
 const localesContext = require.context('../../../../../locales', false, /\.json$/);

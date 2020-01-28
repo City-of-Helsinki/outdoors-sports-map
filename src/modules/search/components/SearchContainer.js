@@ -1,3 +1,14 @@
+/*
+   eslint-disable
+   no-shadow,
+   react/destructuring-assignment,
+   react/forbid-prop-types,
+   react/prop-types,
+   react/require-default-props,
+   react/state-in-constructor,
+   react/static-property-placement,
+*/
+
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

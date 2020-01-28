@@ -8,7 +8,7 @@ import { APP_NAME } from '../modules/common/constants';
 /**
  * @returns {function}
  */
-export const createStore = () => new Promise((resolve) => {
+const createStore = () => new Promise((resolve) => {
   const rootReducer = createRootReducer();
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [];

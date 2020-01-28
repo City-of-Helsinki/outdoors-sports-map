@@ -1,3 +1,9 @@
+/*
+   eslint-disable
+   react/destructuring-assignment,
+   react/prop-types,
+*/
+
 import React from 'react';
 import { translate } from 'react-i18next';
 import Time from '../../home/components/Time';
@@ -28,7 +34,7 @@ export const MaintenanceUpdated = ({ name, activeLang, time }) => (
 );
 
 
-export const ObservationStatus = ({ unit, t }, context) => {
+const ObservationStatus = ({ unit, t }, context) => {
   const quality = getUnitQuality(unit);
   const condition = getCondition(unit);
   const maintenance = getObservation(unit, 'maintenance');

@@ -16,13 +16,13 @@ export function* callApi(request: Request): Generator<any, ApiResponse, any> {
   return ({ response, bodyAsJson });
 }
 
+export const stringifyQuery = (query: Object): string => Object
+  .keys(query)
+  .map((key) => [key, query[key]].map((v) => encodeURIComponent(v)).join('='))
+  .join('&');
+
 export const createRequest = (url: string, init: Object | void): Request => new Request(url, init);
 
 export const createUrl = (url: string, params: Object): string => `${API_BASE_URL}/${url}${params ? `?${stringifyQuery(params)}` : ''}`;
 
 export const createDigitransitUrl = (url: string, params: Object): string => `${DIGITRANSIT_API_BASE_URL}/${url}${params ? `?${stringifyQuery(params)}` : ''}`;
-
-export const stringifyQuery = (query: Object): string => Object
-  .keys(query)
-  .map((key) => [key, query[key]].map((v) => encodeURIComponent(v)).join('='))
-  .join('&');

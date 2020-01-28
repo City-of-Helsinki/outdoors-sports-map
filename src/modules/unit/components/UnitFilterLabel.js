@@ -5,10 +5,11 @@ const filterNameToLabel = (filterName) => {
   switch (filterName) {
     case 'sport': return 'UNIT.FILTER_SPORT';
     case 'status': return 'UNIT.FILTER_STATUS';
+    default: return '';
   }
-  return '';
 };
 
+// eslint-disable-next-line react/prop-types
 const UnitFilterLabel = ({ filterName, t }) => {
   const message = filterNameToLabel(filterName);
   if (!message) {

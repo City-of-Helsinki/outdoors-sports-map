@@ -1,3 +1,9 @@
+/*
+   eslint-disable
+   react/destructuring-assignment,
+   react/prop-types,
+*/
+
 import React, { Component } from 'react';
 import {
   Button, FormGroup, FormControl, Checkbox,
@@ -8,7 +14,7 @@ import { connect } from 'react-redux';
 import { sendFeedback } from '../actions';
 import SMIcon from '../../home/components/SMIcon';
 
-export class FeedbackModal extends Component {
+class FeedbackModal extends Component {
   constructor(props) {
     super(props);
     this.state = {

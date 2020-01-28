@@ -1,3 +1,11 @@
+/*
+   eslint-disable
+   react/destructuring-assignment,
+   react/jsx-props-no-spreading,
+   react/no-string-refs,
+   react/prop-types,
+*/
+
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -5,11 +13,14 @@ import { Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { setLocation } from '../actions';
 import { getLocation } from '../selectors';
-import { latLngToArray } from '../helpers';
+import latLngToArray from '../helpers';
+
+const iconUrl = require('@assets/markers/location.png');
+const iconRetinaUrl = require('@assets/markers/location@2x.png');
 
 const createIcon = () => new Icon({
-  iconUrl: require('@assets/markers/location.png'),
-  iconRetinaUrl: require('@assets/markers/location@2x.png'),
+  iconUrl,
+  iconRetinaUrl,
   iconSize: [12, 23],
   iconAnchor: [6, 23],
 });

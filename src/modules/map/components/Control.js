@@ -19,6 +19,7 @@ export default class Control extends MapControl { // note we're extending MapCon
 
     control.handleClick = this.handleClick;
 
+    // eslint-disable-next-line func-names
     control.onAdd = function () {
       const div = L.DomUtil.create('div', `custom-control ${className}`);
       const link = L.DomUtil.create('a', 'custom-control-button', div);
@@ -40,9 +41,11 @@ export default class Control extends MapControl { // note we're extending MapCon
     L.DomEvent.stopPropagation(event);
     event.stopPropagation();
 
+    // eslint-disable-next-line no-unused-expressions
     this.props.handleClick && this.props.handleClick(event);
   }
 
+  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
     handleClick: PropTypes.func,
   }
