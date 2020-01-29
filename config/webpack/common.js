@@ -7,6 +7,7 @@ const context = path.resolve(__dirname, '../../');
 
 module.exports = {
   entry: {
+    fetch: 'whatwg-fetch',  // window.fetch
     app: './src/index.js',
   },
   output: {
@@ -65,9 +66,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      'fetch': 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch',
-    }),
     new HtmlWebpackPlugin({
       inject: 'body',
       template: './src/index.html',
