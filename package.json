@@ -27,7 +27,7 @@
   "author": "Jukka-Pekka Salo <jpsalo@zoho.com>",
   "contributors": [],
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "date-fns": "^2.9.0",
     "i18next": "^3.4.4",
     "imports-loader": "^0.8.0",
@@ -38,7 +38,7 @@
     "normalize.css": "^8.0.1",
     "normalizr": "^2.2.1",
     "react": "^15.4.1",
-    "react-bootstrap": "^0.30.6",
+    "react-bootstrap": "^0.33.1",
     "react-dom": "^15.4.1",
     "react-hot-loader": "^4.12.19",
     "react-i18next": "7.13.0",
