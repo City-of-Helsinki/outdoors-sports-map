@@ -1,5 +1,5 @@
 // @flow
-import { Schema } from 'normalizr';
+import { schema } from 'normalizr';
 // eslint-disable-next-line import/no-cycle
 import { normalizeActionName } from '../common/helpers';
 
@@ -48,4 +48,4 @@ export type ServiceState = {
   all: Array<string>
 };
 
-export const serviceSchema = new Schema('service'/* , {} */);
+export const serviceSchema = new schema.Entity('service'/* , {} */);

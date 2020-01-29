@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga';
 import { call, fork, put } from 'redux-saga/effects';
-import { arrayOf } from 'normalizr';
+import { schema } from 'normalizr';
 import values from 'lodash/values';
 import { receiveServices, setFetchError } from './actions';
 import { ServiceActions, serviceSchema, UnitServices } from './constants';
@@ -17,7 +17,7 @@ function* fetchServices() {
   const { response, bodyAsJson } = yield call(callApi, request);
 
   if (response.status === 200) {
-    const data = normalizeEntityResults(bodyAsJson.results, arrayOf(serviceSchema));
+    const data = normalizeEntityResults(bodyAsJson.results, new schema.Array(serviceSchema));
     yield put(receiveServices(data));
   } else {
     yield put(setFetchError(bodyAsJson.results));

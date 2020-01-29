@@ -1,5 +1,5 @@
 // @flow
-import { Schema } from 'normalizr';
+import { schema } from 'normalizr';
 // eslint-disable-next-line import/no-cycle
 import { normalizeActionName } from '../common/helpers';
 
@@ -126,4 +126,4 @@ export type UnitState = {
   searchResults: Array<string>
 };
 
-export const unitSchema = new Schema('unit' /* , {} */);
+export const unitSchema = new schema.Entity('unit' /* , {} */);

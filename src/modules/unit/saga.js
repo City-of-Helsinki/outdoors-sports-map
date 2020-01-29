@@ -1,7 +1,7 @@
 // @flow
 import { takeLatest } from 'redux-saga';
 import { call, fork, put } from 'redux-saga/effects';
-import { arrayOf } from 'normalizr';
+import { schema } from 'normalizr';
 import { receiveUnits, receiveSearchSuggestions, setFetchError } from './actions';
 import { UnitActions, unitSchema } from './constants';
 import { getFetchUnitsRequest } from './helpers';
@@ -15,7 +15,7 @@ function* fetchUnits({ payload: { params } }: FetchAction) {
   const { response, bodyAsJson } = yield call(callApi, request);
 
   if (response.status === 200) {
-    const data = normalizeEntityResults(bodyAsJson.results, arrayOf(unitSchema));
+    const data = normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema));
     yield put(receiveUnits(data));
   } else {
     yield put(setFetchError(bodyAsJson.results));
