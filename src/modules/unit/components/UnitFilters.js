@@ -77,6 +77,9 @@ export class UnitFiltersComponent extends React.Component {
     const { filters, t } = this.props;
     const { expandedFilter } = this.state;
 
+    // FIXME
+    // There is really no reason to create this component on every render,
+    // this should be separated to its own component outside render.
     const FilterOptions = ({ filter }: {filter: UnitFilterProps}) => (
       <Grid className="unit-filters__options">
         <FilterOptionsRow filterName={filter.name} className="unit-filters__options" options={filter.options} onSelect={this.onMenuSelect} t={t} />
