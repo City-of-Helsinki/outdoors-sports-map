@@ -1,10 +1,21 @@
-import React, {Component, PropTypes} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+/*
+   eslint-disable
+   no-shadow,
+   react/destructuring-assignment,
+   react/forbid-prop-types,
+   react/prop-types,
+   react/require-default-props,
+   react/state-in-constructor,
+   react/static-property-placement,
+*/
+
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as selectors from '../selectors';
-import {getIsLoading as getIsUnitLoading} from '../../unit/selectors';
-import {searchUnits, fetchUnitSuggestions, clearSearch} from '../actions';
-import {setLocation} from '../../map/actions';
+import { getIsLoading as getIsUnitLoading } from '../../unit/selectors';
+import { searchUnits, fetchUnitSuggestions, clearSearch } from '../actions';
+import { setLocation } from '../../map/actions';
 import SearchBar from './SearchBar';
 import SearchSuggestions from './SearchSuggestions';
 
@@ -59,15 +70,17 @@ class SearchContainer extends Component {
   }
 
   handleAddressClick = (coordinates) => {
-    const {setView, setLocation} = this.props;
+    const { setView, setLocation } = this.props;
     this.clear();
     setLocation(coordinates);
     setView(coordinates);
   }
 
   render() {
-    const {unitSuggestions, addresses, isActive, searchDisabled, openUnit} = this.props;
-    const {searchPhrase, showSuggestions} = this.state;
+    const {
+      unitSuggestions, addresses, isActive, searchDisabled, openUnit,
+    } = this.props;
+    const { searchPhrase, showSuggestions } = this.state;
 
     return (
       <div className="search-container">
@@ -79,7 +92,8 @@ class SearchContainer extends Component {
           searchActive={isActive}
           disabled={searchDisabled}
         />
-        {showSuggestions &&
+        {showSuggestions
+          && (
           <SearchSuggestions
             openAllResults={this.search}
             units={unitSuggestions}
@@ -87,7 +101,7 @@ class SearchContainer extends Component {
             handleAddressClick={this.handleAddressClick}
             addresses={addresses}
           />
-        }
+          )}
       </div>
     );
   }
@@ -100,7 +114,8 @@ const mapStateToProps = (state) => ({
   addresses: selectors.getAddresses(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({searchUnits, fetchUnitSuggestions, clearSearch, setLocation}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  searchUnits, fetchUnitSuggestions, clearSearch, setLocation,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);

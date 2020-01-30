@@ -1,16 +1,16 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
-import {translate} from 'react-i18next';
+import { translate } from 'react-i18next';
 
 moment.locale('fi');
 
 export const formatTime = (time: Date, t: Function) => {
   const endOfToday = moment().endOf('day');
   let lookup = 'TIME.';
-  let options = {};
+  const options = {};
 
-  if(endOfToday.diff(time, 'days') === 0) {
+  if (endOfToday.diff(time, 'days') === 0) {
     lookup += 'TODAY';
   } else if (endOfToday.diff(time, 'days') === 1) {
     lookup += 'YESTERDAY';
@@ -30,13 +30,13 @@ export const formatTime = (time: Date, t: Function) => {
   return t(lookup, options);
 };
 
-const Time = translate()(({time, t}) => {
-  return <time dateTime={time.toISOString()}>
+const Time = translate()(({ time, t }) => (
+  <time dateTime={time.toISOString()}>
     {
       formatTime(time, t)
     }
-    {moment().endOf('day').diff(time, 'days') < 2 && ' '+ time.getHours()+':'+('0'+time.getMinutes()).slice(-2)}
-  </time>;
-});
+    {moment().endOf('day').diff(time, 'days') < 2 && ` ${time.getHours()}:${(`0${time.getMinutes()}`).slice(-2)}`}
+  </time>
+));
 
 export default Time;

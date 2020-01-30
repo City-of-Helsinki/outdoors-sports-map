@@ -1,9 +1,9 @@
 // @flow
 import keys from 'lodash/keys';
-import {combineReducers} from 'redux';
-import {handleActions} from 'redux-actions';
-import {SearchActions} from './constants';
-import type {EntityAction} from '../common/constants';
+import { combineReducers } from 'redux';
+import { handleActions } from 'redux-actions';
+import { SearchActions } from './constants';
+import type { EntityAction } from '../common/constants';
 
 const isFetching = handleActions({
   [SearchActions.FETCH_UNITS]: () => true,
@@ -16,21 +16,18 @@ const isActive = handleActions({
 }, false);
 
 const unitResults = handleActions({
-  [SearchActions.RECEIVE_UNITS]: (state: Object, {payload: {entities}}: EntityAction) =>
-    entities ? [...keys(entities.unit)] : [],
+  [SearchActions.RECEIVE_UNITS]: (state: Object, { payload: { entities } }: EntityAction) => (entities ? [...keys(entities.unit)] : []),
   [SearchActions.CLEAR]: () => [],
 }, []);
 
 const unitSuggestions = handleActions({
-  [SearchActions.RECEIVE_UNIT_SUGGESTIONS]: (state: Object, {payload: {entities}}: EntityAction) =>
-    entities ? [...keys(entities.unit)] : [],
+  [SearchActions.RECEIVE_UNIT_SUGGESTIONS]: (state: Object, { payload: { entities } }: EntityAction) => (entities ? [...keys(entities.unit)] : []),
   [SearchActions.RECEIVE_UNITS]: () => [],
   [SearchActions.CLEAR]: () => [],
 }, []);
 
 const addressSuggestions = handleActions({
-  [SearchActions.RECEIVE_ADDRESS_SUGGESTIONS]: (state: Object, {payload: results}: EntityAction) =>
-    results ? results : [],
+  [SearchActions.RECEIVE_ADDRESS_SUGGESTIONS]: (state: Object, { payload: results }: EntityAction) => (results || []),
   [SearchActions.CLEAR]: () => [],
 }, []);
 

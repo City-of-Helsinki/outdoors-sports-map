@@ -1,36 +1,40 @@
 {
   "extends": [
-    "eslint:recommended",
-    "plugin:flowtype/recommended",
-    "plugin:react/recommended"
+    "airbnb",
+    "plugin:flowtype/recommended"
   ],
   "env": {
+    // explicit environment
     "browser": true,
     "es6": true,
-    "node": true,
-    "jest": true
+    "jest": true,
+    "node": false
   },
   "globals": {
-    "__DEV__": true
+    "module": true,
+    "process": true,
   },
   "parser": "babel-eslint",
   "rules": {
-    "array-bracket-spacing": [2, "never"],
-    "arrow-parens": ["error", "always"],
-    "comma-dangle": [2, "always-multiline"],
-    "eol-last": [2, "never"],
-    "indent": [2, 2, {"SwitchCase": 1}],
-    "no-console": 0,
-    "no-multiple-empty-lines": 2,
-    "object-curly-spacing": [2, "never"],
-    "quotes": [2, "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
-    "semi": [2, "always"],
-    "display-name": 0,
-    "require-yield": 0,
-    "react/prop-types": 0
+    "max-len": ["warn", { "code": 120 }],
+    "no-mixed-operators": ["off"],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-underscore-dangle": ["off"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
   },
   "plugins": [
-    "react",
     "flowtype"
-  ]
+  ],
+  "settings": {
+    "react": {
+      // set to `detect` in >15.4
+      "version": "15.4",
+    },
+    "import/resolver": {
+      // for aliases
+      "webpack": {
+        "config": "./config/webpack/common.js",
+      }
+    },
+  },
 }

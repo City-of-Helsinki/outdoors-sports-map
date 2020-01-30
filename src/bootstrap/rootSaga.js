@@ -1,4 +1,4 @@
-import {fork} from 'redux-saga/effects';
+import { fork } from 'redux-saga/effects';
 import unitSaga from '../modules/unit/saga';
 import searchSaga from '../modules/search/saga';
 import mapSaga from '../modules/map/saga';

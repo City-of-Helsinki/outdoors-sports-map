@@ -1,17 +1,28 @@
+/*
+   eslint-disable
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/label-has-associated-control,
+   jsx-a11y/no-static-element-interactions,
+*/
+
 import React from 'react';
-import {translate} from 'react-i18next';
+import { translate } from 'react-i18next';
 import SMIcon from '../../home/components/SMIcon';
 
-const SearchBar = translate()(({input, onInput, onSubmit, onClear, searchActive, disabled, t}) =>
+const SearchBar = translate()(({
+  input, onInput, onSubmit, onClear, searchActive, disabled, t,
+}) => (
   <div className="search-bar">
-    <form className="search-bar__input" onSubmit={(e) => {e.preventDefault(); onSubmit();}}>
-      <label htmlFor="search"><SMIcon icon="search"/></label>
-      {disabled &&
+    <form className="search-bar__input" onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+      <label htmlFor="search"><SMIcon icon="search" /></label>
+      {disabled
+    && (
     <span className="search-bar__input-loading" onClick={onClear}>
-      <SMIcon icon="loading"/>
+      <SMIcon icon="loading" />
     </span>
-      }
-      <input name="search"
+    )}
+      <input
+        name="search"
         id="search"
         type="text"
         onChange={(e) => onInput(e.target.value)}
@@ -19,13 +30,14 @@ const SearchBar = translate()(({input, onInput, onSubmit, onClear, searchActive,
         disabled={disabled}
         value={input}
       />
-      {(input || searchActive) &&
+      {(input || searchActive)
+      && (
       <div className="search-bar__input-clear" onClick={onClear}>
-        <SMIcon icon="close"/>
+        <SMIcon icon="close" />
       </div>
-      }
+      )}
     </form>
   </div>
-);
+));
 
 export default SearchBar;

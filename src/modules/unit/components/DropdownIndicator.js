@@ -4,7 +4,7 @@ import SMIcon from '../../home/components/SMIcon';
 
 const DropdownIndicator = () => (
   <span className="dropdown-indicator">
-    <SMIcon icon="expand"/>
+    <SMIcon icon="expand" />
   </span>
 );
 

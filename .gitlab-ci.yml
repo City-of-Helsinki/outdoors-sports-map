@@ -19,10 +19,10 @@ build:
 test:
   extends: .test
   # Pipeline will use official Node.js image when running the tests.
-  image: node:10
+  image: node:12
   script:
     - yarn
-    - yarn test
+    - yarn test --ci --runInBand --updateSnapshot
 
 staging:
   # By default the staging environment is created from the master-branch.

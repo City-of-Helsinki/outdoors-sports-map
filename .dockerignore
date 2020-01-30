@@ -2,6 +2,7 @@
 
 !.babelrc
 !.prod/
+!.eslintrc
 !assets/
 !config/
 !docker-entrypoint.sh

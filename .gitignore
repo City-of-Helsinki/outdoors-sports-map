@@ -1,6 +1,7 @@
 .nvmrc
 .env
 .idea
+coverage
 flow-typed
 dist
 node_modules

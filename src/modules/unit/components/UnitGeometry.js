@@ -1,14 +1,22 @@
+/*
+   eslint-disable
+   react/jsx-props-no-spreading,
+   react/no-string-refs,
+   react/prop-types,
+*/
+
 import React from 'react';
-import {GeoJSON} from 'react-leaflet';
-import {getUnitQuality} from '../helpers.js';
+import { GeoJSON } from 'react-leaflet';
+import { getUnitQuality } from '../helpers';
 
 class UnitGeometry extends React.Component {
-  render () {
-    const {unit, isSelected, ...rest} = this.props;
+  render() {
+    const { unit, isSelected, ...rest } = this.props;
     return (
       <div className="unit-geometry">
         { // hilight background for selected unit
-          isSelected &&
+          isSelected
+          && (
           <GeoJSON
             className={
               `unit-geometry__hilight ${isSelected ? 'unit-geometry__hilight--show' : ''}`
@@ -18,20 +26,23 @@ class UnitGeometry extends React.Component {
             data={unit.geometry}
             {...rest}
           />
+          )
         }
         <GeoJSON // Click area
           className="unit-geometry__click-area"
           key={`${unit.id}_click-area`}
           data={unit.geometry}
-          {...rest} />
+          {...rest}
+        />
         <GeoJSON // actual track
-          ref='feature'
+          ref="feature"
           className={
             `unit-geometry__track unit-geometry__track--${getUnitQuality(unit)}`
           }
           key={unit.id}
           data={unit.geometry}
-          {...rest} />
+          {...rest}
+        />
       </div>
     );
   }

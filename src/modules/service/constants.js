@@ -1,6 +1,7 @@
 // @flow
-import {Schema} from 'normalizr';
-import {normalizeActionName} from '../common/helpers';
+import { schema } from 'normalizr';
+// eslint-disable-next-line import/no-cycle
+import { normalizeActionName } from '../common/helpers';
 
 export const UnitServices = {
   MECHANICALLY_FROZEN_ICE: 695,
@@ -47,4 +48,4 @@ export type ServiceState = {
   all: Array<string>
 };
 
-export const serviceSchema = new Schema('service'/*, {}*/);
+export const serviceSchema = new schema.Entity('service'/* , {} */);

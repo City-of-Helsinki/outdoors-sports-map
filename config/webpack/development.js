@@ -1,46 +1,88 @@
-import path from 'path';
-import webpack from 'webpack';
-import { smart as merge } from 'webpack-merge';
-import common from './common';
-
 const Dotenv = require('dotenv-webpack');
+const merge = require('webpack-merge');
+const common = require('./common.js');
+const postcssPresetEnv = require('postcss-preset-env');
 
-const context = path.resolve(__dirname, '../..');
-
-export default merge({
-  devtool: 'inline-source-maps',
-  entry: [
-    'react-hot-loader/patch'
-  ],
+module.exports = merge.smart(common, {
+  mode: 'development',
+  devtool: 'inline-source-map',
   output: {
-    filename: '[name].js',
-    sourceMapFilename: '[file].map',
-    chunkFilename: '[id].js'
+    filename: '[name].bundle.js',
+    chunkFilename: '[id].js',
   },
-  module: {
-    loaders: [
-      {
-        test: /\.scss$/,
-        loader: 'style-loader!css-loader!postcss-loader!sass-loader'
-      }
-    ]
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new Dotenv({
-      systemvars: true, // Variables from npm scripts
-    }),
-  ],
   devServer: {
     host: '0.0.0.0',  // for Docker
     port: 5000,
     hot: true,
-    quiet: true,
-    historyApiFallback: true,
     inline: true,
-    outputPath: path.join(context, 'dist'),
-    stats: false,
-    watchOptions: { poll: 1000, ignored: /node_modules/ }
-  }
-}, common);
+    historyApiFallback: true,
+    watchOptions: {
+      ignored: /node_modules/,
+    },
+  },
+  module: {
+    rules: [
+      {
+        enforce: 'pre', // check files before transpiling
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            // Warnings on errors
+            emitWarning: true,
+          },
+        },
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            // This is a feature of `babel-loader` for webpack (not Babel itself).
+            // It enables caching results in ./node_modules/.cache/babel-loader/
+            // directory for faster rebuilds.
+            cacheDirectory: true,
+          },
+        },
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              sourceMap: true,
+              plugins: () => [
+                postcssPresetEnv({
+                  // Consider using `browserslist`
+                  browsers: 'last 2 versions',
+                }),
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new Dotenv({
+      systemvars: true, // Variables from npm scripts
+    }),
+  ],
+});

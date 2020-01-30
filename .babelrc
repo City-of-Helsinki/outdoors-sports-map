@@ -1,10 +1,17 @@
 {
   "presets": [
-    "es2015",
-    "react",
-    "stage-1"
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": 3,
+      },
+    ],
+    "@babel/preset-react",
+    "@babel/preset-flow"
   ],
   "plugins": [
-    "dev-expression"
+    "@babel/plugin-proposal-class-properties",
+    "react-hot-loader/babel"
   ]
 }
