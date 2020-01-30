@@ -18,6 +18,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import values from 'lodash/values';
 import { translate } from 'react-i18next';
+import addressBarMarker from '@assets/markers/location.svg';
 import ListView from './ListView';
 import SMIcon from '../../home/components/SMIcon';
 import { StatusFilters } from '../constants';
@@ -31,8 +32,6 @@ import {
   getDefaultStatusFilter,
   getDefaultSportFilter,
 } from '../helpers';
-
-const addressBarMarker = require('@assets/markers/location.svg');
 
 const ActionButton = ({ action, icon, isActive }) => (
   <button className={`action-button ${isActive ? 'is-active' : ''}`} onClick={action}>
