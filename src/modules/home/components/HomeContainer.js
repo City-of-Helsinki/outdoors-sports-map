@@ -9,6 +9,7 @@
    react/static-property-placement,
 */
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -235,7 +236,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
 }
 
 HomeContainer.childContextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 const mapStateToProps = (state, props: Props) => ({

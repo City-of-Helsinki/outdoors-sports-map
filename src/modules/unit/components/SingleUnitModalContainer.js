@@ -10,6 +10,7 @@
    react/prop-types,
 */
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ProTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
@@ -379,7 +380,7 @@ class SingleUnitModalContainer extends Component {
 }
 
 SingleUnitModalContainer.contextTypes = {
-  getActiveLanguage: ProTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 export default translate()(SingleUnitModalContainer);

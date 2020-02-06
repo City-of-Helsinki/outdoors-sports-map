@@ -4,6 +4,7 @@
    react/prop-types,
 */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';

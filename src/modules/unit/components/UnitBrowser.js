@@ -14,7 +14,8 @@
    react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import values from 'lodash/values';
 import { translate } from 'react-i18next';
@@ -83,7 +84,7 @@ const AddressBar = ({ address, handleClick }, context) => (
 );
 
 AddressBar.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 class UnitBrowser extends Component {

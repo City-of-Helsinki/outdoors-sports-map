@@ -5,6 +5,7 @@
    react/prop-types,
 */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
 
@@ -27,7 +28,7 @@ const AddressSuggestion = ({ address, handleClick }) => (
 );
 
 AddressSuggestion.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 export default AddressSuggestion;
