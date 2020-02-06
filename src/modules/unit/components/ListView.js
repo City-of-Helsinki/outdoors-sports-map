@@ -13,7 +13,8 @@
    react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router';
 import isEqual from 'lodash/isEqual';
@@ -53,7 +54,7 @@ class UnitListItem extends Component {
 }
 
 UnitListItem.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 class ListView extends Component {
@@ -166,7 +167,7 @@ class ListView extends Component {
 }
 
 ListView.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 export default translate()(ListView);

@@ -4,6 +4,7 @@
    react/prop-types,
 */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import { translate } from 'react-i18next';
 import Time from '../../home/components/Time';
@@ -52,7 +53,7 @@ const ObservationStatus = ({ unit, t }, context) => {
 };
 
 ObservationStatus.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 export default translate()(ObservationStatus);

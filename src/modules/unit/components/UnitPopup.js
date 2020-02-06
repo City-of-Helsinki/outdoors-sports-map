@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Popup } from 'react-leaflet';
 import { translate } from 'react-i18next';
@@ -23,7 +24,7 @@ const UnitPopup = ({ unit, offset, t }, { getActiveLanguage: getLang }) => {
 };
 
 UnitPopup.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 export default translate()(UnitPopup);

@@ -14,7 +14,8 @@
    react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import { translate } from 'react-i18next';
 import SMIcon from '../../home/components/SMIcon';

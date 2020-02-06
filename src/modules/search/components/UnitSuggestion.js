@@ -6,7 +6,8 @@
    react/require-default-props,
 */
 
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Link } from 'react-router';
 import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
@@ -25,7 +26,7 @@ const UnitSuggestion = ({ unit, handleClick, ...rest }, context) => (
 );
 
 UnitSuggestion.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: PropTypes.func,
 };
 
 UnitSuggestion.propTypes = {
