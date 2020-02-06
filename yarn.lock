@@ -9188,9 +9188,10 @@ react-bootstrap@^0.33.1:
     uncontrollable "^7.0.2"
     warning "^3.0.0"
 
-react-dom@^15.4.1:
+react-dom@^15.5.4:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.5.4.tgz#ba0c28786fd52ed7e4f2135fe0288d462aef93da"
+  integrity sha1-ugwoeG/VLtfk8hNf4CiNRirvk9o=
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.1.0"
@@ -9311,9 +9312,10 @@ react-transition-group@^2.0.0, react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^15.4.1:
+react@^15.5.4:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react/-/react-15.5.4.tgz#fa83eb01506ab237cdc1c8c3b1cea8de012bf047"
+  integrity sha1-+oPrAVBqsjfNwcjDsc6o3gEr8Ec=
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.1.0"
