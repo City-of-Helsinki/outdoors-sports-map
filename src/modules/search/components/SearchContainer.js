@@ -2,7 +2,6 @@
    eslint-disable
    no-shadow,
    react/destructuring-assignment,
-   react/forbid-prop-types,
    react/prop-types,
    react/require-default-props,
    react/state-in-constructor,
@@ -103,7 +102,7 @@ class SearchContainer extends Component {
 }
 
 SearchContainer.propTypes = {
-  unitSuggestions: PropTypes.array,
+  unitSuggestions: PropTypes.arrayOf(PropTypes.object),
   searchUnits: PropTypes.func,
   fetchUnitSuggestions: PropTypes.func,
   searchDisabled: PropTypes.bool,

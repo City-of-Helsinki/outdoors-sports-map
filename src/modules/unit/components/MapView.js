@@ -6,7 +6,6 @@
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
    react/destructuring-assignment,
-   react/forbid-prop-types,
    react/no-string-refs,
    react/prop-types,
    react/require-default-props,
@@ -240,8 +239,8 @@ MapView.contextTypes = {
 };
 
 MapView.propTypes = {
-  position: PropTypes.array.isRequired,
-  units: PropTypes.array,
+  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  units: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default translate(null, { withRef: true })(MapView);

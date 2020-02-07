@@ -6,7 +6,6 @@
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
    react/button-has-type,
-   react/forbid-prop-types,
    react/destructuring-assignment,
    react/prop-types,
    react/require-default-props,
@@ -233,7 +232,7 @@ class UnitBrowser extends Component {
 }
 
 UnitBrowser.propTypes = {
-  units: PropTypes.array,
+  units: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default withRouter(translate()(UnitBrowser));
