@@ -11,7 +11,6 @@
    react/prop-types,
    react/require-default-props,
    react/state-in-constructor,
-   react/static-property-placement,
 */
 
 import PropTypes from 'prop-types';
@@ -45,11 +44,6 @@ import LanguageChanger from './LanguageChanger';
 import TranslationProvider from '../../common/components/translation/TranslationProvider';
 
 class MapView extends Component {
-  static propTypes = {
-    position: PropTypes.array.isRequired,
-    units: PropTypes.array,
-  };
-
   state = {
     isMobile: window.innerWidth < mobileBreakpoint,
     menuOpen: false,
@@ -244,6 +238,13 @@ class MapView extends Component {
 MapView.contextTypes = {
   store: PropTypes.object.isRequired,
 };
+
+MapView.propTypes = {
+  position: PropTypes.array.isRequired,
+  units: PropTypes.array,
+};
+
+export default translate(null, { withRef: true })(MapView);
 
 export default translate(null, { withRef: true })(MapView);
 

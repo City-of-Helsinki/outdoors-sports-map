@@ -10,7 +10,6 @@
    react/no-access-state-in-setstate,
    react/prop-types,
    react/require-default-props,
-   react/static-property-placement,
 */
 
 import PropTypes from 'prop-types';
@@ -69,12 +68,6 @@ UnitListItem.contextTypes = {
 };
 
 export class ListViewBase extends Component {
-  static propTypes = {
-    units: PropTypes.array,
-    services: PropTypes.object,
-    sortKey: PropTypes.string,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -199,6 +192,12 @@ export class ListViewBase extends Component {
     );
   }
 }
+
+ListViewBase.propTypes = {
+  units: PropTypes.array,
+  services: PropTypes.object,
+  sortKey: PropTypes.string,
+};
 
 ListViewBase.contextTypes = {
   getActiveLanguage: PropTypes.func,
