@@ -1,6 +1,5 @@
 /*
    eslint-disable
-   react/forbid-prop-types,
    react/destructuring-assignment,
    react/jsx-props-no-spreading,
    react/require-default-props,
@@ -30,7 +29,7 @@ UnitSuggestion.contextTypes = {
 };
 
 UnitSuggestion.propTypes = {
-  unit: PropTypes.object.isRequired,
+  unit: PropTypes.objectOf(PropTypes.any).isRequired,
   handleClick: PropTypes.func,
 };
 

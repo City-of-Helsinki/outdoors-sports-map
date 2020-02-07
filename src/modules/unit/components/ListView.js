@@ -4,7 +4,6 @@
    jsx-a11y/anchor-is-valid,
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
-   react/forbid-prop-types,
    react/destructuring-assignment,
    react/no-access-state-in-setstate,
    react/prop-types,
@@ -159,8 +158,8 @@ class ListView extends Component {
 }
 
 ListView.propTypes = {
-  units: PropTypes.array,
-  services: PropTypes.object,
+  units: PropTypes.arrayOf(PropTypes.object),
+  services: PropTypes.objectOf(PropTypes.object),
 };
 
 ListView.contextTypes = {
