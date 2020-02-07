@@ -6,7 +6,6 @@
    jsx-a11y/no-static-element-interactions,
    react/forbid-prop-types,
    react/destructuring-assignment,
-   react/no-unused-prop-types,
    react/no-access-state-in-setstate,
    react/prop-types,
    react/require-default-props,
@@ -196,7 +195,6 @@ export class ListViewBase extends Component {
 ListViewBase.propTypes = {
   units: PropTypes.array,
   services: PropTypes.object,
-  sortKey: PropTypes.string,
 };
 
 ListViewBase.contextTypes = {
