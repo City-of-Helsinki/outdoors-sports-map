@@ -11,7 +11,6 @@
    react/prop-types,
    react/require-default-props,
    react/state-in-constructor,
-   react/static-property-placement,
 */
 
 import PropTypes from 'prop-types';
@@ -36,11 +35,6 @@ import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
 
 class MapView extends Component {
-  static propTypes = {
-    position: PropTypes.array.isRequired,
-    units: PropTypes.array,
-  };
-
   state = {
     isMobile: window.innerWidth < mobileBreakpoint,
     menuOpen: false,
@@ -176,6 +170,11 @@ class MapView extends Component {
     );
   }
 }
+
+MapView.propTypes = {
+  position: PropTypes.array.isRequired,
+  units: PropTypes.array,
+};
 
 export default translate(null, { withRef: true })(MapView);
 

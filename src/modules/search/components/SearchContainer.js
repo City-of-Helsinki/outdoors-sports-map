@@ -6,7 +6,6 @@
    react/prop-types,
    react/require-default-props,
    react/state-in-constructor,
-   react/static-property-placement,
 */
 
 import PropTypes from 'prop-types';
@@ -26,14 +25,6 @@ const initialState = () => ({
 });
 
 class SearchContainer extends Component {
-  static propTypes = {
-    unitSuggestions: PropTypes.array,
-    searchUnits: PropTypes.func,
-    fetchUnitSuggestions: PropTypes.func,
-    searchDisabled: PropTypes.bool,
-    onSearch: PropTypes.func,
-  };
-
   state = initialState();
 
   /**
@@ -107,6 +98,14 @@ class SearchContainer extends Component {
     );
   }
 }
+
+SearchContainer.propTypes = {
+  unitSuggestions: PropTypes.array,
+  searchUnits: PropTypes.func,
+  fetchUnitSuggestions: PropTypes.func,
+  searchDisabled: PropTypes.bool,
+  onSearch: PropTypes.func,
+};
 
 const mapStateToProps = (state) => ({
   unitSuggestions: selectors.getUnitSuggestions(state),

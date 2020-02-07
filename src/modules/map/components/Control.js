@@ -44,9 +44,8 @@ export default class Control extends MapControl { // note we're extending MapCon
     // eslint-disable-next-line no-unused-expressions
     this.props.handleClick && this.props.handleClick(event);
   }
-
-  // eslint-disable-next-line react/static-property-placement
-  static propTypes = {
-    handleClick: PropTypes.func,
-  }
 }
+
+Control.propTypes = {
+  handleClick: PropTypes.func,
+};

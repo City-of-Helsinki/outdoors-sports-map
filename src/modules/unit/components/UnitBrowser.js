@@ -11,7 +11,6 @@
    react/prop-types,
    react/require-default-props,
    react/state-in-constructor,
-   react/static-property-placement,
 */
 
 import PropTypes from 'prop-types';
@@ -64,10 +63,6 @@ AddressBar.contextTypes = {
 };
 
 class UnitBrowser extends Component {
-  static propTypes = {
-    units: PropTypes.array,
-  };
-
   state: {
     isExpanded: boolean,
     contentMaxHeight: ?number
@@ -178,5 +173,8 @@ class UnitBrowser extends Component {
   }
 }
 
+UnitBrowser.propTypes = {
+  units: PropTypes.array,
+};
 
 export default withRouter(translate()(UnitBrowser));
