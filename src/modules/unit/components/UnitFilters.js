@@ -5,6 +5,7 @@
    react/destructuring-assignment,
    react/prop-types,
    react/state-in-constructor,
+   react/static-property-placement,
 */
 
 import React from 'react';

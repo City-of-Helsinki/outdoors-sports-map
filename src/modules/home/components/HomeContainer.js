@@ -6,6 +6,7 @@
    react/destructuring-assignment,
    react/no-string-refs,
    react/require-default-props,
+   react/static-property-placement,
 */
 
 import PropTypes from 'prop-types';
@@ -57,6 +58,11 @@ type DefaultProps = {
 };
 
 class HomeContainer extends Component<DefaultProps, Props, void> {
+  static defaultProps = {
+    unitData: [],
+    position: locations.HELSINKI,
+  };
+
   props: Props;
 
   leafletMap = null;
@@ -202,11 +208,6 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
     );
   }
 }
-
-HomeContainer.defaultProps = {
-  unitData: [],
-  position: locations.HELSINKI,
-};
 
 HomeContainer.childContextTypes = {
   getActiveLanguage: PropTypes.func,
