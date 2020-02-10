@@ -9,7 +9,6 @@
    react/no-string-refs,
    react/prop-types,
    react/require-default-props,
-   react/state-in-constructor,
 */
 
 import PropTypes from 'prop-types';
@@ -34,13 +33,16 @@ import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
 
 class MapView extends Component {
-  state = {
-    isMobile: window.innerWidth < mobileBreakpoint,
-    menuOpen: false,
-    aboutModalOpen: false,
-    feedbackModalOpen: false,
-    zoomLevel: DEFAULT_ZOOM,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobile: window.innerWidth < mobileBreakpoint,
+      menuOpen: false,
+      aboutModalOpen: false,
+      feedbackModalOpen: false,
+      zoomLevel: DEFAULT_ZOOM,
+    };
+  }
 
   componentDidMount() {
     window.addEventListener('resize', this.updateIsMobile);

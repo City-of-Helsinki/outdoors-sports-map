@@ -4,7 +4,6 @@
    react/destructuring-assignment,
    react/prop-types,
    react/require-default-props,
-   react/state-in-constructor,
 */
 
 import PropTypes from 'prop-types';
@@ -24,7 +23,10 @@ const initialState = () => ({
 });
 
 class SearchContainer extends Component {
-  state = initialState();
+  constructor(props) {
+    super(props);
+    this.state = initialState();
+  }
 
   /**
    *
