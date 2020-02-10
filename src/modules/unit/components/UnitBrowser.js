@@ -7,7 +7,6 @@
    jsx-a11y/no-static-element-interactions,
    react/button-has-type,
    react/destructuring-assignment,
-   react/prop-types,
    react/require-default-props,
    react/state-in-constructor,
 */
@@ -38,6 +37,12 @@ const ActionButton = ({ action, icon, isActive, name }) => (
   </button>
 );
 
+ActionButton.propTypes = {
+  action: PropTypes.func.isRequired,
+  icon: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
 const Header = translate()(
   ({ t, expand, collapse, openUnit, setView, isExpanded }) => (
     <div className="header">
@@ -64,6 +69,14 @@ const Header = translate()(
   )
 );
 
+Header.propTypes = {
+  collapse: PropTypes.func.isRequired,
+  expand: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  openUnit: PropTypes.func.isRequired,
+  setView: PropTypes.func.isRequired,
+};
+
 const AddressBar = ({ address, handleClick }, context) => (
   <button
     type="button"
@@ -80,6 +93,11 @@ const AddressBar = ({ address, handleClick }, context) => (
     {address && getAddressToDisplay(address, context.getActiveLanguage())}
   </button>
 );
+
+AddressBar.propTypes = {
+  address: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
 
 AddressBar.contextTypes = {
   getActiveLanguage: PropTypes.func,
@@ -232,7 +250,20 @@ class UnitBrowser extends Component {
 }
 
 UnitBrowser.propTypes = {
-  units: PropTypes.arrayOf(PropTypes.object),
+  address: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isSearching: PropTypes.bool.isRequired,
+  leafletMap: PropTypes.objectOf(PropTypes.any),
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
+  openUnit: PropTypes.func.isRequired,
+  params: PropTypes.objectOf(PropTypes.any).isRequired,
+  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  router: PropTypes.objectOf(PropTypes.any).isRequired,
+  services: PropTypes.objectOf(PropTypes.object).isRequired,
+  setView: PropTypes.func.isRequired,
+  singleUnitSelected: PropTypes.bool.isRequired,
+  t: PropTypes.func.isRequired,
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withRouter(translate()(UnitBrowser));
