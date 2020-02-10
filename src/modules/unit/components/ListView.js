@@ -158,8 +158,8 @@ class ListView extends Component {
 }
 
 ListView.propTypes = {
-  units: PropTypes.arrayOf(PropTypes.object),
-  services: PropTypes.objectOf(PropTypes.object),
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  services: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 ListView.contextTypes = {
