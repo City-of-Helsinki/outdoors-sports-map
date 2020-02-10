@@ -192,8 +192,8 @@ export class ListViewBase extends Component {
 }
 
 ListViewBase.propTypes = {
-  units: PropTypes.arrayOf(PropTypes.object),
-  services: PropTypes.objectOf(PropTypes.object),
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  services: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 ListViewBase.contextTypes = {
