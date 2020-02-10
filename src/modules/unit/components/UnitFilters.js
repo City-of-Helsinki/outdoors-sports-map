@@ -4,8 +4,6 @@
    eslint-disable
    react/destructuring-assignment,
    react/prop-types,
-   react/state-in-constructor,
-   react/static-property-placement,
 */
 
 import React from 'react';
@@ -132,16 +130,21 @@ const filterEquals = (a, b) => {
   return false;
 };
 
-export class UnitFiltersComponent extends React.Component {
-  props: UnitFiltersProps;
+type State = {
+  expandedFilter: {} | null,
+};
 
-  state: {
-    expandedFilter: {} | null,
-  };
-
-  state = {
-    expandedFilter: null,
-  };
+export class UnitFiltersComponent extends React.Component<
+  void,
+  UnitFiltersProps,
+  State
+> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expandedFilter: null,
+    };
+  }
 
   onMenuSelect = (key: string, value: string): void => {
     this.setState({ expandedFilter: null });

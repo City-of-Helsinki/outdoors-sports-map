@@ -8,7 +8,6 @@
    react/button-has-type,
    react/destructuring-assignment,
    react/require-default-props,
-   react/state-in-constructor,
 */
 
 import PropTypes from 'prop-types';
@@ -103,16 +102,19 @@ AddressBar.contextTypes = {
   getActiveLanguage: PropTypes.func,
 };
 
-class UnitBrowser extends Component {
-  state: {
-    isExpanded: boolean,
-    contentMaxHeight: ?number,
-  };
+type State = {
+  isExpanded: boolean,
+  contentMaxHeight: ?number,
+};
 
-  state = {
-    isExpanded: false,
-    contentMaxHeight: null,
-  };
+class UnitBrowser extends Component<void, void, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isExpanded: false,
+      contentMaxHeight: null,
+    };
+  }
 
   componentDidMount() {
     window.addEventListener('resize', this.updateContentMaxHeight);
