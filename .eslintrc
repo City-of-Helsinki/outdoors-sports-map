@@ -27,8 +27,7 @@
   ],
   "settings": {
     "react": {
-      // set to `detect` in >15.4
-      "version": "15.4",
+      "version": "detect",
     },
     "import/resolver": {
       // for aliases
