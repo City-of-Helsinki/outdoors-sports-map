@@ -5,7 +5,6 @@
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
    react/destructuring-assignment,
-   react/no-access-state-in-setstate,
    react/prop-types,
    react/require-default-props,
 */
@@ -106,7 +105,7 @@ class ListView extends Component {
   }
 
   loadMoreUnits() {
-    this.setState({ maxUnitCount: this.state.maxUnitCount + UNIT_BATCH_SIZE });
+    this.setState((prevState) => ({ maxUnitCount: prevState.maxUnitCount + UNIT_BATCH_SIZE }));
   }
 
   resetUnitCount() {
