@@ -38,6 +38,14 @@ export default class Control extends MapControl {
     this.leafletElement = control;
   }
 
+  // `createLeafletElement` is mandatory for custom components
+  // TODO: Evaluate with `react-leaflet` v2 or when the logic for this component will change
+  //
+  // https://github.com/PaulLeCam/react-leaflet/blob/master/UPGRADING.md#v11
+  // https://react-leaflet.js.org/docs/en/v1/custom-components
+  // eslint-disable-next-line class-methods-use-this
+  createLeafletElement() {}
+
   handleClick(event) {
     L.DomEvent.stopPropagation(event);
     event.stopPropagation();
