@@ -1,6 +1,7 @@
 .nvmrc
 .env
 .idea
+.ignore
 coverage
 flow-typed
 dist
