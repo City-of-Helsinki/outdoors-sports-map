@@ -2,6 +2,7 @@
 .env
 .idea
 .vscode
+.ignore
 coverage
 flow-typed
 dist
