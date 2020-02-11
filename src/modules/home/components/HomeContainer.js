@@ -10,6 +10,7 @@
 */
 
 import PropTypes from 'prop-types';
+import { hot } from 'react-hot-loader/root';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -262,6 +263,6 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     dispatch
   );
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(translate()(HomeContainer))
+export default hot(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeContainer))
 );
