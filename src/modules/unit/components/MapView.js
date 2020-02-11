@@ -48,7 +48,8 @@ class MapView extends Component {
     window.addEventListener('resize', this.updateIsMobile);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { selectedUnit } = this.props;
     if (nextProps.selectedUnit
       && (!selectedUnit || selectedUnit.id !== nextProps.selectedUnit.id)) {

@@ -10,7 +10,8 @@ export default class Control extends MapControl { // note we're extending MapCon
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     const { className, children } = this.props;
 
     const control = L.control({

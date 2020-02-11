@@ -65,7 +65,8 @@ class ListView extends Component {
     this.loadMoreUnits = this.loadMoreUnits.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.units, this.props.units) || !isEqual(nextProps.activeFilter, this.props.activeFilter)) {
       this.resetUnitCount();
     }

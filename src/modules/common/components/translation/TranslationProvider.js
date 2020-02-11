@@ -37,14 +37,16 @@ const i18n = i18next
   });
 
 class TranslationProvider extends React.Component {
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     if (this.props.language !== DEFAULT_LANG) {
       i18n.changeLanguage(this.props.language);
       this.forceUpdate();
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     i18n.changeLanguage(nextProps.language);
   }
 

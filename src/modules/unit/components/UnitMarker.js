@@ -28,7 +28,8 @@ class UnitMarker extends Component {
     this.getIconHeight = this.getIconHeight.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { isSelected } = this.props;
     if (!isSelected && nextProps.isSelected) {
       this.closePopup();
