@@ -79,7 +79,8 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
     };
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     this.props.fetchUnits({});
     this.props.fetchServices();
 
@@ -101,7 +102,8 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.activeLanguage !== this.props.activeLanguage) {
       this.forceUpdate();
     }

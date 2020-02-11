@@ -77,7 +77,8 @@ export class ListViewBase extends Component {
     this.handleLoadMoreClick = this.handleLoadMoreClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (
       !isEqual(nextProps.units, this.props.units) ||
       !isEqual(nextProps.activeFilter, this.props.activeFilter)
@@ -128,7 +129,9 @@ export class ListViewBase extends Component {
   }
 
   loadMoreUnits() {
-    this.setState((prevState) => ({ maxUnitCount: prevState.maxUnitCount + UNIT_BATCH_SIZE }));
+    this.setState((prevState) => ({
+      maxUnitCount: prevState.maxUnitCount + UNIT_BATCH_SIZE,
+    }));
   }
 
   resetUnitCount() {

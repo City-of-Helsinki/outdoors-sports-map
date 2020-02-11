@@ -9,7 +9,8 @@ class Root extends Component {
     this.state = { store: null };
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     createStore().then((store) => this.setState({ store }));
   }
 
