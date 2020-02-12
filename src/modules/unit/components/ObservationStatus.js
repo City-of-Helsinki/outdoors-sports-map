@@ -4,13 +4,13 @@
    react/prop-types,
 */
 
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import { translate } from 'react-i18next';
 import Time from '../../home/components/Time';
 import {
   getUnitQuality, getObservation, getCondition, getObservationTime, getAttr,
 } from '../helpers';
+import LanguageContext from '../../common/LanguageContext';
 
 export const StatusBar = ({ quality, label }) => (
   <div className={`observation-status__bar--${quality}`}>
@@ -28,32 +28,29 @@ export const StatusUpdated = ({ time, t }) => (
 
 export const MaintenanceUpdated = ({ name, activeLang, time }) => (
   <div className="observation-status__time" style={{ fontSize: 12 }}>
-    {getAttr(name, activeLang())}
+    {getAttr(name, activeLang)}
     {' '}
     <Time time={time} />
   </div>
 );
 
 
-const ObservationStatus = ({ unit, t }, context) => {
+const ObservationStatus = ({ unit, t }) => {
+  const { activeLanguage } = useContext(LanguageContext);
   const quality = getUnitQuality(unit);
   const condition = getCondition(unit);
   const maintenance = getObservation(unit, 'maintenance');
 
   return (
     <div className="observation-status">
-      <StatusBar quality={quality} label={condition && condition.name ? getAttr(condition.name, context.getActiveLanguage()) : t('UNIT.UNKNOWN')} />
+      <StatusBar quality={quality} label={condition && condition.name ? getAttr(condition.name, activeLanguage) : t('UNIT.UNKNOWN')} />
       <StatusUpdated t={t} time={getObservationTime(condition)} />
       {
         maintenance
-        && <MaintenanceUpdated name={maintenance.name} activeLang={context.getActiveLanguage} time={getObservationTime(maintenance)} />
+        && <MaintenanceUpdated name={maintenance.name} activeLang={activeLanguage} time={getObservationTime(maintenance)} />
       }
     </div>
   );
-};
-
-ObservationStatus.contextTypes = {
-  getActiveLanguage: PropTypes.func,
 };
 
 export default translate()(ObservationStatus);

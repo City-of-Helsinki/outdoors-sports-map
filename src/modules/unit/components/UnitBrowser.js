@@ -11,7 +11,7 @@
 */
 
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { withRouter } from 'react-router';
 import values from 'lodash/values';
 import { translate } from 'react-i18next';
@@ -21,6 +21,7 @@ import SMIcon from '../../home/components/SMIcon';
 import { StatusFilters } from '../constants';
 import UnitFilters from './UnitFilters';
 import SearchContainer from '../../search/components/SearchContainer';
+import LanguageContext from '../../common/LanguageContext';
 
 import {
   getAddressToDisplay,
@@ -62,20 +63,20 @@ Header.propTypes = {
   setView: PropTypes.func.isRequired,
 };
 
-const AddressBar = ({ address, handleClick }, context) => (
-  <div className="address-bar__container" onClick={() => handleClick(address.location.coordinates.slice().reverse())}>
-    <img className="address-bar__marker" src={addressBarMarker} height="20px" width="16px" />
-    {address && getAddressToDisplay(address, context.getActiveLanguage())}
-  </div>
-);
+const AddressBar = ({ address, handleClick }) => {
+  const { activeLanguage } = useContext(LanguageContext);
+
+  return (
+    <div className="address-bar__container" onClick={() => handleClick(address.location.coordinates.slice().reverse())}>
+      <img className="address-bar__marker" src={addressBarMarker} height="20px" width="16px" />
+      {address && getAddressToDisplay(address, activeLanguage)}
+    </div>
+  );
+};
 
 AddressBar.propTypes = {
   address: PropTypes.objectOf(PropTypes.any).isRequired,
   handleClick: PropTypes.func.isRequired,
-};
-
-AddressBar.contextTypes = {
-  getActiveLanguage: PropTypes.func,
 };
 
 type State = {
