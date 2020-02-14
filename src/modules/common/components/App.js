@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute } from 'react-router';
 import HomeContainer from '../../home/components/HomeContainer';
 import { routerPaths } from '../constants';
@@ -13,16 +13,17 @@ const routes = (
   </Route>
 );
 
-// eslint-disable-next-line react/prop-types
-const App = ({ store, history }) => (
-  <Provider store={store}>
-    <TranslationProvider>
-      <div id="app-wrapper">
-        <JumpLink />
-        <Router history={history} routes={routes} key={Math.random()} />
-      </div>
-    </TranslationProvider>
-  </Provider>
+const App = ({ history }) => (
+  <TranslationProvider>
+    <div id="app-wrapper">
+      <JumpLink />
+      <Router history={history} routes={routes} key={Math.random()} />
+    </div>
+  </TranslationProvider>
 );
+
+App.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default App;

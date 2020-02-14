@@ -9,34 +9,33 @@ import { APP_NAME } from '../modules/common/constants';
 /**
  * @returns {function}
  */
-const createStore = () =>
-  new Promise((resolve) => {
-    const persistConfig = {
-      key: 'primary',
-      storage,
-      whitelist: ['language', 'map'],
-      blacklist: [],
-      keyPrefix: `${APP_NAME}:`,
-    };
+const createStore = () => {
+  const persistConfig = {
+    key: 'primary',
+    storage,
+    whitelist: ['language', 'map'],
+    blacklist: [],
+    keyPrefix: `${APP_NAME}:`,
+  };
 
-    const rootReducer = createRootReducer();
-    const persistedReducer = persistReducer(persistConfig, rootReducer);
+  const rootReducer = createRootReducer();
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-    const middlewares = [];
-    const sagaMiddleware = createSagaMiddleware();
-    middlewares.push(sagaMiddleware);
+  const middlewares = [];
+  const sagaMiddleware = createSagaMiddleware();
+  middlewares.push(sagaMiddleware);
 
-    const enhancer = compose(
-      applyMiddleware(...middlewares),
-      window.devToolsExtension ? window.devToolsExtension() : (f) => f
-    );
+  const enhancer = compose(
+    applyMiddleware(...middlewares),
+    window.devToolsExtension ? window.devToolsExtension() : (f) => f
+  );
 
-    const store = rawCreateStore(persistedReducer, enhancer);
+  const store = rawCreateStore(persistedReducer, enhancer);
+  const persistor = persistStore(store);
 
-    // The promise returned by "createStore" will be resolved once we have re-hydrated the state.
-    persistStore(store, null, () => resolve(store));
+  sagaMiddleware.run(rootSaga);
 
-    sagaMiddleware.run(rootSaga);
-  });
+  return { store, persistor };
+};
 
 export default createStore;
