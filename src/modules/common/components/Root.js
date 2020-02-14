@@ -1,25 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/es/integration/react';
 import createStore from '../../../bootstrap/createStore';
 import App from './App';
 
-class Root extends Component {
-  constructor(props, context) {
-    super(props, context);
+const { persistor, store } = createStore();
 
-    this.state = { store: null };
-  }
+const Root = ({ history }) => (
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App history={history} />
+    </PersistGate>
+  </Provider>
+);
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
-    createStore().then((store) => this.setState({ store }));
-  }
-
-  render() {
-    // eslint-disable-next-line react/prop-types
-    const { history } = this.props;
-    const { store } = this.state;
-    return store ? <App store={store} history={history} /> : null;
-  }
-}
+Root.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default Root;

@@ -9,7 +9,7 @@ import { APP_NAME } from '../modules/common/constants';
 /**
  * @returns {function}
  */
-const createStore = () => new Promise((resolve) => {
+const createStore = () => {
   const persistConfig = {
     key: 'primary',
     storage,
@@ -31,15 +31,11 @@ const createStore = () => new Promise((resolve) => {
   );
 
   const store = rawCreateStore(persistedReducer, enhancer);
-
-  // The promise returned by "createStore" will be resolved once we have re-hydrated the state.
-  persistStore(
-    store,
-    null,
-    () => resolve(store),
-  );
+  const persistor = persistStore(store);
 
   sagaMiddleware.run(rootSaga);
-});
+
+  return { store, persistor };
+};
 
 export default createStore;

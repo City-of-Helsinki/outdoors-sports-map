@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute } from 'react-router';
 import HomeContainer from '../../home/components/HomeContainer';
 import TranslationProvider from './translation/TranslationProvider';
@@ -12,13 +12,14 @@ const routes = (
   </Route>
 );
 
-// eslint-disable-next-line react/prop-types
-const App = ({ store, history }) => (
-  <Provider store={store}>
-    <TranslationProvider>
-      <Router history={history} routes={routes} key={Math.random()} />
-    </TranslationProvider>
-  </Provider>
+const App = ({ history }) => (
+  <TranslationProvider>
+    <Router history={history} routes={routes} key={Math.random()} />
+  </TranslationProvider>
 );
+
+App.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default App;
