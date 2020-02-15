@@ -27,7 +27,6 @@
   "author": "Jukka-Pekka Salo <jpsalo@zoho.com>",
   "contributors": [],
   "dependencies": {
-    "@hot-loader/react-dom": "^16.11.0",
     "bootstrap": "^3.4.1",
     "date-fns": "^2.9.0",
     "i18next": "^3.4.4",
@@ -40,6 +39,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-bootstrap": "^0.33.1",
+    "react-dom": "npm:@hot-loader/react-dom@16.11.0",
     "react-hot-loader": "^4.12.19",
     "react-i18next": "7.13.0",
     "react-leaflet": "^1.0.0",
