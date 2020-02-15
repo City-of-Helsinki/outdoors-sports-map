@@ -20,7 +20,6 @@ module.exports = {
     ],
     extensions: ['.js'],
     alias: {
-      'react-dom': '@hot-loader/react-dom', // hooks support for `react-hot-loader`
       '@assets': path.join(context, 'assets'),
     },
   },
