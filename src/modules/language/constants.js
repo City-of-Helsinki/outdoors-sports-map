@@ -1,4 +1,5 @@
 // @flow
+import { normalizeActionName } from '../common/helpers';
 
 export const SUPPORTED_LANGUAGES = {
   English: 'en',
@@ -7,7 +8,7 @@ export const SUPPORTED_LANGUAGES = {
 };
 
 export const languageActions = {
-  CHANGE_LANGUAGE: 'home/CHANGE_LANGUAGE',
+  CHANGE_LANGUAGE: normalizeActionName('home/CHANGE_LANGUAGE'),
 };
 
 export const MODULE_NAME = 'language';
