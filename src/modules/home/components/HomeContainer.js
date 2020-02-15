@@ -20,7 +20,6 @@ import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
 import { setLocation } from '../../map/actions';
 import changeLanguage from '../../language/actions';
-import getStoredLang from '../../language/helpers';
 import * as fromMap from '../../map/selectors';
 import * as fromSearch from '../../search/selectors';
 import * as fromUnit from '../../unit/selectors';
@@ -34,7 +33,6 @@ import SingleUnitModalContainer from '../../unit/components/SingleUnitModalConta
 import { locations } from '../constants';
 import { arrayifyQueryValue } from '../../common/helpers';
 import Page from '../../common/components/Page';
-import { SUPPORTED_LANGUAGES } from '../../language/constants';
 import { LanguageProvider } from '../../common/LanguageContext';
 
 type Props = {
@@ -88,19 +86,6 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
     // TODO: Poll /observation, not /unit. => Normalize observations to store.
     // this.pollUnitsInterval = setInterval(this.fetchUnits, POLL_INTERVAL);
     this.initialPosition = this.props.position;
-
-    if (!getStoredLang()) {
-      // $FlowFixMe
-      const userLang = navigator.language || navigator.userLanguage;
-
-      if (userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
-        this.handleChangeLanguage(SUPPORTED_LANGUAGES.Svenska);
-      } else if (userLang.includes(SUPPORTED_LANGUAGES.English)) {
-        this.handleChangeLanguage(SUPPORTED_LANGUAGES.English);
-      } else if (userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
-        this.handleChangeLanguage(SUPPORTED_LANGUAGES.Suomi);
-      }
-    }
   }
 
   // eslint-disable-next-line camelcase

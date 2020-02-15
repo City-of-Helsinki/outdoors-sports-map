@@ -10,8 +10,11 @@ import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { bindActionCreators } from 'redux';
 import getLanguage from '../../../language/selectors';
 import { DEFAULT_LANG } from '../../constants';
+import { SUPPORTED_LANGUAGES } from '../../../language/constants';
+import changeLanguage from '../../../language/actions';
 
 const getTranslations = () => ({
   fi: {
@@ -30,7 +33,7 @@ const localesByName = getTranslations();
 const i18n = i18next.init(
   {
     resources: localesByName,
-    lng: DEFAULT_LANG, // @todo: How should the user pick their preferred language? #UX
+    fallbackLng: DEFAULT_LANG,
   },
   (err, t) => {
     // @todo: do we have some error reporting mechanism in production?
@@ -40,6 +43,20 @@ const i18n = i18next.init(
     }
   }
 );
+
+function findDefaultLanguage() {
+  const userLang = navigator.language || navigator.userLanguage;
+
+  if (userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
+    return SUPPORTED_LANGUAGES.Suomi;
+  } else if (userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
+    return SUPPORTED_LANGUAGES.Svenska;
+  } else if (userLang.includes(SUPPORTED_LANGUAGES.English)) {
+    return SUPPORTED_LANGUAGES.English;
+  } else {
+    return DEFAULT_LANG;
+  }
+}
 
 class TranslationProvider extends React.Component {
   // eslint-disable-next-line camelcase
@@ -57,7 +74,14 @@ class TranslationProvider extends React.Component {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
-    this.changeLanguage(nextProps.language);
+    this.changeLanguage(nextProps.language || findDefaultLanguage());
+  }
+
+  // Language change
+  componentDidUpdate(prevProps) {
+    if (prevProps.language !== this.props.language) {
+      this.changeLanguage(this.props.language);
+    }
   }
 
   changeLanguage = (nextLanguage) => {
@@ -79,4 +103,15 @@ const mapStateToProps = (state) => ({
   language: getLanguage(state),
 });
 
-export default connect(mapStateToProps)(TranslationProvider);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      changeLanguage,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TranslationProvider);
