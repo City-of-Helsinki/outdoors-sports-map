@@ -1,7 +1,8 @@
-import { applyMiddleware, compose, createStore as rawCreateStore } from 'redux';
+import { applyMiddleware, createStore as rawCreateStore } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import storage from 'redux-persist/lib/storage';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import createRootReducer from './createRootReducer';
 import rootSaga from './rootSaga';
 import { APP_NAME } from '../modules/common/constants';
@@ -24,13 +25,11 @@ const createStore = () => {
   const middlewares = [];
   const sagaMiddleware = createSagaMiddleware();
   middlewares.push(sagaMiddleware);
-
-  const enhancer = compose(
-    applyMiddleware(...middlewares),
-    window.devToolsExtension ? window.devToolsExtension() : (f) => f
+  const composedEnhancers = composeWithDevTools(
+    applyMiddleware(...middlewares)
   );
 
-  const store = rawCreateStore(persistedReducer, enhancer);
+  const store = rawCreateStore(persistedReducer, composedEnhancers);
   const persistor = persistStore(store);
 
   sagaMiddleware.run(rootSaga);
