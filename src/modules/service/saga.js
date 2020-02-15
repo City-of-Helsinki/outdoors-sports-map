@@ -1,5 +1,5 @@
 import {
-  call, fork, takeLatest, put,
+  all, call, fork, takeLatest, put,
 } from 'redux-saga/effects';
 import { schema } from 'normalizr';
 import values from 'lodash/values';
@@ -30,7 +30,7 @@ function* watchFetchServices() {
 }
 
 export default function* saga() {
-  return [
-    yield fork(watchFetchServices),
-  ];
+  yield all([
+    fork(watchFetchServices),
+  ]);
 }

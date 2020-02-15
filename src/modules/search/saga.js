@@ -1,6 +1,6 @@
 // @flow
 import {
-  call, fork, takeLatest, put,
+  all, call, fork, takeLatest, put,
 } from 'redux-saga/effects';
 import { schema } from 'normalizr';
 import { receiveUnits, receiveUnitSuggestions, receiveAddressSuggestions } from './actions';
@@ -69,9 +69,9 @@ function* watchClearSearch() {
 }
 
 export default function* saga(): Generator<*, *, *> {
-  return [
-    yield fork(watchSearchUnits),
-    yield fork(watchFetchUnitSuggestions),
-    yield fork(watchClearSearch),
-  ];
+  yield all([
+    fork(watchSearchUnits),
+    fork(watchFetchUnitSuggestions),
+    fork(watchClearSearch),
+  ]);
 }
