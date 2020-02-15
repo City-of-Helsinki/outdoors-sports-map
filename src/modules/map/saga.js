@@ -1,7 +1,5 @@
 // @flow
-import {
-  call, fork, takeLatest, put,
-} from 'redux-saga/effects';
+import { all, call, fork, takeLatest, put } from 'redux-saga/effects';
 import { receiveAddress } from './actions';
 import { mapActions } from './constants';
 import { createUrl, createRequest, callApi } from '../api/helpers';
@@ -27,5 +25,5 @@ function* watchSetLocation() {
 }
 
 export default function* saga(): Generator<*, *, *> {
-  return [yield fork(watchSetLocation)];
+  yield all([fork(watchSetLocation)]);
 }
