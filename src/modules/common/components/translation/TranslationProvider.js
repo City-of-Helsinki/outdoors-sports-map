@@ -11,8 +11,11 @@ import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import getLanguage from '../../../language/selectors';
 import { DEFAULT_LANG } from '../../constants';
+import { SUPPORTED_LANGUAGES } from '../../../language/constants';
+import changeLanguage from '../../../language/actions';
 
 const localesContext = require.context('../../../../../locales', false, /\.json$/);
 
@@ -28,7 +31,7 @@ const localesByName = mapKeys(localesByPath, (_, localePath) => localePath.repla
 const i18n = i18next
   .init({
     resources: localesByName,
-    lng: DEFAULT_LANG, // @todo: How should the user pick their preferred language? #UX
+    fallbackLng: DEFAULT_LANG,
   }, (err, t) => {
     // @todo: do we have some error reporting mechanism in production?
     if (err) {
@@ -39,15 +42,32 @@ const i18n = i18next
 class TranslationProvider extends React.Component {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
-    if (this.props.language !== DEFAULT_LANG) {
+    if (this.props.language === null) {
+      // No persisted language
+      const userLang = navigator.language || navigator.userLanguage;
+
+      if (userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
+        this.handleChangeLanguage(SUPPORTED_LANGUAGES.Svenska);
+      } else if (userLang.includes(SUPPORTED_LANGUAGES.English)) {
+        this.handleChangeLanguage(SUPPORTED_LANGUAGES.English);
+      } else if (userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
+        this.handleChangeLanguage(SUPPORTED_LANGUAGES.Suomi);
+      } else {
+        this.handleChangeLanguage(DEFAULT_LANG);
+      }
+    } else {
+      // Set persisted language
       i18n.changeLanguage(this.props.language);
-      this.forceUpdate();
     }
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    i18n.changeLanguage(nextProps.language);
+  // Language change
+  componentDidUpdate(prevProps) {
+    if (prevProps.language !== this.props.language) i18n.changeLanguage(this.props.language);
+  }
+
+  handleChangeLanguage = (language) => {
+    this.props.changeLanguage(language);
   }
 
   render() {
@@ -59,4 +79,8 @@ const mapStateToProps = (state) => ({
   language: getLanguage(state),
 });
 
-export default connect(mapStateToProps)(TranslationProvider);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  changeLanguage,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TranslationProvider);
