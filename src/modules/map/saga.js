@@ -1,6 +1,7 @@
 // @flow
-import { takeLatest } from 'redux-saga';
-import { call, fork, put } from 'redux-saga/effects';
+import {
+  call, fork, takeLatest, put,
+} from 'redux-saga/effects';
 import { receiveAddress } from './actions';
 import { mapActions } from './constants';
 import { createUrl, createRequest, callApi } from '../api/helpers';
