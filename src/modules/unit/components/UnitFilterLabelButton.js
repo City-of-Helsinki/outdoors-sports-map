@@ -4,7 +4,7 @@
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 import UnitFilterButton from './UnitFilterButton';
 import UnitFilterLabel from './UnitFilterLabel';
@@ -24,4 +24,4 @@ const UnitFilterLabelButton = ({
   </div>
 );
 
-export default translate()(UnitFilterLabelButton);
+export default withNamespaces()(UnitFilterLabelButton);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 const filterNameToLabel = (filterName) => {
   switch (filterName) {
@@ -25,4 +25,4 @@ const UnitFilterLabel = ({ filterName, t }) => {
   );
 };
 
-export default translate()(UnitFilterLabel);
+export default withNamespaces()(UnitFilterLabel);

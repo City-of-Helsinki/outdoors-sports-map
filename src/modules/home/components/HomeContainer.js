@@ -65,6 +65,8 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
 
   props: Props;
 
+  mapRef = null;
+
   leafletMap = null;
 
   initialPosition = undefined;
@@ -92,13 +94,14 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
     }
   }
 
-  componentDidUpdate() {
-    this.leafletMap = this.refs.map.getWrappedInstance().refs.map.leafletElement;
-  }
-
   componentWillUnmount() {
     // TODO: Poll /observation, not /unit. => Normalize observations to store.
     // clearInterval(this.pollUnitsInterval);
+  }
+
+  setMapRef = (ref) => {
+    this.mapRef = ref;
+    this.leafletMap = this.mapRef.refs.map.leafletElement;
   }
 
   fetchUnits = () => {
@@ -117,7 +120,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
   }
 
   setView = (coordinates: number[]) => {
-    this.refs.map.getWrappedInstance().setView(coordinates);
+    this.mapRef.setView(coordinates);
   }
 
   openUnit = (unitId: string) => {
@@ -175,7 +178,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
               singleUnitSelected={!!params.unitId}
             />
             <MapView
-              ref="map"
+              mapRef={this.setMapRef}
               selectedUnit={selectedUnit}
               activeLanguage={activeLanguage}
               params={params}

@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import {
   Button, FormGroup, FormControl, Checkbox,
 } from 'react-bootstrap';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sendFeedback } from '../actions';
@@ -74,4 +74,4 @@ class FeedbackModal extends Component {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ sendFeedback }, dispatch);
 
-export default connect(null, mapDispatchToProps)(translate()(FeedbackModal));
+export default connect(null, mapDispatchToProps)(withNamespaces()(FeedbackModal));

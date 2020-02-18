@@ -11,7 +11,7 @@
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { Link } from 'react-router';
 import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
@@ -166,4 +166,4 @@ ListView.contextTypes = {
   getActiveLanguage: PropTypes.func,
 };
 
-export default translate()(ListView);
+export default withNamespaces()(ListView);

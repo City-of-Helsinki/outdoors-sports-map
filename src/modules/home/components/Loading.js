@@ -1,7 +1,7 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
-const Loading = translate()(({ t }) => (
+const Loading = withNamespaces()(({ t }) => (
   <div className="loading">
     {t('GENERAL.LOADING')}
   </div>

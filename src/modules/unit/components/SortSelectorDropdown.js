@@ -1,9 +1,9 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import SMIcon from '../../home/components/SMIcon';
 
-const SortSelectorDropdown = translate()(({
+const SortSelectorDropdown = withNamespaces()(({
   active, values, onSelect, t,
 }) => (
   <Dropdown id="unit-sort-selector" className="unit-sort-selector">

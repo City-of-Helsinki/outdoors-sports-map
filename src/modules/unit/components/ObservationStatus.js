@@ -5,7 +5,7 @@
 */
 
 import React, { useContext } from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import Time from '../../home/components/Time';
 import {
   getUnitQuality, getObservation, getCondition, getObservationTime, getAttr,
@@ -53,4 +53,4 @@ const ObservationStatus = ({ unit, t }) => {
   );
 };
 
-export default translate()(ObservationStatus);
+export default withNamespaces()(ObservationStatus);

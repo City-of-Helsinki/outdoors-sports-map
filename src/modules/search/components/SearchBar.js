@@ -6,10 +6,10 @@
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import SMIcon from '../../home/components/SMIcon';
 
-const SearchBar = translate()(({
+const SearchBar = withNamespaces()(({
   input, onInput, onSubmit, onClear, searchActive, disabled, t,
 }) => (
   <div className="search-bar">
