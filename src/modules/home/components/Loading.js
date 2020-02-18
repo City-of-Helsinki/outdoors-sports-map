@@ -1,8 +1,10 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-const Loading = withTranslation()(({ t }) => (
-  <div className="loading">{t('GENERAL.LOADING')}</div>
-));
+const Loading = () => {
+  const { t } = useTranslation();
+
+  return <div className="loading">{t('GENERAL.LOADING')}</div>;
+};
 
 export default Loading;

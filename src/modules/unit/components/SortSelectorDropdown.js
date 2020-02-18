@@ -1,10 +1,17 @@
+/*
+   eslint-disable
+   react/prop-types,
+*/
+
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import SMIcon from '../../home/components/SMIcon';
 
-const SortSelectorDropdown = withTranslation()(
-  ({ active, values, onSelect, t }) => (
+const SortSelectorDropdown = ({ active, values, onSelect }) => {
+  const { t } = useTranslation();
+
+  return (
     <Dropdown id="unit-sort-selector" className="unit-sort-selector">
       <Dropdown.Toggle noCaret>
         {t(`UNIT.SORT.${active.toUpperCase()}`)}

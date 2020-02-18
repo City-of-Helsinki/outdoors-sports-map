@@ -1,12 +1,8 @@
-/*
-   eslint-disable
-   react/prop-types,
-*/
-
 import React from 'react';
 import invert from 'lodash/invert';
 import pick from 'lodash/pick';
-import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import { UnitFilters } from '../constants';
 import UnitFilterButton from './UnitFilterButton';
@@ -23,7 +19,8 @@ const filterNameToLabel = (filterName) => {
   }
 };
 
-const UnitFilterLabelButton = ({ filter, onAction, isActive, t, ...rest }) => {
+const UnitFilterLabelButton = ({ filter, onAction, isActive, ...rest }) => {
+  const { t } = useTranslation();
   const labelMessage = t(filterNameToLabel(filter.name));
   const buttonMessage = t(`UNIT.FILTER.${invert(UnitFilters)[filter.active]}`);
 
@@ -44,4 +41,10 @@ const UnitFilterLabelButton = ({ filter, onAction, isActive, t, ...rest }) => {
   );
 };
 
-export default withTranslation()(UnitFilterLabelButton);
+UnitFilterLabelButton.propTypes = {
+  filter: PropTypes.objectOf(PropTypes.any).isRequired,
+  onAction: PropTypes.func.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
+export default UnitFilterLabelButton;

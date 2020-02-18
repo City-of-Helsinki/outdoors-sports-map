@@ -6,7 +6,7 @@
 
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Time from '../../home/components/Time';
 import TimeAgo from '../../home/components/TimeAgo';
 import {
@@ -41,7 +41,8 @@ export const MaintenanceUpdated = ({ name, activeLang, time }) => (
   </div>
 );
 
-const ObservationStatus = ({ unit, t }) => {
+const ObservationStatus = ({ unit }) => {
+  const { t } = useTranslation();
   const { activeLanguage } = useContext(LanguageContext);
   const quality = getUnitQuality(unit);
   const condition = getCondition(unit);
@@ -69,4 +70,4 @@ const ObservationStatus = ({ unit, t }) => {
   );
 };
 
-export default withTranslation()(ObservationStatus);
+export default ObservationStatus;

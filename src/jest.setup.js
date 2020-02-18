@@ -10,13 +10,10 @@ jest.mock('react-i18next', () => ({
     Component.defaultProps = { ...Component.defaultProps, t: (k) => k };
     return Component;
   },
-  (err, t) => {
-    if (err) {
-      // eslint-disable-next-line no-console
-      console.log(err, t);
-    }
-  }
-);
+  useTranslation: () => ({
+    t: (k) => k,
+  }),
+}));
 
 const localStorageMock = {
   getItem: jest.fn(),
