@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { reactI18nextModule } from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import keyBy from 'lodash/keyBy';
 import mapKeys from 'lodash/mapKeys';
 import mapValues from 'lodash/mapValues';
@@ -21,7 +21,7 @@ const supporteLanguages = Object.values(SUPPORTED_LANGUAGES);
 
 i18n
   .use(LanguageDetector)
-  .use(reactI18nextModule)
+  .use(initReactI18next)
   .init({
     load: 'languageOnly',
     whitelist: supporteLanguages,

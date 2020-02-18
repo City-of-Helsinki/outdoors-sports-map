@@ -6,7 +6,7 @@
 
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import Time from '../../home/components/Time';
 import TimeAgo from '../../home/components/TimeAgo';
 import {
@@ -69,4 +69,4 @@ const ObservationStatus = ({ unit, t }) => {
   );
 };
 
-export default withNamespaces()(ObservationStatus);
+export default withTranslation()(ObservationStatus);

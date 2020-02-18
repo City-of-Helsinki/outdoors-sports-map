@@ -5,8 +5,9 @@
 */
 
 import React, { Component } from 'react';
+
 import { Button, FormGroup, FormControl, Checkbox } from 'react-bootstrap';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sendFeedback } from '../actions';
@@ -106,4 +107,4 @@ const mapDispatchToProps = (dispatch) =>
 export default connect(
   null,
   mapDispatchToProps
-)(withNamespaces()(FeedbackModal));
+)(withTranslation()(FeedbackModal));

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 export const formatTime = (time: Date, t: Function) => {
   const endOfToday = moment().endOf('day');
@@ -28,7 +28,7 @@ export const formatTime = (time: Date, t: Function) => {
   return t(lookup, options);
 };
 
-const Time = withNamespaces()(({ time, t }) => (
+const Time = withTranslation()(({ time, t }) => (
   <time dateTime={time.toISOString()}>
     {formatTime(time, t)}
     {moment().endOf('day').diff(time, 'days') < 2 &&

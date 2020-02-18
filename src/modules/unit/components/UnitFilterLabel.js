@@ -1,5 +1,5 @@
 import React from 'react';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 // eslint-disable-next-line react/prop-types
 const UnitFilterLabel = ({ message, id }) => {
@@ -13,4 +13,4 @@ const UnitFilterLabel = ({ message, id }) => {
   );
 };
 
-export default withNamespaces()(UnitFilterLabel);
+export default withTranslation()(UnitFilterLabel);

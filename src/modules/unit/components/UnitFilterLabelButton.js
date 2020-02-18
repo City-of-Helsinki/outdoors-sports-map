@@ -6,7 +6,7 @@
 import React from 'react';
 import invert from 'lodash/invert';
 import pick from 'lodash/pick';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { UnitFilters } from '../constants';
 import UnitFilterButton from './UnitFilterButton';
@@ -44,4 +44,4 @@ const UnitFilterLabelButton = ({ filter, onAction, isActive, t, ...rest }) => {
   );
 };
 
-export default withNamespaces()(UnitFilterLabelButton);
+export default withTranslation()(UnitFilterLabelButton);

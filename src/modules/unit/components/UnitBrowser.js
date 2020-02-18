@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import React, { Component, useContext } from 'react';
 import { withRouter } from 'react-router';
 import values from 'lodash/values';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import addressBarMarker from '@assets/markers/location.svg';
 import ListView from './ListView';
 import SMIcon from '../../home/components/SMIcon';
@@ -271,4 +271,4 @@ UnitBrowser.propTypes = {
   units: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default withRouter(withNamespaces()(UnitBrowser));
+export default withRouter(withTranslation()(UnitBrowser));
