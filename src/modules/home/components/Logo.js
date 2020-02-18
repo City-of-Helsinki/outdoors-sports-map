@@ -1,9 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-export default withTranslation()(({ t }) => (
-  <div className="logo">
-    <h2><Link to="/">{t('APP.NAME')}</Link></h2>
-  </div>
-));
+const Logo = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="logo">
+      <h2><Link to="/">{t('APP.NAME')}</Link></h2>
+    </div>
+  );
+};
+
+export default Logo;

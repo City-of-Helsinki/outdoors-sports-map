@@ -5,7 +5,7 @@
 */
 
 import React, { useContext } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Time from '../../home/components/Time';
 import {
   getUnitQuality, getObservation, getCondition, getObservationTime, getAttr,
@@ -35,7 +35,8 @@ export const MaintenanceUpdated = ({ name, activeLang, time }) => (
 );
 
 
-const ObservationStatus = ({ unit, t }) => {
+const ObservationStatus = ({ unit }) => {
+  const { t } = useTranslation();
   const { activeLanguage } = useContext(LanguageContext);
   const quality = getUnitQuality(unit);
   const condition = getCondition(unit);
@@ -53,4 +54,4 @@ const ObservationStatus = ({ unit, t }) => {
   );
 };
 
-export default withTranslation()(ObservationStatus);
+export default ObservationStatus;

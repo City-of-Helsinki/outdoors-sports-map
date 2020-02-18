@@ -1,5 +1,6 @@
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 const filterNameToLabel = (filterName) => {
   switch (filterName) {
@@ -9,12 +10,14 @@ const filterNameToLabel = (filterName) => {
   }
 };
 
-// eslint-disable-next-line react/prop-types
-const UnitFilterLabel = ({ filterName, t }) => {
+const UnitFilterLabel = ({ filterName }) => {
+  const { t } = useTranslation();
+
   const message = filterNameToLabel(filterName);
   if (!message) {
     return null;
   }
+
   return (
     <div className="unit-filter-label">
       <span>
@@ -25,4 +28,8 @@ const UnitFilterLabel = ({ filterName, t }) => {
   );
 };
 
-export default withTranslation()(UnitFilterLabel);
+UnitFilterLabel.propTypes = {
+  filterName: PropTypes.string.isRequired,
+};
+
+export default UnitFilterLabel;

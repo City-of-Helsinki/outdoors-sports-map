@@ -1,27 +1,31 @@
-/*
-   eslint-disable
-   react/prop-types,
-*/
-
 import React from 'react';
-import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 import UnitFilterButton from './UnitFilterButton';
 import UnitFilterLabel from './UnitFilterLabel';
 
-const UnitFilterLabelButton = ({
-  filter, onAction, isActive, t,
-}) => (
-  <div>
-    <UnitFilterLabel filterName={filter.name} />
-    <UnitFilterButton
-      t={t}
-      filterName={filter.active}
-      className={isActive ? 'active' : ''}
-      onClick={() => onAction(filter)}
-      showDropdownIndicator
-    />
-  </div>
-);
+const UnitFilterLabelButton = ({ filter, onAction, isActive }) => {
+  const { t } = useTranslation();
 
-export default withTranslation()(UnitFilterLabelButton);
+  return (
+    <div>
+      <UnitFilterLabel filterName={filter.name} />
+      <UnitFilterButton
+        t={t}
+        filterName={filter.active}
+        className={isActive ? 'active' : ''}
+        onClick={() => onAction(filter)}
+        showDropdownIndicator
+      />
+    </div>
+  );
+};
+
+UnitFilterLabelButton.propTypes = {
+  filter: PropTypes.objectOf(PropTypes.any).isRequired,
+  onAction: PropTypes.func.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
+export default UnitFilterLabelButton;

@@ -8,6 +8,9 @@ jest.mock('react-i18next', () => ({
     Component.defaultProps = { ...Component.defaultProps, t: (k) => k };
     return Component;
   },
+  useTranslation: () => ({
+    t: (k) => k,
+  }),
 }));
 
 configure({ adapter: new Adapter() });

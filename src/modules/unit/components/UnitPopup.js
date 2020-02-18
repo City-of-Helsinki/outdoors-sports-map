@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
-
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { getAttr, getUnitQuality, getCondition } from '../helpers';
 import LanguageContext from '../../common/LanguageContext';
 
-const UnitPopup = ({ unit, offset, t }) => {
+const UnitPopup = ({ unit, offset }) => {
+  const { t } = useTranslation();
   const { activeLanguage } = useContext(LanguageContext);
   const condition = getCondition(unit);
   const conditionLabel = condition ? getAttr(condition.name, activeLanguage) : t('UNIT.UNKNOWN');
@@ -25,4 +25,9 @@ const UnitPopup = ({ unit, offset, t }) => {
   );
 };
 
-export default withTranslation()(UnitPopup);
+UnitPopup.propTypes = {
+  offset: PropTypes.number.isRequired,
+  unit: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+export default UnitPopup;
