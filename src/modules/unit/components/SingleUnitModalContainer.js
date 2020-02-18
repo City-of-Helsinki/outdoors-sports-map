@@ -14,7 +14,7 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import upperFirst from 'lodash/upperFirst';
 import get from 'lodash/get';
 import has from 'lodash/has';
@@ -235,4 +235,4 @@ SingleUnitModalContainer.contextTypes = {
   getActiveLanguage: PropTypes.func,
 };
 
-export default withNamespaces()(SingleUnitModalContainer);
+export default withTranslation()(SingleUnitModalContainer);

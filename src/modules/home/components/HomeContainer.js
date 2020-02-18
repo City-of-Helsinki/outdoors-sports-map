@@ -178,7 +178,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
               singleUnitSelected={!!params.unitId}
             />
             <MapView
-              mapRef={this.setMapRef}
+              ref={this.setMapRef}
               selectedUnit={selectedUnit}
               activeLanguage={activeLanguage}
               params={params}

@@ -14,7 +14,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import SMIcon from '../../home/components/SMIcon';
 import OSMIcon from '../../home/components/OSMIcon';
 import FeedbackModal from './FeedbackModal';
@@ -178,11 +178,7 @@ MapView.propTypes = {
   units: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default withNamespaces(null, {
-  innerRef: (ref) => {
-    if (ref && ref.props.mapRef) ref.props.mapRef(ref);
-  },
-})(MapView);
+export default withTranslation(null, { withRef: true })(MapView);
 
 const LanguageChanger = ({ changeLanguage, activeLanguage, isMobile }) => (
   <div className={isMobile ? 'language-changer__mobile' : 'language-changer'}>

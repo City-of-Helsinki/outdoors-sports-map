@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import getLanguage from '../../../language/selectors';
 import changeLanguage from '../../../language/actions';
 import i18n, { getCurrentLanguage } from '../../i18n';
@@ -53,4 +53,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   changeLanguageAction: changeLanguage,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces()(TranslationProvider));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TranslationProvider));

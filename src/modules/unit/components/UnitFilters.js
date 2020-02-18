@@ -7,7 +7,7 @@
 */
 
 import React from 'react';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { Grid, Row, Col } from 'react-bootstrap';
 import get from 'lodash/get';
 import UnitFilterButton from './UnitFilterButton';
@@ -117,4 +117,4 @@ export class UnitFiltersComponent extends React.Component<void, UnitFiltersProps
   }
 }
 
-export default withNamespaces()(UnitFiltersComponent);
+export default withTranslation()(UnitFiltersComponent);
