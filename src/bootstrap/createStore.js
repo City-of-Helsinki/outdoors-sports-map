@@ -14,7 +14,7 @@ const createStore = () => {
   const persistConfig = {
     key: 'primary',
     storage,
-    whitelist: ['language', 'map'],
+    whitelist: ['map'],
     blacklist: [],
     keyPrefix: `${APP_NAME}:`,
   };

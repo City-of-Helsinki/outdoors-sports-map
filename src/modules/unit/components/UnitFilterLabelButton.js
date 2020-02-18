@@ -4,9 +4,9 @@
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
 import invert from 'lodash/invert';
 import pick from 'lodash/pick';
+import { withNamespaces } from 'react-i18next';
 
 import { UnitFilters } from '../constants';
 import UnitFilterButton from './UnitFilterButton';
@@ -44,4 +44,4 @@ const UnitFilterLabelButton = ({ filter, onAction, isActive, t, ...rest }) => {
   );
 };
 
-export default translate()(UnitFilterLabelButton);
+export default withNamespaces()(UnitFilterLabelButton);

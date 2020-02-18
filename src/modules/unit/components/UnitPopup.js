@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import { Popup } from 'react-leaflet';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { getAttr, getUnitQuality, getCondition } from '../helpers';
 import LanguageContext from '../../common/LanguageContext';
 
@@ -38,4 +38,4 @@ const UnitPopup = ({ unit, offset, t }) => {
   );
 };
 
-export default translate()(UnitPopup);
+export default withNamespaces()(UnitPopup);

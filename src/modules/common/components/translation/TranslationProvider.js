@@ -1,66 +1,14 @@
-/*
-   eslint-disable
-   react/destructuring-assignment,
-   react/prop-types,
-   global-require,
-*/
-
 import React from 'react';
-import { I18nextProvider } from 'react-i18next';
-import i18next from 'i18next';
-import { connect } from 'react-redux';
-import moment from 'moment';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withNamespaces } from 'react-i18next';
 import getLanguage from '../../../language/selectors';
-import { DEFAULT_LANG } from '../../constants';
-import { SUPPORTED_LANGUAGES } from '../../../language/constants';
 import changeLanguage from '../../../language/actions';
-
-const getTranslations = () => ({
-  fi: {
-    translation: require('../../../../../locales/fi.json'),
-  },
-  sv: {
-    translation: require('../../../../../locales/sv.json'),
-  },
-  en: {
-    translation: require('../../../../../locales/en.json'),
-  },
-});
-
-const localesByName = getTranslations();
-
-const i18n = i18next.init(
-  {
-    resources: localesByName,
-    fallbackLng: DEFAULT_LANG,
-  },
-  (err, t) => {
-    // @todo: do we have some error reporting mechanism in production?
-    if (err) {
-      // eslint-disable-next-line no-console
-      console.log(err, t);
-    }
-  }
-);
-
-function findDefaultLanguage() {
-  const userLang = navigator.language || navigator.userLanguage;
-
-  if (userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
-    return SUPPORTED_LANGUAGES.Suomi;
-  } else if (userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
-    return SUPPORTED_LANGUAGES.Svenska;
-  } else if (userLang.includes(SUPPORTED_LANGUAGES.English)) {
-    return SUPPORTED_LANGUAGES.English;
-  } else {
-    return DEFAULT_LANG;
-  }
-}
+import i18n, { getCurrentLanguage } from '../../i18n';
 
 class TranslationProvider extends React.Component {
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     const { language } = this.props;
 
     if (language !== DEFAULT_LANG) {
@@ -72,15 +20,13 @@ class TranslationProvider extends React.Component {
     }
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.changeLanguage(nextProps.language || findDefaultLanguage());
-  }
-
-  // Language change
   componentDidUpdate(prevProps) {
-    if (prevProps.language !== this.props.language) {
-      this.changeLanguage(this.props.language);
+    const { language } = this.props;
+    const currentLanguage = getCurrentLanguage();
+
+    // This will also run on i18next language change
+    if (currentLanguage !== language && prevProps.language !== language) {
+      this.changeLanguage(language);
     }
   }
 
@@ -95,9 +41,21 @@ class TranslationProvider extends React.Component {
   };
 
   render() {
-    return <I18nextProvider i18n={i18n}>{this.props.children}</I18nextProvider>;
+    const { children } = this.props;
+
+    return <>{children}</>;
   }
 }
+
+TranslationProvider.propTypes = {
+  changeLanguageAction: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  language: PropTypes.string,
+};
+
+TranslationProvider.defaultProps = {
+  language: null,
+};
 
 const mapStateToProps = (state) => ({
   language: getLanguage(state),
@@ -106,7 +64,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      changeLanguage,
+      changeLanguageAction: changeLanguage,
     },
     dispatch
   );
@@ -114,4 +72,4 @@ const mapDispatchToProps = (dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TranslationProvider);
+)(withNamespaces()(TranslationProvider));

@@ -7,7 +7,7 @@
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { Grid, Row, Col } from 'react-bootstrap';
 import get from 'lodash/get';
 import invert from 'lodash/invert';
@@ -182,4 +182,4 @@ export class UnitFiltersComponent extends React.Component<
   }
 }
 
-export default translate()(UnitFiltersComponent);
+export default withNamespaces()(UnitFiltersComponent);

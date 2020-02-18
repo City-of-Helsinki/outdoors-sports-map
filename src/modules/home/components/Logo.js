@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
-export default translate()(({ t }) => (
+export default withNamespaces()(({ t }) => (
   <div className="logo">
     <h2>
       <Link to="/">{t('APP.NAME')}</Link>

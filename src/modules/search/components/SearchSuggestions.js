@@ -6,11 +6,11 @@
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import UnitSuggestion from './UnitSuggestion';
 import AddressSuggestion from './AddressSuggestion';
 
-const SearchSuggestions = translate()(
+const SearchSuggestions = withNamespaces()(
   ({ units, addresses, openAllResults, openUnit, handleAddressClick, t }) => (
     <div className="search-suggestions">
       {units.length > 0 || addresses.length > 0 ? (
