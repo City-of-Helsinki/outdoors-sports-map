@@ -1,51 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import getLanguage from '../../../language/selectors';
 import changeLanguage from '../../../language/actions';
 import i18n, { getCurrentLanguage } from '../../i18n';
 
-class TranslationProvider extends React.Component {
-  componentDidMount() {
-    const { language } = this.props;
+function changeDocumentLanguage(nextLanguage) {
+  document.documentElement.lang = nextLanguage;
+}
 
-    if (language !== DEFAULT_LANG) {
-      this.changeLanguage(this.props.language);
-      this.forceUpdate();
-    } else {
-      moment.locale(language);
-      this.changeDocumentLanguage(language);
+function changeLanguage(nextLanguage) {
+  i18n.changeLanguage(nextLanguage);
+  moment.locale(nextLanguage);
+  changeDocumentLanguage(nextLanguage);
+}
+
+const TranslationProvider = ({ changeLanguageAction, children, language }) => {
+  useEffect(() => {
+    if (!language) {
+      const currentLanguage = getCurrentLanguage();
+      changeLanguageAction(currentLanguage);
+      changeLanguage(currentLanguage);
     }
-  }
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    const { language } = this.props;
+  useEffect(() => {
     const currentLanguage = getCurrentLanguage();
 
-    // This will also run on i18next language change
-    if (currentLanguage !== language && prevProps.language !== language) {
-      this.changeLanguage(language);
+    // This will also run on init. Do nothing.
+    if (language && currentLanguage !== language) {
+      changeLanguage(language);
     }
-  }
+  }, [language]);
 
-  changeLanguage = (nextLanguage) => {
-    i18n.changeLanguage(nextLanguage);
-    moment.locale(nextLanguage);
-    this.changeDocumentLanguage(nextLanguage);
-  };
-
-  changeDocumentLanguage = (nextLanguage) => {
-    document.documentElement.lang = nextLanguage;
-  };
-
-  render() {
-    const { children } = this.props;
-
-    return <>{children}</>;
-  }
-}
+  return <>{children}</>;
+};
 
 TranslationProvider.propTypes = {
   changeLanguageAction: PropTypes.func.isRequired,
@@ -72,4 +63,4 @@ const mapDispatchToProps = (dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation()(TranslationProvider));
+)(TranslationProvider);
