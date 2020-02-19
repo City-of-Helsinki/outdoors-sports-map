@@ -1,39 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import getLanguage from '../../../language/selectors';
 import changeLanguage from '../../../language/actions';
-import i18n, { getCurrentLanguage } from '../../i18n';
+import { getCurrentLanguage } from '../../i18n';
 
-class TranslationProvider extends React.Component {
-  componentDidMount() {
-    const { changeLanguageAction } = this.props;
+const TranslationProvider = ({ changeLanguageAction, children, language }) => {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    if (!language) {
+      const currentLanguage = getCurrentLanguage();
+      changeLanguageAction(currentLanguage);
+    }
+  }, []);
+
+  useEffect(() => {
     const currentLanguage = getCurrentLanguage();
-    changeLanguageAction(currentLanguage);
-  }
 
-  componentDidUpdate(prevProps) {
-    const { language } = this.props;
-    const currentLanguage = getCurrentLanguage();
-
-    // This will also run on i18next language change
-    if (currentLanguage !== language && prevProps.language !== language) {
+    // This will also run on init. Do nothing.
+    if (language && currentLanguage !== language) {
       i18n.changeLanguage(language);
     }
-  }
+  }, [language]);
 
-  render() {
-    const { children } = this.props;
-
-    return (
-      <>
-        {children}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {children}
+    </>
+  );
+};
 
 TranslationProvider.propTypes = {
   changeLanguageAction: PropTypes.func.isRequired,
@@ -53,4 +51,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   changeLanguageAction: changeLanguage,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TranslationProvider));
+export default connect(mapStateToProps, mapDispatchToProps)(TranslationProvider);
