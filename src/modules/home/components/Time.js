@@ -3,8 +3,6 @@ import React from 'react';
 import moment from 'moment';
 import { translate } from 'react-i18next';
 
-moment.locale('fi');
-
 export const formatTime = (time: Date, t: Function) => {
   const endOfToday = moment().endOf('day');
   let lookup = 'TIME.';
