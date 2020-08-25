@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 /*
    eslint-disable
    class-methods-use-this,
@@ -10,6 +11,7 @@
 */
 
 import React, { Component } from 'react';
+import ProTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
@@ -26,7 +28,7 @@ import {
   createReittiopasUrl,
 } from '../helpers';
 import getServiceName from '../../service/helpers';
-import ObservationStatus, { StatusUpdated } from './ObservationStatus';
+import ObservationStatus, { StatusUpdated, StatusUpdatedAgo } from './ObservationStatus';
 import UnitIcon from './UnitIcon';
 
 const ModalHeader = ({
@@ -185,6 +187,17 @@ const LocationTemperature = ({ t, observation }) => {
   );
 };
 
+const LiveLocationTemperature = ({ t, observation }) => {
+  const temperature = get(observation, 'value.fi');
+  const observationTime = getObservationTime(observation);
+  return (
+    <ModalBodyBox title={t('MODAL.WATER_TEMPERATURE')}>
+      <StatusUpdatedAgo time={observationTime} t={t} sensorName={t('MODAL.WATER_TEMPERATURE_SENSOR')} />
+      {`${temperature} °C`}
+    </ModalBodyBox>
+  );
+};
+
 const ModalBodyBox = ({
   title, children, className = '', ...rest
 }) => (
@@ -194,9 +207,56 @@ const ModalBodyBox = ({
   </div>
 );
 
+// Enzyme is not able to render the legacy portals our version of
+// react-bootstrap uses. By separating the content into its own
+// component and exporting it, we are able to test the content without
+// more convoluted hacks. Ideally we would write tests for the entire
+// component.
+export const SingleUnitModalBody = ({
+  currentUnit,
+  getActiveLanguage,
+  isLoading,
+  liveTemperatureObservation,
+  routeUrl,
+  shouldShowInfo,
+  t,
+  temperatureObservation,
+}) => (currentUnit && !isLoading
+  ? (
+    <Modal.Body>
+      <LocationState unit={currentUnit} t={t} />
+      <NoticeInfo unit={currentUnit} t={t} activeLang={getActiveLanguage} />
+      {!liveTemperatureObservation && temperatureObservation && (
+      <LocationTemperature t={t} observation={temperatureObservation} />
+      )}
+      {liveTemperatureObservation && <LiveLocationTemperature t={t} observation={liveTemperatureObservation} />}
+      {shouldShowInfo(currentUnit) && <LocationInfo unit={currentUnit} t={t} activeLang={getActiveLanguage} />}
+      {getOpeningHours(currentUnit) && (
+        <LocationOpeningHours unit={currentUnit} t={t} activeLang={getActiveLanguage} />
+      )}
+      {routeUrl && <LocationRoute t={t} routeUrl={routeUrl} />}
+    </Modal.Body>
+  )
+  : null);
+
+SingleUnitModalBody.propTypes = {
+  currentUnit: ProTypes.object.isRequired,
+  getActiveLanguage: ProTypes.func.isRequired,
+  isLoading: ProTypes.bool.isRequired,
+  liveTemperatureObservation: ProTypes.object.isRequired,
+  routeUrl: ProTypes.string.isRequired,
+  shouldShowInfo: ProTypes.func.isRequired,
+  t: ProTypes.func.isRequired,
+  temperatureObservation: ProTypes.object.isRequired,
+};
+
 class SingleUnitModalContainer extends Component {
   shouldShowInfo(unit) {
-    const hasExtensions = unit.extensions && (unit.extensions.length || unit.extensions.lighting || unit.extensions.skiing_technique);
+    const hasExtensions = unit.extensions && (
+      unit.extensions.length
+      || unit.extensions.lighting
+      || unit.extensions.skiing_technique
+    );
     return hasExtensions || unit.phone || unit.url;
   }
 
@@ -205,25 +265,33 @@ class SingleUnitModalContainer extends Component {
       handleClick, isLoading, unit: currentUnit, services, t,
     } = this.props;
     const { getActiveLanguage } = this.context;
-    const temperatureObservation = has(currentUnit, 'observations') && getObservation(currentUnit, 'swimming_water_temperature');
+    const temperatureObservation = has(currentUnit, 'observations')
+      && getObservation(currentUnit, 'swimming_water_temperature');
+    const liveTemperatureObservation = has(currentUnit, 'observations')
+      && getObservation(currentUnit, 'live_swimming_water_temperature');
     const routeUrl = currentUnit && createReittiopasUrl(currentUnit, getActiveLanguage());
 
     return (
       <div>
         <Modal className="single-unit-modal" show={this.props.isOpen} backdrop={false} animation={false}>
-          <ModalHeader unit={currentUnit} services={services} handleClick={handleClick} isLoading={isLoading} t={t} activeLang={getActiveLanguage} />
-          {currentUnit && !isLoading
-            ? (
-              <Modal.Body>
-                <LocationState unit={currentUnit} t={t} />
-                <NoticeInfo unit={currentUnit} t={t} activeLang={getActiveLanguage} />
-                {temperatureObservation && <LocationTemperature t={t} observation={temperatureObservation} />}
-                {this.shouldShowInfo(currentUnit) && <LocationInfo unit={currentUnit} t={t} activeLang={getActiveLanguage} />}
-                {getOpeningHours(currentUnit) && <LocationOpeningHours unit={currentUnit} t={t} activeLang={getActiveLanguage} />}
-                {routeUrl && <LocationRoute t={t} routeUrl={routeUrl} />}
-              </Modal.Body>
-            )
-            : null}
+          <ModalHeader
+            unit={currentUnit}
+            services={services}
+            handleClick={handleClick}
+            isLoading={isLoading}
+            t={t}
+            activeLang={getActiveLanguage}
+          />
+          <SingleUnitModalBody
+            currentUnit={currentUnit}
+            getActiveLanguage={getActiveLanguage}
+            isLoading={isLoading}
+            liveTemperatureObservation={liveTemperatureObservation}
+            routeUrl={routeUrl}
+            shouldShowInfo={this.shouldShowInfo}
+            t={t}
+            temperatureObservation={temperatureObservation}
+          />
         </Modal>
       </div>
     );
@@ -231,7 +299,7 @@ class SingleUnitModalContainer extends Component {
 }
 
 SingleUnitModalContainer.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  getActiveLanguage: ProTypes.func,
 };
 
 export default translate()(SingleUnitModalContainer);

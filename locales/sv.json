@@ -60,7 +60,9 @@
     "TEMPERATURE": "Temperatur",
     "ROUTE_HERE": "Väg hit",
     "GET_ROUTE": "Väg hit",
-    "NOTICE": "Meddelande"
+    "NOTICE": "Meddelande",
+    "WATER_TEMPERATURE": "Vattnets temperatur",
+    "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor"
   },
   "VIEW": {
     "POPUP": {

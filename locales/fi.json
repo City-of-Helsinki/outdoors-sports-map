@@ -60,7 +60,9 @@
     "TEMPERATURE": "Lämpötila",
     "ROUTE_HERE": "Reitti tänne",
     "GET_ROUTE": "Hae reitti tänne",
-    "NOTICE": "Tiedote"
+    "NOTICE": "Tiedote",
+    "WATER_TEMPERATURE": "Veden lämpötila",
+    "WATER_TEMPERATURE_SENSOR": "Uimarantasensori"
   },
   "VIEW": {
     "POPUP": {
