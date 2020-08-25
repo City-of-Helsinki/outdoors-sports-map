@@ -31,8 +31,14 @@ const getWrapper = () => mount(
 );
 
 describe('', () => {
+  it('should have ensure that moment locale and language are in sync', async () => {
+    const wrapper = await getWrapper();
+
+    expect(wrapper.find('TranslationProvider').at(0).prop('language')).toEqual(moment.locale());
+  });
+
   it('should change moment language when language changes', async () => {
-    expect(moment.locale()).toEqual('en');
+    expect(moment.locale()).toEqual('fi');
 
     const wrapper = await getWrapper();
 

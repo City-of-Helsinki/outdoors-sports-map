@@ -41,9 +41,13 @@ const i18n = i18next
 
 class TranslationProvider extends React.Component {
   componentWillMount() {
-    if (this.props.language !== DEFAULT_LANG) {
+    const { language } = this.props;
+
+    if (language !== DEFAULT_LANG) {
       this.changeLanguage(this.props.language);
       this.forceUpdate();
+    } else {
+      moment.locale(language);
     }
   }
 

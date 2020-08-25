@@ -213,7 +213,7 @@ describe('<SingleUnitModalContainer />', () => {
           },
         });
 
-        expect(wrapper.text().includes('30 minutes ago')).toEqual(true);
+        expect(wrapper.text().includes('30 minuuttia sitten')).toEqual(true);
       });
 
       it('when at least an hour has passed it should use hours', async () => {
@@ -225,7 +225,7 @@ describe('<SingleUnitModalContainer />', () => {
           },
         });
 
-        expect(wrapper.text().includes('2 hours ago')).toEqual(true);
+        expect(wrapper.text().includes('kaksi tuntia sitten')).toEqual(true);
       });
     });
   });
