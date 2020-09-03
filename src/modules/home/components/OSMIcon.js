@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const OSMIcon = ({icon, className, ...rest}) =>
-  <span className={`icon-${icon} ${className ? className : ''}`} {...rest} />;
+// eslint-disable-next-line react/jsx-props-no-spreading, react/prop-types
+const OSMIcon = ({ icon, className, ...rest }) => <span className={`icon-${icon} ${className || ''}`} {...rest} />;
 
 export default OSMIcon;

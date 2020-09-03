@@ -8,22 +8,18 @@
     color: $ui-text;
 
     &--good {
-      @extend .observation-status__bar;
       background: $status-ok;
     }
 
     &--satisfactory {
-      @extend .observation-status__bar;
       background: $status-average;
     }
 
     &--unusable {
-      @extend .observation-status__bar;
       background: $status-bad;
     }
 
     &--unknown {
-      @extend .observation-status__bar;
       background: $status-unknown;
     }
 

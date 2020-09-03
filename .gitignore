@@ -1,5 +1,10 @@
+.nvmrc
+.env
+.idea
+coverage
+flow-typed
 dist
 node_modules
-flow-typed
-.idea
 log/capistrano.log
+yarn-error.log
+xeno

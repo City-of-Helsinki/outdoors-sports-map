@@ -1,9 +1,19 @@
-import React, {Component} from 'react';
-import {Marker} from 'react-leaflet';
-import {Icon} from 'leaflet';
-import {getUnitIcon, getUnitPosition, getUnitSport} from '../helpers';
-import {UNIT_ICON_WIDTH, UnitFilters} from '../constants';
-import {MAX_ZOOM} from '../../map/constants';
+/*
+   eslint-disable
+   class-methods-use-this,
+   jsx-a11y/mouse-events-have-key-events,
+   react/destructuring-assignment,
+   react/jsx-props-no-spreading,
+   react/no-string-refs,
+   react/prop-types,
+*/
+
+import React, { Component } from 'react';
+import { Marker } from 'react-leaflet';
+import { Icon } from 'leaflet';
+import { getUnitIcon, getUnitPosition, getUnitSport } from '../helpers';
+import { UNIT_ICON_WIDTH, UnitFilters } from '../constants';
+import { MAX_ZOOM } from '../../map/constants';
 import UnitPopup from './UnitPopup';
 
 const POPUP_OFFSET = 4;
@@ -19,18 +29,10 @@ class UnitMarker extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {isSelected} = this.props;
-    if(!isSelected && nextProps.isSelected) {
+    const { isSelected } = this.props;
+    if (!isSelected && nextProps.isSelected) {
       this.closePopup();
     }
-  }
-
-  openPopup() {
-    this.refs.marker.leafletElement.openPopup();
-  }
-
-  closePopup() {
-    this.refs.marker.leafletElement.closePopup();
   }
 
   getIconWidth(zoomLevel) {
@@ -39,6 +41,10 @@ class UnitMarker extends Component {
 
   getIconHeight(icon, zoomLevel) {
     return zoomLevel / MAX_ZOOM * icon.height;
+  }
+
+  closePopup() {
+    this.refs.marker.leafletElement.closePopup();
   }
 
   _createIcon(unit, isSelected) {
@@ -55,6 +61,10 @@ class UnitMarker extends Component {
     });
   }
 
+  openPopup() {
+    this.refs.marker.leafletElement.openPopup();
+  }
+
   _getAnchorHeight(iconHeight, unit) {
     return getUnitSport(unit) === UnitFilters.SKIING ? iconHeight / 2 : iconHeight;
   }
@@ -64,7 +74,9 @@ class UnitMarker extends Component {
   }
 
   render() {
-    const {unit, isSelected, handleClick, ...rest} = this.props;
+    const {
+      unit, isSelected, handleClick, ...rest
+    } = this.props;
     return (
       <Marker
         ref="marker"
@@ -73,8 +85,9 @@ class UnitMarker extends Component {
         onClick={handleClick}
         onMouseOver={this.openPopup}
         onMouseOut={this.closePopup}
-        {...rest}>
-        <UnitPopup unit={unit} offset={this._getPopupOffset(unit)}/>
+        {...rest}
+      >
+        <UnitPopup unit={unit} offset={this._getPopupOffset(unit)} />
       </Marker>
     );
   }

@@ -1,19 +1,21 @@
 // @flow
-import {takeLatest} from 'redux-saga';
-import {call, fork, put} from 'redux-saga/effects';
-import {arrayOf} from 'normalizr';
-import {receiveUnits, receiveSearchSuggestions, setFetchError} from './actions';
-import {UnitActions, unitSchema} from './constants';
-import {getFetchUnitsRequest} from './helpers';
-import type {FetchAction} from '../common/constants';
-import {callApi, createRequest, normalizeEntityResults, stringifyQuery} from '../api/helpers';
+import { takeLatest } from 'redux-saga';
+import { call, fork, put } from 'redux-saga/effects';
+import { schema } from 'normalizr';
+import { receiveUnits, receiveSearchSuggestions, setFetchError } from './actions';
+import { UnitActions, unitSchema } from './constants';
+import { getFetchUnitsRequest } from './helpers';
+import type { FetchAction } from '../common/constants';
+import {
+  callApi, createRequest, normalizeEntityResults, stringifyQuery,
+} from '../api/helpers';
 
-function* fetchUnits({payload: {params}}: FetchAction) {
+function* fetchUnits({ payload: { params } }: FetchAction) {
   const request = getFetchUnitsRequest(params);
-  const {response, bodyAsJson} = yield call(callApi, request);
+  const { response, bodyAsJson } = yield call(callApi, request);
 
-  if(response.status === 200) {
-    const data = normalizeEntityResults(bodyAsJson.results, arrayOf(unitSchema));
+  if (response.status === 200) {
+    const data = normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema));
     yield put(receiveUnits(data));
   } else {
     yield put(setFetchError(bodyAsJson.results));
@@ -21,11 +23,11 @@ function* fetchUnits({payload: {params}}: FetchAction) {
 }
 
 function* clearSearch() {
-  //yield put(receiveSearchResults([]));
+  // yield put(receiveSearchResults([]));
   yield put(receiveSearchSuggestions([]));
 }
 
-function* sendFeedback({payload: {feedback, email}}) {
+function* sendFeedback({ payload: { feedback, email } }) {
   console.log(feedback);
   const params = {
     description: feedback,
@@ -40,16 +42,16 @@ function* sendFeedback({payload: {feedback, email}}) {
     params.email = email;
   }
 
-  const request = createRequest(`https://api.hel.fi/servicemap/open311/`,
-    {method: 'POST',
+  const request = createRequest('https://api.hel.fi/servicemap/open311/',
+    {
+      method: 'POST',
       body: stringifyQuery(params),
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     });
-  const {bodyAsJson} = yield call(callApi, request);
+  const { bodyAsJson } = yield call(callApi, request);
   console.log(bodyAsJson);
-
 }
 
 function* watchFetchUnits() {

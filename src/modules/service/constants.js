@@ -1,18 +1,19 @@
 // @flow
-import {Schema} from 'normalizr';
-import {normalizeActionName} from '../common/helpers';
+import { schema } from 'normalizr';
+// eslint-disable-next-line import/no-cycle
+import { normalizeActionName } from '../common/helpers';
 
 export const UnitServices = {
-  MECHANICALLY_FROZEN_ICE: 33417,
-  ICE_SKATING_FIELD: 33418,
-  ICE_RINK: 33419,
-  SPEED_SKATING_TRACK: 33420,
-  ICE_SKATING_ROUTE: 33421,
-  SKI_TRACK: 33483,
-  DOG_SKI_TRACK: 33492,
-  SWIMMING_BEACH: 33467,
-  SWIMMING_PLACE: 33468,
-  OUTDOOR_POOL: 33466,
+  MECHANICALLY_FROZEN_ICE: 695,
+  ICE_SKATING_FIELD: 406,
+  ICE_RINK: 235,
+  SPEED_SKATING_TRACK: 514,
+  ICE_SKATING_ROUTE: 407,
+  SKI_TRACK: 191,
+  DOG_SKI_TRACK: 318,
+  SWIMMING_BEACH: 731,
+  SWIMMING_PLACE: 730,
+  OUTDOOR_POOL: 426,
 };
 
 export const IceSkatingServices = [
@@ -47,4 +48,4 @@ export type ServiceState = {
   all: Array<string>
 };
 
-export const serviceSchema = new Schema('service'/*, {}*/);
+export const serviceSchema = new schema.Entity('service'/* , {} */);

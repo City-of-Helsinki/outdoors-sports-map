@@ -1,5 +1,5 @@
-import {isOnSeason} from './seasons';
-import {SummerSeason, WinterSeason, YearRoundSeason} from './constants';
+import { isOnSeason } from '../seasons';
+import { SummerSeason, WinterSeason, YearRoundSeason } from '../constants';
 
 const May1 = {
   day: 1,

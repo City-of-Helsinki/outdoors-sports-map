@@ -35,13 +35,16 @@
       "STATUS_OK": "In usable condition",
       "SWIMMING": "Swimming"
     },
+    "FILTER_SPORT": "Sport",
+    "FILTER_STATUS": "Condition",
     "SORT": {
       "DEFAULT": "Default",
       "ALPHABETICAL": "Alphabetic",
       "CONDITION": "In best condition first",
       "DISTANCE": "Closest first"
     },
-    "PHONE": "Phone"
+    "PHONE": "Phone",
+    "TMP_MESSAGE": ""
   },
   "MODAL": {
     "LOADING": "Loading the object",
@@ -57,7 +60,9 @@
     "TEMPERATURE": "Temperature",
     "ROUTE_HERE": "Route to here",
     "GET_ROUTE": "Get route to here",
-    "NOTICE": "Notice"
+    "NOTICE": "Notice",
+    "WATER_TEMPERATURE": "Water temperature",
+    "WATER_TEMPERATURE_SENSOR": "Water temperature sensor"
   },
   "VIEW": {
     "POPUP": {

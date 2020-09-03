@@ -35,13 +35,16 @@
       "STATUS_OK": "Käyttökuntoiset",
       "SWIMMING": "Uinti"
     },
+    "FILTER_SPORT": "Laji",
+    "FILTER_STATUS": "Kunto",
     "SORT": {
       "DEFAULT": "Oletus",
       "ALPHABETICAL": "Aakkosellinen",
       "CONDITION": "Paras kunto ensin",
       "DISTANCE": "Lähimmät ensin"
     },
-    "PHONE": "Puhelinnumero"
+    "PHONE": "Puhelinnumero",
+    "TMP_MESSAGE": ""
   },
   "MODAL": {
     "LOADING": "Ladataan kohdetta...",
@@ -57,7 +60,9 @@
     "TEMPERATURE": "Lämpötila",
     "ROUTE_HERE": "Reitti tänne",
     "GET_ROUTE": "Hae reitti tänne",
-    "NOTICE": "Tiedote"
+    "NOTICE": "Tiedote",
+    "WATER_TEMPERATURE": "Veden lämpötila",
+    "WATER_TEMPERATURE_SENSOR": "Uimarantasensori"
   },
   "VIEW": {
     "POPUP": {

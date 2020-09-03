@@ -1,8 +1,20 @@
-//@flow
+// @flow
 import moment from 'moment';
-import {has, keys, sortBy, head, values, upperFirst, memoize} from 'lodash';
-import {createRequest, createUrl} from '../api/helpers.js';
-import {UnitServices, IceSkatingServices, SkiingServices, SwimmingServices} from '../service/constants';
+import has from 'lodash/has';
+import keys from 'lodash/keys';
+import sortBy from 'lodash/sortBy';
+import head from 'lodash/head';
+import values from 'lodash/values';
+import upperFirst from 'lodash/upperFirst';
+import memoize from 'lodash/memoize';
+import get from 'lodash/get';
+
+import { LatLng, GeoJSON } from 'leaflet';
+import * as GeometryUtil from 'leaflet-geometryutil';
+import { createRequest, createUrl } from '../api/helpers';
+import {
+  UnitServices, IceSkatingServices, SkiingServices, SwimmingServices,
+} from '../service/constants';
 import {
   UNIT_PIN_HEIGHT,
   UNIT_HANDLE_HEIGHT,
@@ -12,25 +24,21 @@ import {
   QualityEnum,
   Seasons,
 } from './constants';
-import type {SeasonDelimiter} from './constants';
+import type { SeasonDelimiter } from './constants';
 import {
   isOnSeason,
   getToday,
 } from './seasons';
-import {DEFAULT_LANG} from '../common/constants';
-import {LatLng, GeoJSON} from 'leaflet';
-import * as GeometryUtil from 'leaflet-geometryutil';
+import { DEFAULT_LANG } from '../common/constants';
 
-export const getFetchUnitsRequest = (params: Object)  => {
-  return createRequest(createUrl('unit/', {
-    service: `${values(UnitServices).join(',')}`,
-    only: 'id,name,location,street_address,address_zip,extensions,services,municipality,phone,www_url',
-    include: 'observations,connections',
-    geometry: 'true',
-    page_size: 1000,
-    ...params,
-  }));
-};
+export const getFetchUnitsRequest = (params: Object) => createRequest(createUrl('unit/', {
+  service: `${values(UnitServices).join(',')}`,
+  only: 'id,name,location,street_address,address_zip,extensions,services,municipality,phone,www',
+  include: 'observations,connections',
+  geometry: 'true',
+  page_size: 1000,
+  ...params,
+}));
 
 export const getAttr = (attr: Object, lang: ?string = DEFAULT_LANG) => {
   let translated = has(attr, lang) && attr[lang];
@@ -55,10 +63,25 @@ export const getUnitPosition = (unit: Object): Array<number> => {
   return unit.location.coordinates.slice().reverse();
 };
 
-export const getUnitSport = (unit: Object) => {
-  if(unit.services && unit.services.length) {
-    for (const service of unit.services ) {
+export const createReittiopasUrl = (unit, lang) => {
+  const lat = get(unit, 'location.coordinates[1]');
+  const lon = get(unit, 'location.coordinates[0]');
+  const origin = ' '; // sic
+  const street = getAttr(unit.street_address, lang);
+  const municipality = unit.municipality || '';
+  const coordinates = lat && lon
+    ? encodeURIComponent(`::${lat},${lon}`)
+    : '';
+  const to = encodeURIComponent(`${upperFirst(street)}, ${upperFirst(municipality)}${coordinates}`);
+  const from = encodeURIComponent(origin);
+  const url = `https://reittiopas.hsl.fi/reitti/${from}/${to}`;
+  return url;
+};
 
+export const getUnitSport = (unit: Object) => {
+  if (unit.services && unit.services.length) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const service of unit.services) {
       if (IceSkatingServices.includes(service)) {
         return UnitFilters.ICE_SKATING;
       }
@@ -77,14 +100,13 @@ export const getUnitSport = (unit: Object) => {
 };
 
 export const getObservation = (unit: Object, matchProperty: string) => {
-  const {observations} = unit;
+  const { observations } = unit;
 
   return observations ? observations.find((obs) => obs.property.includes(matchProperty)) : null;
 };
 
 export const getCondition = (unit: Object) => {
-  const {observations} = unit;
-
+  const { observations } = unit;
   return observations ? observations.find((obs) => obs.primary) : null;
 };
 
@@ -94,21 +116,18 @@ export const getUnitQuality = (unit: Object): string => {
 };
 
 export const getOpeningHours = (unit: Object, activeLang: string): string => {
+  // eslint-disable-next-line no-restricted-syntax
   for (const service of unit.services) {
-    if(service === UnitServices.MECHANICALLY_FROZEN_ICE && unit.connections && unit.connections[1]){
+    if (service === UnitServices.MECHANICALLY_FROZEN_ICE && unit.connections && unit.connections[1]) {
       return (getAttr(unit.connections[1].name, activeLang) || '');
     }
   }
   return '';
 };
 
-export const getObservationTime = (observation: Object) => {
-  return(moment(observation && observation.time || 0).toDate());
-};
+export const getObservationTime = (observation: Object) => (moment(observation && observation.time || 0).toDate());
 
-export const enumerableQuality = (quality: string): number => {
-  return QualityEnum[quality] ? QualityEnum[quality] : Number.MAX_VALUE;
-};
+export const enumerableQuality = (quality: string): number => (QualityEnum[quality] ? QualityEnum[quality] : Number.MAX_VALUE);
 
 
 /**
@@ -121,6 +140,7 @@ export const getUnitIconURL = (unit: Object, selected: ?boolean = false, retina:
   const onOff = selected ? 'on' : 'off';
   const resolution = retina ? '@2x' : '';
 
+  // eslint-disable-next-line global-require, import/no-dynamic-require
   return require(`@assets/markers/${sport}-${quality}-${onOff}${resolution}.png`);
 };
 
@@ -137,35 +157,31 @@ export const getUnitIcon = (unit: Object, selected: ?boolean = false) => (
   }
 );
 
-export const getFilterIconURL = (filter: String) =>
-  filter ? require(`@assets/icons/icon-white-${filter}@2x.png`) : '';
+// eslint-disable-next-line global-require, import/no-dynamic-require
+export const getFilterIconURL = (filter: String) => (filter ? require(`@assets/icons/icon-white-${filter}@2x.png`) : '');
 
 /**
  * FILTERZ
  */
 
-export const getOnSeasonSportFilters = (date: SeasonDelimiter = getToday()): Array<string> =>
-  Seasons
-    .filter((season) => isOnSeason(date, season))
-    .map(({filters}) => filters)
-    .reduce((flattened, filters) => [...flattened, ...filters], []);
+export const getOnSeasonSportFilters = (date: SeasonDelimiter = getToday()): Array<string> => Seasons
+  .filter((season) => isOnSeason(date, season))
+  .map(({ filters }) => filters)
+  .reduce((flattened, filters) => [...flattened, ...filters], []);
 
-export const getOffSeasonSportFilters = (date: SeasonDelimiter = getToday()): Array<string> =>
-  Seasons
-    .filter((season) => !isOnSeason(date, season))
-    .map(({filters}) => filters)
-    .reduce((flattened, filters) => [...flattened, ...filters], []);
+export const getOffSeasonSportFilters = (date: SeasonDelimiter = getToday()): Array<string> => Seasons
+  .filter((season) => !isOnSeason(date, season))
+  .map(({ filters }) => filters)
+  .reduce((flattened, filters) => [...flattened, ...filters], []);
 
 export const getSportFilters = (date: SeasonDelimiter = getToday()) => ({
   onSeason: getOnSeasonSportFilters(date),
   offSeason: getOffSeasonSportFilters(date),
 });
 
-export const getDefaultSportFilter = (): string =>
-  String(head(getOnSeasonSportFilters(getToday())));
+export const getDefaultSportFilter = (): string => String(head(getOnSeasonSportFilters(getToday())));
 
-export const getDefaultStatusFilter = (): string =>
-  DEFAULT_STATUS_FILTER;
+export const getDefaultStatusFilter = (): string => DEFAULT_STATUS_FILTER;
 
 export const getDefaultFilters = () => (
   {
@@ -193,7 +209,8 @@ const _sortByDistance = (units: Array<Object>, position: Array<number>, leafletM
     }
     const latLngs = GeoJSON.coordsToLatLngs(unit.geometry.coordinates, 1);
     const closestLatLng = GeometryUtil.closest(
-      leafletMap, latLngs, positionLatLng);
+      leafletMap, latLngs, positionLatLng,
+    );
     return positionLatLng.distanceTo(closestLatLng);
   });
 };
@@ -205,25 +222,18 @@ export const sortByDistance = memoize(_sortByDistance, (units, pos, leafletMap, 
   return `${filterString};${pos[0]};${pos[1]}`;
 });
 
-export const sortByName = (units: Array<Object>, lang: ?string) =>
-  sortBy(units, (unit) => getAttr(unit.name, lang));
+export const sortByName = (units: Array<Object>, lang: ?string) => sortBy(units, (unit) => getAttr(unit.name, lang));
 
-export const sortByCondition = (units: Array<Object>) =>
-  sortBy(units, [
-    (unit) => {
-      return enumerableQuality(getUnitQuality(unit));
-    },
-    (unit) => {
-      const observation = getCondition(unit);
-      const observationTime =
-        observation && observation.time && (new Date(observation.time)).getTime() || 0;
+export const sortByCondition = (units: Array<Object>) => sortBy(units, [
+  (unit) => enumerableQuality(getUnitQuality(unit)),
+  (unit) => {
+    const observation = getCondition(unit);
+    const observationTime = observation && observation.time && (new Date(observation.time)).getTime() || 0;
 
-      return (new Date()).getTime() - observationTime;
-    },
-  ]);
+    return (new Date()).getTime() - observationTime;
+  },
+]);
 
-export const getAddressToDisplay = (address: Object, activeLang: string) => {
-  return Object.keys(address).length !== 0
-    ? `${String(getAttr(address.street.name, activeLang))} ${address.number}, ${upperFirst(address.street.municipality)}`
-    : null;
-};
+export const getAddressToDisplay = (address: Object, activeLang: string) => (Object.keys(address).length !== 0
+  ? `${String(getAttr(address.street.name, activeLang))} ${address.number}, ${upperFirst(address.street.municipality)}`
+  : null);

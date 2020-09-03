@@ -1,5 +1,6 @@
 // @flow
-import {normalizeActionName} from '../common/helpers';
+// eslint-disable-next-line import/no-cycle
+import { normalizeActionName } from '../common/helpers';
 
 export const SearchActions = {
   CLEAR: normalizeActionName('search/CLEAR'),

@@ -1,11 +1,11 @@
-import {normalizeActionName} from '../common/helpers.js';
+import { normalizeActionName } from '../common/helpers';
 
-export const MAP_URL = 'https://geoserver.hel.fi/mapproxy/wmts/osm-lite/etrs_tm35fin/{z}/{x}/{y}.png';
-export const MAP_RETINA_URL = 'https://geoserver.hel.fi/mapproxy/wmts/osm-lite-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png';
+export const MAP_URL = 'https://tiles.hel.ninja/styles/hel-osm-light/{z}/{x}/{y}.png';
+export const MAP_RETINA_URL = MAP_URL.replace('.png', '@3x.png');
 
-export const DEFAULT_ZOOM = 9;
-export const MIN_ZOOM = 8;
-export const MAX_ZOOM = 15;
+export const DEFAULT_ZOOM = 12;
+export const MIN_ZOOM = 11;
+export const MAX_ZOOM = 18;
 export const BOUNDARIES = [[59.4, 23.8], [61.5, 25.8]];
 
 export const mapActions = {

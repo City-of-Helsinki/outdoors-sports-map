@@ -1,12 +1,30 @@
 // @flow
-import React, {Component, PropTypes} from 'react';
-import {withRouter} from 'react-router';
-import ListView from './ListView.js';
-import SMIcon from '../../home/components/SMIcon';
+
+/*
+   eslint-disable
+   jsx-a11y/alt-text,
+   jsx-a11y/click-events-have-key-events,
+   jsx-a11y/no-static-element-interactions,
+   react/button-has-type,
+   react/forbid-prop-types,
+   react/destructuring-assignment,
+   react/prop-types,
+   react/require-default-props,
+   react/state-in-constructor,
+   react/static-property-placement,
+*/
+
+import React, { Component, PropTypes } from 'react';
+import { withRouter } from 'react-router';
 import values from 'lodash/values';
-import {StatusFilters} from '../constants.js';
-import UnitFilters from './UnitFilters.js';
+import { translate } from 'react-i18next';
+import addressBarMarker from '@assets/markers/location.svg';
+import ListView from './ListView';
+import SMIcon from '../../home/components/SMIcon';
+import { StatusFilters } from '../constants';
+import UnitFilters from './UnitFilters';
 import SearchContainer from '../../search/components/SearchContainer';
+
 import {
   getAddressToDisplay,
   getOnSeasonSportFilters,
@@ -15,22 +33,30 @@ import {
   getDefaultSportFilter,
 } from '../helpers';
 
-const ToggleButton = ({toggle, icon}) =>
-  <button className="toggle-view-button" onClick={toggle}>
-    <SMIcon className="unit-browser__toggle" icon={icon} />
-  </button>;
+const ActionButton = ({ action, icon, isActive }) => (
+  <button className={`action-button ${isActive ? 'is-active' : ''}`} onClick={action}>
+    <SMIcon className="unit-browser__action" icon={icon} />
+  </button>
+);
 
-const Header = ({expand, toggle, toggleIcon, openUnit, setView}) =>
-<div className="header">
-  <SearchContainer onSearch={expand} openUnit={openUnit} setView={setView}/>
-  <ToggleButton toggle={toggle} icon={toggleIcon}/>
-</div>;
+const Header = ({
+  expand, collapse, openUnit, setView, isExpanded,
+}) => (
+  <div className="header">
+    <SearchContainer onSearch={expand} openUnit={openUnit} setView={setView} />
+    <div className="action-buttons">
+      <ActionButton action={collapse} icon="map-options" isActive={!isExpanded} />
+      <ActionButton action={expand} icon="browse" isActive={isExpanded} />
+    </div>
+  </div>
+);
 
-const AddressBar = ({address, handleClick}, context) =>
+const AddressBar = ({ address, handleClick }, context) => (
   <div className="address-bar__container" onClick={() => handleClick(address.location.coordinates.slice().reverse())}>
-    <img className="address-bar__marker" src={require('../../../../assets/markers/location.svg')} height="20px" width="16px"/>
+    <img className="address-bar__marker" src={addressBarMarker} height="20px" width="16px" />
     {address && getAddressToDisplay(address, context.getActiveLanguage())}
-  </div>;
+  </div>
+);
 
 AddressBar.contextTypes = {
   getActiveLanguage: React.PropTypes.func,
@@ -61,7 +87,7 @@ class UnitBrowser extends Component {
 
   updateContentMaxHeight = () => {
     // $FlowFixMe
-    this.setState({contentMaxHeight: this.calculateMaxHeight()});
+    this.setState({ contentMaxHeight: this.calculateMaxHeight() });
   }
 
   calculateMaxHeight = () => {
@@ -71,10 +97,10 @@ class UnitBrowser extends Component {
   }
 
   updateQueryParameter = (key: string, value: string): void => {
-    const {router, location: {query}} = this.props;
+    const { router, location: { query } } = this.props;
 
     router.push({
-      query: Object.assign({}, query, {[key]: value}),
+      query: { ...query, [key]: value },
     });
   }
 
@@ -86,18 +112,21 @@ class UnitBrowser extends Component {
     this.updateQueryParameter('sport', sport);
   }
 
-  toggle = () => {
-    this.setState({isExpanded: !this.state.isExpanded});
+  collapse = () => {
+    this.setState({ isExpanded: false });
   }
 
   expand = () => {
-    this.setState({isExpanded: true});
+    this.setState({ isExpanded: true });
   }
 
   render() {
-    const {units, services, isLoading, isSearching, position, openUnit, setView, address, params, leafletMap, singleUnitSelected, location: {query}} = this.props;
-    const {isExpanded} = this.state;
-    let contentMaxHeight = this.state.contentMaxHeight;
+    const { t } = this.props;
+    const {
+      units, services, isLoading, isSearching, position, openUnit, setView, address, params, leafletMap, singleUnitSelected, location: { query },
+    } = this.props;
+    const { isExpanded } = this.state;
+    let { contentMaxHeight } = this.state;
     if (isExpanded) {
       contentMaxHeight = contentMaxHeight || this.calculateMaxHeight();
     }
@@ -105,37 +134,48 @@ class UnitBrowser extends Component {
     const currentSportFilter = query && query.sport || getDefaultSportFilter();
     const currentStatusFilter = query && query.status || getDefaultStatusFilter();
     return (
-      <div className={`unit-browser ${isExpanded ? 'expanded' : ''}`} style={params.unitId ? {display: 'none'} : null}>
+      <div className={`unit-browser ${isExpanded ? 'expanded' : ''}`} style={params.unitId ? { display: 'none' } : null}>
         <div id="always-visible" className="unit-browser__fixed">
-        <Header
-          expand={this.expand}
-          toggle={this.toggle}
-          toggleIcon={isExpanded ? 'map-options' : 'browse'}
-          setView={setView}
-          openUnit={openUnit}
-        />
-        {!isLoading &&
+          <Header
+            expand={this.expand}
+            collapse={this.collapse}
+            setView={setView}
+            openUnit={openUnit}
+            isExpanded={isExpanded}
+          />
+          {!isLoading
+          && (
           <UnitFilters
             filters={[{
               name: 'sport',
               active: currentSportFilter,
               options: getOnSeasonSportFilters(),
               secondaryOptions: getOffSeasonSportFilters(),
-            },{
+            }, {
               name: 'status',
               active: currentStatusFilter,
               options: values(StatusFilters),
             }]}
             updateFilter={this.updateQueryParameter}
-          />}
-        {!isLoading && Object.keys(address).length !== 0 && <AddressBar handleClick={setView} address={address} />}
-      </div>
-        <div className="unit-browser__content" style={{maxHeight: contentMaxHeight}}>
-          <ListView filter={`${currentSportFilter};${currentStatusFilter}`} isVisible={isExpanded && !singleUnitSelected} isLoading={isLoading || isSearching} units={units} services={services} position={position} openUnit={openUnit} leafletMap={leafletMap}/>
+          />
+          )}
+          {!isLoading && Object.keys(address).length !== 0 && <AddressBar handleClick={setView} address={address} />}
         </div>
+        <div className="unit-browser__content" style={{ maxHeight: contentMaxHeight }}>
+          <ListView filter={`${currentSportFilter};${currentStatusFilter}`} isVisible={isExpanded && !singleUnitSelected} isLoading={isLoading || isSearching} units={units} services={services} position={position} openUnit={openUnit} leafletMap={leafletMap} />
+        </div>
+        {t('UNIT.TMP_MESSAGE').length > 0
+        && (
+        <div
+          className="unit-browser__tmp_msg"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: t('UNIT.TMP_MESSAGE') }}
+        />
+        )}
       </div>
     );
   }
 }
 
-export default withRouter(UnitBrowser);
+
+export default withRouter(translate()(UnitBrowser));

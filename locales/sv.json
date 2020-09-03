@@ -33,15 +33,18 @@
       "ICE_SKATING": "Skridskoåkning",
       "SKIING": "Skidåkning",
       "STATUS_OK": "I användbart skick",
-      "SWIMMING": "TODO"
+      "SWIMMING": "Simning"
     },
+    "FILTER_SPORT": "Sportgren",
+    "FILTER_STATUS": "Skick",
     "SORT": {
       "DEFAULT": "Förinställt",
       "ALPHABETICAL": "Alfabetisk",
       "CONDITION": "I bästa skick först",
       "DISTANCE": "Närmast först"
     },
-    "PHONE": "Telefon"
+    "PHONE": "Telefon",
+    "TMP_MESSAGE": ""
   },
   "MODAL": {
     "LOADING": "Laddar objekt",
@@ -54,10 +57,12 @@
     "LENGTH": "Spårets längd",
     "LIGHTING": "Belysning",
     "SKIING_TECHNIQUE": "Åkstil",
-    "TEMPERATURE": "TODO",
+    "TEMPERATURE": "Temperatur",
     "ROUTE_HERE": "Väg hit",
     "GET_ROUTE": "Väg hit",
-    "NOTICE": "Meddelande"
+    "NOTICE": "Meddelande",
+    "WATER_TEMPERATURE": "Vattnets temperatur",
+    "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor"
   },
   "VIEW": {
     "POPUP": {

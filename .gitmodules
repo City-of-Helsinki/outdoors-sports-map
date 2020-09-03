@@ -1,3 +1,0 @@
-[submodule "ops"]
-	path = ops
-	url = git@github.com:nordsoftware/ops.git

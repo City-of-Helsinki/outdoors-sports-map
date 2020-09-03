@@ -47,14 +47,15 @@
     padding: 2px $gap;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     cursor: pointer;
     border-radius: 999999px;
     font-size: 14px;
     line-height: 2;
 
     &__icon {
-      padding-right: $gap;
-      font-size: 28px;
+      padding-right: 3px;
+      font-size: $icon-size;
       line-height: 1;
     }
 
@@ -66,6 +67,10 @@
 
     &:hover {
       border-color: $ui-text;
+    }
+
+    .dropdown-indicator {
+      margin-left: auto;
     }
   }
 

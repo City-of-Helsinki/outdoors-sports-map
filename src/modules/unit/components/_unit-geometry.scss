@@ -3,22 +3,18 @@
     stroke: $status-unknown;
     stroke-width: 4px;
 
-    &--unknown {
-      @extend .unit-geometry__track;
-    }
+    // &--unknown {
+    // }
 
     &--good {
-      @extend .unit-geometry__track;
       stroke: $status-ok;
     }
 
     &--satisfactory {
-      @extend .unit-geometry__track;
       stroke: $status-average;
     }
 
     &--unusable {
-      @extend .unit-geometry__track;
       stroke: $status-bad;
     }
   }

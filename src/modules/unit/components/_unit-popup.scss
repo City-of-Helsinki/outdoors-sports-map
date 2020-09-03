@@ -21,17 +21,14 @@
       font-size: 0.8em;
 
       &--good {
-        @extend .unit-popup__content__status;
         background: $status-ok;
       }
 
       &--satisfactory {
-        @extend .unit-popup__content__status;
         background: $status-average;
       }
 
       &--unusable {
-        @extend .unit-popup__content__status;
         background: $status-bad;
       }
     }
