@@ -1,0 +1,47 @@
+name: Build & Production
+on:
+  push:
+    tags:
+      - 'release-*'
+
+env:
+  CONTAINER_REGISTRY: ghcr.io
+  CONTAINER_REGISTRY_USER: ${{ secrets.GHCR_CONTAINER_REGISTRY_USER }}
+  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GHCR_TOKEN }}
+  CONTAINER_REGISTRY_REPO: ghcr.io/city-of-helsinki/${{ github.event.repository.name }}
+  REPO_NAME: ${{ github.event.repository.name }}
+  KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW_STABLE }}
+  BUILD_ARTIFACT_FOLDER: 'build_artifacts'
+  SERVICE_ARTIFACT_FOLDER: 'service_artifacts'
+  SERVICE_PORT: 80
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        uses: andersinno/kolga-build-action@v2
+        env:
+          DOCKER_BUILD_ARG_API_URL: "https://api.hel.fi/servicemap/v2"
+          DOCKER_BUILD_ARG_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
+          DOCKER_BUILD_ARG_APP_NAME: "outdoors-sports-map"
+
+  production:
+    runs-on: ubuntu-latest
+    needs: build
+    name: Production
+    steps:
+      - uses: actions/checkout@v2
+      - uses: andersinno/kolga-setup-action@v2
+
+      - name: Deploy
+        uses: andersinno/kolga-deploy-action@v2
+        with:
+          track: 'stable'
+        env:
+          K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STABLE }}
+          K8S_ADDITIONAL_HOSTNAMES: ${{ secrets.ADDITIONAL_HOSTNAMES }}
+          ENVIRONMENT_URL: https://${{ secrets.ENVIRONMENT_URL_STABLE }}
+
