@@ -1,0 +1,54 @@
+name: Build & Review
+on: [pull_request]
+
+env:
+  CONTAINER_REGISTRY: ghcr.io
+  CONTAINER_REGISTRY_USER: ${{ secrets.GHCR_CONTAINER_REGISTRY_USER }}
+  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GHCR_TOKEN }}
+  CONTAINER_REGISTRY_REPO: ghcr.io/city-of-helsinki/${{ github.event.repository.name }}
+  REPO_NAME: ${{ github.event.repository.name }}
+  KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW }}
+  BUILD_ARTIFACT_FOLDER: 'build_artifacts'
+  SERVICE_ARTIFACT_FOLDER: 'service_artifacts'
+  BASE_DOMAIN: ${{ secrets.BASE_DOMAIN_STAGING }}
+  SERVICE_PORT: 80
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        uses: andersinno/kolga-build-action@v2
+        env:
+          DOCKER_BUILD_ARG_API_URL: "https://api.hel.fi/servicemap/v2"
+          DOCKER_BUILD_ARG_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
+          DOCKER_BUILD_ARG_APP_NAME: "outdoors-sports-map"
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    name: Test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      
+      - run: |
+          yarn
+          yarn test --ci --runInBand --updateSnapshot
+
+  review:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Review
+    steps:
+      - uses: actions/checkout@v2
+      - uses: andersinno/kolga-setup-action@v2
+
+      - name: Deploy
+        uses: andersinno/kolga-deploy-action@v2
+        env:
+          ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
