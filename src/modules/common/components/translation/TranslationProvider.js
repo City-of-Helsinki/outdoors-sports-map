@@ -48,6 +48,7 @@ class TranslationProvider extends React.Component {
       this.forceUpdate();
     } else {
       moment.locale(language);
+      this.changeDocumentLanguage(language);
     }
   }
 
@@ -58,7 +59,12 @@ class TranslationProvider extends React.Component {
   changeLanguage = (nextLanguage) => {
     i18n.changeLanguage(nextLanguage);
     moment.locale(nextLanguage);
-  }
+    this.changeDocumentLanguage(nextLanguage);
+  };
+
+  changeDocumentLanguage = (nextLanguage) => {
+    document.documentElement.lang = nextLanguage;
+  };
 
   render() {
     return <I18nextProvider i18n={i18n}>{this.props.children}</I18nextProvider>;
