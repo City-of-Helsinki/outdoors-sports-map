@@ -28,6 +28,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    need: build
     name: Test
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +42,7 @@ jobs:
 
   review:
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     name: Review
     steps:
       - uses: actions/checkout@v2
