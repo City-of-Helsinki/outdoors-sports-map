@@ -62,7 +62,8 @@
     "GET_ROUTE": "Väg hit",
     "NOTICE": "Meddelande",
     "WATER_TEMPERATURE": "Vattnets temperatur",
-    "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor"
+    "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor",
+    "CLOSE": "Stänga"
   },
   "VIEW": {
     "POPUP": {
