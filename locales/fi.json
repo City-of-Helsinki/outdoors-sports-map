@@ -62,7 +62,8 @@
     "GET_ROUTE": "Hae reitti tänne",
     "NOTICE": "Tiedote",
     "WATER_TEMPERATURE": "Veden lämpötila",
-    "WATER_TEMPERATURE_SENSOR": "Uimarantasensori"
+    "WATER_TEMPERATURE_SENSOR": "Uimarantasensori",
+    "CLOSE": "Sulje"
   },
   "VIEW": {
     "POPUP": {

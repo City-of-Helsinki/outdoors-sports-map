@@ -34,7 +34,9 @@ import ObservationStatus, {
 } from './ObservationStatus';
 import UnitIcon from './UnitIcon';
 
-const ModalHeader = ({
+// Export for testing purpose. A bit of an anti-pattern, but required
+// less unrelated work to the feature I was developing
+export const ModalHeader = ({
   handleClick: onClick,
   unit,
   services,
@@ -69,9 +71,9 @@ const ModalHeader = ({
               className="modal-close-button close-unit-modal"
               onClick={handleClick}
               // Href attribute makes the link focusable with a keyboard
-              href
+              href=""
             >
-              <SMIcon icon="close" />
+              <SMIcon icon="close" aria-label={t('MODAL.CLOSE')} />
             </a>
           </div>
         </div>
