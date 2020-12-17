@@ -8,7 +8,7 @@ import React from 'react';
 import OSMIcon from '../../home/components/OSMIcon';
 import { UnitFilters } from '../constants';
 
-const UnitFilterIcon = ({ filter, ...rest }: {filter: string}) => {
+const UnitFilterIcon = ({ filter, ...rest }: { filter: string }) => {
   const SKIING_ICON = 'crosscountry';
   const STATUS_OK_ICON = 'status-ok';
   const STATUS_ANY_ICON = 'status-unknown';
@@ -26,7 +26,7 @@ const UnitFilterIcon = ({ filter, ...rest }: {filter: string}) => {
       iconName = STATUS_ANY_ICON;
       break;
     default:
-      // Use received filter
+    // Use received filter
   }
 
   return <OSMIcon icon={iconName} {...rest} />;

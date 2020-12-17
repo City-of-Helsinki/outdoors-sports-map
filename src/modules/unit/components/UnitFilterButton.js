@@ -7,12 +7,16 @@ import DropdownIndicator from './DropdownIndicator';
 import { UnitFilters } from '../constants';
 
 const UnitFilterButton = ({
+  t,
+  filterName,
+  className,
   // eslint-disable-next-line react/prop-types
-  t, filterName, className, showDropdownIndicator = false, ...rest
+  showDropdownIndicator = false,
+  ...rest
 }: {
   t: () => string,
   filterName: string,
-  className: string
+  className: string,
 }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <Button className={`unit-filter-button ${className}`} {...rest}>

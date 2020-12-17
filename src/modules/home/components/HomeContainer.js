@@ -116,37 +116,43 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
       lat: this.props.position[0],
       lon: this.props.position[1],
     });
-  }
+  };
 
   handleChangeLanguage = (language: string) => {
     this.props.changeLanguage(language);
-  }
+  };
 
   setLocation = (location: number[]) => {
     this.props.setLocation(location);
-  }
+  };
 
   setView = (coordinates: number[]) => {
     this.refs.map.getWrappedInstance().setView(coordinates);
-  }
+  };
 
   openUnit = (unitId: string) => {
-    const { router, location: { query } }: Props = this.props;
+    const {
+      router,
+      location: { query },
+    }: Props = this.props;
     router.push({
       pathname: `/unit/${unitId}`,
       query,
     });
-  }
+  };
 
   closeUnit = () => {
-    const { router, location: { query } } = this.props;
+    const {
+      router,
+      location: { query },
+    } = this.props;
     router.push({
       pathname: '/',
       query,
     });
-  }
+  };
 
-  getActiveLanguage = () => this.props.activeLanguage
+  getActiveLanguage = () => this.props.activeLanguage;
 
   render() {
     const {
@@ -163,7 +169,9 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
         query: { filter },
       },
     } = this.props;
-    const activeFilter = filter ? arrayifyQueryValue(filter) : getDefaultFilters();
+    const activeFilter = filter
+      ? arrayifyQueryValue(filter)
+      : getDefaultFilters();
 
     return (
       <div className="home">
@@ -224,10 +232,17 @@ const mapStateToProps = (state, props: Props) => ({
   isSearching: fromSearch.getIsFetching(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-  fetchUnits, fetchServices, setLocation, changeLanguage,
-}, dispatch);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      fetchUnits,
+      fetchServices,
+      setLocation,
+      changeLanguage,
+    },
+    dispatch
+  );
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
-  HomeContainer,
-));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+);

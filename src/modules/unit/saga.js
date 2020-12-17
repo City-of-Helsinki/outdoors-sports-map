@@ -2,12 +2,19 @@
 import { takeLatest } from 'redux-saga';
 import { call, fork, put } from 'redux-saga/effects';
 import { schema } from 'normalizr';
-import { receiveUnits, receiveSearchSuggestions, setFetchError } from './actions';
+import {
+  receiveUnits,
+  receiveSearchSuggestions,
+  setFetchError,
+} from './actions';
 import { UnitActions, unitSchema } from './constants';
 import { getFetchUnitsRequest } from './helpers';
 import type { FetchAction } from '../common/constants';
 import {
-  callApi, createRequest, normalizeEntityResults, stringifyQuery,
+  callApi,
+  createRequest,
+  normalizeEntityResults,
+  stringifyQuery,
 } from '../api/helpers';
 
 function* fetchUnits({ payload: { params } }: FetchAction) {
@@ -15,7 +22,10 @@ function* fetchUnits({ payload: { params } }: FetchAction) {
   const { response, bodyAsJson } = yield call(callApi, request);
 
   if (response.status === 200) {
-    const data = normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema));
+    const data = normalizeEntityResults(
+      bodyAsJson.results,
+      new schema.Array(unitSchema)
+    );
     yield put(receiveUnits(data));
   } else {
     yield put(setFetchError(bodyAsJson.results));
@@ -28,7 +38,6 @@ function* clearSearch() {
 }
 
 function* sendFeedback({ payload: { feedback, email } }) {
-  console.log(feedback);
   const params = {
     description: feedback,
     service_request_type: 'OTHER',
@@ -42,16 +51,14 @@ function* sendFeedback({ payload: { feedback, email } }) {
     params.email = email;
   }
 
-  const request = createRequest('https://api.hel.fi/servicemap/open311/',
-    {
-      method: 'POST',
-      body: stringifyQuery(params),
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-    });
-  const { bodyAsJson } = yield call(callApi, request);
-  console.log(bodyAsJson);
+  const request = createRequest('https://api.hel.fi/servicemap/open311/', {
+    method: 'POST',
+    body: stringifyQuery(params),
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+  });
+  yield call(callApi, request);
 }
 
 function* watchFetchUnits() {

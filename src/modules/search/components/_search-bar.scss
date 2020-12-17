@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
 
-    input[name="search"] {
+    input[name='search'] {
       flex: 2 1 auto;
       display: inline-block;
       border: 2px solid $ui-content;
@@ -33,8 +33,12 @@
     }
 
     @keyframes spin {
-      0%   { transform: rotate(0deg) }
-      100% { transform: rotate(360deg) }
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     &-loading {

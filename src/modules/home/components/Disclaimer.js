@@ -8,8 +8,7 @@ export default translate()(({ attributionLink, t }) => (
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <Link to="#">{t('APP.ABOUT')}</Link>
       <a target="_blank" href={attributionLink} rel="noopener noreferrer">
-        {t('MAP.ATTRIBUTION')}
-        {' '}
+        {t('MAP.ATTRIBUTION')}{' '}
       </a>
     </div>
   </div>

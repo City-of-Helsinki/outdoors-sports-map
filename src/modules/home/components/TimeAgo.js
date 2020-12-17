@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 const TimeAgo = ({ time }) => (
-  <time dateTime={time.toISOString()}>
-    {moment(time).from(moment())}
-  </time>
+  <time dateTime={time.toISOString()}>{moment(time).from(moment())}</time>
 );
 
 TimeAgo.propTypes = {

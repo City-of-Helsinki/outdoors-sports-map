@@ -3,7 +3,11 @@ import isEmpty from 'lodash/isEmpty';
 import { DEFAULT_LANG } from '../common/constants';
 import { getAttr } from '../unit/helpers';
 
-const getServiceName = (unitServices: number[], services: Object, language: ?string = DEFAULT_LANG) => {
+const getServiceName = (
+  unitServices: number[],
+  services: Object,
+  language: ?string = DEFAULT_LANG
+) => {
   if (!services || isEmpty(services)) {
     return '';
   }

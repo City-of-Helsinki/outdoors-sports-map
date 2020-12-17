@@ -10,5 +10,5 @@ import Root from './modules/common/components/Root';
 
 render(
   createElement(Root, { history: browserHistory }),
-  document.getElementById('root'),
+  document.getElementById('root')
 );

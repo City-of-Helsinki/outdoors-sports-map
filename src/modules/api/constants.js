@@ -2,5 +2,5 @@
 
 export type ApiResponse = {
   response: mixed,
-  bodyAsJson: mixed
+  bodyAsJson: mixed,
 };

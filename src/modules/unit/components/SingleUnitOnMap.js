@@ -19,7 +19,8 @@ class SingleUnitOnMap extends Component {
 
   shouldComponentUpdate(nextProps) {
     const { unit, isSelected, zoomLevel } = this.props;
-    const isQualityUpdated = getUnitQuality(unit) !== getUnitQuality(nextProps.unit);
+    const isQualityUpdated =
+      getUnitQuality(unit) !== getUnitQuality(nextProps.unit);
     const isSelectedUpdated = isSelected !== nextProps.isSelected;
     const isZoomUpdated = zoomLevel !== nextProps.zoomLevel;
 
@@ -34,15 +35,28 @@ class SingleUnitOnMap extends Component {
   }
 
   render() {
-    const {
-      unit, zoomLevel, isSelected, ...rest
-    } = this.props;
-    const geometry = unit.geometry && unit.geometry.type === 'MultiLineString' ? unit.geometry : null;
+    const { unit, zoomLevel, isSelected, ...rest } = this.props;
+    const geometry =
+      unit.geometry && unit.geometry.type === 'MultiLineString'
+        ? unit.geometry
+        : null;
 
     return (
       <div>
-        <UnitMarker unit={unit} zoomLevel={zoomLevel} isSelected={isSelected} handleClick={this.handleClick} {...rest} />
-        {geometry && <UnitGeometry unit={unit} onClick={this.handleClick} isSelected={isSelected} /> }
+        <UnitMarker
+          unit={unit}
+          zoomLevel={zoomLevel}
+          isSelected={isSelected}
+          handleClick={this.handleClick}
+          {...rest}
+        />
+        {geometry && (
+          <UnitGeometry
+            unit={unit}
+            onClick={this.handleClick}
+            isSelected={isSelected}
+          />
+        )}
       </div>
     );
   }

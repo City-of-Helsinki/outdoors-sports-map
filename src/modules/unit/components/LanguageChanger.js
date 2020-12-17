@@ -21,9 +21,9 @@ const LanguageChanger = ({ changeLanguage, activeLanguage, isMobile }) => (
           >
             {languageKey}
           </a>
-          {index < Object.keys(SUPPORTED_LANGUAGES).length - 2 && !isMobile
-            ? <div style={{ marginLeft: 2, marginRight: 2 }}>|</div>
-            : null}
+          {index < Object.keys(SUPPORTED_LANGUAGES).length - 2 && !isMobile ? (
+            <div style={{ marginLeft: 2, marginRight: 2 }}>|</div>
+          ) : null}
         </div>
       ))}
   </div>

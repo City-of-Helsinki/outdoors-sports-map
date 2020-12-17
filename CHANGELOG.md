@@ -6,9 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Changed 
+### Changed
 
-- Run tests in GitHub
+-   Run tests in GitHub
+-   Use prettier to format project
 
 ### Fixed
 

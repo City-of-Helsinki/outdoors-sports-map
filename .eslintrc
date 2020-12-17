@@ -1,7 +1,10 @@
 {
   "extends": [
     "airbnb",
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "prettier",
+    "prettier/react",
+    "prettier/flowtype"
   ],
   "env": {
     // explicit environment
@@ -12,7 +15,7 @@
   },
   "globals": {
     "module": true,
-    "process": true,
+    "process": true
   },
   "parser": "babel-eslint",
   "rules": {
@@ -21,20 +24,19 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-underscore-dangle": ["off"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-props-no-spreading": "off"
   },
-  "plugins": [
-    "flowtype"
-  ],
+  "plugins": ["flowtype"],
   "settings": {
     "react": {
       // set to `detect` in >15.4
-      "version": "15.4",
+      "version": "15.4"
     },
     "import/resolver": {
       // for aliases
       "webpack": {
-        "config": "./config/webpack/common.js",
+        "config": "./config/webpack/common.js"
       }
-    },
-  },
+    }
+  }
 }
