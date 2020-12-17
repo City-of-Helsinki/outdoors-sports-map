@@ -35,13 +35,18 @@ import ObservationStatus, {
 import UnitIcon from './UnitIcon';
 
 const ModalHeader = ({
-  handleClick,
+  handleClick: onClick,
   unit,
   services,
   isLoading,
   activeLang,
   t,
 }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onClick(e);
+  };
+
   const unitAddress = unit ? getAttr(unit.street_address, activeLang()) : null;
   const unitZIP = unit ? unit.address_zip : null;
   const unitMunicipality = unit ? unit.municipality : null;
@@ -63,6 +68,8 @@ const ModalHeader = ({
             <a
               className="modal-close-button close-unit-modal"
               onClick={handleClick}
+              // Href attribute makes the link focusable with a keyboard
+              href
             >
               <SMIcon icon="close" />
             </a>
