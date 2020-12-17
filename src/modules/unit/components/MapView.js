@@ -180,16 +180,26 @@ export default translate(null, { withRef: true })(MapView);
 
 const LanguageChanger = ({ changeLanguage, activeLanguage, isMobile }) => (
   <div className={isMobile ? 'language-changer__mobile' : 'language-changer'}>
-    {Object.keys(SUPPORTED_LANGUAGES).filter((language) => SUPPORTED_LANGUAGES[language] !== activeLanguage).map((languageKey, index) => (
-      <div key={languageKey} style={{ display: 'flex' }}>
-        <a onClick={() => changeLanguage(SUPPORTED_LANGUAGES[languageKey])}>
-          {languageKey}
-        </a>
-        {index < Object.keys(SUPPORTED_LANGUAGES).length - 2 && !isMobile
-          ? <div style={{ marginLeft: 2, marginRight: 2 }}>|</div>
-          : null}
-      </div>
-    ))}
+    {Object.entries(SUPPORTED_LANGUAGES)
+      .filter(([language]) => SUPPORTED_LANGUAGES[language] !== activeLanguage)
+      .map(([languageKey, languageValue], index) => (
+        <div key={languageKey} style={{ display: 'flex' }}>
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              changeLanguage(SUPPORTED_LANGUAGES[languageKey])
+            }}
+            lang={languageValue}
+            // Empty href makes hte anchor focusable
+            href
+          >
+            {languageKey}
+          </a>
+          {index < Object.keys(SUPPORTED_LANGUAGES).length - 2 && !isMobile
+            ? <div style={{ marginLeft: 2, marginRight: 2 }}>|</div>
+            : null}
+        </div>
+      ))}
   </div>
 );
 
