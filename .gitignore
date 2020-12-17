@@ -1,6 +1,7 @@
 .nvmrc
 .env
 .idea
+.vscode
 coverage
 flow-typed
 dist
