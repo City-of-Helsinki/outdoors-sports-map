@@ -5,9 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import SingleUnitOnMap from './SingleUnitOnMap';
 import { sortByCondition, getUnitQuality } from '../helpers';
 
-const UnitsOnMap = ({
-  units, selectedUnit, openUnit, zoomLevel,
-}) => {
+const UnitsOnMap = ({ units, selectedUnit, openUnit, zoomLevel }) => {
   let unitsInOrder = units.slice();
   const originalLength = unitsInOrder.length;
 
@@ -19,11 +17,18 @@ const UnitsOnMap = ({
 
   return (
     <div className="units-on-map">
-      {
-        !isEmpty(unitsInOrder) && unitsInOrder.map(
-          (unit, index) => <SingleUnitOnMap isSelected={selectedUnit && selectedUnit.id === unit.id} unit={unit} zoomLevel={zoomLevel} key={`${unit.id}:${getUnitQuality(unit)}:${index === originalLength}`} openUnit={openUnit} />,
-        )
-      }
+      {!isEmpty(unitsInOrder) &&
+        unitsInOrder.map((unit, index) => (
+          <SingleUnitOnMap
+            isSelected={selectedUnit && selectedUnit.id === unit.id}
+            unit={unit}
+            zoomLevel={zoomLevel}
+            key={`${unit.id}:${getUnitQuality(unit)}:${
+              index === originalLength
+            }`}
+            openUnit={openUnit}
+          />
+        ))}
     </div>
   );
 };

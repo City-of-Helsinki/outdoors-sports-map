@@ -13,22 +13,22 @@ export const mobileBreakpoint = 768;
 
 export type Action = {
   type: string,
-  payload: Object
+  payload: Object,
 };
 
 export type FetchAction = {
   type: string,
   payload: {
-    params: Object
-  }
+    params: Object,
+  },
 };
 
 export type EntityAction = {
   type: string,
   payload: {
     entities: Object,
-    result: mixed
-  }
+    result: mixed,
+  },
 };
 
 export type AppState = {
@@ -37,8 +37,7 @@ export type AppState = {
   search: SearchState,
 };
 
-
-export type QueryValue = | string | Array<string>;
+export type QueryValue = string | Array<string>;
 
 export const routerPaths = {
   singleUnit: 'unit/:unitId',

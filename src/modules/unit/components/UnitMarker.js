@@ -36,11 +36,11 @@ class UnitMarker extends Component {
   }
 
   getIconWidth(zoomLevel) {
-    return zoomLevel / MAX_ZOOM * UNIT_ICON_WIDTH;
+    return (zoomLevel / MAX_ZOOM) * UNIT_ICON_WIDTH;
   }
 
   getIconHeight(icon, zoomLevel) {
-    return zoomLevel / MAX_ZOOM * icon.height;
+    return (zoomLevel / MAX_ZOOM) * icon.height;
   }
 
   closePopup() {
@@ -66,17 +66,19 @@ class UnitMarker extends Component {
   }
 
   _getAnchorHeight(iconHeight, unit) {
-    return getUnitSport(unit) === UnitFilters.SKIING ? iconHeight / 2 : iconHeight;
+    return getUnitSport(unit) === UnitFilters.SKIING
+      ? iconHeight / 2
+      : iconHeight;
   }
 
   _getPopupOffset(unit) {
-    return -(getUnitSport(unit) === UnitFilters.SKIING ? POPUP_OFFSET : POPUP_OFFSET + 24);
+    return -(getUnitSport(unit) === UnitFilters.SKIING
+      ? POPUP_OFFSET
+      : POPUP_OFFSET + 24);
   }
 
   render() {
-    const {
-      unit, isSelected, handleClick, ...rest
-    } = this.props;
+    const { unit, isSelected, handleClick, ...rest } = this.props;
     return (
       <Marker
         ref="marker"

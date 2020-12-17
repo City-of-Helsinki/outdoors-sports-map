@@ -3,9 +3,12 @@ import { translate } from 'react-i18next';
 
 const filterNameToLabel = (filterName) => {
   switch (filterName) {
-    case 'sport': return 'UNIT.FILTER_SPORT';
-    case 'status': return 'UNIT.FILTER_STATUS';
-    default: return '';
+    case 'sport':
+      return 'UNIT.FILTER_SPORT';
+    case 'status':
+      return 'UNIT.FILTER_STATUS';
+    default:
+      return '';
   }
 };
 
@@ -17,10 +20,7 @@ const UnitFilterLabel = ({ filterName, t }) => {
   }
   return (
     <div className="unit-filter-label">
-      <span>
-        {t(message)}
-:
-      </span>
+      <span>{t(message)}:</span>
     </div>
   );
 };

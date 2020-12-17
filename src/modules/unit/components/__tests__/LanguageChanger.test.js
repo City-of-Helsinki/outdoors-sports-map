@@ -8,7 +8,8 @@ const defaultProps = {
   changeLanguage: jest.fn(),
   activeLanguage: 'fi',
 };
-const getWrapper = (props) => mount(<LanguageChanger {...defaultProps} {...props} />);
+const getWrapper = (props) =>
+  mount(<LanguageChanger {...defaultProps} {...props} />);
 
 describe('<LanguageChanger />', () => {
   it('should add a lang attribute to language options', async () => {

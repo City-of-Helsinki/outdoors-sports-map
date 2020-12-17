@@ -27,17 +27,19 @@ const getTranslations = () => ({
 
 const localesByName = getTranslations();
 
-const i18n = i18next
-  .init({
+const i18n = i18next.init(
+  {
     resources: localesByName,
     lng: DEFAULT_LANG, // @todo: How should the user pick their preferred language? #UX
-  }, (err, t) => {
+  },
+  (err, t) => {
     // @todo: do we have some error reporting mechanism in production?
     if (err) {
       // eslint-disable-next-line no-console
       console.log(err, t);
     }
-  });
+  }
+);
 
 class TranslationProvider extends React.Component {
   componentWillMount() {

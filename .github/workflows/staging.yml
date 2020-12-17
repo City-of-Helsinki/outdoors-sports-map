@@ -28,23 +28,9 @@ jobs:
           DOCKER_BUILD_ARG_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
           DOCKER_BUILD_ARG_APP_NAME: "outdoors-sports-map"
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    name: Test
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-      
-      - run: |
-          yarn
-          yarn test --ci --runInBand --updateSnapshot
-
   staging:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     name: Staging
     steps:
       - uses: actions/checkout@v2

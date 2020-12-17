@@ -5,10 +5,5 @@ import mapSaga from '../modules/map/saga';
 import serviceSaga from '../modules/service/saga';
 
 export default function* rootSaga() {
-  yield [
-    fork(unitSaga),
-    fork(searchSaga),
-    fork(mapSaga),
-    fork(serviceSaga),
-  ];
+  yield [fork(unitSaga), fork(searchSaga), fork(mapSaga), fork(serviceSaga)];
 }

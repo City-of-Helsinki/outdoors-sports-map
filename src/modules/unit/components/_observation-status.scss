@@ -1,5 +1,4 @@
 .observation-status {
-
   &__bar {
     padding: 0 2px;
     width: 100%;
@@ -22,7 +21,6 @@
     &--unknown {
       background: $status-unknown;
     }
-
   }
 
   &__time {

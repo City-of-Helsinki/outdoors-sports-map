@@ -35,14 +35,14 @@
     overflow-x: hidden;
     padding: 3px 10px;
     font-weight: 700;
-    background-color: rgba(255,255,255,0.85);
+    background-color: rgba(255, 255, 255, 0.85);
     overflow: hidden;
     margin-left: 8px;
     margin-right: 8px;
     width: auto;
     text-align: center;
   }
-  @media only screen and (min-width : $breakpoint) {
+  @media only screen and (min-width: $breakpoint) {
     .unit-browser__tmp_msg {
       width: 384px;
     }
@@ -52,13 +52,12 @@
       color: #dd0000;
     }
   }
-  @media only screen and (max-width : $breakpoint) {
+  @media only screen and (max-width: $breakpoint) {
     .unit-browser__tmp_msg a {
       font-size: 16px;
       color: #dd0000;
     }
   }
-
 
   .header {
     width: 100%;
@@ -94,7 +93,6 @@
 }
 
 .address-bar {
-
   &__container {
     border-radius: 18px;
     padding: 3px 10px;
@@ -113,7 +111,7 @@
   }
 }
 
-@media only screen and (min-width : $breakpoint) {
+@media only screen and (min-width: $breakpoint) {
   .unit-browser {
     width: 400px;
 

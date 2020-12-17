@@ -4,11 +4,13 @@
   background: $ui-content;
   color: $ui-text;
 
-  &__filters.container, &__options.container {
+  &__filters.container,
+  &__options.container {
     max-width: 100%;
   }
 
-  &__filters.row, &__options.row {
+  &__filters.row,
+  &__options.row {
     padding: $gap;
   }
 
@@ -22,11 +24,11 @@
     border-top: 1px solid $ui-enabled;
   }
 
-
-  &__edit, &__option {
+  &__edit,
+  &__option {
     padding: 0;
 
-    &:nth-child(n+3) {
+    &:nth-child(n + 3) {
       margin-top: $gap;
     }
 
@@ -59,7 +61,8 @@
       line-height: 1;
     }
 
-    &.active, &:active {
+    &.active,
+    &:active {
       background-color: $ui-enabled;
       color: $ui-text;
       box-shadow: none;
@@ -73,5 +76,4 @@
       margin-left: auto;
     }
   }
-
 }

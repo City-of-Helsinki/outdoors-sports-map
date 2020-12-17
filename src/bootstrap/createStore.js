@@ -8,29 +8,34 @@ import { APP_NAME } from '../modules/common/constants';
 /**
  * @returns {function}
  */
-const createStore = () => new Promise((resolve) => {
-  const rootReducer = createRootReducer();
-  const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [];
+const createStore = () =>
+  new Promise((resolve) => {
+    const rootReducer = createRootReducer();
+    const sagaMiddleware = createSagaMiddleware();
+    const middlewares = [];
 
-  middlewares.push(sagaMiddleware);
+    middlewares.push(sagaMiddleware);
 
-  const enhancer = compose(
-    applyMiddleware(...middlewares),
-    autoRehydrate(),
-    window.devToolsExtension ? window.devToolsExtension() : (f) => f,
-  );
+    const enhancer = compose(
+      applyMiddleware(...middlewares),
+      autoRehydrate(),
+      window.devToolsExtension ? window.devToolsExtension() : (f) => f
+    );
 
-  const store = rawCreateStore(rootReducer, enhancer);
+    const store = rawCreateStore(rootReducer, enhancer);
 
-  // The promise returned by "createStore" will be resolved once we have re-hydrated the state.
-  persistStore(store, {
-    whitelist: ['language', 'map'],
-    blacklist: [],
-    keyPrefix: `${APP_NAME}:`,
-  }, () => resolve(store));
+    // The promise returned by "createStore" will be resolved once we have re-hydrated the state.
+    persistStore(
+      store,
+      {
+        whitelist: ['language', 'map'],
+        blacklist: [],
+        keyPrefix: `${APP_NAME}:`,
+      },
+      () => resolve(store)
+    );
 
-  sagaMiddleware.run(rootSaga);
-});
+    sagaMiddleware.run(rootSaga);
+  });
 
 export default createStore;

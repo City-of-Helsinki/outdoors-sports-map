@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React from 'react';
 import moment from 'moment';
 
 import { mount } from '../../../common/enzymeHelpers';
@@ -12,7 +12,8 @@ const defaultProps = {
   routeUrl: '',
 };
 // eslint-disable-next-line react/jsx-props-no-spreading
-const getWrapper = async (props) => mount(<SingleUnitModalBody {...defaultProps} {...props} />);
+const getWrapper = async (props) =>
+  mount(<SingleUnitModalBody {...defaultProps} {...props} />);
 const unit = {
   id: 40142,
   name: {
@@ -33,22 +34,14 @@ const unit = {
     maintenance_organization: 'helsinki',
   },
   municipality: 'helsinki',
-  services: [
-    731,
-  ],
+  services: [731],
   location: {
     type: 'Point',
-    coordinates: [
-      24.907427,
-      60.173553,
-    ],
+    coordinates: [24.907427, 60.173553],
   },
   geometry: {
     type: 'Point',
-    coordinates: [
-      24.907427,
-      60.173553,
-    ],
+    coordinates: [24.907427, 60.173553],
   },
   connections: [
     {
@@ -118,9 +111,15 @@ const unit = {
         en: 'Rules and regulations',
       },
       www: {
-        fi: 'https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/fi/palvelut/liikunta-ja-ulkoilu/uimarantojen-jarjestyssaannot',
-        sv: 'https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/sv/tjanster/motion-och-friluftsliv/ordningsstadga-for-badstrander',
-        en: 'https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/en/services/sports-and-recreation/rules-and-regulations-for-beaches',
+        fi:
+          // eslint-disable-next-line max-len
+          'https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/fi/palvelut/liikunta-ja-ulkoilu/uimarantojen-jarjestyssaannot',
+        sv:
+          // eslint-disable-next-line max-len
+          'https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/sv/tjanster/motion-och-friluftsliv/ordningsstadga-for-badstrander',
+        en:
+          // eslint-disable-next-line max-len
+          'https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/en/services/sports-and-recreation/rules-and-regulations-for-beaches',
       },
       email: null,
       phone: null,
@@ -182,12 +181,13 @@ const liveTemperatureDataObservation = {
 
 describe('<SingleUnitModalContainer />', () => {
   describe('when live temperature data is available', () => {
-    const getWrapperWithLiveTemperatureData = async (props) => getWrapper({
-      currentUnit: unit,
-      temperatureObservation: temperatureDataObservation,
-      liveTemperatureObservation: liveTemperatureDataObservation,
-      ...props,
-    });
+    const getWrapperWithLiveTemperatureData = async (props) =>
+      getWrapper({
+        currentUnit: unit,
+        temperatureObservation: temperatureDataObservation,
+        liveTemperatureObservation: liveTemperatureDataObservation,
+        ...props,
+      });
 
     it('should be displayed', async () => {
       const wrapper = await getWrapperWithLiveTemperatureData();
