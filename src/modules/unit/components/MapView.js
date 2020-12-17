@@ -33,6 +33,7 @@ import { getUnitPosition } from '../helpers';
 import UnitsOnMap from './UnitsOnMap';
 import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
+import LanguageChanger from './LanguageChanger';
 
 class MapView extends Component {
   static propTypes = {
@@ -177,21 +178,6 @@ class MapView extends Component {
 }
 
 export default translate(null, { withRef: true })(MapView);
-
-const LanguageChanger = ({ changeLanguage, activeLanguage, isMobile }) => (
-  <div className={isMobile ? 'language-changer__mobile' : 'language-changer'}>
-    {Object.keys(SUPPORTED_LANGUAGES).filter((language) => SUPPORTED_LANGUAGES[language] !== activeLanguage).map((languageKey, index) => (
-      <div key={languageKey} style={{ display: 'flex' }}>
-        <a onClick={() => changeLanguage(SUPPORTED_LANGUAGES[languageKey])}>
-          {languageKey}
-        </a>
-        {index < Object.keys(SUPPORTED_LANGUAGES).length - 2 && !isMobile
-          ? <div style={{ marginLeft: 2, marginRight: 2 }}>|</div>
-          : null}
-      </div>
-    ))}
-  </div>
-);
 
 const InfoMenu = ({
   openAboutModal, openFeedbackModal, t, isMobile, activeLanguage, changeLanguage,
