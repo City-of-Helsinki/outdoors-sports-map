@@ -23,7 +23,7 @@ export default class Control extends MapControl {
     // eslint-disable-next-line func-names
     control.onAdd = function () {
       const div = L.DomUtil.create('div', `custom-control ${className}`);
-      const link = L.DomUtil.create('a', 'custom-control-button', div);
+      const link = L.DomUtil.create('button', 'custom-control-button', div);
 
       L.DomEvent.on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
         .on(link, 'click', L.DomEvent.stop)

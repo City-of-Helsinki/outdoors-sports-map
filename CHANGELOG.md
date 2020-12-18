@@ -17,3 +17,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Language toggles now have the correct lang attribute
 -   [Accessibility] Make unit modal closable with keyboard
 -   [Accessibility] Add text label to unit modal close link
+-   [Accessibility] Info button not reachable with keyboard
