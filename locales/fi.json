@@ -88,5 +88,8 @@
     "WEEK_AGO": "viikko sitten",
     "WEEKS_AGO": "{{weeks}} viikkoa sitten",
     "YESTERDAY": "eilen"
+  },
+  "OUTBOUND_LINK": {
+    "DESCRIPTION": "Avaa uuden ikkunan"
   }
 }

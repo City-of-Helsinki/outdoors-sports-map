@@ -28,6 +28,7 @@ import {
   createReittiopasUrl,
 } from '../helpers';
 import getServiceName from '../../service/helpers';
+import OutboundLink from '../../common/components/OutboundLink';
 import ObservationStatus, {
   StatusUpdated,
   StatusUpdatedAgo,
@@ -140,13 +141,9 @@ const LocationInfo = ({ unit, t, activeLang }) => (
     )}
     {unit.www && (
       <p>
-        <a
-          href={getAttr(unit.www, activeLang())}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <OutboundLink href={getAttr(unit.www, activeLang())}>
           {t('UNIT.FURTHER_INFO')} <SMIcon icon="outbound-link" />
-        </a>
+        </OutboundLink>
       </p>
     )}
   </ModalBodyBox>
@@ -178,9 +175,7 @@ const NoticeInfo = ({ unit, t, activeLang }) => {
 
 const LocationRoute = ({ routeUrl, t }) => (
   <ModalBodyBox title={t('MODAL.ROUTE_HERE')}>
-    <a target="_blank" href={routeUrl} rel="noopener noreferrer">
-      {t('MODAL.GET_ROUTE')}
-    </a>
+    <OutboundLink href={routeUrl}>{t('MODAL.GET_ROUTE')}</OutboundLink>
   </ModalBodyBox>
 );
 

@@ -38,6 +38,7 @@ import { getUnitPosition } from '../helpers';
 import UnitsOnMap from './UnitsOnMap';
 import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
+import OutboundLink from '../../common/components/OutboundLink';
 import LanguageChanger from './LanguageChanger';
 
 class MapView extends Component {
@@ -240,15 +241,10 @@ const InfoMenu = ({
       {t('MAP.INFO_MENU.ABOUT_SERVICE')}
     </InfoMenuItem>
     <InfoMenuItem handleClick={() => null}>
-      <a
-        target="_blank"
-        href="http://osm.org/copyright"
-        rel="noopener noreferrer"
-        style={{ padding: 1 }}
-      >
+      <OutboundLink href="http://osm.org/copyright" style={{ padding: 1 }}>
         &copy;
         {t('MAP.ATTRIBUTION')}{' '}
-      </a>
+      </OutboundLink>
     </InfoMenuItem>
     {isMobile && Object.keys(SUPPORTED_LANGUAGES).length > 1 && (
       <InfoMenuItem handleClick={() => null}>
