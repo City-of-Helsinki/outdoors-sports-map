@@ -2,8 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute } from 'react-router';
 import HomeContainer from '../../home/components/HomeContainer';
-import TranslationProvider from './translation/TranslationProvider';
 import { routerPaths } from '../constants';
+import TranslationProvider from './translation/TranslationProvider';
+import JumpLink from './JumpLink';
 
 const routes = (
   <Route path="/">
@@ -16,7 +17,10 @@ const routes = (
 const App = ({ store, history }) => (
   <Provider store={store}>
     <TranslationProvider>
-      <Router history={history} routes={routes} key={Math.random()} />
+      <div>
+        <JumpLink />
+        <Router history={history} routes={routes} key={Math.random()} />
+      </div>
     </TranslationProvider>
   </Provider>
 );

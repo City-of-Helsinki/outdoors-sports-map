@@ -22,3 +22,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Make search button accessible with keyboard and move it after the search field
 -   [Accessibility] Add accessible names to map and list buttons
 -   [Accessibility] Warn when links open a new window
+-   [Accessibility] Add jump link
