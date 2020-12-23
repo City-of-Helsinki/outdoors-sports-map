@@ -76,6 +76,15 @@
         margin-bottom: 3px;
       }
     }
+
+    &-multi-line {
+      white-space: pre-wrap;
+      margin-top: 2rem;
+
+      & > * {
+        display: inline-block;
+      }
+    }
   }
 
   &-close-button {

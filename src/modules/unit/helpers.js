@@ -125,18 +125,20 @@ export const getUnitQuality = (unit: Object): string => {
   return observation ? observation.quality : UnitQuality.UNKNOWN;
 };
 
-export const getOpeningHours = (unit: Object, activeLang: string): string => {
-  // eslint-disable-next-line no-restricted-syntax
-  for (const service of unit.services) {
-    if (
-      service === UnitServices.MECHANICALLY_FROZEN_ICE &&
-      unit.connections &&
-      unit.connections[1]
-    ) {
-      return getAttr(unit.connections[1].name, activeLang) || '';
-    }
+export const getOpeningHours = (unit: Object, activeLang: string): string[] => {
+  const isMechanicallyFrozenIce = unit.services.includes(
+    UnitServices.MECHANICALLY_FROZEN_ICE
+  );
+
+  if (!isMechanicallyFrozenIce) {
+    return [];
   }
-  return '';
+
+  const connections = unit.connections || [];
+
+  return connections
+    .filter((connection) => connection.section_type === 'OPENING_HOURS')
+    .map((connection) => getAttr(connection.name, activeLang));
 };
 
 export const getObservationTime = (observation: Object) =>
