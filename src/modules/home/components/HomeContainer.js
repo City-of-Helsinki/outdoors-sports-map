@@ -30,6 +30,7 @@ import UnitBrowser from '../../unit/components/UnitBrowser';
 import SingleUnitModalContainer from '../../unit/components/SingleUnitModalContainer';
 import { locations } from '../constants';
 import { arrayifyQueryValue } from '../../common/helpers';
+import Page from '../../common/components/Page';
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
 type Props = {
@@ -174,44 +175,46 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
       : getDefaultFilters();
 
     return (
-      <div className="home">
-        <UnitBrowser
-          isLoading={isLoading}
-          isSearching={isSearching}
-          units={unitData}
-          services={serviceData}
-          activeFilter={activeFilter}
-          openUnit={this.openUnit}
-          position={mapCenter}
-          address={address}
-          params={params}
-          setLocation={this.setLocation}
-          setView={this.setView}
-          leafletMap={this.leafletMap}
-          singleUnitSelected={!!params.unitId}
-        />
-        <MapView
-          ref="map"
-          selectedUnit={selectedUnit}
-          activeLanguage={activeLanguage}
-          params={params}
-          setLocation={this.props.setLocation}
-          position={this.initialPosition}
-          units={unitData}
-          services={serviceData}
-          changeLanguage={this.handleChangeLanguage}
-          openUnit={this.openUnit}
-          mapCenter={mapCenter}
-        />
-        <SingleUnitModalContainer
-          isLoading={isLoading}
-          isOpen={!!params.unitId}
-          unit={selectedUnit}
-          services={serviceData}
-          params={params}
-          handleClick={this.closeUnit}
-        />
-      </div>
+      <Page>
+        <div className="home">
+          <UnitBrowser
+            isLoading={isLoading}
+            isSearching={isSearching}
+            units={unitData}
+            services={serviceData}
+            activeFilter={activeFilter}
+            openUnit={this.openUnit}
+            position={mapCenter}
+            address={address}
+            params={params}
+            setLocation={this.setLocation}
+            setView={this.setView}
+            leafletMap={this.leafletMap}
+            singleUnitSelected={!!params.unitId}
+          />
+          <MapView
+            ref="map"
+            selectedUnit={selectedUnit}
+            activeLanguage={activeLanguage}
+            params={params}
+            setLocation={this.props.setLocation}
+            position={this.initialPosition}
+            units={unitData}
+            services={serviceData}
+            changeLanguage={this.handleChangeLanguage}
+            openUnit={this.openUnit}
+            mapCenter={mapCenter}
+          />
+          <SingleUnitModalContainer
+            isLoading={isLoading}
+            isOpen={!!params.unitId}
+            unit={selectedUnit}
+            services={serviceData}
+            params={params}
+            handleClick={this.closeUnit}
+          />
+        </div>
+      </Page>
     );
   }
 }
