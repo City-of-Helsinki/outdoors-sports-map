@@ -6,21 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.1.2] - 2021-01-05
+
 ### Changed
 
--   Run tests in GitHub
--   Use prettier to format project
--   Show all opening hours
--   Use icon instead of tooltip for outbound link
+-   [#34](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/34) Run tests in GitHub
+-   [#37](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/34) Use prettier to format project
+-   [#45](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/45) Show all opening hours
+-   [#47](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/47) Use icon instead of tooltip for outbound link
 
 ### Fixed
 
--   [Accessibility] HTML document language is now synced with application language
--   [Accessibility] Language toggles now have the correct lang attribute
--   [Accessibility] Make unit modal closable with keyboard
--   [Accessibility] Add text label to unit modal close link
--   [Accessibility] Info button not reachable with keyboard
--   [Accessibility] Make search button accessible with keyboard and move it after the search field
--   [Accessibility] Add accessible names to map and list buttons
--   [Accessibility] Warn when links open a new window
--   [Accessibility] Add jump link
+-   [#36](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/36) [Accessibility] HTML document language is now synced with application language
+-   [#36](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/36) [Accessibility] Language toggles now have the correct lang attribute
+-   [#38](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/38) [Accessibility] Make unit modal closable with keyboard
+-   [#39](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/39) [Accessibility] Add text label to unit modal close link
+-   [#40](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/40) [Accessibility] Info button not reachable with keyboard
+-   [#41](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/41) [Accessibility] Make search button accessible with keyboard and move it after the search field
+-   [#43](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/43) [Accessibility] Add accessible names to map and list buttons
+-   [#44](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/44) [Accessibility] Warn when links open a new window
+-   [#42](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/42) [Accessibility] Add jump link
