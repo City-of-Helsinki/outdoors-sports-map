@@ -2,18 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import SMIcon from '../../home/components/SMIcon';
+
 const OutboundLink = translate()(({ t, href, children, ...rest }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="outbound-link"
-    {...rest}
-  >
+  <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
     {children}{' '}
-    <span className="outbound-link__outbound_warning">
-      {t('OUTBOUND_LINK.DESCRIPTION')}
-    </span>
+    <SMIcon icon="outbound-link" title={t('OUTBOUND_LINK.DESCRIPTION')} />
   </a>
 ));
 

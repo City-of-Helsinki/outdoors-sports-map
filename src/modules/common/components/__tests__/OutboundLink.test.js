@@ -16,6 +16,6 @@ describe('<OutboundLink />', () => {
     const link = wrapper.find('a');
 
     expect(link.length).toEqual(1);
-    expect(link.find('[aria-label="Avaa uuden ikkunan"]'));
+    expect(link.find('[title="Avaa uuden ikkunan"]'));
   });
 });
