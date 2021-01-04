@@ -33,27 +33,36 @@ import {
   getDefaultSportFilter,
 } from '../helpers';
 
-const ActionButton = ({ action, icon, isActive }) => (
-  <button
-    className={`action-button ${isActive ? 'is-active' : ''}`}
-    onClick={action}
-  >
-    <SMIcon className="unit-browser__action" icon={icon} />
+const ActionButton = ({ action, icon, isActive, name }) => (
+  <button className="action-button" aria-pressed={isActive} onClick={action}>
+    <SMIcon className="unit-browser__action" icon={icon} aria-label={name} />
   </button>
 );
 
-const Header = ({ expand, collapse, openUnit, setView, isExpanded }) => (
-  <div className="header">
-    <SearchContainer onSearch={expand} openUnit={openUnit} setView={setView} />
-    <div className="action-buttons">
-      <ActionButton
-        action={collapse}
-        icon="map-options"
-        isActive={!isExpanded}
+const Header = translate()(
+  ({ t, expand, collapse, openUnit, setView, isExpanded }) => (
+    <div className="header">
+      <SearchContainer
+        onSearch={expand}
+        openUnit={openUnit}
+        setView={setView}
       />
-      <ActionButton action={expand} icon="browse" isActive={isExpanded} />
+      <div className="action-buttons">
+        <ActionButton
+          action={collapse}
+          icon="map-options"
+          isActive={!isExpanded}
+          name={t('UNIT.MAP_BUTTON')}
+        />
+        <ActionButton
+          action={expand}
+          icon="browse"
+          isActive={isExpanded}
+          name={t('UNIT.LIST_BUTTON')}
+        />
+      </div>
     </div>
-  </div>
+  )
 );
 
 const AddressBar = ({ address, handleClick }, context) => (
