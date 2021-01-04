@@ -17,7 +17,7 @@ const routes = (
 const App = ({ store, history }) => (
   <Provider store={store}>
     <TranslationProvider>
-      <div>
+      <div id="app-wrapper">
         <JumpLink />
         <Router history={history} routes={routes} key={Math.random()} />
       </div>
