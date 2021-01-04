@@ -1,0 +1,27 @@
+.outbound-link {
+  position: relative;
+  overflow: visible;
+
+  &__outbound_warning {
+    position: absolute;
+    left: -12000px;
+    width: 0;
+    overflow: hidden;
+  }
+
+  &:focus &__outbound_warning,
+  &:active &__outbound_warning,
+  &:hover &__outbound_warning {
+    display: block;
+    left: 0;
+    top: 2.5rem;
+    padding: 0.5rem 1.5rem;
+    width: max-content;
+
+    color: #000;
+
+    border: 2px solid #000;
+    background: #fff;
+    font-weight: 600;
+  }
+}

@@ -88,5 +88,8 @@
     "WEEK_AGO": "a week ago",
     "WEEKS_AGO": "{{weeks}} weeks ago",
     "YESTERDAY": "yesterday"
+  },
+  "OUTBOUND_LINK": {
+    "DESCRIPTION": "Opens a new window"
   }
 }
