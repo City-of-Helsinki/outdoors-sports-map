@@ -195,11 +195,23 @@ const LocationRoute = ({ routeUrl, t }) => (
 //     Wow such profile.
 //   </ModalBodyBox>;
 
-const LocationOpeningHours = ({ unit, t, activeLang }) => (
-  <ModalBodyBox title={t('MODAL.OPENING_HOURS')}>
-    {getOpeningHours(unit, activeLang())}
-  </ModalBodyBox>
-);
+const LocationOpeningHours = ({ unit, t, activeLang }) => {
+  const openingHours = getOpeningHours(unit, activeLang());
+
+  if (openingHours.length === 0) {
+    return null;
+  }
+
+  return (
+    <ModalBodyBox title={t('MODAL.OPENING_HOURS')}>
+      {openingHours.map((openingHour) => (
+        <div key={openingHour.id} className="modal-body-multi-line">
+          {openingHour}
+        </div>
+      ))}
+    </ModalBodyBox>
+  );
+};
 
 const LocationTemperature = ({ t, observation }) => {
   const temperature = get(observation, 'name.fi');
