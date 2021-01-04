@@ -72,7 +72,10 @@
   },
   "SEARCH": {
     "SEARCH": "Etsi",
-    "SHOW_ALL_RESULTS": "Näytä kaikki hakutulokset"
+    "SHOW_ALL_RESULTS": "Näytä kaikki hakutulokset",
+    "LOADING": "Ladataan",
+    "CLEAR": "Tyhjennä haku",
+    "SUBMIT": "Etsi"
   },
   "TIME": {
     "DAYS_AGO": "{{days}} päivää sitten",

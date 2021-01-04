@@ -4,6 +4,7 @@
     background: $ui-content;
     display: flex;
     align-items: center;
+    position: relative;
 
     input[name='search'] {
       flex: 2 1 auto;
@@ -27,9 +28,10 @@
 
     &-clear {
       position: absolute;
-      right: 50px + 4 * $gap;
-      top: 3 * $gap;
-      cursor: pointer;
+      right: 40px;
+
+      border: none;
+      background: none;
     }
 
     @keyframes spin {
@@ -43,24 +45,23 @@
 
     &-loading {
       position: absolute;
-      top: 24px;
-      left: 50px;
+      left: 16px;
       animation: spin 1s linear infinite;
     }
 
-    label {
+    &-submit {
       flex: 0 1 auto;
-      color: $ui-text;
-      padding-right: 6px;
       display: inline-block;
-      font-size: 18px;
-      line-height: 30px;
+      padding-right: 6px;
       margin: 0;
       width: 24px;
 
-      &:hover {
-        cursor: pointer;
-      }
+      font-size: 18px;
+      line-height: 30px;
+      color: $ui-text;
+
+      border: none;
+      background: none;
     }
   }
 }

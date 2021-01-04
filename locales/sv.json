@@ -72,7 +72,10 @@
   },
   "SEARCH": {
     "SEARCH": "Sök",
-    "SHOW_ALL_RESULTS": "Visa alla sökresultat"
+    "SHOW_ALL_RESULTS": "Visa alla sökresultat",
+    "LOADING": "Läser in",
+    "CLEAR": "Tydlig sökning",
+    "SUBMIT": "Sök"
   },
   "TIME": {
     "DAYS_AGO": "{{days}} dagar sedan",

@@ -19,17 +19,15 @@ const SearchBar = translate()(
           onSubmit();
         }}
       >
-        <label htmlFor="search">
-          <SMIcon icon="search" />
-        </label>
         {disabled && (
           <span className="search-bar__input-loading" onClick={onClear}>
-            <SMIcon icon="loading" />
+            <SMIcon icon="loading" aria-label={t('SEARCH.LOADING')} />
           </span>
         )}
         <input
           name="search"
           id="search"
+          aria-label={t('SEARCH.SEARCH')}
           type="text"
           onChange={(e) => onInput(e.target.value)}
           placeholder={
@@ -41,10 +39,17 @@ const SearchBar = translate()(
           value={input}
         />
         {(input || searchActive) && (
-          <div className="search-bar__input-clear" onClick={onClear}>
-            <SMIcon icon="close" />
-          </div>
+          <button
+            type="button"
+            className="search-bar__input-clear"
+            onClick={onClear}
+          >
+            <SMIcon icon="close" aria-label={t('SEARCH.CLEAR')} />
+          </button>
         )}
+        <button type="submit" className="search-bar__input-submit">
+          <SMIcon icon="search" aria-label={t('SEARCH.SUBMIT')} />
+        </button>
       </form>
     </div>
   )

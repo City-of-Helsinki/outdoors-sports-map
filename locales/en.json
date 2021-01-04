@@ -72,7 +72,10 @@
   },
   "SEARCH": {
     "SEARCH": "Search",
-    "SHOW_ALL_RESULTS": "Show all search results"
+    "SHOW_ALL_RESULTS": "Show all search results",
+    "LOADING": "Loading",
+    "CLEAR": "Clear search",
+    "SUBMIT": "Search"
   },
   "TIME": {
     "DAYS_AGO": "{{days}} days ago",
