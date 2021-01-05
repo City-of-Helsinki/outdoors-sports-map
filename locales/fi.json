@@ -35,8 +35,8 @@
       "STATUS_OK": "Käyttökuntoiset",
       "SWIMMING": "Uinti"
     },
-    "FILTER_SPORT": "Laji",
-    "FILTER_STATUS": "Kunto",
+    "FILTER_SPORT": "Valitse laji",
+    "FILTER_STATUS": "Valitse kunto",
     "SORT": {
       "DEFAULT": "Oletus",
       "ALPHABETICAL": "Aakkosellinen",

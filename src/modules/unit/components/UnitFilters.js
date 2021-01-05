@@ -12,6 +12,9 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { Grid, Row, Col } from 'react-bootstrap';
 import get from 'lodash/get';
+import invert from 'lodash/invert';
+
+import { UnitFilters } from '../constants';
 import UnitFilterButton from './UnitFilterButton';
 import UnitFilterLabelButton from './UnitFilterLabelButton';
 
@@ -36,6 +39,7 @@ const FilterOptionsRow = ({ t, className, filterName, options, onSelect }) => (
           t={t}
           filterName={option}
           onClick={() => onSelect(filterName, option)}
+          message={t(`UNIT.FILTER.${invert(UnitFilters)[option]}`)}
         />
       </Col>
     ))}
