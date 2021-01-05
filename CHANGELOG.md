@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   Run tests in GitHub
 -   Use prettier to format project
 -   Show all opening hours
+-   Use icon instead of tooltip for outbound link
 
 ### Fixed
 

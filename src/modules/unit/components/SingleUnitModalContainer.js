@@ -142,7 +142,7 @@ const LocationInfo = ({ unit, t, activeLang }) => (
     {unit.www && (
       <p>
         <OutboundLink href={getAttr(unit.www, activeLang())}>
-          {t('UNIT.FURTHER_INFO')} <SMIcon icon="outbound-link" />
+          {t('UNIT.FURTHER_INFO')}
         </OutboundLink>
       </p>
     )}
