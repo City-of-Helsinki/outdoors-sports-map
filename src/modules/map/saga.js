@@ -6,7 +6,9 @@ import { mapActions } from './constants';
 import { createUrl, createRequest, callApi } from '../api/helpers';
 import type { FetchAction } from '../common/constants';
 
-function* onSetLocation({ payload: position }: FetchAction): Generator<any, void, void> {
+function* onSetLocation({
+  payload: position,
+}: FetchAction): Generator<any, void, void> {
   const addressParams = {
     lat: position[0],
     lon: position[1],
@@ -24,7 +26,5 @@ function* watchSetLocation() {
 }
 
 export default function* saga(): Generator<*, *, *> {
-  return [
-    yield fork(watchSetLocation),
-  ];
+  return [yield fork(watchSetLocation)];
 }

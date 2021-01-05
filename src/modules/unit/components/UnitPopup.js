@@ -7,11 +7,24 @@ import { getAttr, getUnitQuality, getCondition } from '../helpers';
 
 const UnitPopup = ({ unit, offset, t }, { getActiveLanguage: getLang }) => {
   const condition = getCondition(unit);
-  const conditionLabel = condition ? getAttr(condition.name, getLang()) : t('UNIT.UNKNOWN');
+  const conditionLabel = condition
+    ? getAttr(condition.name, getLang())
+    : t('UNIT.UNKNOWN');
   return (
-    <Popup className="unit-popup" minWidth={150} maxWidth={150} offset={[0, offset]} closeButton={false} autoPan={false}>
+    <Popup
+      className="unit-popup"
+      minWidth={150}
+      maxWidth={150}
+      offset={[0, offset]}
+      closeButton={false}
+      autoPan={false}
+    >
       <div className="unit-popup__content">
-        <div className={`unit-popup__content__status unit-popup__content__status--${getUnitQuality(unit)}`}>
+        <div
+          className={`unit-popup__content__status unit-popup__content__status--${getUnitQuality(
+            unit
+          )}`}
+        >
           {conditionLabel}
         </div>
         <h6 className="unit-popup__content__name">

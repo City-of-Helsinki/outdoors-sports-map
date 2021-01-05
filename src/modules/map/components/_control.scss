@@ -1,7 +1,8 @@
 .custom-control {
-  box-shadow: 0 1px 5px rgba(0,0,0,.6);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
 
-  &, & &-button {
+  &,
+  & &-button {
     background: $content-background;
     border-radius: 50%;
   }
@@ -9,11 +10,17 @@
   & &-button {
     display: block;
     width: 26px;
+    height: 26px;
+    padding: 0;
+
     font-size: 19px;
     line-height: 26px;
     text-align: center;
 
-    &:hover, &:active {
+    border: none;
+
+    &:hover,
+    &:active {
       color: $ui-content;
     }
 

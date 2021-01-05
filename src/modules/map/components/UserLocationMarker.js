@@ -18,12 +18,13 @@ import latLngToArray from '../helpers';
 const iconUrl = require('@assets/markers/location.png');
 const iconRetinaUrl = require('@assets/markers/location@2x.png');
 
-const createIcon = () => new Icon({
-  iconUrl,
-  iconRetinaUrl,
-  iconSize: [12, 23],
-  iconAnchor: [6, 23],
-});
+const createIcon = () =>
+  new Icon({
+    iconUrl,
+    iconRetinaUrl,
+    iconSize: [12, 23],
+    iconAnchor: [6, 23],
+  });
 
 class UserLocationMarker extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ const mapStateToProps = (state) => ({
   position: getLocation(state),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ setLocation }, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ setLocation }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserLocationMarker);

@@ -46,7 +46,7 @@ class SearchContainer extends Component {
       showSuggestions: true,
     });
     this.getSuggestions(value);
-  }
+  };
 
   search = () => {
     this.props.searchUnits(this.state.searchPhrase);
@@ -54,7 +54,7 @@ class SearchContainer extends Component {
     this.setState({
       showSuggestions: false,
     });
-  }
+  };
 
   /**
    * @param  {string} searchPhrase [description]
@@ -62,23 +62,27 @@ class SearchContainer extends Component {
    */
   getSuggestions = (searchPhrase) => {
     this.props.fetchUnitSuggestions(searchPhrase);
-  }
+  };
 
   clear = () => {
     this.setState(initialState());
     this.props.clearSearch();
-  }
+  };
 
   handleAddressClick = (coordinates) => {
     const { setView, setLocation } = this.props;
     this.clear();
     setLocation(coordinates);
     setView(coordinates);
-  }
+  };
 
   render() {
     const {
-      unitSuggestions, addresses, isActive, searchDisabled, openUnit,
+      unitSuggestions,
+      addresses,
+      isActive,
+      searchDisabled,
+      openUnit,
     } = this.props;
     const { searchPhrase, showSuggestions } = this.state;
 
@@ -92,8 +96,7 @@ class SearchContainer extends Component {
           searchActive={isActive}
           disabled={searchDisabled}
         />
-        {showSuggestions
-          && (
+        {showSuggestions && (
           <SearchSuggestions
             openAllResults={this.search}
             units={unitSuggestions}
@@ -101,7 +104,7 @@ class SearchContainer extends Component {
             handleAddressClick={this.handleAddressClick}
             addresses={addresses}
           />
-          )}
+        )}
       </div>
     );
   }
@@ -114,8 +117,15 @@ const mapStateToProps = (state) => ({
   addresses: selectors.getAddresses(state),
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  searchUnits, fetchUnitSuggestions, clearSearch, setLocation,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      searchUnits,
+      fetchUnitSuggestions,
+      clearSearch,
+      setLocation,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);

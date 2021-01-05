@@ -9,7 +9,7 @@
   "MAP": {
     "ATTRIBUTION": "OpenStreetMap tekijät",
     "ABOUT": "<h2>Ulkoliikuntakartta</h2> <h3>Tietoa palvelusta</h3> <p>Ulkoliikuntakartta on avoin tiedotuskanava Helsingin, Espoon ja Vantaan kaupunkien ulkoliikuntapaikkojen kunnosta. Ulkoliikuntakartta opastaa kuntalaisia löytämään ajantasaisen tiedon kaupungin ylläpitämistä ulkoliikuntapalveluista. Tällä hetkellä palvelu kattaa kaupunkien ylläpitämät hiihtoladut ja luistelupaikat, ja keväällä palveluun tulee uimarannat.</p> <p>Palvelu on toteutettu Helsingin kaupungin kaupunginkanslian <a target='_blank' href='http://www.hel.fi/www/kanslia/fi/osastot-ja-yksikot/tietotekniikka/'>tietotekniikka- ja viestintäosaston tietotekniikkayksikön</a> ja <a target='_blank' href='https://hel.fi/liikunta/'>Helsingin kaupungin liikuntaviraston</a> yhteistyönä.</p> <h3>Palaute</h3> <p>Kiitämme kaikesta palautteesta, jotta voimme kehittää Ulkoliikuntakarttaa yhä paremmaksi.</p> <h3>© Tiedot ja tekijänoikeudet</h3> <p>Ulkoliikuntakartta on rakennettu mahdollisimman avointa dataa ja avointa lähdekoodia käyttäen.</p> <p>Kartan lähdekoodi löytyy <a target='_blank' href='https://github.com/nordsoftware/outdoors-sports-map'>GitHubista</a> ja sen kehittämiseen rohkaistaan.</p> <p>Liikuntapaikkojen tiedot ovat avointa dataa ja käytettävissä REST-rajapinnan kautta.</p> <p>Karttatiedot haetaan avoimesta <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMapista</a> ja niiden tekijänoikeus kuuluu <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMapin tekijöille.</a></p> <p>Osoitetietojen hakuun käytetään Helsingin seudun liikenteen <a target='_blank' href='http://developer.reittiopas.fi/'>avointa rajapintaa</a></p>",
-    "INFO_MENU" : {
+    "INFO_MENU": {
       "GIVE_FEEDBACK": "Anna palautetta",
       "ABOUT_SERVICE": "Tietoa palvelusta",
       "CHOOSE_LANGUAGE": "Valitse kieli"
@@ -27,7 +27,7 @@
     "STATUS": "Kunto",
     "UNKNOWN": "Tuntematon",
     "UPDATED": "Päivitetty",
-    "MAINTENANCE_DONE" : "Kunnostettu",
+    "MAINTENANCE_DONE": "Kunnostettu",
     "FILTER": {
       "STATUS_ALL": "Kaikenkuntoiset",
       "ICE_SKATING": "Luistelu",
@@ -44,7 +44,9 @@
       "DISTANCE": "Lähimmät ensin"
     },
     "PHONE": "Puhelinnumero",
-    "TMP_MESSAGE": ""
+    "TMP_MESSAGE": "",
+    "MAP_BUTTON": "Näytä tulokset kartalla",
+    "LIST_BUTTON": "Näytä tulokset kartalla ja listana"
   },
   "MODAL": {
     "LOADING": "Ladataan kohdetta...",
@@ -62,7 +64,8 @@
     "GET_ROUTE": "Hae reitti tänne",
     "NOTICE": "Tiedote",
     "WATER_TEMPERATURE": "Veden lämpötila",
-    "WATER_TEMPERATURE_SENSOR": "Uimarantasensori"
+    "WATER_TEMPERATURE_SENSOR": "Uimarantasensori",
+    "CLOSE": "Sulje"
   },
   "VIEW": {
     "POPUP": {
@@ -71,7 +74,10 @@
   },
   "SEARCH": {
     "SEARCH": "Etsi",
-    "SHOW_ALL_RESULTS": "Näytä kaikki hakutulokset"
+    "SHOW_ALL_RESULTS": "Näytä kaikki hakutulokset",
+    "LOADING": "Ladataan",
+    "CLEAR": "Tyhjennä haku",
+    "SUBMIT": "Etsi"
   },
   "TIME": {
     "DAYS_AGO": "{{days}} päivää sitten",
@@ -82,5 +88,11 @@
     "WEEK_AGO": "viikko sitten",
     "WEEKS_AGO": "{{weeks}} viikkoa sitten",
     "YESTERDAY": "eilen"
+  },
+  "OUTBOUND_LINK": {
+    "DESCRIPTION": "Avaa uuden ikkunan"
+  },
+  "JUMP_LINK": {
+    "LABEL": "Siirry suoraan sisältöön"
   }
 }

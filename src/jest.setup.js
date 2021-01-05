@@ -3,19 +3,22 @@ import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
 import i18next from 'i18next';
 
-i18next
-  .init({
+i18next.init(
+  {
     resources: {
       en: {
         translation: require('../locales/en.json'),
       },
     },
     lng: 'en',
-  }, (err, t) => {
+  },
+  (err, t) => {
     if (err) {
+      // eslint-disable-next-line no-console
       console.log(err, t);
     }
-  });
+  }
+);
 
 const localStorageMock = {
   getItem: jest.fn(),

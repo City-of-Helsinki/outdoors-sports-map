@@ -45,7 +45,7 @@ export type ServiceState = {
   isFetching: boolean,
   byId: Object,
   fetchError: any,
-  all: Array<string>
+  all: Array<string>,
 };
 
-export const serviceSchema = new schema.Entity('service'/* , {} */);
+export const serviceSchema = new schema.Entity('service' /* , {} */);

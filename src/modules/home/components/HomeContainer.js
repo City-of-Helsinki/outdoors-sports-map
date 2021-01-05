@@ -30,6 +30,7 @@ import UnitBrowser from '../../unit/components/UnitBrowser';
 import SingleUnitModalContainer from '../../unit/components/SingleUnitModalContainer';
 import { locations } from '../constants';
 import { arrayifyQueryValue } from '../../common/helpers';
+import Page from '../../common/components/Page';
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
 type Props = {
@@ -116,37 +117,43 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
       lat: this.props.position[0],
       lon: this.props.position[1],
     });
-  }
+  };
 
   handleChangeLanguage = (language: string) => {
     this.props.changeLanguage(language);
-  }
+  };
 
   setLocation = (location: number[]) => {
     this.props.setLocation(location);
-  }
+  };
 
   setView = (coordinates: number[]) => {
     this.refs.map.getWrappedInstance().setView(coordinates);
-  }
+  };
 
   openUnit = (unitId: string) => {
-    const { router, location: { query } }: Props = this.props;
+    const {
+      router,
+      location: { query },
+    }: Props = this.props;
     router.push({
       pathname: `/unit/${unitId}`,
       query,
     });
-  }
+  };
 
   closeUnit = () => {
-    const { router, location: { query } } = this.props;
+    const {
+      router,
+      location: { query },
+    } = this.props;
     router.push({
       pathname: '/',
       query,
     });
-  }
+  };
 
-  getActiveLanguage = () => this.props.activeLanguage
+  getActiveLanguage = () => this.props.activeLanguage;
 
   render() {
     const {
@@ -163,47 +170,51 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
         query: { filter },
       },
     } = this.props;
-    const activeFilter = filter ? arrayifyQueryValue(filter) : getDefaultFilters();
+    const activeFilter = filter
+      ? arrayifyQueryValue(filter)
+      : getDefaultFilters();
 
     return (
-      <div className="home">
-        <UnitBrowser
-          isLoading={isLoading}
-          isSearching={isSearching}
-          units={unitData}
-          services={serviceData}
-          activeFilter={activeFilter}
-          openUnit={this.openUnit}
-          position={mapCenter}
-          address={address}
-          params={params}
-          setLocation={this.setLocation}
-          setView={this.setView}
-          leafletMap={this.leafletMap}
-          singleUnitSelected={!!params.unitId}
-        />
-        <MapView
-          ref="map"
-          selectedUnit={selectedUnit}
-          activeLanguage={activeLanguage}
-          params={params}
-          setLocation={this.props.setLocation}
-          position={this.initialPosition}
-          units={unitData}
-          services={serviceData}
-          changeLanguage={this.handleChangeLanguage}
-          openUnit={this.openUnit}
-          mapCenter={mapCenter}
-        />
-        <SingleUnitModalContainer
-          isLoading={isLoading}
-          isOpen={!!params.unitId}
-          unit={selectedUnit}
-          services={serviceData}
-          params={params}
-          handleClick={this.closeUnit}
-        />
-      </div>
+      <Page>
+        <div className="home">
+          <UnitBrowser
+            isLoading={isLoading}
+            isSearching={isSearching}
+            units={unitData}
+            services={serviceData}
+            activeFilter={activeFilter}
+            openUnit={this.openUnit}
+            position={mapCenter}
+            address={address}
+            params={params}
+            setLocation={this.setLocation}
+            setView={this.setView}
+            leafletMap={this.leafletMap}
+            singleUnitSelected={!!params.unitId}
+          />
+          <MapView
+            ref="map"
+            selectedUnit={selectedUnit}
+            activeLanguage={activeLanguage}
+            params={params}
+            setLocation={this.props.setLocation}
+            position={this.initialPosition}
+            units={unitData}
+            services={serviceData}
+            changeLanguage={this.handleChangeLanguage}
+            openUnit={this.openUnit}
+            mapCenter={mapCenter}
+          />
+          <SingleUnitModalContainer
+            isLoading={isLoading}
+            isOpen={!!params.unitId}
+            unit={selectedUnit}
+            services={serviceData}
+            params={params}
+            handleClick={this.closeUnit}
+          />
+        </div>
+      </Page>
     );
   }
 }
@@ -224,10 +235,17 @@ const mapStateToProps = (state, props: Props) => ({
   isSearching: fromSearch.getIsFetching(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
-  fetchUnits, fetchServices, setLocation, changeLanguage,
-}, dispatch);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      fetchUnits,
+      fetchServices,
+      setLocation,
+      changeLanguage,
+    },
+    dispatch
+  );
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
-  HomeContainer,
-));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+);

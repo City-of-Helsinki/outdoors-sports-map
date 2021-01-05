@@ -27,17 +27,19 @@ const getTranslations = () => ({
 
 const localesByName = getTranslations();
 
-const i18n = i18next
-  .init({
+const i18n = i18next.init(
+  {
     resources: localesByName,
     lng: DEFAULT_LANG, // @todo: How should the user pick their preferred language? #UX
-  }, (err, t) => {
+  },
+  (err, t) => {
     // @todo: do we have some error reporting mechanism in production?
     if (err) {
       // eslint-disable-next-line no-console
       console.log(err, t);
     }
-  });
+  }
+);
 
 class TranslationProvider extends React.Component {
   componentWillMount() {
@@ -48,6 +50,7 @@ class TranslationProvider extends React.Component {
       this.forceUpdate();
     } else {
       moment.locale(language);
+      this.changeDocumentLanguage(language);
     }
   }
 
@@ -58,7 +61,12 @@ class TranslationProvider extends React.Component {
   changeLanguage = (nextLanguage) => {
     i18n.changeLanguage(nextLanguage);
     moment.locale(nextLanguage);
-  }
+    this.changeDocumentLanguage(nextLanguage);
+  };
+
+  changeDocumentLanguage = (nextLanguage) => {
+    document.documentElement.lang = nextLanguage;
+  };
 
   render() {
     return <I18nextProvider i18n={i18n}>{this.props.children}</I18nextProvider>;

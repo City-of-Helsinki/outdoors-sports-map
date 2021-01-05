@@ -1,6 +1,6 @@
 {
   "name": "outdoors-sports-map",
-  "version": "1.0.0",
+  "version": "1.1.3",
   "private": true,
   "scripts": {
     "build": "cross-env NODE_ENV=production node -r @babel/register node_modules/.bin/webpack -p --config=config/webpack/production.js",
@@ -8,17 +8,12 @@
     "flow": "flow",
     "lint": "eslint ./src",
     "start": "cross-env NODE_ENV=development node -r @babel/register node_modules/.bin/webpack-dev-server --config=config/webpack/development.js",
-    "test": "jest --coverage"
+    "test": "jest"
   },
   "jest": {
     "setupFilesAfterEnv": [
       "./src/jest.setup.js"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "yarn lint"
-    }
   },
   "repository": {
     "url": "https://github.com/City-of-Helsinki/outdoors-sports-map.git",
@@ -32,7 +27,7 @@
     "i18next": "^3.4.4",
     "leaflet": "^1.0.2",
     "leaflet-geometryutil": "^0.8.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "normalizr": "^3.5.0",
@@ -73,6 +68,7 @@
     "enzyme-adapter-react-15": "^1.4.1",
     "eslint": "6.1.0",
     "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^7.0.0",
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-flowtype": "^4.6.0",
@@ -91,6 +87,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.2.1",
     "react-test-renderer": "15",
     "regenerator-runtime": "^0.13.3",
     "sass-loader": "^8.0.2",

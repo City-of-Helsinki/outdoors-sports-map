@@ -9,7 +9,7 @@
   "MAP": {
     "ATTRIBUTION": "OpenStreetMap contributors",
     "ABOUT": "<h2>Outdoor Exercise Map</h2> <h3>Information on the service</h3> <p>The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo and Vantaa. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks and ice-skating fields maintained by the cities and in the spring it will also contain beaches.</p> <p>The service has been created in cooperation between the <a target='_blank' href='http://www.hel.fi/www/kanslia/en/divisions/information/'>ICT unit</a> of the Information and Communication Technology division at the Helsinki City Executive Office and  <a target='_blank' href='http://www.hel.fi/www/liv/en'>the City of Helsinki Sports Department</a>.</p> <h3>Feedback</h3> <p>We are grateful for all your feedback, it allows us to develop the Outdoor Exercise Map and make it even better.</p> <h3>© Information and copyright</h3> <p>The Outdoor Exercise Map has been constructed using as open data as possible and open-source code.</p> <p>The source code of the map is on <a target='_blank' href='https://github.com/nordsoftware/outdoors-sports-map'>GitHub</a> and we encourage development of it.</p> <p>The sports facility information is open data and usable through the REST interface.</p> <p>The map data is from <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> and the copyright of the maps belongs to <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>.</p> <p>The address information is from Helsinki Region Transport’s <a target='_blank' href='http://developer.reittiopas.fi/'>open interface</a>.</p>",
-    "INFO_MENU" : {
+    "INFO_MENU": {
       "GIVE_FEEDBACK": "Give feedback",
       "ABOUT_SERVICE": "Information on the service",
       "CHOOSE_LANGUAGE": "Choose language"
@@ -27,7 +27,7 @@
     "STATUS": "Condition",
     "UNKNOWN": "Unknown",
     "UPDATED": "Updated",
-    "MAINTENANCE_DONE" : "Maintained",
+    "MAINTENANCE_DONE": "Maintained",
     "FILTER": {
       "STATUS_ALL": "In all conditions",
       "ICE_SKATING": "Ice-skating",
@@ -44,7 +44,9 @@
       "DISTANCE": "Closest first"
     },
     "PHONE": "Phone",
-    "TMP_MESSAGE": ""
+    "TMP_MESSAGE": "",
+    "MAP_BUTTON": "Show results on map",
+    "LIST_BUTTON": "Show results on map and on the list"
   },
   "MODAL": {
     "LOADING": "Loading the object",
@@ -62,7 +64,8 @@
     "GET_ROUTE": "Get route to here",
     "NOTICE": "Notice",
     "WATER_TEMPERATURE": "Water temperature",
-    "WATER_TEMPERATURE_SENSOR": "Water temperature sensor"
+    "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
+    "CLOSE": "Close"
   },
   "VIEW": {
     "POPUP": {
@@ -71,7 +74,10 @@
   },
   "SEARCH": {
     "SEARCH": "Search",
-    "SHOW_ALL_RESULTS": "Show all search results"
+    "SHOW_ALL_RESULTS": "Show all search results",
+    "LOADING": "Loading",
+    "CLEAR": "Clear search",
+    "SUBMIT": "Search"
   },
   "TIME": {
     "DAYS_AGO": "{{days}} days ago",
@@ -82,5 +88,11 @@
     "WEEK_AGO": "a week ago",
     "WEEKS_AGO": "{{weeks}} weeks ago",
     "YESTERDAY": "yesterday"
+  },
+  "OUTBOUND_LINK": {
+    "DESCRIPTION": "Opens a new window"
+  },
+  "JUMP_LINK": {
+    "LABEL": "Jump straight to content"
   }
 }

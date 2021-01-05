@@ -19,7 +19,7 @@ const UnitIcon = ({ unit }) => {
       icon = 'swim';
       break;
     default:
-      // Use default value
+    // Use default value
   }
 
   return <OSMIcon className="unit-icon" icon={icon} />;

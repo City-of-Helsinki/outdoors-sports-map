@@ -10,20 +10,20 @@ import { translate } from 'react-i18next';
 import Time from '../../home/components/Time';
 import TimeAgo from '../../home/components/TimeAgo';
 import {
-  getUnitQuality, getObservation, getCondition, getObservationTime, getAttr,
+  getUnitQuality,
+  getObservation,
+  getCondition,
+  getObservationTime,
+  getAttr,
 } from '../helpers';
 
 export const StatusBar = ({ quality, label }) => (
-  <div className={`observation-status__bar--${quality}`}>
-    {label}
-  </div>
+  <div className={`observation-status__bar--${quality}`}>{label}</div>
 );
 
 export const StatusUpdated = ({ time, t }) => (
   <div className="obervation-status__time" style={{ fontSize: 12 }}>
-    {t('UNIT.UPDATED')}
-    {' '}
-    <Time time={time} />
+    {t('UNIT.UPDATED')} <Time time={time} />
   </div>
 );
 
@@ -36,12 +36,9 @@ export const StatusUpdatedAgo = ({ time, sensorName = '' }) => (
 
 export const MaintenanceUpdated = ({ name, activeLang, time }) => (
   <div className="observation-status__time" style={{ fontSize: 12 }}>
-    {getAttr(name, activeLang())}
-    {' '}
-    <Time time={time} />
+    {getAttr(name, activeLang())} <Time time={time} />
   </div>
 );
-
 
 const ObservationStatus = ({ unit, t }, context) => {
   const quality = getUnitQuality(unit);
@@ -52,20 +49,20 @@ const ObservationStatus = ({ unit, t }, context) => {
     <div className="observation-status">
       <StatusBar
         quality={quality}
-        label={condition && condition.name
-          ? getAttr(condition.name, context.getActiveLanguage())
-          : t('UNIT.UNKNOWN')}
+        label={
+          condition && condition.name
+            ? getAttr(condition.name, context.getActiveLanguage())
+            : t('UNIT.UNKNOWN')
+        }
       />
       <StatusUpdated t={t} time={getObservationTime(condition)} />
-      {
-        maintenance && (
-          <MaintenanceUpdated
-            name={maintenance.name}
-            activeLang={context.getActiveLanguage}
-            time={getObservationTime(maintenance)}
-          />
-        )
-      }
+      {maintenance && (
+        <MaintenanceUpdated
+          name={maintenance.name}
+          activeLang={context.getActiveLanguage}
+          time={getObservationTime(maintenance)}
+        />
+      )}
     </div>
   );
 };

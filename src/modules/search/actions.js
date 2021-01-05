@@ -18,16 +18,20 @@ export const searchUnits = (input: string, params: Object): Action => {
   return createAction(SearchActions.FETCH_UNITS)({ params });
 };
 
-export const receiveUnits = (results: Array<Object>) => createAction(SearchActions.RECEIVE_UNITS)(results);
+export const receiveUnits = (results: Array<Object>) =>
+  createAction(SearchActions.RECEIVE_UNITS)(results);
 
-export const fetchUnitSuggestions = (input: string): Action => createAction(SearchActions.FETCH_UNIT_SUGGESTIONS)({
-  params: {
-    input,
-    service: `${values(UnitServices).join(',')}`,
-    page_size: MAX_SUGGESTION_COUNT,
-  },
-});
+export const fetchUnitSuggestions = (input: string): Action =>
+  createAction(SearchActions.FETCH_UNIT_SUGGESTIONS)({
+    params: {
+      input,
+      service: `${values(UnitServices).join(',')}`,
+      page_size: MAX_SUGGESTION_COUNT,
+    },
+  });
 
-export const receiveUnitSuggestions = (results: Array<Object>) => createAction(SearchActions.RECEIVE_UNIT_SUGGESTIONS)(results);
+export const receiveUnitSuggestions = (results: Array<Object>) =>
+  createAction(SearchActions.RECEIVE_UNIT_SUGGESTIONS)(results);
 
-export const receiveAddressSuggestions = (results: Array<Object>) => createAction(SearchActions.RECEIVE_ADDRESS_SUGGESTIONS)(results);
+export const receiveAddressSuggestions = (results: Array<Object>) =>
+  createAction(SearchActions.RECEIVE_ADDRESS_SUGGESTIONS)(results);

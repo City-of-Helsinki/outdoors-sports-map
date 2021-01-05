@@ -38,10 +38,21 @@ class UnitListItem extends Component {
     const { context } = this;
 
     return (
-      <Link to={`/unit/${unit.id}`} onClick={(e) => { e.preventDefault(); handleClick(); }} className="list-view-item">
-        <div className="list-view-item__unit-marker"><UnitIcon unit={unit} /></div>
+      <Link
+        to={`/unit/${unit.id}`}
+        onClick={(e) => {
+          e.preventDefault();
+          handleClick();
+        }}
+        className="list-view-item"
+      >
+        <div className="list-view-item__unit-marker">
+          <UnitIcon unit={unit} />
+        </div>
         <div className="list-view-item__unit-details">
-          <div className="list-view-item__unit-name">{unitHelpers.getAttr(unit.name, context.getActiveLanguage())}</div>
+          <div className="list-view-item__unit-name">
+            {unitHelpers.getAttr(unit.name, context.getActiveLanguage())}
+          </div>
           <ObservationStatus unit={unit} />
         </div>
         <div className="list-view-item__unit-open">
@@ -75,7 +86,10 @@ class ListView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.units, this.props.units) || !isEqual(nextProps.activeFilter, this.props.activeFilter)) {
+    if (
+      !isEqual(nextProps.units, this.props.units) ||
+      !isEqual(nextProps.activeFilter, this.props.activeFilter)
+    ) {
       this.resetUnitCount();
     }
   }
@@ -88,13 +102,21 @@ class ListView extends Component {
     let sortedUnits = [];
     switch (sortKey) {
       case SortKeys.ALPHABETICAL:
-        sortedUnits = unitHelpers.sortByName(props.units, this.context.getActiveLanguage());
+        sortedUnits = unitHelpers.sortByName(
+          props.units,
+          this.context.getActiveLanguage()
+        );
         break;
       case SortKeys.CONDITION:
         sortedUnits = unitHelpers.sortByCondition(props.units);
         break;
       case SortKeys.DISTANCE:
-        sortedUnits = unitHelpers.sortByDistance(props.units, props.position, props.leafletMap, props.filter);
+        sortedUnits = unitHelpers.sortByDistance(
+          props.units,
+          props.position,
+          props.leafletMap,
+          props.filter
+        );
         break;
 
       default:
@@ -122,42 +144,47 @@ class ListView extends Component {
   }
 
   render() {
-    const {
-      services, openUnit, isLoading, t,
-    } = this.props;
+    const { services, openUnit, isLoading, t } = this.props;
     const { sortKey, maxUnitCount } = this.state;
     const totalUnits = this.props.units.length;
-    const units = isLoading ? [] : this.sortUnits(this.props, sortKey).slice(0, maxUnitCount);
+    const units = isLoading
+      ? []
+      : this.sortUnits(this.props, sortKey).slice(0, maxUnitCount);
 
     return (
       <View id="list-view" className="list-view">
         <div className="list-view__container">
           <div className="list-view__block">
-            <SortSelectorDropdown values={values(SortKeys)} active={sortKey} onSelect={this.selectSortKey} />
+            <SortSelectorDropdown
+              values={values(SortKeys)}
+              active={sortKey}
+              onSelect={this.selectSortKey}
+            />
           </div>
           <div className="list-view__block">
             {isLoading && <Loading />}
-            {units && units.map((unit) => (
-              <UnitListItem
-                unit={unit}
-                services={services}
-                key={unit.id}
-                handleClick={() => openUnit(unit.id)}
-              />
-            ))}
-            {
-              units.length !== totalUnits
-              && (
+            {units &&
+              units.map((unit) => (
+                <UnitListItem
+                  unit={unit}
+                  services={services}
+                  key={unit.id}
+                  handleClick={() => openUnit(unit.id)}
+                />
+              ))}
+            {units.length !== totalUnits && (
               <a
                 style={{
-                  display: 'block', textAlign: 'center', cursor: 'pointer', margin: '18px auto 10px',
+                  display: 'block',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  margin: '18px auto 10px',
                 }}
                 onClick={this.loadMoreUnits}
               >
                 {t('UNIT.SHOW_MORE')}
               </a>
-              )
-            }
+            )}
           </div>
         </div>
       </View>

@@ -4,6 +4,8 @@ import { translate } from 'react-i18next';
 
 export default translate()(({ t }) => (
   <div className="logo">
-    <h2><Link to="/">{t('APP.NAME')}</Link></h2>
+    <h2>
+      <Link to="/">{t('APP.NAME')}</Link>
+    </h2>
   </div>
 ));

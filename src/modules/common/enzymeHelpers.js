@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mount as enzymeMount } from 'enzyme';
 import { Provider } from 'react-redux';
@@ -12,9 +12,7 @@ export const mount = async (element) => {
 
   return enzymeMount(
     <Provider store={store}>
-      <TranslationProvider>
-        {element}
-      </TranslationProvider>
-    </Provider>,
+      <TranslationProvider>{element}</TranslationProvider>
+    </Provider>
   );
 };

@@ -15,14 +15,15 @@
       pointer-events: auto;
       cursor: pointer;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         text-decoration: none;
       }
     }
   }
 }
 
-@media only screen and (min-width : $breakpoint) {
+@media only screen and (min-width: $breakpoint) {
   .logo {
     width: initial;
     right: 36px + $gap;

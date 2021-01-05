@@ -30,10 +30,9 @@ export const formatTime = (time: Date, t: Function) => {
 
 const Time = translate()(({ time, t }) => (
   <time dateTime={time.toISOString()}>
-    {
-      formatTime(time, t)
-    }
-    {moment().endOf('day').diff(time, 'days') < 2 && ` ${time.getHours()}:${(`0${time.getMinutes()}`).slice(-2)}`}
+    {formatTime(time, t)}
+    {moment().endOf('day').diff(time, 'days') < 2 &&
+      ` ${time.getHours()}:${`0${time.getMinutes()}`.slice(-2)}`}
   </time>
 ));
 

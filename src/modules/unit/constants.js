@@ -25,13 +25,13 @@ export const SportFilters = [
 
 export type SeasonDelimiter = {
   day: number,
-  month: number // 0-11, Jan = 0 & Dec = 11
+  month: number, // 0-11, Jan = 0 & Dec = 11
 };
 
 export type Season = {
   start: SeasonDelimiter,
   end: SeasonDelimiter,
-  filters: Array<string>
+  filters: Array<string>,
 };
 
 export const SummerSeason: Season = {
@@ -108,10 +108,10 @@ export const UnitActions = {
   SEARCH_REQUEST: normalizeActionName('unit/SEARCH_REQUEST'),
   SEARCH_RECEIVE: normalizeActionName('unit/SEARCH_RECEIVE'),
   FETCH_SEARCH_SUGGESTIONS: normalizeActionName(
-    'unit/FETCH_SEARCH_SUGGESTIONS',
+    'unit/FETCH_SEARCH_SUGGESTIONS'
   ),
   RECEIVE_SEARCH_SUGGESTIONS: normalizeActionName(
-    'unit/RECEIVE_SEARCH_SUGGESTIONS',
+    'unit/RECEIVE_SEARCH_SUGGESTIONS'
   ),
   SEND_FEEDBACK: normalizeActionName('unit/SEND_FEEDBACK'),
 };
@@ -123,7 +123,7 @@ export type UnitState = {
   all: Array<string>,
   skating: Array<string>,
   skiing: Array<string>,
-  searchResults: Array<string>
+  searchResults: Array<string>,
 };
 
 export const unitSchema = new schema.Entity('unit' /* , {} */);

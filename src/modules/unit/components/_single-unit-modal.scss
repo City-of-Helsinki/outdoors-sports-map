@@ -76,6 +76,15 @@
         margin-bottom: 3px;
       }
     }
+
+    &-multi-line {
+      white-space: pre-wrap;
+      margin-top: 2rem;
+
+      & > * {
+        display: inline-block;
+      }
+    }
   }
 
   &-close-button {
@@ -85,8 +94,7 @@
   }
 }
 
-@media only screen and (min-width : 768px) {
-
+@media only screen and (min-width: 768px) {
   .modal {
     width: 400px;
     height: 100%;
@@ -108,7 +116,5 @@
       background: #038ccc;
       color: #333333;
     }
-
-
   }
 }
