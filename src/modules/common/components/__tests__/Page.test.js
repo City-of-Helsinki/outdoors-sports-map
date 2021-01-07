@@ -14,4 +14,11 @@ describe('<Page />', () => {
       children
     );
   });
+
+  it('should set title', async () => {
+    const title = 'Title';
+    await getWrapper({ title, children: <div /> });
+
+    expect(document.title).toEqual(title);
+  });
 });
