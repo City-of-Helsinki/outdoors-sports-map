@@ -13,6 +13,7 @@ const SearchBar = translate()(
   ({ input, onInput, onSubmit, onClear, searchActive, disabled, t }) => (
     <div className="search-bar">
       <form
+        role="search"
         className="search-bar__input"
         onSubmit={(e) => {
           e.preventDefault();
