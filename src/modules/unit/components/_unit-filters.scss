@@ -1,8 +1,14 @@
 .unit-filters {
   max-width: 100%;
   width: 100%;
+  position: relative;
   background: $ui-content;
   color: $ui-text;
+
+  &__filters {
+    position: unset;
+    width: unset;
+  }
 
   &__filters.container,
   &__options.container {
@@ -14,6 +20,16 @@
     padding: $gap;
   }
 
+  &__options-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: unset;
+    margin-top: $gap;
+
+    background: $ui-disabled;
+  }
+
   &__options {
     background: $ui-disabled;
     color: $ui-text;
@@ -22,6 +38,10 @@
   &__options-separator {
     margin: 0 -5px;
     border-top: 1px solid $ui-enabled;
+  }
+
+  &__edit {
+    position: unset;
   }
 
   &__edit,

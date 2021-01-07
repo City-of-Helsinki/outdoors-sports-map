@@ -31,13 +31,21 @@ type UnitFiltersProps = {
   updateFilter: (filter: string, value: string) => void,
 };
 
-const FilterOptionsRow = ({ t, className, filterName, options, onSelect }) => (
+const FilterOptionsRow = ({
+  t,
+  className,
+  filterName,
+  options,
+  onKeyDown,
+  onSelect,
+}) => (
   <Row className={`${className} filter-options-row`}>
     {options.map((option) => (
       <Col className="unit-filters__option" xs={6} key={option}>
         <UnitFilterButton
           t={t}
           filterName={option}
+          onKeyDown={onKeyDown}
           onClick={() => onSelect(filterName, option)}
           message={t(`UNIT.FILTER.${invert(UnitFilters)[option]}`)}
         />
@@ -45,6 +53,76 @@ const FilterOptionsRow = ({ t, className, filterName, options, onSelect }) => (
     ))}
   </Row>
 );
+
+const FilterOption = ({
+  t,
+  filter,
+  isActive,
+  onAction,
+  onSelect,
+}: {
+  filter: UnitFilterProps,
+}) => {
+  const controlId = `control-${filter.name}`;
+  const menuId = `menu-${filter.name}`;
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      document.getElementById(controlId).focus();
+    }
+  };
+
+  const handleSelect = (...args) => {
+    onSelect(...args);
+  };
+
+  return (
+    <div>
+      <UnitFilterLabelButton
+        filter={filter}
+        onAction={onAction}
+        isActive={isActive}
+        aria-haspopup="true"
+        aria-controls={menuId}
+        id={controlId}
+      />
+      {isActive && (
+        <Grid
+          id={menuId}
+          className="unit-filters__options-wrapper"
+          tabIndex="-1"
+          role="region"
+          aria-labelledby={controlId}
+        >
+          <FilterOptionsRow
+            filterName={filter.name}
+            className="unit-filters__options"
+            options={filter.options}
+            onKeyDown={handleKeyDown}
+            onSelect={handleSelect}
+            t={t}
+          />
+          {filter.secondaryOptions && (
+            <Row
+              componentClass="hr"
+              className="unit-filters__options-separator"
+            />
+          )}
+          {filter.secondaryOptions && (
+            <FilterOptionsRow
+              className="unit-filters__options secondary"
+              filterName={filter.name}
+              options={filter.secondaryOptions}
+              onKeyDown={handleKeyDown}
+              onSelect={handleSelect}
+              t={t}
+            />
+          )}
+        </Grid>
+      )}
+    </div>
+  );
+};
 
 const filterEquals = (a, b) => {
   // Checks if a and b are the same by comparing their names.
@@ -79,52 +157,23 @@ export class UnitFiltersComponent extends React.Component {
     const { filters, t } = this.props;
     const { expandedFilter } = this.state;
 
-    // FIXME
-    // There is really no reason to create this component on every render,
-    // this should be separated to its own component outside render.
-    const FilterOptions = ({ filter }: { filter: UnitFilterProps }) => (
-      <Grid className="unit-filters__options">
-        <FilterOptionsRow
-          filterName={filter.name}
-          className="unit-filters__options"
-          options={filter.options}
-          onSelect={this.onMenuSelect}
-          t={t}
-        />
-        {filter.secondaryOptions && (
-          <Row
-            componentClass="hr"
-            className="unit-filters__options-separator"
-          />
-        )}
-        {filter.secondaryOptions && (
-          <FilterOptionsRow
-            className="unit-filters__options secondary"
-            filterName={filter.name}
-            options={filter.secondaryOptions}
-            onSelect={this.onMenuSelect}
-            t={t}
-          />
-        )}
-      </Grid>
-    );
-
     return (
       <div className="unit-filters">
         <Grid className="unit-filters__filters">
           <Row className="unit-filters__filters">
             {filters.map((filter) => (
               <Col className="unit-filters__edit" xs={6} key={filter.name}>
-                <UnitFilterLabelButton
+                <FilterOption
                   filter={filter}
                   onAction={this.toggleExpandedFilter}
+                  onSelect={this.onMenuSelect}
                   isActive={filterEquals(filter, expandedFilter)}
+                  t={t}
                 />
               </Col>
             ))}
           </Row>
         </Grid>
-        {expandedFilter && <FilterOptions filter={expandedFilter} />}
       </div>
     );
   }
