@@ -67,7 +67,7 @@ UnitListItem.contextTypes = {
   getActiveLanguage: React.PropTypes.func,
 };
 
-class ListView extends Component {
+export class ListViewBase extends Component {
   static propTypes = {
     units: PropTypes.array,
     services: PropTypes.object,
@@ -83,6 +83,7 @@ class ListView extends Component {
 
     this.selectSortKey = this.selectSortKey.bind(this);
     this.loadMoreUnits = this.loadMoreUnits.bind(this);
+    this.handleLoadMoreClick = this.handleLoadMoreClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -143,6 +144,11 @@ class ListView extends Component {
     this.setState({ maxUnitCount: UNIT_BATCH_SIZE });
   }
 
+  handleLoadMoreClick(e) {
+    e.preventDefault();
+    this.loadMoreUnits();
+  }
+
   render() {
     const { services, openUnit, isLoading, t } = this.props;
     const { sortKey, maxUnitCount } = this.state;
@@ -180,7 +186,8 @@ class ListView extends Component {
                   cursor: 'pointer',
                   margin: '18px auto 10px',
                 }}
-                onClick={this.loadMoreUnits}
+                href
+                onClick={this.handleLoadMoreClick}
               >
                 {t('UNIT.SHOW_MORE')}
               </a>
@@ -192,8 +199,8 @@ class ListView extends Component {
   }
 }
 
-ListView.contextTypes = {
+ListViewBase.contextTypes = {
   getActiveLanguage: React.PropTypes.func,
 };
 
-export default translate()(ListView);
+export default translate()(ListViewBase);

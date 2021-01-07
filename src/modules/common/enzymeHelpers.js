@@ -7,12 +7,13 @@ import createStore from '../../bootstrap/createStore';
 import TranslationProvider from './components/translation/TranslationProvider';
 
 // eslint-disable-next-line import/prefer-default-export
-export const mount = async (element) => {
+export const mount = async (element, options) => {
   const store = await createStore();
 
   return enzymeMount(
     <Provider store={store}>
       <TranslationProvider>{element}</TranslationProvider>
-    </Provider>
+    </Provider>,
+    options
   );
 };
