@@ -6,7 +6,6 @@ import sortBy from 'lodash/sortBy';
 import head from 'lodash/head';
 import values from 'lodash/values';
 import upperFirst from 'lodash/upperFirst';
-import memoize from 'lodash/memoize';
 import get from 'lodash/get';
 
 import { LatLng, GeoJSON } from 'leaflet';
@@ -249,15 +248,7 @@ const _sortByDistance = (
   });
 };
 
-export const sortByDistance = memoize(
-  _sortByDistance,
-  (units, pos, leafletMap, filterString) => {
-    if (leafletMap === null || units.length === 0 || pos === undefined) {
-      return '0';
-    }
-    return `${filterString};${pos[0]};${pos[1]}`;
-  }
-);
+export const sortByDistance = _sortByDistance;
 
 export const sortByName = (units: Array<Object>, lang: ?string) =>
   sortBy(units, (unit) => getAttr(unit.name, lang));

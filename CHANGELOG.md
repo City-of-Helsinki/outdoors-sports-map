@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Fix insufficient contrast in primary color
 -   [Accessibility] Fix current address not read by screen readers
 -   [Accessibility] Fix sub menu options not being usable with screen reader or keyboard
+-   [Accessibility] Fix search returning nothing with an empty search
 
 ## [1.1.2] - 2021-01-05
 
