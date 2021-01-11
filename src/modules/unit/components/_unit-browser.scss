@@ -99,6 +99,10 @@
     background: $ui-content;
     color: #fff;
     margin-top: $gap;
+    display: block;
+    border: none;
+    width: 100%;
+    text-align: left;
 
     &:hover {
       background: $ui-enabled;
