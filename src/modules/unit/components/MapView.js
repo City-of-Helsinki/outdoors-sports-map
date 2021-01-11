@@ -23,6 +23,7 @@ import FeedbackModal from './FeedbackModal';
 import { View } from './View';
 import Logo from '../../home/components/Logo';
 import Control from '../../map/components/Control';
+import DropdownControl from '../../map/components/DropdownControl';
 import { mobileBreakpoint } from '../../common/constants';
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 import {
@@ -40,6 +41,7 @@ import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
 import OutboundLink from '../../common/components/OutboundLink';
 import LanguageChanger from './LanguageChanger';
+import TranslationProvider from '../../common/components/translation/TranslationProvider';
 
 class MapView extends Component {
   static propTypes = {
@@ -193,23 +195,29 @@ class MapView extends Component {
               changeLanguage={changeLanguage}
             />
           )}
-          {menuOpen ? (
-            <InfoMenu
-              t={t}
-              isMobile={isMobile}
-              openAboutModal={this.openAboutModal}
-              openFeedbackModal={this.openFeedbackModal}
-              activeLanguage={activeLanguage}
-              changeLanguage={changeLanguage}
-            />
-          ) : null}
-          <Control
+          <DropdownControl
+            id="info-dropdown"
             handleClick={this.toggleMenu}
             className="leaflet-control-info"
             position={isMobile ? 'bottomleft' : 'topright'}
+            aria-haspopup="true"
+            aria-expanded={menuOpen}
+            activeLanguage={activeLanguage}
+            isOpen={menuOpen}
+            options={
+              <InfoMenu
+                store={this.context.store}
+                t={t}
+                isMobile={isMobile}
+                openAboutModal={this.openAboutModal}
+                openFeedbackModal={this.openFeedbackModal}
+                activeLanguage={activeLanguage}
+                changeLanguage={changeLanguage}
+              />
+            }
           >
-            <SMIcon icon="info" />
-          </Control>
+            <SMIcon icon="info" aria-label={t('APP.ABOUT')} />
+          </DropdownControl>
         </Map>
         <Logo />
         {this.state.aboutModalOpen ? (
@@ -223,6 +231,10 @@ class MapView extends Component {
   }
 }
 
+MapView.contextTypes = {
+  store: PropTypes.object.isRequired,
+};
+
 export default translate(null, { withRef: true })(MapView);
 
 const InfoMenu = ({
@@ -232,39 +244,41 @@ const InfoMenu = ({
   isMobile,
   activeLanguage,
   changeLanguage,
+  store,
 }) => (
-  <div className="info-menu">
-    <InfoMenuItem icon="info" handleClick={openFeedbackModal} t={t}>
-      {t('MAP.INFO_MENU.GIVE_FEEDBACK')}
-    </InfoMenuItem>
-    <InfoMenuItem icon="info" handleClick={openAboutModal}>
-      {t('MAP.INFO_MENU.ABOUT_SERVICE')}
-    </InfoMenuItem>
-    <InfoMenuItem handleClick={() => null}>
-      <OutboundLink href="http://osm.org/copyright" style={{ padding: 1 }}>
-        &copy;
-        {t('MAP.ATTRIBUTION')}{' '}
-      </OutboundLink>
-    </InfoMenuItem>
-    {isMobile && Object.keys(SUPPORTED_LANGUAGES).length > 1 && (
-      <InfoMenuItem handleClick={() => null}>
-        <strong>{t('MAP.INFO_MENU.CHOOSE_LANGUAGE')}</strong>
-        <LanguageChanger
-          style={{ position: 'static' }}
-          activeLanguage={activeLanguage}
-          changeLanguage={changeLanguage}
-          isMobile={isMobile}
-        />
+  <TranslationProvider store={store}>
+    <div className="info-menu">
+      <InfoMenuItem icon="info" handleClick={openFeedbackModal} t={t}>
+        {t('MAP.INFO_MENU.GIVE_FEEDBACK')}
       </InfoMenuItem>
-    )}
-  </div>
+      <InfoMenuItem icon="info" handleClick={openAboutModal}>
+        {t('MAP.INFO_MENU.ABOUT_SERVICE')}
+      </InfoMenuItem>
+      <OutboundLink className="info-menu-item" href="http://osm.org/copyright">
+        &copy; {t('MAP.ATTRIBUTION')}{' '}
+      </OutboundLink>
+      {isMobile && Object.keys(SUPPORTED_LANGUAGES).length > 1 && (
+        <InfoMenuItem handleClick={() => null}>
+          <strong>{t('MAP.INFO_MENU.CHOOSE_LANGUAGE')}</strong>
+          <LanguageChanger
+            style={{ position: 'static' }}
+            activeLanguage={activeLanguage}
+            changeLanguage={changeLanguage}
+            isMobile={isMobile}
+          />
+        </InfoMenuItem>
+      )}
+    </div>
+  </TranslationProvider>
 );
 
 const InfoMenuItem = ({ children, handleClick, icon }) => (
-  <div className="info-menu-item" onClick={handleClick}>
-    {icon ? <SMIcon icon={icon} style={{ paddingRight: 2 }} /> : null}
+  <button type="button" className="info-menu-item" onClick={handleClick}>
+    {icon ? (
+      <SMIcon icon={icon} style={{ paddingRight: 2 }} aria-hidden="true" />
+    ) : null}
     {children}
-  </div>
+  </button>
 );
 
 const AboutModal = ({ closeModal, t }) => (
