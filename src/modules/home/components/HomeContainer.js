@@ -13,6 +13,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { translate } from 'react-i18next';
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
 import { setLocation } from '../../map/actions';
@@ -24,7 +25,7 @@ import * as fromUnit from '../../unit/selectors';
 import * as fromService from '../../service/selectors';
 import getLanguage from '../../language/selectors';
 import getIsLoading from '../selectors';
-import { getDefaultFilters } from '../../unit/helpers';
+import { getDefaultFilters, getAttr } from '../../unit/helpers';
 import MapView from '../../unit/components/MapView';
 import UnitBrowser from '../../unit/components/UnitBrowser';
 import SingleUnitModalContainer from '../../unit/components/SingleUnitModalContainer';
@@ -50,6 +51,7 @@ type Props = {
   mapCenter: number[],
   address: string,
   params: Object,
+  t: (string) => string,
 };
 
 type DefaultProps = {
@@ -110,6 +112,19 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
   componentWillUnmount() {
     // TODO: Poll /observation, not /unit. => Normalize observations to store.
     // clearInterval(this.pollUnitsInterval);
+  }
+
+  getTitle() {
+    const { t, selectedUnit, activeLanguage } = this.props;
+    const title = [];
+
+    title.push(t('APP.NAME'));
+
+    if (selectedUnit) {
+      title.push(` - ${getAttr(selectedUnit.name, activeLanguage)}`);
+    }
+
+    return title.join('');
   }
 
   fetchUnits = () => {
@@ -175,7 +190,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
       : getDefaultFilters();
 
     return (
-      <Page>
+      <Page title={this.getTitle()}>
         <div className="home">
           <UnitBrowser
             isLoading={isLoading}
@@ -247,5 +262,5 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
   );
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+  connect(mapStateToProps, mapDispatchToProps)(translate()(HomeContainer))
 );
