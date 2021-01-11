@@ -17,19 +17,28 @@ import {
   callApi,
   normalizeEntityResults,
 } from '../api/helpers';
+import { getFetchUnitsRequest } from '../unit/helpers';
 
 function* searchUnits({
   payload: { params },
 }: FetchAction): Generator<*, *, *> {
   let data = [];
+  let request = null;
+
   // Make search request only when there's input
   if (params.input && params.input.length) {
-    const request = createRequest(createUrl('search/', params));
-    const { bodyAsJson } = yield call(callApi, request);
-    data = bodyAsJson.results
-      ? normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema))
-      : [];
+    request = createRequest(createUrl('search/', params));
+    // Otherwise get all units in order to comply with accessibility
+    // requirements
+  } else {
+    request = getFetchUnitsRequest(params);
   }
+
+  const { bodyAsJson } = yield call(callApi, request);
+  data = bodyAsJson.results
+    ? normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema))
+    : [];
+
   // $FlowFixMe -> How to type annotate normalizeEntityResults to return array with arrayOf schema?
   yield put(receiveUnits(data));
 }
