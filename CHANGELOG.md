@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Fix insufficient labels on sub menus
 -   [Accessibility] Fix unreachable show more link
 -   [Accessibility] Add unique titles to pages
+-   [Accessibility] Fix insufficient contrast in primary color
 
 ## [1.1.2] - 2021-01-05
 
