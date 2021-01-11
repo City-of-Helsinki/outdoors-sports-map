@@ -17,6 +17,7 @@ import invert from 'lodash/invert';
 import { UnitFilters } from '../constants';
 import UnitFilterButton from './UnitFilterButton';
 import UnitFilterLabelButton from './UnitFilterLabelButton';
+import UnitFilterOptionsWrapper from './UnitFilterOptionsWrapper';
 
 type UnitFilterProps = {
   name: string,
@@ -87,7 +88,7 @@ const FilterOption = ({
         id={controlId}
       />
       {isActive && (
-        <Grid
+        <UnitFilterOptionsWrapper
           id={menuId}
           className="unit-filters__options-wrapper"
           tabIndex="-1"
@@ -118,7 +119,7 @@ const FilterOption = ({
               t={t}
             />
           )}
-        </Grid>
+        </UnitFilterOptionsWrapper>
       )}
     </div>
   );
