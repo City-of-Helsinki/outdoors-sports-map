@@ -44,7 +44,6 @@ const FilterOptionsRow = ({
     {options.map((option) => (
       <Col className="unit-filters__option" xs={6} key={option}>
         <UnitFilterButton
-          t={t}
           filterName={option}
           onKeyDown={onKeyDown}
           onClick={() => onSelect(filterName, option)}
