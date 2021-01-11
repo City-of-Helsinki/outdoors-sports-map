@@ -75,8 +75,9 @@ export default class DropdownControl extends MapControl {
       const button = L.DomUtil.create('button', 'custom-control-button', div);
 
       this.syncProps(div, ['id']);
-      this.syncProps(button, ['aria-haspopup', 'aria-expanded']);
+      div.setAttribute('role', 'contentinfo');
 
+      this.syncProps(button, ['aria-haspopup', 'aria-expanded']);
       button.setAttribute('id', this.controlId);
       button.setAttribute('aria-controls', this.optionsId);
 
