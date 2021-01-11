@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Add unique titles to pages
 -   [Accessibility] Fix insufficient contrast in primary color
 -   [Accessibility] Fix current address not read by screen readers
+-   [Accessibility] Fix sub menu options not being usable with screen reader or keyboard
 
 ## [1.1.2] - 2021-01-05
 

@@ -6,6 +6,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import invert from 'lodash/invert';
+import pick from 'lodash/pick';
 
 import { UnitFilters } from '../constants';
 import UnitFilterButton from './UnitFilterButton';
@@ -22,7 +23,7 @@ const filterNameToLabel = (filterName) => {
   }
 };
 
-const UnitFilterLabelButton = ({ filter, onAction, isActive, t }) => {
+const UnitFilterLabelButton = ({ filter, onAction, isActive, t, ...rest }) => {
   const labelMessage = t(filterNameToLabel(filter.name));
   const buttonMessage = t(`UNIT.FILTER.${invert(UnitFilters)[filter.active]}`);
 
@@ -37,6 +38,7 @@ const UnitFilterLabelButton = ({ filter, onAction, isActive, t }) => {
         message={buttonMessage}
         aria-label={[buttonMessage, labelMessage].join(', ')}
         aria-expanded={isActive}
+        {...pick(rest, ['aria-haspopup', 'aria-controls', 'id'])}
       />
     </div>
   );
