@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Fix sub menu options not being usable with screen reader or keyboard
 -   [Accessibility] Fix search returning nothing with an empty search
 -   [Accessibility] Add missing search landmark
+-   [Accessibility] Hide map markers from some screen reader navigation approaches so that the application is easier to browse through
 
 ## [1.1.2] - 2021-01-05
 
