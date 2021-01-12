@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [Accessibility] Add missing search landmark
 -   [Accessibility] Fix service info button for keyboard and screen reader users
 -   [Accessibility] Add contentinfo landmark
+-   [Accessibility] Hide map markers from some screen reader navigation approaches so that the application is easier to browse through
 
 ## [1.1.2] - 2021-01-05
 
