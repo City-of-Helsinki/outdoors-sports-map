@@ -10,10 +10,10 @@
 
 import React, { Component } from 'react';
 import { Marker } from 'react-leaflet';
-import { Icon } from 'leaflet';
 import { getUnitIcon, getUnitPosition, getUnitSport } from '../helpers';
 import { UNIT_ICON_WIDTH, UnitFilters } from '../constants';
 import { MAX_ZOOM } from '../../map/constants';
+import AriaHiddenIcon from '../../map/AriaHiddenIcon';
 import UnitPopup from './UnitPopup';
 
 const POPUP_OFFSET = 4;
@@ -53,7 +53,7 @@ class UnitMarker extends Component {
     const iconHeight = this.getIconHeight(icon, this.props.zoomLevel);
     const anchorHeight = this._getAnchorHeight(iconHeight, unit);
 
-    return new Icon({
+    return new AriaHiddenIcon({
       iconUrl: icon.url,
       iconRetinaUrl: icon.retinaUrl,
       iconSize: [iconWidth, iconHeight],
