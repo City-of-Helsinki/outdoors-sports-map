@@ -60,12 +60,13 @@
     "LIGHTING": "Lighting",
     "SKIING_TECHNIQUE": "Form of skiing",
     "TEMPERATURE": "Temperature",
-    "ROUTE_HERE": "Route to here",
+    "LINKS": "Links",
     "GET_ROUTE": "Get route to here",
     "NOTICE": "Notice",
     "WATER_TEMPERATURE": "Water temperature",
     "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "SEE_ON_SERVICE_MAP": "See on Palvelukartta"
   },
   "VIEW": {
     "POPUP": {
