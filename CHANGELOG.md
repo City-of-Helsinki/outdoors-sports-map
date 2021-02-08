@@ -26,6 +26,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   [#59](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/59) [Accessibility] Add contentinfo landmark
 -   [#61](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/61) [Accessibility] Hide map markers from some screen reader navigation approaches so that the application is easier to browse through
 
+## [1.1.4] - 2021-01-28
+
+Nothing changed. Release was made to move the service onto new infrastructure.
+
 ## [1.1.3] - 2021-01-05
 
 ### Changed
