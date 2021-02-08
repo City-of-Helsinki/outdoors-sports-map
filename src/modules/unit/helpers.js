@@ -85,6 +85,9 @@ export const createReittiopasUrl = (unit, lang) => {
   return url;
 };
 
+export const createPalvelukarttaUrl = (unit, lang) =>
+  `https://palvelukartta.hel.fi/${lang}/unit/${unit.id}`;
+
 export const getUnitSport = (unit: Object) => {
   if (unit.services && unit.services.length) {
     // eslint-disable-next-line no-restricted-syntax

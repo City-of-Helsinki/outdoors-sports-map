@@ -26,6 +26,7 @@ import {
   getOpeningHours,
   getObservationTime,
   createReittiopasUrl,
+  createPalvelukarttaUrl,
 } from '../helpers';
 import getServiceName from '../../service/helpers';
 import OutboundLink from '../../common/components/OutboundLink';
@@ -173,9 +174,22 @@ const NoticeInfo = ({ unit, t, activeLang }) => {
   ) : null;
 };
 
-const LocationRoute = ({ routeUrl, t }) => (
-  <ModalBodyBox title={t('MODAL.ROUTE_HERE')}>
-    <OutboundLink href={routeUrl}>{t('MODAL.GET_ROUTE')}</OutboundLink>
+const LocationRoute = ({ routeUrl, t, palvelukarttaUrl }) => (
+  <ModalBodyBox title={t('MODAL.LINKS')}>
+    <ul className="modal-body-list">
+      {routeUrl && (
+        <li>
+          <OutboundLink href={routeUrl}>{t('MODAL.GET_ROUTE')}</OutboundLink>
+        </li>
+      )}
+      {palvelukarttaUrl && (
+        <li>
+          <OutboundLink href={palvelukarttaUrl}>
+            {t('MODAL.SEE_ON_SERVICE_MAP')}
+          </OutboundLink>
+        </li>
+      )}
+    </ul>
   </ModalBodyBox>
 );
 
@@ -255,6 +269,7 @@ export const SingleUnitModalBody = ({
   shouldShowInfo,
   t,
   temperatureObservation,
+  palvelukarttaUrl,
 }) =>
   currentUnit && !isLoading ? (
     <Modal.Body>
@@ -279,7 +294,13 @@ export const SingleUnitModalBody = ({
           activeLang={getActiveLanguage}
         />
       )}
-      {routeUrl && <LocationRoute t={t} routeUrl={routeUrl} />}
+      {(routeUrl || palvelukarttaUrl) && (
+        <LocationRoute
+          t={t}
+          routeUrl={routeUrl}
+          palvelukarttaUrl={palvelukarttaUrl}
+        />
+      )}
     </Modal.Body>
   ) : null;
 
@@ -321,6 +342,8 @@ class SingleUnitModalContainer extends Component {
       getObservation(currentUnit, 'live_swimming_water_temperature');
     const routeUrl =
       currentUnit && createReittiopasUrl(currentUnit, getActiveLanguage());
+    const palvelukarttaUrl =
+      currentUnit && createPalvelukarttaUrl(currentUnit, getActiveLanguage());
 
     return (
       <div>
@@ -347,6 +370,7 @@ class SingleUnitModalContainer extends Component {
             shouldShowInfo={this.shouldShowInfo}
             t={t}
             temperatureObservation={temperatureObservation}
+            palvelukarttaUrl={palvelukarttaUrl}
           />
         </Modal>
       </div>

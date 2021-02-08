@@ -85,6 +85,16 @@
         display: inline-block;
       }
     }
+
+    &-list {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+
+      & > li {
+        margin-bottom: 1rem;
+      }
+    }
   }
 
   &-close-button {
