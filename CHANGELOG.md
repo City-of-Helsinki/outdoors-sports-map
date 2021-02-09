@@ -6,25 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.1.5] - 2021-02-08
+
 ### Added
 
--   Link to palvelukartta in unit details view
+-   [#67](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/67) Link to palvelukartta in unit details view
 
 ### Fixed
 
--   [Accessibility] Fix insufficient labels on sub menus
--   [Accessibility] Fix unreachable show more link
--   [Accessibility] Add unique titles to pages
--   [Accessibility] Fix insufficient contrast in primary color
--   [Accessibility] Fix current address not read by screen readers
--   [Accessibility] Fix sub menu options not being usable with screen reader or keyboard
--   [Accessibility] Fix search returning nothing with an empty search
--   [Accessibility] Add missing search landmark
--   [Accessibility] Fix service info button for keyboard and screen reader users
--   [Accessibility] Add contentinfo landmark
--   [Accessibility] Hide map markers from some screen reader navigation approaches so that the application is easier to browse through
+-   [#49](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/49) [Accessibility] Fix insufficient labels on sub menus
+-   [#51](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/51) [Accessibility] Fix unreachable show more link
+-   [#52](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/52) [Accessibility] Add unique titles to pages
+-   [#53](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/53) [Accessibility] Fix insufficient contrast in primary color
+-   [#54](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/54) [Accessibility] Fix current address not read by screen readers
+-   [#56](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/56) [Accessibility] Fix sub menu options not being usable with screen reader or keyboard
+-   [#55](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/55) [Accessibility] Fix search returning nothing with an empty search
+-   [#58](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/58) [Accessibility] Add missing search landmark
+-   [#58](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/58) [Accessibility] Fix service info button for keyboard and screen reader users
+-   [#59](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/59) [Accessibility] Add contentinfo landmark
+-   [#61](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/61) [Accessibility] Hide map markers from some screen reader navigation approaches so that the application is easier to browse through
 
-## [1.1.2] - 2021-01-05
+## [1.1.4] - 2021-01-28
+
+Nothing changed. Release was made to move the service onto new infrastructure.
+
+## [1.1.3] - 2021-01-05
 
 ### Changed
 
