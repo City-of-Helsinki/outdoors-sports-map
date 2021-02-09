@@ -64,8 +64,16 @@
   line-height: 24px;
 
   &-item {
-    &:hover {
-      background: $list-view-item-hover;
+    padding: 3px 6px;
+
+    text-align: left;
+
+    border: none;
+    background: transparent;
+
+    &:hover,
+    &:active {
+      background: $list-view-item-hover !important;
       cursor: pointer;
     }
     a {

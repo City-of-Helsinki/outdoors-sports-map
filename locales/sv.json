@@ -35,8 +35,8 @@
       "STATUS_OK": "I användbart skick",
       "SWIMMING": "Simning"
     },
-    "FILTER_SPORT": "Sportgren",
-    "FILTER_STATUS": "Skick",
+    "FILTER_SPORT": "Välj sportgren",
+    "FILTER_STATUS": "Välj skick",
     "SORT": {
       "DEFAULT": "Förinställt",
       "ALPHABETICAL": "Alfabetisk",
@@ -60,12 +60,13 @@
     "LIGHTING": "Belysning",
     "SKIING_TECHNIQUE": "Åkstil",
     "TEMPERATURE": "Temperatur",
-    "ROUTE_HERE": "Väg hit",
+    "LINKS": "Länkar",
     "GET_ROUTE": "Väg hit",
     "NOTICE": "Meddelande",
     "WATER_TEMPERATURE": "Vattnets temperatur",
     "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor",
-    "CLOSE": "Stänga"
+    "CLOSE": "Stänga",
+    "SEE_ON_SERVICE_MAP": "Se på Palvelukartta"
   },
   "VIEW": {
     "POPUP": {

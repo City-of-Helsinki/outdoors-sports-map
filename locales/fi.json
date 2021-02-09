@@ -35,8 +35,8 @@
       "STATUS_OK": "Käyttökuntoiset",
       "SWIMMING": "Uinti"
     },
-    "FILTER_SPORT": "Laji",
-    "FILTER_STATUS": "Kunto",
+    "FILTER_SPORT": "Valitse laji",
+    "FILTER_STATUS": "Valitse kunto",
     "SORT": {
       "DEFAULT": "Oletus",
       "ALPHABETICAL": "Aakkosellinen",
@@ -60,12 +60,13 @@
     "LIGHTING": "Valaistus",
     "SKIING_TECHNIQUE": "Hiihtotekniikka",
     "TEMPERATURE": "Lämpötila",
-    "ROUTE_HERE": "Reitti tänne",
+    "LINKS": "Linkit",
     "GET_ROUTE": "Hae reitti tänne",
     "NOTICE": "Tiedote",
     "WATER_TEMPERATURE": "Veden lämpötila",
     "WATER_TEMPERATURE_SENSOR": "Uimarantasensori",
-    "CLOSE": "Sulje"
+    "CLOSE": "Sulje",
+    "SEE_ON_SERVICE_MAP": "Katso palvelukartalla"
   },
   "VIEW": {
     "POPUP": {

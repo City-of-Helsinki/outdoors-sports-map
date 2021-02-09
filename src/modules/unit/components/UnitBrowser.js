@@ -66,7 +66,8 @@ const Header = translate()(
 );
 
 const AddressBar = ({ address, handleClick }, context) => (
-  <div
+  <button
+    type="button"
     className="address-bar__container"
     onClick={() => handleClick(address.location.coordinates.slice().reverse())}
   >
@@ -75,9 +76,10 @@ const AddressBar = ({ address, handleClick }, context) => (
       src={addressBarMarker}
       height="20px"
       width="16px"
+      alt=""
     />
     {address && getAddressToDisplay(address, context.getActiveLanguage())}
-  </div>
+  </button>
 );
 
 AddressBar.contextTypes = {
