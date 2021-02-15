@@ -77,14 +77,20 @@ class MapView extends Component {
 
   centerMapToUnit = (unit: Object) => {
     const location = getUnitPosition(unit);
+    const pixelLocation = this.refs.map.leafletElement.latLngToContainerPoint(
+      location
+    );
     if (!this.state.isMobile) {
-      this.refs.map.leafletElement.setView(location);
+      // Offset by half the width of unit modal in order to center focus
+      // on the visible map
+      pixelLocation.x -= 200;
+      const adjustedCenter = this.refs.map.leafletElement.containerPointToLatLng(
+        pixelLocation
+      );
+      this.refs.map.leafletElement.setView(adjustedCenter);
     } else {
       // On mobile we want to move the map 250px down from the center, so the
       // big info box does not hide the selected unit.
-      const pixelLocation = this.refs.map.leafletElement.latLngToContainerPoint(
-        location
-      );
       pixelLocation.y -= 250;
       const adjustedCenter = this.refs.map.leafletElement.containerPointToLatLng(
         pixelLocation
