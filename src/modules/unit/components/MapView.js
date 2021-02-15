@@ -81,7 +81,7 @@ class MapView extends Component {
       this.refs.map.leafletElement.setView(location);
     } else {
       // On mobile we want to move the map 250px down from the center, so the
-      // awkwardly big info box does not hide the selected unit.
+      // big info box does not hide the selected unit.
       const pixelLocation = this.refs.map.leafletElement.latLngToContainerPoint(
         location
       );
