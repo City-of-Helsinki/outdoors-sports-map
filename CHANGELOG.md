@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+-   [#73](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/73) Preserve zoom level when opening unit on mobile (@vaahtokarkki)
+
+### Fixed
+
+-   [#73](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/73) Mobile unit focus hiding point of interest under unit modal (@vaahtokarkki)
+
 ## [1.1.5] - 2021-02-08
 
 ### Added
