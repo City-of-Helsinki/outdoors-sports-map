@@ -12,6 +12,10 @@ env:
   SERVICE_ARTIFACT_FOLDER: 'service_artifacts'
   BASE_DOMAIN: ${{ secrets.BASE_DOMAIN_STAGING }}
   SERVICE_PORT: 80
+  K8S_REQUEST_CPU: 1m
+  K8S_REQUEST_RAM: 10Mi
+  K8S_LIMIT_CPU: 5m
+  K8S_LIMIT_RAM: 20Mi
 
 jobs:
   build:
