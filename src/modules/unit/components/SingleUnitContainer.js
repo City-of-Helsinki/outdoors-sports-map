@@ -197,7 +197,7 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
 
   return (
     <BodyBox title={t('UNIT_CONTAINER.LINKS')}>
-      <ul className="modal-body-list">
+      <ul className="unit-container-body-list">
         {routeUrl && (
           <li>
             <OutboundLink href={routeUrl}>
@@ -349,7 +349,7 @@ const SingleUnitContainer = ({
   }
 
   return (
-    <div className="single-unit-container">
+    <div className="unit-container">
       <Header
         unit={currentUnit}
         services={services}
