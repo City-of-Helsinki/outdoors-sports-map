@@ -12,7 +12,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -63,44 +62,42 @@ export const ModalHeader = ({ unit, services, isLoading }) => {
   const unitMunicipality = unit ? unit.municipality : null;
 
   return (
-    <Modal.Header>
-      <div className="modal-header-container">
-        <div className="modal-header-name">
+    <div className="modal-header">
+      <div className="modal-header-name">
+        <div>
+          {isLoading ? (
+            <h4>{t('MODAL.LOADING')}</h4>
+          ) : (
+            <h4>
+              {unit ? getAttr(unit.name, language) : t('MODAL.NOT_FOUND')}
+            </h4>
+          )}
+        </div>
+        <div style={{ alignSelf: 'center' }}>
+          <Link to="/" className="modal-close-button close-unit-modal">
+            <SMIcon icon="close" aria-label={t('MODAL.CLOSE')} />
+          </Link>
+        </div>
+      </div>
+      {unit ? (
+        <div className="modal-header-description">
+          <UnitIcon
+            unit={unit}
+            alt={getServiceName(unit.services, services, language)}
+          />
           <div>
-            {isLoading ? (
-              <h4>{t('MODAL.LOADING')}</h4>
-            ) : (
-              <h4>
-                {unit ? getAttr(unit.name, language) : t('MODAL.NOT_FOUND')}
-              </h4>
-            )}
-          </div>
-          <div style={{ alignSelf: 'center' }}>
-            <Link to="/" className="modal-close-button close-unit-modal">
-              <SMIcon icon="close" aria-label={t('MODAL.CLOSE')} />
-            </Link>
+            <p>{getServiceName(unit.services, services, language)}</p>
+            <p>
+              {unitAddress ? `${unitAddress}, ` : ''}
+              {unitZIP ? `${unitZIP} ` : ''}
+              <span style={{ textTransform: 'capitalize' }}>
+                {unitMunicipality || ''}
+              </span>
+            </p>
           </div>
         </div>
-        {unit ? (
-          <div className="modal-header-description">
-            <UnitIcon
-              unit={unit}
-              alt={getServiceName(unit.services, services, language)}
-            />
-            <div>
-              <p>{getServiceName(unit.services, services, language)}</p>
-              <p>
-                {unitAddress ? `${unitAddress}, ` : ''}
-                {unitZIP ? `${unitZIP} ` : ''}
-                <span style={{ textTransform: 'capitalize' }}>
-                  {unitMunicipality || ''}
-                </span>
-              </p>
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </Modal.Header>
+      ) : null}
+    </div>
   );
 };
 
@@ -215,17 +212,6 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
   );
 };
 
-// TODO
-// const LocationWeather = ({t}) =>
-//   <ModalBodyBox title={t('MODAL.WEATHER')}>
-//     Wow such weather.
-//   </ModalBodyBox>;
-//
-// const LocationHeightProfile = ({t}) =>
-//   <ModalBodyBox title={t('MODAL.HEIGHT_PROFILE')}>
-//     Wow such profile.
-//   </ModalBodyBox>;
-
 const LocationOpeningHours = ({ unit }) => {
   const {
     t,
@@ -290,6 +276,9 @@ const ModalBodyBox = ({ title, children, className = '', ...rest }) => (
 // component and exporting it, we are able to test the content without
 // more convoluted hacks. Ideally we would write tests for the entire
 // component.
+//
+// TODO: The legacy portals are no longer used and the test could now be
+//       refactored
 export const SingleUnitModalBody = ({
   currentUnit,
   isLoading,
@@ -299,7 +288,7 @@ export const SingleUnitModalBody = ({
   palvelukarttaUrl,
 }) =>
   currentUnit && !isLoading ? (
-    <Modal.Body>
+    <div className="modal-body">
       <LocationState unit={currentUnit} />
       <NoticeInfo unit={currentUnit} />
       {!liveTemperatureObservation && temperatureObservation && (
@@ -318,7 +307,7 @@ export const SingleUnitModalBody = ({
           palvelukarttaUrl={palvelukarttaUrl}
         />
       )}
-    </Modal.Body>
+    </div>
   ) : null;
 
 SingleUnitModalBody.defaultProps = {
@@ -358,29 +347,26 @@ const SingleUnitModalContainer = ({
   const palvelukarttaUrl =
     currentUnit && createPalvelukarttaUrl(currentUnit, language);
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <div>
-      <Modal
-        className="single-unit-modal"
-        show={isOpen}
-        backdrop={false}
-        animation={false}
-      >
-        <ModalHeader
-          unit={currentUnit}
-          services={services}
-          handleClick={handleClick}
-          isLoading={isLoading}
-        />
-        <SingleUnitModalBody
-          currentUnit={currentUnit}
-          isLoading={isLoading}
-          liveTemperatureObservation={liveTemperatureObservation}
-          routeUrl={routeUrl}
-          temperatureObservation={temperatureObservation}
-          palvelukarttaUrl={palvelukarttaUrl}
-        />
-      </Modal>
+    <div className="single-unit-modal">
+      <ModalHeader
+        unit={currentUnit}
+        services={services}
+        handleClick={handleClick}
+        isLoading={isLoading}
+      />
+      <SingleUnitModalBody
+        currentUnit={currentUnit}
+        isLoading={isLoading}
+        liveTemperatureObservation={liveTemperatureObservation}
+        routeUrl={routeUrl}
+        temperatureObservation={temperatureObservation}
+        palvelukarttaUrl={palvelukarttaUrl}
+      />
     </div>
   );
 };

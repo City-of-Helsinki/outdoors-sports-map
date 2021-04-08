@@ -5,3 +5,24 @@
   width: 100%;
   height: 100%;
 }
+
+.map-foreground {
+  position: fixed;
+  z-index: 1010;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+
+  @media only screen and (min-width: $breakpoint) {
+    width: 400px;
+  }
+
+  &-unit-browser {
+    height: 100%;
+
+    &.hidden {
+      display: none;
+    }
+  }
+}

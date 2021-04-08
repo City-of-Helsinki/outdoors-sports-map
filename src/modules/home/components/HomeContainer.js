@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import className from 'classnames';
 
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
 import { getUnitPosition, getAttr } from '../../unit/helpers';
 import { getUnitById } from '../../unit/selectors';
 import UnitDetails from '../../unit/components/UnitDetailsContainer';
-import UnitBrowserPage from '../../unit/components/UnitBrowserContainer';
+import UnitBrowserContainer from '../../unit/components/UnitBrowserContainer';
 import { routerPaths } from '../../common/constants';
 import useIsMobile from '../../common/hooks/useIsMobile';
 import Page from '../../common/components/Page';
@@ -127,14 +128,15 @@ function HomeContainer() {
     <Page title={title}>
       <MapLayout
         content={
-          <>
-            {/* Hide unit browser when the unit details is open with styling. */}
-            {/* This is an easy way to retain the search state. */}
+          <div className="map-foreground">
             <div
-              className="map-chrome"
-              style={{ display: isUnitDetailsOpen ? 'none' : undefined }}
+              className={className('map-foreground-unit-browser', {
+                // Hide unit browser when the unit details is open with styling.
+                // This is an easy way to retain the search state.
+                hidden: isUnitDetailsOpen,
+              })}
             >
-              <UnitBrowserPage
+              <UnitBrowserContainer
                 mapRef={mapRef}
                 onViewChange={handleOnViewChange}
               />
@@ -145,7 +147,7 @@ function HomeContainer() {
                 onCenterMapToUnit={handleCenterMapToUnit}
               />
             )}
-          </>
+          </div>
         }
         map={
           <Map
