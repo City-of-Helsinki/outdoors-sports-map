@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import { mount } from '../../../common/enzymeHelpers';
-import { SingleUnitBody } from '../SingleUnitContainer';
+import SingleUnitContainer from '../SingleUnitContainer';
 
 const defaultProps = {
   isLoading: false,
@@ -10,11 +10,32 @@ const defaultProps = {
   t: (string) => string,
   getActiveLanguage: () => 'en',
   routeUrl: '',
+  isOpen: true,
 };
 // eslint-disable-next-line react/jsx-props-no-spreading
 const getWrapper = (props) =>
-  mount(<SingleUnitBody {...defaultProps} {...props} />);
+  mount(<SingleUnitContainer {...defaultProps} {...props} />);
 
+const temperatureDataObservation = {
+  unit: 40142,
+  id: 17,
+  property: 'swimming_water_temperature',
+  time: '2020-08-21T14:04:49.387379+0300',
+  expiration_time: null,
+  name: {
+    fi: '32',
+  },
+};
+const liveTemperatureDataObservation = {
+  unit: 40142,
+  id: 17,
+  property: 'live_swimming_water_temperature',
+  time: '2020-08-21T14:04:49.387379+0300',
+  expiration_time: null,
+  value: {
+    fi: '33.2',
+  },
+};
 const unit = {
   id: 40142,
   name: {
@@ -146,47 +167,29 @@ const unit = {
       unit: 40142,
     },
   ],
-  observations: [
-    {
-      unit: 40142,
-      id: 1,
-      property: 'live_swimming_water_temperature',
-      time: '2020-08-21T14:03:19.108983+0300',
-      expiration_time: null,
-      value: {
-        fi: '33.2',
-      },
-    },
-  ],
-};
-const temperatureDataObservation = {
-  unit: 40142,
-  id: 17,
-  property: 'swimming_water_temperature',
-  time: '2020-08-21T14:04:49.387379+0300',
-  expiration_time: null,
-  name: {
-    fi: '32',
-  },
-};
-const liveTemperatureDataObservation = {
-  unit: 40142,
-  id: 17,
-  property: 'live_swimming_water_temperature',
-  time: '2020-08-21T14:04:49.387379+0300',
-  expiration_time: null,
-  value: {
-    fi: '33.2',
-  },
+  observations: [temperatureDataObservation, liveTemperatureDataObservation],
 };
 
 describe('<SingleUnitContainer />', () => {
+  describe('header', () => {
+    it('should have a close button', async () => {
+      const wrapper = getWrapper();
+      const closeButton = wrapper
+        .find({ 'aria-label': 'Sulje' })
+        .at(0)
+        .parent();
+
+      // It should exist
+      expect(closeButton.length > 0).toBeTruthy();
+      // It should take the user to the root route
+      expect(closeButton.prop('href')).toEqual('/');
+    });
+  });
+
   describe('when live temperature data is available', () => {
     const getWrapperWithLiveTemperatureData = (props) =>
       getWrapper({
-        currentUnit: unit,
-        temperatureObservation: temperatureDataObservation,
-        liveTemperatureObservation: liveTemperatureDataObservation,
+        unit,
         ...props,
       });
 
@@ -208,9 +211,14 @@ describe('<SingleUnitContainer />', () => {
       it('when less than an hour has passed it should use minutes', () => {
         const halfAnHourAgo = moment().subtract(0.5, 'hours');
         const wrapper = getWrapperWithLiveTemperatureData({
-          liveTemperatureObservation: {
-            ...liveTemperatureDataObservation,
-            time: halfAnHourAgo.toISOString(),
+          unit: {
+            ...unit,
+            observations: [
+              {
+                ...liveTemperatureDataObservation,
+                time: halfAnHourAgo.toISOString(),
+              },
+            ],
           },
         });
 
@@ -220,9 +228,14 @@ describe('<SingleUnitContainer />', () => {
       it('when at least an hour has passed it should use hours', () => {
         const anHourAgo = moment().subtract(2, 'hours');
         const wrapper = getWrapperWithLiveTemperatureData({
-          liveTemperatureObservation: {
-            ...liveTemperatureDataObservation,
-            time: anHourAgo.toISOString(),
+          unit: {
+            ...unit,
+            observations: [
+              {
+                ...liveTemperatureDataObservation,
+                time: anHourAgo.toISOString(),
+              },
+            ],
           },
         });
 

@@ -47,8 +47,7 @@ function shouldShowInfo(unit) {
   return hasExtensions || unit.phone || unit.url;
 }
 
-// Export for testing purposes
-export const Header = ({ unit, services, isLoading }) => {
+const Header = ({ unit, services, isLoading }) => {
   const {
     t,
     i18n: {
@@ -277,15 +276,7 @@ const BodyBox = ({ title, children, className = '', ...rest }) => (
   </div>
 );
 
-// Enzyme is not able to render the legacy portals our version of
-// react-bootstrap uses. By separating the content into its own
-// component and exporting it, we are able to test the content without
-// more convoluted hacks. Ideally we would write tests for the entire
-// component.
-//
-// TODO: The legacy portals are no longer used and the test could now be
-//       refactored
-export const SingleUnitBody = ({
+const SingleUnitBody = ({
   currentUnit,
   isLoading,
   liveTemperatureObservation,
