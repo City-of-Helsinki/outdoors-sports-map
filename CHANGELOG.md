@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+-   [Accessibility] Capturing focus to the middle of the page when opening the details of an unit
+
 ## [1.1.6] - 2021-02-16
 
 ### Changed
