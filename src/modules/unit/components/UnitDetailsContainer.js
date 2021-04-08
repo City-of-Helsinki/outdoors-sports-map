@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import * as fromService from '../../service/selectors';
 import getIsLoading from '../../home/selectors';
 import * as fromUnit from '../selectors';
-import SingleUnitModalContainer from './SingleUnitModalContainer';
+import SingleUnitContainer from './SingleUnitContainer';
 
 type Props = {
   unitId: string,
@@ -28,7 +28,7 @@ const UnitDetailsContainer = ({ unitId, onCenterMapToUnit }: Props) => {
   }, [selectedUnit, onCenterMapToUnit]);
 
   return (
-    <SingleUnitModalContainer
+    <SingleUnitContainer
       isLoading={isLoading}
       isOpen={!!unitId}
       unit={selectedUnit}

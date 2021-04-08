@@ -48,7 +48,7 @@
     "MAP_BUTTON": "Show results on map",
     "LIST_BUTTON": "Show results on map and on the list"
   },
-  "MODAL": {
+  "UNIT_CONTAINER": {
     "LOADING": "Loading the object",
     "NOT_FOUND": "Sorry, the object was not found :(",
     "QUALITY": "Condition",

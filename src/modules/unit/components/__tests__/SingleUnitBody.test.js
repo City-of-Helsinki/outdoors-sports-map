@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import { mount } from '../../../common/enzymeHelpers';
-import { SingleUnitModalBody } from '../SingleUnitModalContainer';
+import { SingleUnitBody } from '../SingleUnitContainer';
 
 const defaultProps = {
   isLoading: false,
@@ -13,7 +13,8 @@ const defaultProps = {
 };
 // eslint-disable-next-line react/jsx-props-no-spreading
 const getWrapper = (props) =>
-  mount(<SingleUnitModalBody {...defaultProps} {...props} />);
+  mount(<SingleUnitBody {...defaultProps} {...props} />);
+
 const unit = {
   id: 40142,
   name: {
@@ -179,7 +180,7 @@ const liveTemperatureDataObservation = {
   },
 };
 
-describe('<SingleUnitModalContainer />', () => {
+describe('<SingleUnitContainer />', () => {
   describe('when live temperature data is available', () => {
     const getWrapperWithLiveTemperatureData = (props) =>
       getWrapper({

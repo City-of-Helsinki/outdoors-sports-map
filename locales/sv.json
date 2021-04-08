@@ -48,7 +48,7 @@
     "MAP_BUTTON": "Visa resultat på karta",
     "LIST_BUTTON": "Visa resultat på karta och i listan"
   },
-  "MODAL": {
+  "UNIT_CONTAINER": {
     "LOADING": "Laddar objekt",
     "NOT_FOUND": "Beklagar, objektet hittades inte :(",
     "QUALITY": "Skick",

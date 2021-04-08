@@ -48,7 +48,7 @@
     "MAP_BUTTON": "Näytä tulokset kartalla",
     "LIST_BUTTON": "Näytä tulokset kartalla ja listana"
   },
-  "MODAL": {
+  "UNIT_CONTAINER": {
     "LOADING": "Ladataan kohdetta...",
     "NOT_FOUND": "Pahoittelut, kohdetta ei löytynyt :(",
     "QUALITY": "Kunto",

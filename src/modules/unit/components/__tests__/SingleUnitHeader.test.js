@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { mount } from '../../../common/enzymeHelpers';
-import { ModalHeader } from '../SingleUnitModalContainer';
+import { Header } from '../SingleUnitContainer';
 
 const defaultProps = {};
 const getWrapper = (props) =>
   mount(<ModalHeader {...defaultProps} {...props} />);
 
-describe('<ModalHeader />', () => {
+describe('<Header />', () => {
   it('should have a close button', () => {
     const wrapper = getWrapper();
     const closeButton = wrapper.find({ 'aria-label': 'Sulje' }).at(0).parent();
