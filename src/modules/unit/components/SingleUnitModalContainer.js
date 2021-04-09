@@ -71,7 +71,7 @@ export const ModalHeader = ({
 
   return (
     <Modal.Header>
-      <div>
+      <div className="modal-header-container">
         <div className="modal-header-name">
           <div>
             {isLoading ? (

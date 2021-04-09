@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import SMIcon from '../../home/components/SMIcon';
 
 const SortSelectorDropdown = ({ active, values, onSelect }) => {
@@ -13,7 +13,7 @@ const SortSelectorDropdown = ({ active, values, onSelect }) => {
 
   return (
     <Dropdown id="unit-sort-selector" className="unit-sort-selector">
-      <Dropdown.Toggle noCaret>
+      <Dropdown.Toggle>
         {t(`UNIT.SORT.${active.toUpperCase()}`)}
         <span className="custom-caret">
           <SMIcon icon="expand" />
@@ -22,9 +22,9 @@ const SortSelectorDropdown = ({ active, values, onSelect }) => {
       <Dropdown.Menu>
         {values &&
           values.map((key) => (
-            <MenuItem key={key} eventKey={key} onSelect={onSelect}>
+            <Dropdown.Item key={key} eventKey={key} onSelect={onSelect}>
               {t(`UNIT.SORT.${key.toUpperCase()}`)}
-            </MenuItem>
+            </Dropdown.Item>
           ))}
       </Dropdown.Menu>
     </Dropdown>

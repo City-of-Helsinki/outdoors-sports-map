@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 class UnitFilterOptionsWrapper extends React.Component<{ id: string }> {
   constructor(props) {
@@ -31,7 +31,7 @@ class UnitFilterOptionsWrapper extends React.Component<{ id: string }> {
     return (
       <div>
         <div style={{ height }} />
-        <Grid {...this.props} />
+        <Container {...this.props} />
       </div>
     );
   }
