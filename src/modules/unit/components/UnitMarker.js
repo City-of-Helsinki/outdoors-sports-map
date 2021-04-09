@@ -19,6 +19,8 @@ import UnitPopup from './UnitPopup';
 const POPUP_OFFSET = 4;
 
 class UnitMarker extends Component {
+  markerRef = null;
+
   constructor(props) {
     super(props);
 
@@ -28,10 +30,9 @@ class UnitMarker extends Component {
     this.getIconHeight = this.getIconHeight.bind(this);
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const { isSelected } = this.props;
-    if (!isSelected && nextProps.isSelected) {
+    if (!isSelected && prevProps.isSelected) {
       this.closePopup();
     }
   }
@@ -44,8 +45,12 @@ class UnitMarker extends Component {
     return (zoomLevel / MAX_ZOOM) * icon.height;
   }
 
+  setMarkerRef = (ref) => {
+    this.markerRef = ref;
+  };
+
   closePopup() {
-    this.refs.marker.leafletElement.closePopup();
+    this.markerRef.leafletElement.closePopup();
   }
 
   _createIcon(unit, isSelected) {
@@ -63,7 +68,7 @@ class UnitMarker extends Component {
   }
 
   openPopup() {
-    this.refs.marker.leafletElement.openPopup();
+    this.markerRef.leafletElement.openPopup();
   }
 
   _getAnchorHeight(iconHeight, unit) {
@@ -82,7 +87,7 @@ class UnitMarker extends Component {
     const { unit, isSelected, handleClick, ...rest } = this.props;
     return (
       <Marker
-        ref="marker"
+        ref={this.setMarkerRef}
         position={getUnitPosition(unit)}
         icon={this._createIcon(unit, isSelected)}
         onClick={handleClick}

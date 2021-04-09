@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import moment from 'moment';
+
 import getLanguage from '../../../language/selectors';
-import changeLanguage from '../../../language/actions';
+import changeLanguageActionBase from '../../../language/actions';
 import i18n, { getCurrentLanguage } from '../../i18n';
 
 function changeDocumentLanguage(nextLanguage) {
@@ -55,7 +56,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      changeLanguageAction: changeLanguage,
+      changeLanguageAction: changeLanguageActionBase,
     },
     dispatch
   );

@@ -10,6 +10,7 @@ const LanguageChanger = ({ changeLanguage, activeLanguage, isMobile }) => (
       .filter(([language]) => SUPPORTED_LANGUAGES[language] !== activeLanguage)
       .map(([languageKey, languageValue], index) => (
         <div key={languageKey} style={{ display: 'flex' }}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a
             onClick={(e) => {
               e.preventDefault();
@@ -17,7 +18,7 @@ const LanguageChanger = ({ changeLanguage, activeLanguage, isMobile }) => (
             }}
             lang={languageValue}
             // Empty href makes the anchor focusable
-            href
+            href=""
           >
             {languageKey}
           </a>

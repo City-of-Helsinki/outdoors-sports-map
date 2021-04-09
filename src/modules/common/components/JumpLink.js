@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { MAIN_CONTENT_ID } from './Page';
 
-const JumpLink = ({ t }) => (
-  <a href={`#${MAIN_CONTENT_ID}`} className="jump-link">
-    {t('JUMP_LINK.LABEL')}
-  </a>
-);
+const JumpLink = () => {
+  const { t } = useTranslation();
 
-JumpLink.propTypes = {
-  t: PropTypes.func.isRequired,
+  return (
+    <a href={`#${MAIN_CONTENT_ID}`} className="jump-link">
+      {t('JUMP_LINK.LABEL')}
+    </a>
+  );
 };
 
-export default translate()(JumpLink);
+export default JumpLink;

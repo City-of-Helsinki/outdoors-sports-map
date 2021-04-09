@@ -42,7 +42,6 @@ class UserLocationMarker extends Component {
     const { ...rest } = this.props;
     return (
       <Marker
-        ref="location"
         icon={createIcon()}
         zIndexOffset={1000}
         draggable

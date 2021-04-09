@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 
-const UnitFilterLabel = ({ filterName }) => {
-  const { t } = useTranslation();
-
-  const message = filterNameToLabel(filterName);
+const UnitFilterLabel = ({ message, id }) => {
   if (!message) {
     return null;
   }
@@ -17,8 +13,13 @@ const UnitFilterLabel = ({ filterName }) => {
   );
 };
 
+UnitFilterLabel.defaultProps = {
+  id: '',
+};
+
 UnitFilterLabel.propTypes = {
-  filterName: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  id: PropTypes.string,
 };
 
 export default UnitFilterLabel;

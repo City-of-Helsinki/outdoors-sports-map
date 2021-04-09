@@ -7,15 +7,15 @@
    react/no-string-refs,
    react/require-default-props,
    react/static-property-placement,
+   react/prop-types,
 */
 
-import PropTypes from 'prop-types';
 import { hot } from 'react-hot-loader/root';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
 import { setLocation } from '../../map/actions';
@@ -53,6 +53,9 @@ type Props = {
   address: string,
   params: Object,
   t: (string) => string,
+  i8n: {
+    language: string,
+  },
 };
 
 type DefaultProps = {
@@ -72,27 +75,21 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
 
   leafletMap = null;
 
-  initialPosition = undefined;
+  initialPosition = null;
 
-  getChildContext() {
-    return {
-      getActiveLanguage: this.getActiveLanguage,
-    };
+  constructor(props) {
+    super(props);
+
+    this.initialPosition = props.position;
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.fetchUnits({});
     this.props.fetchServices();
-
-    // TODO: Poll /observation, not /unit. => Normalize observations to store.
-    // this.pollUnitsInterval = setInterval(this.fetchUnits, POLL_INTERVAL);
-    this.initialPosition = this.props.position;
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.activeLanguage !== this.props.activeLanguage) {
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.activeLanguage !== this.props.activeLanguage) {
       this.forceUpdate();
     }
   }
@@ -117,7 +114,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
 
   setMapRef = (ref) => {
     this.mapRef = ref;
-    this.leafletMap = this.mapRef.refs.map.leafletElement;
+    this.leafletMap = ref.leafletElement;
   };
 
   fetchUnits = () => {
@@ -177,6 +174,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
       location: {
         query: { filter },
       },
+      i18n: { language },
     } = this.props;
     const activeFilter = filter
       ? arrayifyQueryValue(filter)
@@ -205,7 +203,7 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
               <MapView
                 ref={this.setMapRef}
                 selectedUnit={selectedUnit}
-                activeLanguage={activeLanguage}
+                activeLanguage={language}
                 params={params}
                 setLocation={this.props.setLocation}
                 position={this.initialPosition}
@@ -231,10 +229,6 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
   }
 }
 
-HomeContainer.childContextTypes = {
-  getActiveLanguage: PropTypes.func,
-};
-
 const mapStateToProps = (state, props: Props) => ({
   unitData: fromUnit.getVisibleUnits(state, props.location.query),
   serviceData: fromService.getServicesObject(state),
@@ -259,5 +253,10 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
   );
 
 export default hot(
-  withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeContainer))
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(withTranslation()(HomeContainer))
+  )
 );

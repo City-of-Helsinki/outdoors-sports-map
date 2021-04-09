@@ -31,8 +31,7 @@ class UnitListItem extends Component {
   }
 
   render() {
-    const { unit, handleClick } = this.props;
-    const { context } = this;
+    const { unit, handleClick, activeLanguage } = this.props;
 
     return (
       <Link
@@ -48,7 +47,7 @@ class UnitListItem extends Component {
         </div>
         <div className="list-view-item__unit-details">
           <div className="list-view-item__unit-name">
-            {unitHelpers.getAttr(unit.name, context.getActiveLanguage())}
+            {unitHelpers.getAttr(unit.name, activeLanguage)}
           </div>
           <ObservationStatus unit={unit} />
         </div>
@@ -59,10 +58,6 @@ class UnitListItem extends Component {
     );
   }
 }
-
-UnitListItem.contextTypes = {
-  getActiveLanguage: PropTypes.func,
-};
 
 export class ListViewBase extends Component {
   constructor(props) {
@@ -77,18 +72,17 @@ export class ListViewBase extends Component {
     this.handleLoadMoreClick = this.handleLoadMoreClick.bind(this);
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.isVisible;
+  }
+
+  componentDidUpdate(prevProps) {
     if (
-      !isEqual(nextProps.units, this.props.units) ||
-      !isEqual(nextProps.activeFilter, this.props.activeFilter)
+      !isEqual(prevProps.units, this.props.units) ||
+      !isEqual(prevProps.activeFilter, this.props.activeFilter)
     ) {
       this.resetUnitCount();
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return nextProps.isVisible;
   }
 
   sortUnits(props, sortKey) {
@@ -144,7 +138,7 @@ export class ListViewBase extends Component {
   }
 
   render() {
-    const { services, openUnit, isLoading, t } = this.props;
+    const { services, openUnit, isLoading, t, i18n } = this.props;
     const { sortKey, maxUnitCount } = this.state;
     const totalUnits = this.props.units.length;
     const units = isLoading
@@ -170,6 +164,7 @@ export class ListViewBase extends Component {
                   services={services}
                   key={unit.id}
                   handleClick={() => openUnit(unit.id)}
+                  activeLanguage={i18n.language}
                 />
               ))}
             {units.length !== totalUnits && (
@@ -198,8 +193,4 @@ ListViewBase.propTypes = {
   services: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
-ListViewBase.contextTypes = {
-  getActiveLanguage: PropTypes.func,
-};
-
-export default withTranslation()(ListView);
+export default withTranslation()(ListViewBase);

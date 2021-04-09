@@ -41,9 +41,10 @@ ActionButton.propTypes = {
   action: PropTypes.func.isRequired,
   icon: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
-const Header = translate()(
+const Header = withTranslation()(
   ({ t, expand, collapse, openUnit, setView, isExpanded }) => (
     <div className="header">
       <SearchContainer

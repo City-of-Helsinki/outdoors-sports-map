@@ -28,7 +28,7 @@ const SortSelectorDropdown = ({ active, values, onSelect }) => {
           ))}
       </Dropdown.Menu>
     </Dropdown>
-  )
-);
+  );
+};
 
 export default SortSelectorDropdown;
