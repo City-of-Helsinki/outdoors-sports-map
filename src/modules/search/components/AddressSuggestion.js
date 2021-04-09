@@ -6,7 +6,7 @@
 */
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const addressIcon = require('@assets/markers/unknown-satisfactory-off.png');
 

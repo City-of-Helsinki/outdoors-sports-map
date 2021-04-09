@@ -12,7 +12,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
 

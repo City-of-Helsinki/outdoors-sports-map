@@ -12,7 +12,7 @@
 
 import PropTypes from 'prop-types';
 import React, { Component, useContext } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import values from 'lodash/values';
 import { withTranslation } from 'react-i18next';
 import addressBarMarker from '@assets/markers/location.svg';
@@ -142,11 +142,11 @@ class UnitBrowser extends Component<void, void, State> {
 
   updateQueryParameter = (key: string, value: string): void => {
     const {
-      router,
+      history,
       location: { query },
     } = this.props;
 
-    router.push({
+    history.push({
       query: { ...query, [key]: value },
     });
   };
@@ -264,7 +264,7 @@ UnitBrowser.propTypes = {
   openUnit: PropTypes.func.isRequired,
   params: PropTypes.objectOf(PropTypes.any).isRequired,
   position: PropTypes.arrayOf(PropTypes.number).isRequired,
-  router: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   services: PropTypes.objectOf(PropTypes.object).isRequired,
   setView: PropTypes.func.isRequired,
   singleUnitSelected: PropTypes.bool.isRequired,

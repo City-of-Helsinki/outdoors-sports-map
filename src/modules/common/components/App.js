@@ -1,23 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Router, Route, IndexRoute } from 'react-router';
+import { Router, Route } from 'react-router-dom';
+
 import HomeContainer from '../../home/components/HomeContainer';
 import { routerPaths } from '../constants';
 import TranslationProvider from './translation/TranslationProvider';
 import JumpLink from './JumpLink';
 
-const routes = (
-  <Route path="/">
-    <IndexRoute component={HomeContainer} />
-    <Route path={routerPaths.singleUnit} component={HomeContainer} />
-  </Route>
-);
-
 const App = ({ history }) => (
   <TranslationProvider>
     <div id="app-wrapper">
       <JumpLink />
-      <Router history={history} routes={routes} key={Math.random()} />
+      <Router history={history}>
+        <Route path="/" exact component={HomeContainer} />
+        <Route path={routerPaths.singleUnit} exact component={HomeContainer} />
+      </Router>
     </div>
   </TranslationProvider>
 );

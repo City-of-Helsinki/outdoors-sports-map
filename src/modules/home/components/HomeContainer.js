@@ -14,7 +14,7 @@ import { hot } from 'react-hot-loader/root';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
@@ -43,7 +43,7 @@ type Props = {
   position: number[],
   unitData: Object[],
   activeLanguage: string,
-  router: Object,
+  history: Object,
   location: Object,
   isLoading: boolean,
   serviceData: Object[],
@@ -113,8 +113,10 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
   }
 
   setMapRef = (ref) => {
-    this.mapRef = ref;
-    this.leafletMap = ref.leafletElement;
+    if (ref) {
+      this.mapRef = ref;
+      this.leafletMap = ref.mapRef.leafletElement;
+    }
   };
 
   fetchUnits = () => {
@@ -138,23 +140,25 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
 
   openUnit = (unitId: string) => {
     const {
-      router,
-      location: { query },
+      history,
+      location: { search },
     }: Props = this.props;
-    router.push({
+
+    history.push({
       pathname: `/unit/${unitId}`,
-      query,
+      search,
     });
   };
 
   closeUnit = () => {
     const {
-      router,
-      location: { query },
+      history,
+      location: { search },
     } = this.props;
-    router.push({
+
+    history.push({
       pathname: '/',
-      query,
+      search,
     });
   };
 
@@ -170,12 +174,12 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
       mapCenter,
       address,
       activeLanguage,
-      params,
-      location: {
-        query: { filter },
-      },
+      match: { params },
+      location: { search },
       i18n: { language },
     } = this.props;
+
+    const filter = new URLSearchParams(search).get('filter');
     const activeFilter = filter
       ? arrayifyQueryValue(filter)
       : getDefaultFilters();
@@ -230,9 +234,9 @@ class HomeContainer extends Component<DefaultProps, Props, void> {
 }
 
 const mapStateToProps = (state, props: Props) => ({
-  unitData: fromUnit.getVisibleUnits(state, props.location.query),
+  unitData: fromUnit.getVisibleUnits(state, props.location.search),
   serviceData: fromService.getServicesObject(state),
-  selectedUnit: fromUnit.getUnitById(state, { id: props.params.unitId }),
+  selectedUnit: fromUnit.getUnitById(state, { id: props.match.params.unitId }),
   activeLanguage: getLanguage(state),
   isLoading: getIsLoading(state),
   mapCenter: fromMap.getLocation(state),

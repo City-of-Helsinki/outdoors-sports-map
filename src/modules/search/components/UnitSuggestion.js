@@ -7,7 +7,7 @@
 
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
