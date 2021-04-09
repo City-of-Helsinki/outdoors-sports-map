@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
 import { configure } from 'enzyme';
-import i18next from 'i18next';
 import Adapter from 'enzyme-adapter-react-16';
 
 jest.mock('react-i18next', () => ({

@@ -175,7 +175,7 @@ export class ListViewBase extends Component {
                   cursor: 'pointer',
                   margin: '18px auto 10px',
                 }}
-                href
+                href=""
                 onClick={this.handleLoadMoreClick}
               >
                 {t('UNIT.SHOW_MORE')}
