@@ -1,16 +1,40 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useRouteMatch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
-import { getUnitPosition } from '../../unit/helpers';
+import { getUnitPosition, getAttr } from '../../unit/helpers';
+import { getUnitById } from '../../unit/selectors';
 import UnitDetails from '../../unit/components/UnitDetailsContainer';
 import UnitBrowserPage from '../../unit/components/UnitBrowserContainer';
 import { routerPaths } from '../../common/constants';
 import useIsMobile from '../../common/hooks/useIsMobile';
+import Page from '../../common/components/Page';
 import Map from '../../map/components/Map';
+
+function useTitle(selectedUnitId) {
+  const {
+    t,
+    i18n: {
+      languages: [activeLanguage],
+    },
+  } = useTranslation();
+  const selectedUnit = useSelector((state) =>
+    getUnitById(state, { id: selectedUnitId })
+  );
+  const title = [];
+
+  title.push(t('APP.NAME'));
+
+  if (selectedUnit) {
+    title.push(` - ${getAttr(selectedUnit.name, activeLanguage)}`);
+  }
+
+  return title.join('');
+}
 
 function getLatLngToContainerPoint(ref, location) {
   const map = ref.current;
@@ -73,6 +97,8 @@ function HomeContainer() {
   const selectedUnitId = match ? match.params.unitId : null;
   const isUnitDetailsOpen = selectedUnitId !== null;
 
+  const title = useTitle(selectedUnitId);
+
   const handleOnViewChange = useCallback((coordinates) => {
     setView(mapRef, coordinates);
   }, []);
@@ -108,33 +134,35 @@ function HomeContainer() {
   }, []);
 
   return (
-    <MapLayout
-      content={
-        <>
-          {/* Hide unit browser when the unit details is open with styling. */}
-          {/* This is an easy way to retain the search state. */}
-          <div style={{ display: isUnitDetailsOpen ? 'none' : undefined }}>
-            <UnitBrowserPage
-              mapRef={mapRef}
-              onViewChange={handleOnViewChange}
-            />
-          </div>
-          {isUnitDetailsOpen && (
-            <UnitDetails
-              unitId={selectedUnitId}
-              onCenterMapToUnit={handleCenterMapToUnit}
-            />
-          )}
-        </>
-      }
-      map={
-        <Map
-          ref={mapRef}
-          selectedUnitId={selectedUnitId}
-          onCenterMapToUnit={handleCenterMapToUnit}
-        />
-      }
-    />
+    <Page title={title}>
+      <MapLayout
+        content={
+          <>
+            {/* Hide unit browser when the unit details is open with styling. */}
+            {/* This is an easy way to retain the search state. */}
+            <div style={{ display: isUnitDetailsOpen ? 'none' : undefined }}>
+              <UnitBrowserPage
+                mapRef={mapRef}
+                onViewChange={handleOnViewChange}
+              />
+            </div>
+            {isUnitDetailsOpen && (
+              <UnitDetails
+                unitId={selectedUnitId}
+                onCenterMapToUnit={handleCenterMapToUnit}
+              />
+            )}
+          </>
+        }
+        map={
+          <Map
+            ref={mapRef}
+            selectedUnitId={selectedUnitId}
+            onCenterMapToUnit={handleCenterMapToUnit}
+          />
+        }
+      />
+    </Page>
   );
 }
 
