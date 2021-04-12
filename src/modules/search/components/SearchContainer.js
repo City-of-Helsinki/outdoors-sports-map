@@ -63,20 +63,14 @@ class SearchContainer extends Component {
   };
 
   handleAddressClick = (coordinates) => {
-    const { setView, setLocation } = this.props;
+    const { onViewChange, setLocation } = this.props;
     this.clear();
     setLocation(coordinates);
-    setView(coordinates);
+    onViewChange(coordinates);
   };
 
   render() {
-    const {
-      unitSuggestions,
-      addresses,
-      isActive,
-      searchDisabled,
-      openUnit,
-    } = this.props;
+    const { unitSuggestions, addresses, isActive, searchDisabled } = this.props;
     const { searchPhrase, showSuggestions } = this.state;
 
     return (
@@ -93,7 +87,6 @@ class SearchContainer extends Component {
           <SearchSuggestions
             openAllResults={this.search}
             units={unitSuggestions}
-            openUnit={openUnit}
             handleAddressClick={this.handleAddressClick}
             addresses={addresses}
           />

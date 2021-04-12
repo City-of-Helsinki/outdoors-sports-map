@@ -31,17 +31,10 @@ class UnitListItem extends Component {
   }
 
   render() {
-    const { unit, handleClick, activeLanguage } = this.props;
+    const { unit, activeLanguage } = this.props;
 
     return (
-      <Link
-        to={`/unit/${unit.id}`}
-        onClick={(e) => {
-          e.preventDefault();
-          handleClick();
-        }}
-        className="list-view-item"
-      >
+      <Link to={`/unit/${unit.id}`} className="list-view-item">
         <div className="list-view-item__unit-marker">
           <UnitIcon unit={unit} />
         </div>
@@ -85,14 +78,11 @@ export class ListViewBase extends Component {
     }
   }
 
-  sortUnits(props, sortKey) {
+  sortUnits = (props, sortKey) => {
     let sortedUnits = [];
     switch (sortKey) {
       case SortKeys.ALPHABETICAL:
-        sortedUnits = unitHelpers.sortByName(
-          props.units,
-          this.context.getActiveLanguage()
-        );
+        sortedUnits = unitHelpers.sortByName(props.units, 'fi');
         break;
       case SortKeys.CONDITION:
         sortedUnits = unitHelpers.sortByCondition(props.units);
@@ -111,7 +101,7 @@ export class ListViewBase extends Component {
     }
 
     return sortedUnits;
-  }
+  };
 
   /**
    * @param  {string} sortKey
@@ -138,7 +128,7 @@ export class ListViewBase extends Component {
   }
 
   render() {
-    const { services, openUnit, isLoading, t, i18n } = this.props;
+    const { services, isLoading, t, i18n } = this.props;
     const { sortKey, maxUnitCount } = this.state;
     const totalUnits = this.props.units.length;
     const units = isLoading
@@ -163,7 +153,6 @@ export class ListViewBase extends Component {
                   unit={unit}
                   services={services}
                   key={unit.id}
-                  handleClick={() => openUnit(unit.id)}
                   activeLanguage={i18n.language}
                 />
               ))}

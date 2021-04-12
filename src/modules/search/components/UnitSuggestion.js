@@ -14,7 +14,7 @@ import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
 
-const UnitSuggestion = ({ unit, handleClick, ...rest }) => {
+const UnitSuggestion = ({ unit, ...rest }) => {
   const {
     i18n: { language },
   } = useTranslation();
@@ -22,10 +22,6 @@ const UnitSuggestion = ({ unit, handleClick, ...rest }) => {
   return (
     <Link
       to={`/unit/${unit.id}`}
-      onClick={(e) => {
-        e.preventDefault();
-        handleClick();
-      }}
       className="search-suggestions__result"
       {...rest}
     >
@@ -44,7 +40,6 @@ const UnitSuggestion = ({ unit, handleClick, ...rest }) => {
 
 UnitSuggestion.propTypes = {
   unit: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleClick: PropTypes.func,
 };
 
 export default UnitSuggestion;

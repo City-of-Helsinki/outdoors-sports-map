@@ -15,7 +15,6 @@ const SearchSuggestions = ({
   units,
   addresses,
   openAllResults,
-  openUnit,
   handleAddressClick,
 }) => {
   const { t } = useTranslation();
@@ -33,11 +32,7 @@ const SearchSuggestions = ({
             </a>
           )}
           {units.map((result) => (
-            <UnitSuggestion
-              key={result.id}
-              unit={result}
-              handleClick={() => openUnit(result.id)}
-            />
+            <UnitSuggestion key={result.id} unit={result} />
           ))}
           {addresses.map((address) => (
             <AddressSuggestion

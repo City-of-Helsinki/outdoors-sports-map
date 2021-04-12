@@ -16,12 +16,9 @@ import { withRouter } from 'react-router-dom';
 import values from 'lodash/values';
 import { useTranslation, withTranslation } from 'react-i18next';
 import addressBarMarker from '@assets/markers/location.svg';
-import ListView from './ListView';
-import SMIcon from '../../home/components/SMIcon';
-import { StatusFilters } from '../constants';
-import UnitFilters from './UnitFilters';
-import SearchContainer from '../../search/components/SearchContainer';
 
+import SMIcon from '../../home/components/SMIcon';
+import SearchContainer from '../../search/components/SearchContainer';
 import {
   getAddressToDisplay,
   getOnSeasonSportFilters,
@@ -29,6 +26,9 @@ import {
   getDefaultStatusFilter,
   getDefaultSportFilter,
 } from '../helpers';
+import { StatusFilters } from '../constants';
+import ListView from './ListView';
+import UnitFilters from './UnitFilters';
 
 const ActionButton = ({ action, icon, isActive, name }) => (
   <button className="action-button" aria-pressed={isActive} onClick={action}>
@@ -43,14 +43,12 @@ ActionButton.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-const Header = withTranslation()(
-  ({ t, expand, collapse, openUnit, setView, isExpanded }) => (
+const Header = ({ expand, collapse, onViewChange, isExpanded }) => {
+  const { t } = useTranslation();
+
+  return (
     <div className="header">
-      <SearchContainer
-        onSearch={expand}
-        openUnit={openUnit}
-        setView={setView}
-      />
+      <SearchContainer onSearch={expand} onViewChange={onViewChange} />
       <div className="action-buttons">
         <ActionButton
           action={collapse}
@@ -66,15 +64,14 @@ const Header = withTranslation()(
         />
       </div>
     </div>
-  )
-);
+  );
+};
 
 Header.propTypes = {
   collapse: PropTypes.func.isRequired,
   expand: PropTypes.func.isRequired,
   isExpanded: PropTypes.bool.isRequired,
-  openUnit: PropTypes.func.isRequired,
-  setView: PropTypes.func.isRequired,
+  onViewChange: PropTypes.func.isRequired,
 };
 
 const AddressBar = ({ address, handleClick }) => {
@@ -176,8 +173,7 @@ class UnitBrowser extends Component<void, void, State> {
       isLoading,
       isSearching,
       position,
-      openUnit,
-      setView,
+      onViewChange,
       address,
       params,
       leafletMap,
@@ -185,10 +181,7 @@ class UnitBrowser extends Component<void, void, State> {
       location: { query },
     } = this.props;
     const { isExpanded } = this.state;
-    let { contentMaxHeight } = this.state;
-    if (isExpanded) {
-      contentMaxHeight = contentMaxHeight || this.calculateMaxHeight();
-    }
+    const { contentMaxHeight } = this.state;
 
     const currentSportFilter =
       (query && query.sport) || getDefaultSportFilter();
@@ -203,8 +196,7 @@ class UnitBrowser extends Component<void, void, State> {
           <Header
             expand={this.expand}
             collapse={this.collapse}
-            setView={setView}
-            openUnit={openUnit}
+            onViewChange={onViewChange}
             isExpanded={isExpanded}
           />
           {!isLoading && (
@@ -226,12 +218,16 @@ class UnitBrowser extends Component<void, void, State> {
             />
           )}
           {!isLoading && Object.keys(address).length !== 0 && (
-            <AddressBar handleClick={setView} address={address} />
+            <AddressBar handleClick={onViewChange} address={address} />
           )}
         </div>
         <div
           className="unit-browser__content"
-          style={{ maxHeight: contentMaxHeight }}
+          style={{
+            maxHeight: isExpanded
+              ? contentMaxHeight || this.calculateMaxHeight()
+              : contentMaxHeight,
+          }}
         >
           <ListView
             filter={`${currentSportFilter};${currentStatusFilter}`}
@@ -240,7 +236,6 @@ class UnitBrowser extends Component<void, void, State> {
             units={units}
             services={services}
             position={position}
-            openUnit={openUnit}
             leafletMap={leafletMap}
           />
         </div>
@@ -262,15 +257,14 @@ UnitBrowser.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   leafletMap: PropTypes.objectOf(PropTypes.any),
   location: PropTypes.objectOf(PropTypes.any).isRequired,
-  openUnit: PropTypes.func.isRequired,
   params: PropTypes.objectOf(PropTypes.any).isRequired,
   position: PropTypes.arrayOf(PropTypes.number).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   services: PropTypes.objectOf(PropTypes.object).isRequired,
-  setView: PropTypes.func.isRequired,
   singleUnitSelected: PropTypes.bool.isRequired,
   t: PropTypes.func.isRequired,
   units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onViewChange: PropTypes.func.isRequired,
 };
 
 export default withRouter(withTranslation()(UnitBrowser));
