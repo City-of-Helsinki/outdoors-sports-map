@@ -1,7 +1,5 @@
 // @flow
-import {
-  all, call, fork, takeLatest, put,
-} from 'redux-saga/effects';
+import { all, call, fork, takeLatest, put } from 'redux-saga/effects';
 import { schema } from 'normalizr';
 import {
   receiveUnits,
