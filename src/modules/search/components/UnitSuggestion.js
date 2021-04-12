@@ -6,15 +6,18 @@
 */
 
 import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
-import LanguageContext from '../../common/LanguageContext';
 
 const UnitSuggestion = ({ unit, handleClick, ...rest }) => {
-  const { activeLanguage } = useContext(LanguageContext);
+  const {
+    i18n: { language },
+  } = useTranslation();
 
   return (
     <Link
@@ -31,7 +34,7 @@ const UnitSuggestion = ({ unit, handleClick, ...rest }) => {
       </div>
       <div className="search-suggestions__result-details">
         <div className="search-suggestions__result-details__name">
-          {getAttr(unit.name, activeLanguage)}
+          {getAttr(unit.name, language)}
         </div>
         <ObservationStatus unit={unit} />
       </div>

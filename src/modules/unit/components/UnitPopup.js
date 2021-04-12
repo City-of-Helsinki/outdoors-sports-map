@@ -1,16 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet';
 import { useTranslation } from 'react-i18next';
 import { getAttr, getUnitQuality, getCondition } from '../helpers';
-import LanguageContext from '../../common/LanguageContext';
 
 const UnitPopup = ({ unit, offset }) => {
-  const { t } = useTranslation();
-  const { activeLanguage } = useContext(LanguageContext);
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation();
   const condition = getCondition(unit);
   const conditionLabel = condition
-    ? getAttr(condition.name, activeLanguage)
+    ? getAttr(condition.name, language)
     : t('UNIT.UNKNOWN');
 
   return (
@@ -31,7 +32,7 @@ const UnitPopup = ({ unit, offset }) => {
           {conditionLabel}
         </div>
         <h6 className="unit-popup__content__name">
-          {getAttr(unit.name, activeLanguage)}
+          {getAttr(unit.name, language)}
         </h6>
       </div>
     </Popup>

@@ -11,17 +11,16 @@
 */
 
 import PropTypes from 'prop-types';
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import values from 'lodash/values';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import addressBarMarker from '@assets/markers/location.svg';
 import ListView from './ListView';
 import SMIcon from '../../home/components/SMIcon';
 import { StatusFilters } from '../constants';
 import UnitFilters from './UnitFilters';
 import SearchContainer from '../../search/components/SearchContainer';
-import LanguageContext from '../../common/LanguageContext';
 
 import {
   getAddressToDisplay,
@@ -79,7 +78,9 @@ Header.propTypes = {
 };
 
 const AddressBar = ({ address, handleClick }) => {
-  const { activeLanguage } = useContext(LanguageContext);
+  const {
+    i18n: { language },
+  } = useTranslation();
 
   return (
     <button
@@ -96,7 +97,7 @@ const AddressBar = ({ address, handleClick }) => {
         width="16px"
         alt=""
       />
-      {address && getAddressToDisplay(address, activeLanguage)}
+      {address && getAddressToDisplay(address, language)}
     </button>
   );
 };
