@@ -7,14 +7,14 @@ import i18n from '../../../i18n';
 import TranslationProvider from '../TranslationProvider';
 
 const ChangeLanguageButtons = () => {
-  const { i18n } = useTranslation();
+  const { i18n: scopedI18n } = useTranslation();
 
   return (
     <div>
-      <button type="button" onClick={() => i18n.changeLanguage('en')}>
+      <button type="button" onClick={() => scopedI18n.changeLanguage('en')}>
         English
       </button>
-      <button type="button" onClick={() => i18n.changeLanguage('sv')}>
+      <button type="button" onClick={() => scopedI18n.changeLanguage('sv')}>
         Swedish
       </button>
     </div>
