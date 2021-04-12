@@ -66,20 +66,10 @@ function setView(ref, coordinates) {
 
 function MapLayout({ content, map }) {
   return (
-    <div>
+    <>
       {content}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        {map}
-      </div>
-    </div>
+      <div className="map-container">{map}</div>
+    </>
   );
 }
 
@@ -140,7 +130,10 @@ function HomeContainer() {
           <>
             {/* Hide unit browser when the unit details is open with styling. */}
             {/* This is an easy way to retain the search state. */}
-            <div style={{ display: isUnitDetailsOpen ? 'none' : undefined }}>
+            <div
+              className="map-chrome"
+              style={{ display: isUnitDetailsOpen ? 'none' : undefined }}
+            >
               <UnitBrowserPage
                 mapRef={mapRef}
                 onViewChange={handleOnViewChange}
