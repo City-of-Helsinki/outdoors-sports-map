@@ -20,7 +20,7 @@ const addressReducer = handleActions(
     [mapActions.RECEIVE_ADDRESS]: (
       state: Array<number>,
       { payload: address }: Action
-    ) => address,
+    ) => address || {},
   },
   {}
 );
