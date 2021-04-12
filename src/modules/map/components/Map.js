@@ -15,9 +15,10 @@ import * as fromMap from '../selectors';
 
 type Props = {
   selectedUnitId: String,
+  onCenterMapToUnit: (unit: object) => void,
 };
 
-const Map = forwardRef(({ selectedUnitId }: Props, ref) => {
+const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
   const dispatch = useDispatch();
   const {
     i18n: {
@@ -66,6 +67,7 @@ const Map = forwardRef(({ selectedUnitId }: Props, ref) => {
       changeLanguage={actions.changeLanguage}
       openUnit={openUnit}
       mapCenter={mapCenter}
+      onCenterMapToUnit={onCenterMapToUnit}
     />
   );
 });

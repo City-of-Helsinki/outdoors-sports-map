@@ -35,7 +35,6 @@ import {
   BOUNDARIES,
 } from '../../map/constants';
 import latLngToArray from '../../map/helpers';
-import { getUnitPosition } from '../helpers';
 import UnitsOnMap from './UnitsOnMap';
 import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
@@ -62,12 +61,12 @@ class MapView extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { selectedUnit } = this.props;
+    const { selectedUnit, onCenterMapToUnit } = this.props;
     if (
       selectedUnit &&
       (!prevProps.selectedUnit || selectedUnit.id !== prevProps.selectedUnit.id)
     ) {
-      this.centerMapToUnit(selectedUnit);
+      onCenterMapToUnit(selectedUnit);
     }
   }
 
@@ -77,30 +76,6 @@ class MapView extends Component {
 
   setMapRef = (ref) => {
     this.mapRef = ref;
-  };
-
-  centerMapToUnit = (unit: Object) => {
-    const location = getUnitPosition(unit);
-    const pixelLocation = this.mapRef.leafletElement.latLngToContainerPoint(
-      location
-    );
-    if (!this.state.isMobile) {
-      // Offset by half the width of unit modal in order to center focus
-      // on the visible map
-      pixelLocation.x -= 200;
-      const adjustedCenter = this.mapRef.leafletElement.containerPointToLatLng(
-        pixelLocation
-      );
-      this.mapRef.leafletElement.setView(adjustedCenter);
-    } else {
-      // On mobile we want to move the map 250px down from the center, so the
-      // big info box does not hide the selected unit.
-      pixelLocation.y -= 250;
-      const adjustedCenter = this.mapRef.leafletElement.containerPointToLatLng(
-        pixelLocation
-      );
-      this.mapRef.leafletElement.setView(adjustedCenter);
-    }
   };
 
   handleZoom = () => {

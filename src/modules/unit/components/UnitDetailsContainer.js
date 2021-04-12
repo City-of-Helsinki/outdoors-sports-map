@@ -7,15 +7,14 @@ import { useSelector } from 'react-redux';
 import * as fromService from '../../service/selectors';
 import getIsLoading from '../../home/selectors';
 import * as fromUnit from '../selectors';
-import * as UnitHelpers from '../helpers';
 import SingleUnitModalContainer from './SingleUnitModalContainer';
 
 type Props = {
   unitId: string,
-  onViewChange: (coordinates: [Number, number]) => void,
+  onCenterMapToUnit: (coordinates: [Number, number]) => void,
 };
 
-const UnitDetailsContainer = ({ unitId, onViewChange }: Props) => {
+const UnitDetailsContainer = ({ unitId, onCenterMapToUnit }: Props) => {
   const history = useHistory();
   const { search } = useLocation();
   const serviceData = useSelector(fromService.getServicesObject);
@@ -34,9 +33,9 @@ const UnitDetailsContainer = ({ unitId, onViewChange }: Props) => {
   useEffect(() => {
     if (selectedUnit) {
       // Center map on the unit
-      onViewChange(UnitHelpers.getUnitPosition(selectedUnit));
+      onCenterMapToUnit(selectedUnit);
     }
-  }, [selectedUnit, onViewChange]);
+  }, [selectedUnit, onCenterMapToUnit]);
 
   return (
     <SingleUnitModalContainer
