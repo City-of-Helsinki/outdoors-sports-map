@@ -64,10 +64,10 @@ class MapView extends Component {
   componentDidUpdate(prevProps) {
     const { selectedUnit } = this.props;
     if (
-      prevProps.selectedUnit &&
-      (!selectedUnit || selectedUnit.id !== prevProps.selectedUnit.id)
+      selectedUnit &&
+      (!prevProps.selectedUnit || selectedUnit.id !== prevProps.selectedUnit.id)
     ) {
-      this.centerMapToUnit(prevProps.selectedUnit);
+      this.centerMapToUnit(selectedUnit);
     }
   }
 
