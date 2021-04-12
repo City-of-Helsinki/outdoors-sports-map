@@ -3,31 +3,18 @@ import React from 'react';
 import { mount } from '../../../common/enzymeHelpers';
 import { ModalHeader } from '../SingleUnitModalContainer';
 
-const defaultProps = {
-  t: (translationPath) => translationPath,
-};
+const defaultProps = {};
 const getWrapper = (props) =>
   mount(<ModalHeader {...defaultProps} {...props} />);
 
 describe('<ModalHeader />', () => {
   it('should have a close button', () => {
-    const handleClick = jest.fn();
-    const mockEvent = { preventDefault: jest.fn() };
-    const wrapper = getWrapper({ handleClick });
-
+    const wrapper = getWrapper();
     const closeButton = wrapper.find({ 'aria-label': 'Sulje' }).at(0).parent();
 
     // It should exists
     expect(closeButton.length > 0).toBeTruthy();
-    // It should have an empty href
-    expect(closeButton.prop('href')).toEqual('');
-
-    // Simulating clicks does not work due to some reason I was not able
-    // to pin down. Enzyme's simulate more or less just calls the
-    // onClick function so this should be an equivalent approach.
-    closeButton.prop('onClick')(mockEvent);
-
-    expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
-    expect(handleClick).toHaveBeenCalledWith(mockEvent);
+    // It should take the user to the root route
+    expect(closeButton.prop('href')).toEqual('/');
   });
 });

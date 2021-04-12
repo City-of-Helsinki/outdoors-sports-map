@@ -14,8 +14,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
-import breaks from 'remark-breaks';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import breaks from 'remark-breaks';
 import upperFirst from 'lodash/upperFirst';
 import get from 'lodash/get';
 import has from 'lodash/has';
@@ -49,23 +50,13 @@ function shouldShowInfo(unit) {
 
 // Export for testing purpose. A bit of an anti-pattern, but required
 // less unrelated work to the feature I was developing
-export const ModalHeader = ({
-  handleClick: onClick,
-  unit,
-  services,
-  isLoading,
-}) => {
+export const ModalHeader = ({ unit, services, isLoading }) => {
   const {
     t,
     i18n: {
       languages: [language],
     },
   } = useTranslation();
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    onClick(e);
-  };
 
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
@@ -85,14 +76,9 @@ export const ModalHeader = ({
             )}
           </div>
           <div style={{ alignSelf: 'center' }}>
-            <a
-              className="modal-close-button close-unit-modal"
-              onClick={handleClick}
-              // Href attribute makes the link focusable with a keyboard
-              href=""
-            >
+            <Link to="/" className="modal-close-button close-unit-modal">
               <SMIcon icon="close" aria-label={t('MODAL.CLOSE')} />
-            </a>
+            </Link>
           </div>
         </div>
         {unit ? (

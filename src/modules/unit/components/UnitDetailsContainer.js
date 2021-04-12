@@ -1,7 +1,6 @@
 // @flow
 
-import React, { useCallback, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import * as fromService from '../../service/selectors';
@@ -15,20 +14,11 @@ type Props = {
 };
 
 const UnitDetailsContainer = ({ unitId, onCenterMapToUnit }: Props) => {
-  const history = useHistory();
-  const { search } = useLocation();
   const serviceData = useSelector(fromService.getServicesObject);
   const selectedUnit = useSelector((state) =>
     fromUnit.getUnitById(state, { id: unitId })
   );
   const isLoading = useSelector(getIsLoading);
-
-  const closeUnit = useCallback(() => {
-    history.push({
-      pathname: '/',
-      search,
-    });
-  }, [history, search]);
 
   useEffect(() => {
     if (selectedUnit) {
@@ -43,7 +33,6 @@ const UnitDetailsContainer = ({ unitId, onCenterMapToUnit }: Props) => {
       isOpen={!!unitId}
       unit={selectedUnit}
       services={serviceData}
-      handleClick={closeUnit}
     />
   );
 };
