@@ -10,18 +10,15 @@ const getWrapper = (props) =>
   mount(<ModalHeader {...defaultProps} {...props} />);
 
 describe('<ModalHeader />', () => {
-  it('should have a close button', async () => {
+  it('should have a close button', () => {
     const handleClick = jest.fn();
     const mockEvent = { preventDefault: jest.fn() };
-    const wrapper = await getWrapper({ handleClick });
+    const wrapper = getWrapper({ handleClick });
 
-    const closeButton = wrapper
-      .find({ 'aria-label': 'MODAL.CLOSE' })
-      .at(0)
-      .parent();
+    const closeButton = wrapper.find({ 'aria-label': 'Sulje' }).at(0).parent();
 
     // It should exists
-    expect(closeButton).toBeTruthy();
+    expect(closeButton.length > 0).toBeTruthy();
     // It should have an empty href
     expect(closeButton.prop('href')).toEqual('');
 

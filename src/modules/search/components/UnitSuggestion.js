@@ -16,7 +16,9 @@ import UnitIcon from '../../unit/components/UnitIcon';
 
 const UnitSuggestion = ({ unit, ...rest }) => {
   const {
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
 
   return (

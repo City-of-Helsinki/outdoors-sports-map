@@ -7,7 +7,9 @@ import { getAttr, getUnitQuality, getCondition } from '../helpers';
 const UnitPopup = ({ unit, offset }) => {
   const {
     t,
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
   const condition = getCondition(unit);
   const conditionLabel = condition

@@ -106,37 +106,30 @@ const defaultProps = {
   ],
   position: [1, 1],
   maxUnitCount: 0,
+  services: {},
 };
 
-const context = {
-  getActiveLanguage: () => 'fi',
-};
-
-const getWrapper = (props) =>
-  mount(<ListView {...defaultProps} {...props} />, {
-    context,
-    childContextTypes: context,
-  });
+const getWrapper = (props) => mount(<ListView {...defaultProps} {...props} />);
 
 describe('<ListView />', () => {
   describe('show more link', () => {
     const getShowMoreLink = (wrapper) =>
       wrapper.find({ children: 'Näytä enemmän' });
 
-    it('should be rendered', async () => {
-      const wrapper = await getWrapper();
+    it('should be rendered', () => {
+      const wrapper = getWrapper();
 
       expect(getShowMoreLink(wrapper).length).toEqual(1);
     });
 
-    it('should prevent default action and load more unit on click', async () => {
+    it('should prevent default action and load more unit on click', () => {
       const mockEvent = {
         preventDefault: jest.fn(),
       };
       const loadMoreUnitsSpy = jest
         .spyOn(ListViewBase.prototype, 'loadMoreUnits')
         .mockImplementation(() => {});
-      const wrapper = await getWrapper();
+      const wrapper = getWrapper();
       const showMoreLink = getShowMoreLink(wrapper);
 
       showMoreLink.simulate('click', mockEvent);

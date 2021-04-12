@@ -14,7 +14,7 @@ const UnitFilterLabel = ({ message, id }) => {
 };
 
 UnitFilterLabel.defaultProps = {
-  id: '',
+  id: undefined,
 };
 
 UnitFilterLabel.propTypes = {

@@ -20,7 +20,9 @@ type Props = {
 const Map = forwardRef(({ selectedUnitId }: Props, ref) => {
   const dispatch = useDispatch();
   const {
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
   const history = useHistory();
   const { search } = useLocation();

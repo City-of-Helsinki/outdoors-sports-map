@@ -39,7 +39,9 @@ export const StatusUpdatedAgo = ({ time, sensorName = '' }) => (
 
 export const MaintenanceUpdated = ({ name, time }) => {
   const {
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
 
   return (
@@ -52,7 +54,9 @@ export const MaintenanceUpdated = ({ name, time }) => {
 const ObservationStatus = ({ unit }) => {
   const {
     t,
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
 
   const quality = getUnitQuality(unit);

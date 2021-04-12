@@ -57,7 +57,9 @@ export const ModalHeader = ({
 }) => {
   const {
     t,
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
 
   const handleClick = (e) => {
@@ -128,7 +130,9 @@ const LocationState = ({ unit }) => {
 const LocationInfo = ({ unit }) => {
   const {
     t,
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
 
   return (
@@ -181,7 +185,9 @@ const LocationInfo = ({ unit }) => {
 const NoticeInfo = ({ unit }) => {
   const {
     t,
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
   const notice = getObservation(unit, 'notice');
   return notice ? (
@@ -237,7 +243,9 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
 const LocationOpeningHours = ({ unit }) => {
   const {
     t,
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
   const openingHours = getOpeningHours(unit, language);
 
@@ -350,7 +358,9 @@ const SingleUnitModalContainer = ({
   isOpen,
 }) => {
   const {
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
   const temperatureObservation = has(currentUnit, 'observations')
     ? getObservation(currentUnit, 'swimming_water_temperature')

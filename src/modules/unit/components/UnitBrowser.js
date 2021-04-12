@@ -76,7 +76,9 @@ Header.propTypes = {
 
 const AddressBar = ({ address, handleClick }) => {
   const {
-    i18n: { language },
+    i18n: {
+      languages: [language],
+    },
   } = useTranslation();
 
   return (
