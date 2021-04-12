@@ -71,7 +71,7 @@ module.exports = {
       template: './src/index.html',
     }),
     new CopyPlugin([{
-      from: './favicon',
+      from: './public',
     }]),
   ],
 };
