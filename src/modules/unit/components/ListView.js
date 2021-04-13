@@ -4,18 +4,15 @@
    jsx-a11y/anchor-is-valid,
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
-   react/forbid-prop-types,
    react/destructuring-assignment,
-   react/no-unused-prop-types,
-   react/no-access-state-in-setstate,
    react/prop-types,
    react/require-default-props,
-   react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
-import { translate } from 'react-i18next';
-import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
 
@@ -34,24 +31,16 @@ class UnitListItem extends Component {
   }
 
   render() {
-    const { unit, handleClick } = this.props;
-    const { context } = this;
+    const { unit, activeLanguage } = this.props;
 
     return (
-      <Link
-        to={`/unit/${unit.id}`}
-        onClick={(e) => {
-          e.preventDefault();
-          handleClick();
-        }}
-        className="list-view-item"
-      >
+      <Link to={`/unit/${unit.id}`} className="list-view-item">
         <div className="list-view-item__unit-marker">
           <UnitIcon unit={unit} />
         </div>
         <div className="list-view-item__unit-details">
           <div className="list-view-item__unit-name">
-            {unitHelpers.getAttr(unit.name, context.getActiveLanguage())}
+            {unitHelpers.getAttr(unit.name, activeLanguage)}
           </div>
           <ObservationStatus unit={unit} />
         </div>
@@ -63,17 +52,7 @@ class UnitListItem extends Component {
   }
 }
 
-UnitListItem.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
-};
-
 export class ListViewBase extends Component {
-  static propTypes = {
-    units: PropTypes.array,
-    services: PropTypes.object,
-    sortKey: PropTypes.string,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -86,27 +65,24 @@ export class ListViewBase extends Component {
     this.handleLoadMoreClick = this.handleLoadMoreClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.isVisible;
+  }
+
+  componentDidUpdate(prevProps) {
     if (
-      !isEqual(nextProps.units, this.props.units) ||
-      !isEqual(nextProps.activeFilter, this.props.activeFilter)
+      !isEqual(prevProps.units, this.props.units) ||
+      !isEqual(prevProps.activeFilter, this.props.activeFilter)
     ) {
       this.resetUnitCount();
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.isVisible;
-  }
-
-  sortUnits(props, sortKey) {
+  sortUnits = (props, sortKey) => {
     let sortedUnits = [];
     switch (sortKey) {
       case SortKeys.ALPHABETICAL:
-        sortedUnits = unitHelpers.sortByName(
-          props.units,
-          this.context.getActiveLanguage()
-        );
+        sortedUnits = unitHelpers.sortByName(props.units, 'fi');
         break;
       case SortKeys.CONDITION:
         sortedUnits = unitHelpers.sortByCondition(props.units);
@@ -125,7 +101,7 @@ export class ListViewBase extends Component {
     }
 
     return sortedUnits;
-  }
+  };
 
   /**
    * @param  {string} sortKey
@@ -137,7 +113,9 @@ export class ListViewBase extends Component {
   }
 
   loadMoreUnits() {
-    this.setState({ maxUnitCount: this.state.maxUnitCount + UNIT_BATCH_SIZE });
+    this.setState((prevState) => ({
+      maxUnitCount: prevState.maxUnitCount + UNIT_BATCH_SIZE,
+    }));
   }
 
   resetUnitCount() {
@@ -150,7 +128,7 @@ export class ListViewBase extends Component {
   }
 
   render() {
-    const { services, openUnit, isLoading, t } = this.props;
+    const { services, isLoading, t, i18n } = this.props;
     const { sortKey, maxUnitCount } = this.state;
     const totalUnits = this.props.units.length;
     const units = isLoading
@@ -175,7 +153,7 @@ export class ListViewBase extends Component {
                   unit={unit}
                   services={services}
                   key={unit.id}
-                  handleClick={() => openUnit(unit.id)}
+                  activeLanguage={i18n.language}
                 />
               ))}
             {units.length !== totalUnits && (
@@ -186,7 +164,7 @@ export class ListViewBase extends Component {
                   cursor: 'pointer',
                   margin: '18px auto 10px',
                 }}
-                href
+                href=""
                 onClick={this.handleLoadMoreClick}
               >
                 {t('UNIT.SHOW_MORE')}
@@ -199,8 +177,9 @@ export class ListViewBase extends Component {
   }
 }
 
-ListViewBase.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+ListViewBase.propTypes = {
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  services: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
-export default translate()(ListViewBase);
+export default withTranslation()(ListViewBase);

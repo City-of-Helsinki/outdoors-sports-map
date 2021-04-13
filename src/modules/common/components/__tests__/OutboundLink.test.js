@@ -11,8 +11,8 @@ const getWrapper = (props) =>
   mount(<OutboundLink {...defaultProps} {...props} />);
 
 describe('<OutboundLink />', () => {
-  it('should render a link with notice that it will be opened into a new window', async () => {
-    const wrapper = await getWrapper();
+  it('should render a link with notice that it will be opened into a new window', () => {
+    const wrapper = getWrapper();
     const link = wrapper.find('a');
 
     expect(link.length).toEqual(1);

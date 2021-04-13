@@ -3,15 +3,23 @@
    jsx-a11y/anchor-is-valid,
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
+   react/prop-types,
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import UnitSuggestion from './UnitSuggestion';
 import AddressSuggestion from './AddressSuggestion';
 
-const SearchSuggestions = translate()(
-  ({ units, addresses, openAllResults, openUnit, handleAddressClick, t }) => (
+const SearchSuggestions = ({
+  units,
+  addresses,
+  openAllResults,
+  handleAddressClick,
+}) => {
+  const { t } = useTranslation();
+
+  return (
     <div className="search-suggestions">
       {units.length > 0 || addresses.length > 0 ? (
         <div className="search-suggestions__list">
@@ -24,11 +32,7 @@ const SearchSuggestions = translate()(
             </a>
           )}
           {units.map((result) => (
-            <UnitSuggestion
-              key={result.id}
-              unit={result}
-              handleClick={() => openUnit(result.id)}
-            />
+            <UnitSuggestion key={result.id} unit={result} />
           ))}
           {addresses.map((address) => (
             <AddressSuggestion
@@ -40,7 +44,7 @@ const SearchSuggestions = translate()(
         </div>
       ) : null}
     </div>
-  )
-);
+  );
+};
 
 export default SearchSuggestions;

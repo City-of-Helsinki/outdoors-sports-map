@@ -2,17 +2,20 @@ import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { mount as enzymeMount } from 'enzyme';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 
 import createStore from '../../bootstrap/createStore';
 import TranslationProvider from './components/translation/TranslationProvider';
 
 // eslint-disable-next-line import/prefer-default-export
-export const mount = async (element, options) => {
-  const store = await createStore();
+export const mount = (element, options) => {
+  const { store } = createStore();
 
   return enzymeMount(
     <Provider store={store}>
-      <TranslationProvider>{element}</TranslationProvider>
+      <TranslationProvider>
+        <MemoryRouter>{element}</MemoryRouter>
+      </TranslationProvider>
     </Provider>,
     options
   );

@@ -4,11 +4,11 @@ import 'regenerator-runtime/runtime';
 /* eslint-enable import/no-extraneous-dependencies */
 import { createElement } from 'react';
 import { render } from 'react-dom';
-import { browserHistory } from 'react-router';
+import { createBrowserHistory } from 'history';
+
 import './index.scss';
 import Root from './modules/common/components/Root';
 
-render(
-  createElement(Root, { history: browserHistory }),
-  document.getElementById('root')
-);
+const history = createBrowserHistory();
+
+render(createElement(Root, { history }), document.getElementById('root'));

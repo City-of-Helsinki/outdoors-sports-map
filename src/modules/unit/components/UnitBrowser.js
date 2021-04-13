@@ -6,25 +6,19 @@
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
    react/button-has-type,
-   react/forbid-prop-types,
    react/destructuring-assignment,
-   react/prop-types,
    react/require-default-props,
-   react/state-in-constructor,
-   react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import values from 'lodash/values';
-import { translate } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import addressBarMarker from '@assets/markers/location.svg';
-import ListView from './ListView';
-import SMIcon from '../../home/components/SMIcon';
-import { StatusFilters } from '../constants';
-import UnitFilters from './UnitFilters';
-import SearchContainer from '../../search/components/SearchContainer';
 
+import SMIcon from '../../home/components/SMIcon';
+import SearchContainer from '../../search/components/SearchContainer';
 import {
   getAddressToDisplay,
   getOnSeasonSportFilters,
@@ -32,6 +26,9 @@ import {
   getDefaultStatusFilter,
   getDefaultSportFilter,
 } from '../helpers';
+import { StatusFilters } from '../constants';
+import ListView from './ListView';
+import UnitFilters from './UnitFilters';
 
 const ActionButton = ({ action, icon, isActive, name }) => (
   <button className="action-button" aria-pressed={isActive} onClick={action}>
@@ -39,14 +36,19 @@ const ActionButton = ({ action, icon, isActive, name }) => (
   </button>
 );
 
-const Header = translate()(
-  ({ t, expand, collapse, openUnit, setView, isExpanded }) => (
+ActionButton.propTypes = {
+  action: PropTypes.func.isRequired,
+  icon: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+const Header = ({ expand, collapse, onViewChange, isExpanded }) => {
+  const { t } = useTranslation();
+
+  return (
     <div className="header">
-      <SearchContainer
-        onSearch={expand}
-        openUnit={openUnit}
-        setView={setView}
-      />
+      <SearchContainer onSearch={expand} onViewChange={onViewChange} />
       <div className="action-buttons">
         <ActionButton
           action={collapse}
@@ -62,44 +64,61 @@ const Header = translate()(
         />
       </div>
     </div>
-  )
-);
-
-const AddressBar = ({ address, handleClick }, context) => (
-  <button
-    type="button"
-    className="address-bar__container"
-    onClick={() => handleClick(address.location.coordinates.slice().reverse())}
-  >
-    <img
-      className="address-bar__marker"
-      src={addressBarMarker}
-      height="20px"
-      width="16px"
-      alt=""
-    />
-    {address && getAddressToDisplay(address, context.getActiveLanguage())}
-  </button>
-);
-
-AddressBar.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  );
 };
 
-class UnitBrowser extends Component {
-  static propTypes = {
-    units: PropTypes.array,
-  };
+Header.propTypes = {
+  collapse: PropTypes.func.isRequired,
+  expand: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  onViewChange: PropTypes.func.isRequired,
+};
 
-  state: {
-    isExpanded: boolean,
-    contentMaxHeight: ?number,
-  };
+const AddressBar = ({ address, handleClick }) => {
+  const {
+    i18n: {
+      languages: [language],
+    },
+  } = useTranslation();
 
-  state = {
-    isExpanded: false,
-    contentMaxHeight: null,
-  };
+  return (
+    <button
+      type="button"
+      className="address-bar__container"
+      onClick={() =>
+        handleClick(address.location.coordinates.slice().reverse())
+      }
+    >
+      <img
+        className="address-bar__marker"
+        src={addressBarMarker}
+        height="20px"
+        width="16px"
+        alt=""
+      />
+      {address && getAddressToDisplay(address, language)}
+    </button>
+  );
+};
+
+AddressBar.propTypes = {
+  address: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
+
+type State = {
+  isExpanded: boolean,
+  contentMaxHeight: ?number,
+};
+
+class UnitBrowser extends Component<void, void, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isExpanded: false,
+      contentMaxHeight: null,
+    };
+  }
 
   componentDidMount() {
     window.addEventListener('resize', this.updateContentMaxHeight);
@@ -123,11 +142,11 @@ class UnitBrowser extends Component {
 
   updateQueryParameter = (key: string, value: string): void => {
     const {
-      router,
+      history,
       location: { query },
     } = this.props;
 
-    router.push({
+    history.push({
       query: { ...query, [key]: value },
     });
   };
@@ -156,8 +175,7 @@ class UnitBrowser extends Component {
       isLoading,
       isSearching,
       position,
-      openUnit,
-      setView,
+      onViewChange,
       address,
       params,
       leafletMap,
@@ -165,10 +183,7 @@ class UnitBrowser extends Component {
       location: { query },
     } = this.props;
     const { isExpanded } = this.state;
-    let { contentMaxHeight } = this.state;
-    if (isExpanded) {
-      contentMaxHeight = contentMaxHeight || this.calculateMaxHeight();
-    }
+    const { contentMaxHeight } = this.state;
 
     const currentSportFilter =
       (query && query.sport) || getDefaultSportFilter();
@@ -183,8 +198,7 @@ class UnitBrowser extends Component {
           <Header
             expand={this.expand}
             collapse={this.collapse}
-            setView={setView}
-            openUnit={openUnit}
+            onViewChange={onViewChange}
             isExpanded={isExpanded}
           />
           {!isLoading && (
@@ -206,12 +220,16 @@ class UnitBrowser extends Component {
             />
           )}
           {!isLoading && Object.keys(address).length !== 0 && (
-            <AddressBar handleClick={setView} address={address} />
+            <AddressBar handleClick={onViewChange} address={address} />
           )}
         </div>
         <div
           className="unit-browser__content"
-          style={{ maxHeight: contentMaxHeight }}
+          style={{
+            maxHeight: isExpanded
+              ? contentMaxHeight || this.calculateMaxHeight()
+              : contentMaxHeight,
+          }}
         >
           <ListView
             filter={`${currentSportFilter};${currentStatusFilter}`}
@@ -220,7 +238,6 @@ class UnitBrowser extends Component {
             units={units}
             services={services}
             position={position}
-            openUnit={openUnit}
             leafletMap={leafletMap}
           />
         </div>
@@ -236,4 +253,20 @@ class UnitBrowser extends Component {
   }
 }
 
-export default withRouter(translate()(UnitBrowser));
+UnitBrowser.propTypes = {
+  address: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isSearching: PropTypes.bool.isRequired,
+  leafletMap: PropTypes.objectOf(PropTypes.any),
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
+  params: PropTypes.objectOf(PropTypes.any).isRequired,
+  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  services: PropTypes.objectOf(PropTypes.object).isRequired,
+  singleUnitSelected: PropTypes.bool.isRequired,
+  t: PropTypes.func.isRequired,
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onViewChange: PropTypes.func.isRequired,
+};
+
+export default withRouter(withTranslation()(UnitBrowser));

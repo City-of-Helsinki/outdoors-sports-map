@@ -40,5 +40,5 @@ export type AppState = {
 export type QueryValue = string | Array<string>;
 
 export const routerPaths = {
-  singleUnit: 'unit/:unitId',
+  singleUnit: '/unit/:unitId',
 };

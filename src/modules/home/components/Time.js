@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import { translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export const formatTime = (time: Date, t: Function) => {
   const endOfToday = moment().endOf('day');
@@ -28,12 +29,20 @@ export const formatTime = (time: Date, t: Function) => {
   return t(lookup, options);
 };
 
-const Time = translate()(({ time, t }) => (
-  <time dateTime={time.toISOString()}>
-    {formatTime(time, t)}
-    {moment().endOf('day').diff(time, 'days') < 2 &&
-      ` ${time.getHours()}:${`0${time.getMinutes()}`.slice(-2)}`}
-  </time>
-));
+const Time = ({ time }) => {
+  const { t } = useTranslation();
+
+  return (
+    <time dateTime={time.toISOString()}>
+      {formatTime(time, t)}
+      {moment().endOf('day').diff(time, 'days') < 2 &&
+        ` ${time.getHours()}:${`0${time.getMinutes()}`.slice(-2)}`}
+    </time>
+  );
+};
+
+Time.propTypes = {
+  time: PropTypes.instanceOf(Date).isRequired,
+};
 
 export default Time;

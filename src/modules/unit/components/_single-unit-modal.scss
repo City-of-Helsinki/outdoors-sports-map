@@ -4,6 +4,21 @@
   display: block;
   overflow: hidden;
 
+  h4 {
+    margin: 10px 0;
+
+    font-size: 18px;
+    line-height: 1.1;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  .modal-body-list li {
+    margin-bottom: 10px;
+  }
+
   &-dialog {
     z-index: 1000;
     margin: 0;
@@ -26,6 +41,10 @@
     padding: 10px;
     color: #fff;
     border: none;
+
+    &-container {
+      width: 100%;
+    }
 
     &-name {
       display: flex;

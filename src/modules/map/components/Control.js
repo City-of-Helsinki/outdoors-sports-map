@@ -1,9 +1,9 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import L from 'leaflet';
-import { MapControl } from 'react-leaflet';
+import { MapControl, withLeaflet } from 'react-leaflet';
 
-export default class Control extends MapControl {
+class Control extends MapControl {
   // note we're extending MapControl from react-leaflet, not Component from react
   constructor(props) {
     super(props);
@@ -11,9 +11,7 @@ export default class Control extends MapControl {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount() {
-    const { className, children } = this.props;
-
+  createLeafletElement({ className, children }) {
     const control = L.control({
       position: this.props.position || 'bottomright',
     }); // see http://leafletjs.com/reference.html#control-positions for other positions
@@ -34,7 +32,7 @@ export default class Control extends MapControl {
       return div;
     };
 
-    this.leafletElement = control;
+    return control;
   }
 
   handleClick(event) {
@@ -44,9 +42,10 @@ export default class Control extends MapControl {
     // eslint-disable-next-line no-unused-expressions
     this.props.handleClick && this.props.handleClick(event);
   }
-
-  // eslint-disable-next-line react/static-property-placement
-  static propTypes = {
-    handleClick: PropTypes.func,
-  };
 }
+
+Control.propTypes = {
+  handleClick: PropTypes.func,
+};
+
+export default withLeaflet(Control);

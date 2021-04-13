@@ -1,266 +1,162 @@
-// @flow
+import React, { useCallback, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { useRouteMatch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-/*
-   eslint-disable
-   react/default-props-match-prop-types,
-   react/destructuring-assignment,
-   react/no-string-refs,
-   react/require-default-props,
-   react/static-property-placement,
-*/
-
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { translate } from 'react-i18next';
 import { fetchUnits } from '../../unit/actions';
 import { fetchServices } from '../../service/actions';
-import { setLocation } from '../../map/actions';
-import changeLanguage from '../../language/actions';
-import getStoredLang from '../../language/helpers';
-import * as fromMap from '../../map/selectors';
-import * as fromSearch from '../../search/selectors';
-import * as fromUnit from '../../unit/selectors';
-import * as fromService from '../../service/selectors';
-import getLanguage from '../../language/selectors';
-import getIsLoading from '../selectors';
-import { getDefaultFilters, getAttr } from '../../unit/helpers';
-import MapView from '../../unit/components/MapView';
-import UnitBrowser from '../../unit/components/UnitBrowser';
-import SingleUnitModalContainer from '../../unit/components/SingleUnitModalContainer';
-import { locations } from '../constants';
-import { arrayifyQueryValue } from '../../common/helpers';
+import { getUnitPosition, getAttr } from '../../unit/helpers';
+import { getUnitById } from '../../unit/selectors';
+import UnitDetails from '../../unit/components/UnitDetailsContainer';
+import UnitBrowserPage from '../../unit/components/UnitBrowserContainer';
+import { routerPaths } from '../../common/constants';
+import useIsMobile from '../../common/hooks/useIsMobile';
 import Page from '../../common/components/Page';
-import { SUPPORTED_LANGUAGES } from '../../language/constants';
+import Map from '../../map/components/Map';
 
-type Props = {
-  fetchUnits: () => void,
-  fetchServices: () => void,
-  changeLanguage: (string) => void,
-  setLocation: (number[]) => void,
-  position: number[],
-  unitData: Object[],
-  activeLanguage: string,
-  router: Object,
-  location: Object,
-  isLoading: boolean,
-  serviceData: Object[],
-  selectedUnit: Object,
-  isSearching: boolean,
-  mapCenter: number[],
-  address: string,
-  params: Object,
-  t: (string) => string,
-};
+function useTitle(selectedUnitId) {
+  const {
+    t,
+    i18n: {
+      languages: [activeLanguage],
+    },
+  } = useTranslation();
+  const selectedUnit = useSelector((state) =>
+    getUnitById(state, { id: selectedUnitId })
+  );
+  const title = [];
 
-type DefaultProps = {
-  position: number[],
-  unitData: Object[],
-};
+  title.push(t('APP.NAME'));
 
-class HomeContainer extends Component<DefaultProps, Props, void> {
-  static defaultProps = {
-    unitData: [],
-    position: locations.HELSINKI,
-  };
-
-  props: Props;
-
-  leafletMap = null;
-
-  initialPosition = undefined;
-
-  getChildContext() {
-    return {
-      getActiveLanguage: this.getActiveLanguage,
-    };
+  if (selectedUnit) {
+    title.push(` - ${getAttr(selectedUnit.name, activeLanguage)}`);
   }
 
-  componentWillMount() {
-    this.props.fetchUnits({});
-    this.props.fetchServices();
+  return title.join('');
+}
 
-    // TODO: Poll /observation, not /unit. => Normalize observations to store.
-    // this.pollUnitsInterval = setInterval(this.fetchUnits, POLL_INTERVAL);
-    this.initialPosition = this.props.position;
+function getLatLngToContainerPoint(ref, location) {
+  const map = ref.current;
 
-    if (!getStoredLang()) {
-      // $FlowFixMe
-      const userLang = navigator.language || navigator.userLanguage;
-
-      if (userLang.includes(SUPPORTED_LANGUAGES.Svenska)) {
-        this.handleChangeLanguage(SUPPORTED_LANGUAGES.Svenska);
-      } else if (userLang.includes(SUPPORTED_LANGUAGES.English)) {
-        this.handleChangeLanguage(SUPPORTED_LANGUAGES.English);
-      } else if (userLang.includes(SUPPORTED_LANGUAGES.Suomi)) {
-        this.handleChangeLanguage(SUPPORTED_LANGUAGES.Suomi);
-      }
-    }
+  if (!map) {
+    return null;
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.activeLanguage !== this.props.activeLanguage) {
-      this.forceUpdate();
-    }
+  return map.mapRef.leafletElement.latLngToContainerPoint(location);
+}
+
+function getContainerPointToLatLng(ref, location) {
+  const map = ref.current;
+
+  if (!map) {
+    return null;
   }
 
-  componentDidUpdate() {
-    this.leafletMap = this.refs.map.getWrappedInstance().refs.map.leafletElement;
-  }
+  return map.mapRef.leafletElement.containerPointToLatLng(location);
+}
 
-  componentWillUnmount() {
-    // TODO: Poll /observation, not /unit. => Normalize observations to store.
-    // clearInterval(this.pollUnitsInterval);
-  }
+function setView(ref, coordinates) {
+  const map = ref.current;
 
-  getTitle() {
-    const { t, selectedUnit, activeLanguage } = this.props;
-    const title = [];
-
-    title.push(t('APP.NAME'));
-
-    if (selectedUnit) {
-      title.push(` - ${getAttr(selectedUnit.name, activeLanguage)}`);
-    }
-
-    return title.join('');
-  }
-
-  fetchUnits = () => {
-    this.props.fetchUnits({
-      lat: this.props.position[0],
-      lon: this.props.position[1],
-    });
-  };
-
-  handleChangeLanguage = (language: string) => {
-    this.props.changeLanguage(language);
-  };
-
-  setLocation = (location: number[]) => {
-    this.props.setLocation(location);
-  };
-
-  setView = (coordinates: number[]) => {
-    this.refs.map.getWrappedInstance().setView(coordinates);
-  };
-
-  openUnit = (unitId: string) => {
-    const {
-      router,
-      location: { query },
-    }: Props = this.props;
-    router.push({
-      pathname: `/unit/${unitId}`,
-      query,
-    });
-  };
-
-  closeUnit = () => {
-    const {
-      router,
-      location: { query },
-    } = this.props;
-    router.push({
-      pathname: '/',
-      query,
-    });
-  };
-
-  getActiveLanguage = () => this.props.activeLanguage;
-
-  render() {
-    const {
-      unitData,
-      serviceData,
-      isLoading,
-      selectedUnit,
-      isSearching,
-      mapCenter,
-      address,
-      activeLanguage,
-      params,
-      location: {
-        query: { filter },
-      },
-    } = this.props;
-    const activeFilter = filter
-      ? arrayifyQueryValue(filter)
-      : getDefaultFilters();
-
-    return (
-      <Page title={this.getTitle()}>
-        <div className="home">
-          <UnitBrowser
-            isLoading={isLoading}
-            isSearching={isSearching}
-            units={unitData}
-            services={serviceData}
-            activeFilter={activeFilter}
-            openUnit={this.openUnit}
-            position={mapCenter}
-            address={address}
-            params={params}
-            setLocation={this.setLocation}
-            setView={this.setView}
-            leafletMap={this.leafletMap}
-            singleUnitSelected={!!params.unitId}
-          />
-          <MapView
-            ref="map"
-            selectedUnit={selectedUnit}
-            activeLanguage={activeLanguage}
-            params={params}
-            setLocation={this.props.setLocation}
-            position={this.initialPosition}
-            units={unitData}
-            services={serviceData}
-            changeLanguage={this.handleChangeLanguage}
-            openUnit={this.openUnit}
-            mapCenter={mapCenter}
-          />
-          <SingleUnitModalContainer
-            isLoading={isLoading}
-            isOpen={!!params.unitId}
-            unit={selectedUnit}
-            services={serviceData}
-            params={params}
-            handleClick={this.closeUnit}
-          />
-        </div>
-      </Page>
-    );
+  if (map) {
+    map.setView(coordinates);
   }
 }
 
-HomeContainer.childContextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+function MapLayout({ content, map }) {
+  return (
+    <>
+      {content}
+      <div className="map-container">{map}</div>
+    </>
+  );
+}
+
+MapLayout.propTypes = {
+  content: PropTypes.node.isRequired,
+  map: PropTypes.node.isRequired,
 };
 
-const mapStateToProps = (state, props: Props) => ({
-  unitData: fromUnit.getVisibleUnits(state, props.location.query),
-  serviceData: fromService.getServicesObject(state),
-  selectedUnit: fromUnit.getUnitById(state, { id: props.params.unitId }),
-  activeLanguage: getLanguage(state),
-  isLoading: getIsLoading(state),
-  mapCenter: fromMap.getLocation(state),
-  position: fromMap.getLocation(state),
-  address: fromMap.getAddress(state),
-  isSearching: fromSearch.getIsFetching(state),
-});
+function HomeContainer() {
+  const mapRef = useRef(null);
+  const dispatch = useDispatch();
+  const match = useRouteMatch(routerPaths.singleUnit);
+  const isMobile = useIsMobile();
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      fetchUnits,
-      fetchServices,
-      setLocation,
-      changeLanguage,
+  const selectedUnitId = match ? match.params.unitId : null;
+  const isUnitDetailsOpen = selectedUnitId !== null;
+
+  const title = useTitle(selectedUnitId);
+
+  const handleOnViewChange = useCallback((coordinates) => {
+    setView(mapRef, coordinates);
+  }, []);
+
+  const handleCenterMapToUnit = useCallback(
+    (unit) => {
+      const location = getUnitPosition(unit);
+      const pixelLocation = getLatLngToContainerPoint(mapRef, location);
+
+      if (!isMobile) {
+        // Offset by half the width of unit modal in order to center focus
+        // on the visible map
+        pixelLocation.x -= 200;
+        const adjustedCenter = getContainerPointToLatLng(mapRef, pixelLocation);
+
+        setView(mapRef, adjustedCenter);
+      } else {
+        // On mobile we want to move the map 250px down from the center, so the
+        // big info box does not hide the selected unit.
+        pixelLocation.y -= 250;
+        const adjustedCenter = getContainerPointToLatLng(mapRef, pixelLocation);
+
+        setView(mapRef, adjustedCenter);
+      }
     },
-    dispatch
+    [isMobile]
   );
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(translate()(HomeContainer))
-);
+  useEffect(() => {
+    // Fetch initial data
+    dispatch(fetchUnits());
+    dispatch(fetchServices());
+  }, []);
+
+  return (
+    <Page title={title}>
+      <MapLayout
+        content={
+          <>
+            {/* Hide unit browser when the unit details is open with styling. */}
+            {/* This is an easy way to retain the search state. */}
+            <div
+              className="map-chrome"
+              style={{ display: isUnitDetailsOpen ? 'none' : undefined }}
+            >
+              <UnitBrowserPage
+                mapRef={mapRef}
+                onViewChange={handleOnViewChange}
+              />
+            </div>
+            {isUnitDetailsOpen && (
+              <UnitDetails
+                unitId={selectedUnitId}
+                onCenterMapToUnit={handleCenterMapToUnit}
+              />
+            )}
+          </>
+        }
+        map={
+          <Map
+            ref={mapRef}
+            selectedUnitId={selectedUnitId}
+            onCenterMapToUnit={handleCenterMapToUnit}
+          />
+        }
+      />
+    </Page>
+  );
+}
+
+export default HomeContainer;

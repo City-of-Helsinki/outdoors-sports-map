@@ -5,10 +5,13 @@
 */
 
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, Checkbox } from 'react-bootstrap';
-import { translate } from 'react-i18next';
+
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import { sendFeedback } from '../actions';
 import SMIcon from '../../home/components/SMIcon';
 
@@ -51,7 +54,7 @@ class FeedbackModal extends Component {
           </div>
           <div className="about-modal-content">
             <h3>{t('MAP.INFO_MENU.GIVE_FEEDBACK')}</h3>
-            <form
+            <Form
               onSubmit={(e) =>
                 this.handleFeedbackSubmit(
                   e,
@@ -60,39 +63,38 @@ class FeedbackModal extends Component {
                 )
               }
             >
-              <FormGroup
+              <Form.Group
                 controlId="formControlsTextarea"
                 className="feedback-modal__feedback"
               >
-                <FormControl
-                  componentClass="textarea"
+                <Form.Control
+                  as="textarea"
                   placeholder={t('MAP.FEEDBACK.FEEDBACK')}
                   onChange={(e) => this.setState({ feedback: e.target.value })}
                 />
-              </FormGroup>
-              <FormGroup>
-                <Checkbox
-                  inline
+              </Form.Group>
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label={t('MAP.FEEDBACK.WANT_ANSWER')}
                   className="feedback-modal__checkbox"
                   onChange={() => this.toggleEmailInput()}
-                >
-                  {t('MAP.FEEDBACK.WANT_ANSWER')}
-                </Checkbox>
-              </FormGroup>
+                />
+              </Form.Group>
               {emailInputOpen && (
-                <FormGroup>
-                  <FormControl
+                <Form.Group>
+                  <Form.Control
                     className="feedback-modal__email"
                     type="email"
                     placeholder={t('MAP.FEEDBACK.EMAIL')}
                     onChange={(e) => this.setState({ email: e.target.value })}
                   />
-                </FormGroup>
+                </Form.Group>
               )}
-              <Button bsStyle="primary" type="submit">
+              <Button variant="primary" type="submit">
                 {t('MAP.FEEDBACK.SEND')}
               </Button>
-            </form>
+            </Form>
           </div>
         </div>
       </div>
@@ -103,4 +105,7 @@ class FeedbackModal extends Component {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ sendFeedback }, dispatch);
 
-export default connect(null, mapDispatchToProps)(translate()(FeedbackModal));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withTranslation()(FeedbackModal));

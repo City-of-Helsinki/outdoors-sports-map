@@ -1,46 +1,47 @@
 /*
    eslint-disable
-   react/forbid-prop-types,
    react/destructuring-assignment,
    react/jsx-props-no-spreading,
    react/require-default-props,
 */
 
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
 
-const UnitSuggestion = ({ unit, handleClick, ...rest }, context) => (
-  <Link
-    to={`/unit/${unit.id}`}
-    onClick={(e) => {
-      e.preventDefault();
-      handleClick();
-    }}
-    className="search-suggestions__result"
-    {...rest}
-  >
-    <div className="search-suggestions__result-icon">
-      <UnitIcon unit={unit} />
-    </div>
-    <div className="search-suggestions__result-details">
-      <div className="search-suggestions__result-details__name">
-        {getAttr(unit.name, context.getActiveLanguage())}
-      </div>
-      <ObservationStatus unit={unit} />
-    </div>
-  </Link>
-);
+const UnitSuggestion = ({ unit, ...rest }) => {
+  const {
+    i18n: {
+      languages: [language],
+    },
+  } = useTranslation();
 
-UnitSuggestion.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
+  return (
+    <Link
+      to={`/unit/${unit.id}`}
+      className="search-suggestions__result"
+      {...rest}
+    >
+      <div className="search-suggestions__result-icon">
+        <UnitIcon unit={unit} />
+      </div>
+      <div className="search-suggestions__result-details">
+        <div className="search-suggestions__result-details__name">
+          {getAttr(unit.name, language)}
+        </div>
+        <ObservationStatus unit={unit} />
+      </div>
+    </Link>
+  );
 };
 
 UnitSuggestion.propTypes = {
-  unit: PropTypes.object.isRequired,
-  handleClick: PropTypes.func,
+  unit: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default UnitSuggestion;

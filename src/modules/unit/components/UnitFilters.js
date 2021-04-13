@@ -4,13 +4,11 @@
    eslint-disable
    react/destructuring-assignment,
    react/prop-types,
-   react/state-in-constructor,
-   react/static-property-placement,
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { withTranslation } from 'react-i18next';
+import { Container, Row, Col } from 'react-bootstrap';
 import get from 'lodash/get';
 import invert from 'lodash/invert';
 
@@ -103,10 +101,7 @@ const FilterOption = ({
             t={t}
           />
           {filter.secondaryOptions && (
-            <Row
-              componentClass="hr"
-              className="unit-filters__options-separator"
-            />
+            <Row as="hr" className="unit-filters__options-separator" />
           )}
           {filter.secondaryOptions && (
             <FilterOptionsRow
@@ -132,16 +127,21 @@ const filterEquals = (a, b) => {
   return false;
 };
 
-export class UnitFiltersComponent extends React.Component {
-  props: UnitFiltersProps;
+type State = {
+  expandedFilter: {} | null,
+};
 
-  state: {
-    expandedFilter: {} | null,
-  };
-
-  state = {
-    expandedFilter: null,
-  };
+export class UnitFiltersComponent extends React.Component<
+  void,
+  UnitFiltersProps,
+  State
+> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expandedFilter: null,
+    };
+  }
 
   onMenuSelect = (key: string, value: string): void => {
     this.setState({ expandedFilter: null });
@@ -159,7 +159,7 @@ export class UnitFiltersComponent extends React.Component {
 
     return (
       <div className="unit-filters">
-        <Grid className="unit-filters__filters">
+        <Container className="unit-filters__filters">
           <Row className="unit-filters__filters">
             {filters.map((filter) => (
               <Col className="unit-filters__edit" xs={6} key={filter.name}>
@@ -173,10 +173,10 @@ export class UnitFiltersComponent extends React.Component {
               </Col>
             ))}
           </Row>
-        </Grid>
+        </Container>
       </div>
     );
   }
 }
 
-export default translate()(UnitFiltersComponent);
+export default withTranslation()(UnitFiltersComponent);

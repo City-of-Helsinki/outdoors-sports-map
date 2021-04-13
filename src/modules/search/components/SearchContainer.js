@@ -2,14 +2,12 @@
    eslint-disable
    no-shadow,
    react/destructuring-assignment,
-   react/forbid-prop-types,
    react/prop-types,
    react/require-default-props,
-   react/state-in-constructor,
-   react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as selectors from '../selectors';
@@ -25,15 +23,10 @@ const initialState = () => ({
 });
 
 class SearchContainer extends Component {
-  static propTypes = {
-    unitSuggestions: PropTypes.array,
-    searchUnits: PropTypes.func,
-    fetchUnitSuggestions: PropTypes.func,
-    searchDisabled: PropTypes.bool,
-    onSearch: PropTypes.func,
-  };
-
-  state = initialState();
+  constructor(props) {
+    super(props);
+    this.state = initialState();
+  }
 
   /**
    *
@@ -70,20 +63,14 @@ class SearchContainer extends Component {
   };
 
   handleAddressClick = (coordinates) => {
-    const { setView, setLocation } = this.props;
+    const { onViewChange, setLocation } = this.props;
     this.clear();
     setLocation(coordinates);
-    setView(coordinates);
+    onViewChange(coordinates);
   };
 
   render() {
-    const {
-      unitSuggestions,
-      addresses,
-      isActive,
-      searchDisabled,
-      openUnit,
-    } = this.props;
+    const { unitSuggestions, addresses, isActive, searchDisabled } = this.props;
     const { searchPhrase, showSuggestions } = this.state;
 
     return (
@@ -100,7 +87,6 @@ class SearchContainer extends Component {
           <SearchSuggestions
             openAllResults={this.search}
             units={unitSuggestions}
-            openUnit={openUnit}
             handleAddressClick={this.handleAddressClick}
             addresses={addresses}
           />
@@ -109,6 +95,14 @@ class SearchContainer extends Component {
     );
   }
 }
+
+SearchContainer.propTypes = {
+  unitSuggestions: PropTypes.arrayOf(PropTypes.object),
+  searchUnits: PropTypes.func,
+  fetchUnitSuggestions: PropTypes.func,
+  searchDisabled: PropTypes.bool,
+  onSearch: PropTypes.func,
+};
 
 const mapStateToProps = (state) => ({
   unitSuggestions: selectors.getUnitSuggestions(state),

@@ -1,6 +1,5 @@
 // @flow
-import { takeLatest } from 'redux-saga';
-import { call, fork, put } from 'redux-saga/effects';
+import { all, call, fork, takeLatest, put } from 'redux-saga/effects';
 import { schema } from 'normalizr';
 import {
   receiveUnits,
@@ -74,9 +73,9 @@ function* watchSendFeedback() {
 }
 
 export default function* saga(): any {
-  return [
-    yield fork(watchFetchUnits),
-    yield fork(watchClearSearch),
-    yield fork(watchSendFeedback),
-  ];
+  yield all([
+    fork(watchFetchUnits),
+    fork(watchClearSearch),
+    fork(watchSendFeedback),
+  ]);
 }

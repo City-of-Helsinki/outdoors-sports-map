@@ -6,10 +6,10 @@ import SearchBar from '../SearchBar';
 const getWrapper = (props) => mount(<SearchBar {...props} />);
 
 describe('<SearchBar />', () => {
-  it('should have an input for making a search', async () => {
+  it('should have an input for making a search', () => {
     const value = 'Test value';
     const onInput = jest.fn();
-    const wrapper = await getWrapper({ onInput });
+    const wrapper = getWrapper({ onInput });
     const input = wrapper.find('input[aria-label="Etsi"]').at(0);
 
     expect(input).toBeTruthy();
@@ -20,10 +20,10 @@ describe('<SearchBar />', () => {
     expect(onInput).toHaveBeenCalledWith(value);
   });
 
-  it('should have a submit button', async () => {
+  it('should have a submit button', () => {
     const preventDefault = jest.fn();
     const onSubmit = jest.fn();
-    const wrapper = await getWrapper({ onSubmit });
+    const wrapper = getWrapper({ onSubmit });
     const submitButton = wrapper.find('button[type="submit"]').at(0);
 
     expect(submitButton).toBeTruthy();
@@ -37,8 +37,8 @@ describe('<SearchBar />', () => {
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 
-  it('should have a clear button when the input has content and the searchActive prop is active', async () => {
-    const wrapper = await getWrapper({
+  it('should have a clear button when the input has content and the searchActive prop is active', () => {
+    const wrapper = getWrapper({
       input: 'Search',
       searchActive: true,
     });
@@ -46,8 +46,8 @@ describe('<SearchBar />', () => {
     expect(wrapper.find('.search-bar__input-clear').length).toEqual(1);
   });
 
-  it('should show a loading indicator when disabled is true', async () => {
-    const wrapper = await getWrapper({
+  it('should show a loading indicator when disabled is true', () => {
+    const wrapper = getWrapper({
       disabled: true,
     });
 

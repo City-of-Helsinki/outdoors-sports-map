@@ -1,6 +1,8 @@
-import { applyMiddleware, compose, createStore as rawCreateStore } from 'redux';
-import { persistStore, autoRehydrate } from 'redux-persist';
+import { applyMiddleware, createStore as rawCreateStore } from 'redux';
+import { persistReducer, persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
+import storage from 'redux-persist/lib/storage';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import createRootReducer from './createRootReducer';
 import rootSaga from './rootSaga';
 import { APP_NAME } from '../modules/common/constants';
@@ -8,34 +10,31 @@ import { APP_NAME } from '../modules/common/constants';
 /**
  * @returns {function}
  */
-const createStore = () =>
-  new Promise((resolve) => {
-    const rootReducer = createRootReducer();
-    const sagaMiddleware = createSagaMiddleware();
-    const middlewares = [];
+const createStore = () => {
+  const persistConfig = {
+    key: 'primary',
+    storage,
+    whitelist: ['map'],
+    blacklist: [],
+    keyPrefix: `${APP_NAME}:`,
+  };
 
-    middlewares.push(sagaMiddleware);
+  const rootReducer = createRootReducer();
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-    const enhancer = compose(
-      applyMiddleware(...middlewares),
-      autoRehydrate(),
-      window.devToolsExtension ? window.devToolsExtension() : (f) => f
-    );
+  const middlewares = [];
+  const sagaMiddleware = createSagaMiddleware();
+  middlewares.push(sagaMiddleware);
+  const composedEnhancers = composeWithDevTools(
+    applyMiddleware(...middlewares)
+  );
 
-    const store = rawCreateStore(rootReducer, enhancer);
+  const store = rawCreateStore(persistedReducer, composedEnhancers);
+  const persistor = persistStore(store);
 
-    // The promise returned by "createStore" will be resolved once we have re-hydrated the state.
-    persistStore(
-      store,
-      {
-        whitelist: ['language', 'map'],
-        blacklist: [],
-        keyPrefix: `${APP_NAME}:`,
-      },
-      () => resolve(store)
-    );
+  sagaMiddleware.run(rootSaga);
 
-    sagaMiddleware.run(rootSaga);
-  });
+  return { store, persistor };
+};
 
 export default createStore;

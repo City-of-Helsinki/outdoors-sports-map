@@ -12,7 +12,7 @@ const defaultProps = {
   routeUrl: '',
 };
 // eslint-disable-next-line react/jsx-props-no-spreading
-const getWrapper = async (props) =>
+const getWrapper = (props) =>
   mount(<SingleUnitModalBody {...defaultProps} {...props} />);
 const unit = {
   id: 40142,
@@ -181,7 +181,7 @@ const liveTemperatureDataObservation = {
 
 describe('<SingleUnitModalContainer />', () => {
   describe('when live temperature data is available', () => {
-    const getWrapperWithLiveTemperatureData = async (props) =>
+    const getWrapperWithLiveTemperatureData = (props) =>
       getWrapper({
         currentUnit: unit,
         temperatureObservation: temperatureDataObservation,
@@ -189,24 +189,24 @@ describe('<SingleUnitModalContainer />', () => {
         ...props,
       });
 
-    it('should be displayed', async () => {
-      const wrapper = await getWrapperWithLiveTemperatureData();
+    it('should be displayed', () => {
+      const wrapper = getWrapperWithLiveTemperatureData();
       const liveTemperature = `${liveTemperatureDataObservation.value.fi} °C`;
 
       expect(wrapper.text().includes(liveTemperature)).toEqual(true);
     });
 
-    it('regular temperature should not be displayed', async () => {
-      const wrapper = await getWrapperWithLiveTemperatureData();
+    it('regular temperature should not be displayed', () => {
+      const wrapper = getWrapperWithLiveTemperatureData();
       const temperature = `${temperatureDataObservation.name.fi}`;
 
       expect(wrapper.text().includes(temperature)).toEqual(false);
     });
 
     describe('temperature measurement time', () => {
-      it('when less than an hour has passed it should use minutes', async () => {
+      it('when less than an hour has passed it should use minutes', () => {
         const halfAnHourAgo = moment().subtract(0.5, 'hours');
-        const wrapper = await getWrapperWithLiveTemperatureData({
+        const wrapper = getWrapperWithLiveTemperatureData({
           liveTemperatureObservation: {
             ...liveTemperatureDataObservation,
             time: halfAnHourAgo.toISOString(),
@@ -216,9 +216,9 @@ describe('<SingleUnitModalContainer />', () => {
         expect(wrapper.text().includes('30 minuuttia sitten')).toEqual(true);
       });
 
-      it('when at least an hour has passed it should use hours', async () => {
+      it('when at least an hour has passed it should use hours', () => {
         const anHourAgo = moment().subtract(2, 'hours');
-        const wrapper = await getWrapperWithLiveTemperatureData({
+        const wrapper = getWrapperWithLiveTemperatureData({
           liveTemperatureObservation: {
             ...liveTemperatureDataObservation,
             time: anHourAgo.toISOString(),

@@ -6,17 +6,17 @@
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/no-static-element-interactions,
    react/destructuring-assignment,
-   react/forbid-prop-types,
    react/no-string-refs,
    react/prop-types,
    react/require-default-props,
-   react/state-in-constructor,
-   react/static-property-placement,
 */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
+import { ReactReduxContext } from 'react-redux';
+
 import SMIcon from '../../home/components/SMIcon';
 import OSMIcon from '../../home/components/OSMIcon';
 import FeedbackModal from './FeedbackModal';
@@ -35,7 +35,6 @@ import {
   BOUNDARIES,
 } from '../../map/constants';
 import latLngToArray from '../../map/helpers';
-import { getUnitPosition } from '../helpers';
 import UnitsOnMap from './UnitsOnMap';
 import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
@@ -44,30 +43,30 @@ import LanguageChanger from './LanguageChanger';
 import TranslationProvider from '../../common/components/translation/TranslationProvider';
 
 class MapView extends Component {
-  static propTypes = {
-    position: PropTypes.array.isRequired,
-    units: PropTypes.array,
-  };
+  mapRef = null;
 
-  state = {
-    isMobile: window.innerWidth < mobileBreakpoint,
-    menuOpen: false,
-    aboutModalOpen: false,
-    feedbackModalOpen: false,
-    zoomLevel: DEFAULT_ZOOM,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobile: window.innerWidth < mobileBreakpoint,
+      menuOpen: false,
+      aboutModalOpen: false,
+      feedbackModalOpen: false,
+      zoomLevel: DEFAULT_ZOOM,
+    };
+  }
 
   componentDidMount() {
     window.addEventListener('resize', this.updateIsMobile);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { selectedUnit } = this.props;
+  componentDidUpdate(prevProps) {
+    const { selectedUnit, onCenterMapToUnit } = this.props;
     if (
-      nextProps.selectedUnit &&
-      (!selectedUnit || selectedUnit.id !== nextProps.selectedUnit.id)
+      selectedUnit &&
+      (!prevProps.selectedUnit || selectedUnit.id !== prevProps.selectedUnit.id)
     ) {
-      this.centerMapToUnit(nextProps.selectedUnit);
+      onCenterMapToUnit(selectedUnit);
     }
   }
 
@@ -75,32 +74,12 @@ class MapView extends Component {
     window.removeEventListener('resize', this.updateIsMobile);
   }
 
-  centerMapToUnit = (unit: Object) => {
-    const location = getUnitPosition(unit);
-    const pixelLocation = this.refs.map.leafletElement.latLngToContainerPoint(
-      location
-    );
-    if (!this.state.isMobile) {
-      // Offset by half the width of unit modal in order to center focus
-      // on the visible map
-      pixelLocation.x -= 200;
-      const adjustedCenter = this.refs.map.leafletElement.containerPointToLatLng(
-        pixelLocation
-      );
-      this.refs.map.leafletElement.setView(adjustedCenter);
-    } else {
-      // On mobile we want to move the map 250px down from the center, so the
-      // big info box does not hide the selected unit.
-      pixelLocation.y -= 250;
-      const adjustedCenter = this.refs.map.leafletElement.containerPointToLatLng(
-        pixelLocation
-      );
-      this.refs.map.leafletElement.setView(adjustedCenter);
-    }
+  setMapRef = (ref) => {
+    this.mapRef = ref;
   };
 
   handleZoom = () => {
-    this.setState({ zoomLevel: this.refs.map.leafletElement.getZoom() });
+    this.setState({ zoomLevel: this.mapRef.leafletElement.getZoom() });
   };
 
   updateIsMobile = () => {
@@ -108,7 +87,7 @@ class MapView extends Component {
   };
 
   locateUser = () => {
-    this.refs.map.leafletElement.locate({ setView: true });
+    this.mapRef.leafletElement.locate({ setView: true });
   };
 
   handleClick = (event: Object) => {
@@ -132,7 +111,7 @@ class MapView extends Component {
   };
 
   setView = (coordinates) => {
-    this.refs.map.leafletElement.setView(coordinates);
+    this.mapRef.leafletElement.setView(coordinates);
   };
 
   openAboutModal = () => {
@@ -165,86 +144,92 @@ class MapView extends Component {
     const { isMobile, zoomLevel, menuOpen } = this.state;
 
     return (
-      <View id="map-view" className="map-view" isSelected={selected}>
-        <Map
-          ref="map"
-          zoomControl={false}
-          attributionControl={false}
-          center={position}
-          maxBounds={BOUNDARIES}
-          zoom={DEFAULT_ZOOM}
-          minZoom={MIN_ZOOM}
-          maxZoom={MAX_ZOOM}
-          onClick={this.handleClick}
-          onLocationfound={this.setLocation}
-          onZoomend={this.handleZoom}
-        >
-          <TileLayer
-            url={isRetina() ? MAP_RETINA_URL : MAP_URL}
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <UserLocationMarker />
-          <UnitsOnMap
-            units={units}
-            zoomLevel={zoomLevel}
-            selectedUnit={selectedUnit}
-            openUnit={openUnit}
-          />
-          <ZoomControl position="bottomright" />
-          <Control
-            handleClick={this.locateUser}
-            className="leaflet-control-locate"
-            position="bottomright"
-          >
-            <OSMIcon icon="locate" />
-          </Control>
-          {Object.keys(SUPPORTED_LANGUAGES).length > 1 && !isMobile && (
-            <LanguageChanger
-              activeLanguage={activeLanguage}
-              changeLanguage={changeLanguage}
-            />
-          )}
-          <DropdownControl
-            id="info-dropdown"
-            handleClick={this.toggleMenu}
-            className="leaflet-control-info"
-            position={isMobile ? 'bottomleft' : 'topright'}
-            aria-haspopup="true"
-            aria-expanded={menuOpen}
-            activeLanguage={activeLanguage}
-            isOpen={menuOpen}
-            options={
-              <InfoMenu
-                store={this.context.store}
-                t={t}
-                isMobile={isMobile}
-                openAboutModal={this.openAboutModal}
-                openFeedbackModal={this.openFeedbackModal}
-                activeLanguage={activeLanguage}
-                changeLanguage={changeLanguage}
+      <ReactReduxContext.Consumer>
+        {({ store }) => (
+          <View id="map-view" className="map-view" isSelected={selected}>
+            <Map
+              ref={this.setMapRef}
+              zoomControl={false}
+              attributionControl={false}
+              center={position}
+              maxBounds={BOUNDARIES}
+              zoom={DEFAULT_ZOOM}
+              minZoom={MIN_ZOOM}
+              maxZoom={MAX_ZOOM}
+              onClick={this.handleClick}
+              onLocationfound={this.setLocation}
+              onZoomend={this.handleZoom}
+            >
+              <TileLayer
+                url={isRetina() ? MAP_RETINA_URL : MAP_URL}
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               />
-            }
-          >
-            <SMIcon icon="info" aria-label={t('APP.ABOUT')} />
-          </DropdownControl>
-        </Map>
-        <Logo />
-        {this.state.aboutModalOpen ? (
-          <AboutModal closeModal={this.closeAboutModal} t={t} />
-        ) : null}
-        {this.state.feedbackModalOpen ? (
-          <FeedbackModal closeModal={this.closeFeedbackModal} />
-        ) : null}
-      </View>
+              <UserLocationMarker />
+              <UnitsOnMap
+                units={units}
+                zoomLevel={zoomLevel}
+                selectedUnit={selectedUnit}
+                openUnit={openUnit}
+              />
+              <ZoomControl position="bottomright" />
+              <Control
+                handleClick={this.locateUser}
+                className="leaflet-control-locate"
+                position="bottomright"
+              >
+                <OSMIcon icon="locate" />
+              </Control>
+              {Object.keys(SUPPORTED_LANGUAGES).length > 1 && !isMobile && (
+                <LanguageChanger
+                  activeLanguage={activeLanguage}
+                  changeLanguage={changeLanguage}
+                />
+              )}
+              <DropdownControl
+                id="info-dropdown"
+                handleClick={this.toggleMenu}
+                className="leaflet-control-info"
+                position={isMobile ? 'bottomleft' : 'topright'}
+                aria-haspopup="true"
+                aria-expanded={menuOpen}
+                activeLanguage={activeLanguage}
+                isOpen={menuOpen}
+                options={
+                  <InfoMenu
+                    store={store}
+                    t={t}
+                    isMobile={isMobile}
+                    openAboutModal={this.openAboutModal}
+                    openFeedbackModal={this.openFeedbackModal}
+                    activeLanguage={activeLanguage}
+                    changeLanguage={changeLanguage}
+                  />
+                }
+              >
+                <SMIcon icon="info" aria-label={t('APP.ABOUT')} />
+              </DropdownControl>
+            </Map>
+            <Logo />
+            {this.state.aboutModalOpen ? (
+              <AboutModal closeModal={this.closeAboutModal} t={t} />
+            ) : null}
+            {this.state.feedbackModalOpen ? (
+              <FeedbackModal closeModal={this.closeFeedbackModal} />
+            ) : null}
+          </View>
+        )}
+      </ReactReduxContext.Consumer>
     );
   }
 }
 
-MapView.contextTypes = {
-  store: PropTypes.object.isRequired,
+MapView.propTypes = {
+  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  units: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default translate(null, { withRef: true })(MapView);
+export default withTranslation(null, { withRef: true })(MapView);
 
 const InfoMenu = ({
   openAboutModal,

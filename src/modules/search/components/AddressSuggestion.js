@@ -6,14 +6,18 @@
 */
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const addressIcon = require('@assets/markers/unknown-satisfactory-off.png');
 
 const AddressSuggestion = ({ address, handleClick }) => (
   <Link
+    to=""
     className="search-suggestions__result"
-    onClick={() => handleClick(address.geometry.coordinates.slice().reverse())}
+    onClick={(e) => {
+      e.preventDefault();
+      handleClick(address.geometry.coordinates.slice().reverse());
+    }}
   >
     <div className="search-suggestions__address-icon">
       <img src={addressIcon} height="21px" />
@@ -25,9 +29,5 @@ const AddressSuggestion = ({ address, handleClick }) => (
     </div>
   </Link>
 );
-
-AddressSuggestion.contextTypes = {
-  getActiveLanguage: React.PropTypes.func,
-};
 
 export default AddressSuggestion;

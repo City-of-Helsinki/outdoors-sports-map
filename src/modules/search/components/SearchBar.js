@@ -3,14 +3,24 @@
    jsx-a11y/click-events-have-key-events,
    jsx-a11y/label-has-associated-control,
    jsx-a11y/no-static-element-interactions,
+   react/prop-types,
 */
 
 import React from 'react';
-import { translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import SMIcon from '../../home/components/SMIcon';
 
-const SearchBar = translate()(
-  ({ input, onInput, onSubmit, onClear, searchActive, disabled, t }) => (
+const SearchBar = ({
+  input,
+  onInput,
+  onSubmit,
+  onClear,
+  searchActive,
+  disabled,
+}) => {
+  const { t } = useTranslation();
+
+  return (
     <div className="search-bar">
       <form
         role="search"
@@ -53,7 +63,7 @@ const SearchBar = translate()(
         </button>
       </form>
     </div>
-  )
-);
+  );
+};
 
 export default SearchBar;

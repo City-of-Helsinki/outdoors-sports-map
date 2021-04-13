@@ -1,24 +1,5 @@
-/* eslint-disable global-require */
 import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
-import i18next from 'i18next';
-
-i18next.init(
-  {
-    resources: {
-      en: {
-        translation: require('../locales/en.json'),
-      },
-    },
-    lng: 'en',
-  },
-  (err, t) => {
-    if (err) {
-      // eslint-disable-next-line no-console
-      console.log(err, t);
-    }
-  }
-);
+import Adapter from 'enzyme-adapter-react-16';
 
 const localStorageMock = {
   getItem: jest.fn(),
@@ -29,5 +10,7 @@ const localStorageMock = {
 
 // eslint-disable-next-line no-undef
 global.localStorage = localStorageMock;
+
+jest.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['fi']);
 
 configure({ adapter: new Adapter() });
