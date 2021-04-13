@@ -12,7 +12,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -48,9 +47,7 @@ function shouldShowInfo(unit) {
   return hasExtensions || unit.phone || unit.url;
 }
 
-// Export for testing purpose. A bit of an anti-pattern, but required
-// less unrelated work to the feature I was developing
-export const ModalHeader = ({ unit, services, isLoading }) => {
+const Header = ({ unit, services, isLoading }) => {
   const {
     t,
     i18n: {
@@ -63,53 +60,56 @@ export const ModalHeader = ({ unit, services, isLoading }) => {
   const unitMunicipality = unit ? unit.municipality : null;
 
   return (
-    <Modal.Header>
-      <div className="modal-header-container">
-        <div className="modal-header-name">
+    <div className="unit-container-header">
+      <div className="unit-container-header-name">
+        <div>
+          {isLoading ? (
+            <h4>{t('UNIT_CONTAINER.LOADING')}</h4>
+          ) : (
+            <h4>
+              {unit
+                ? getAttr(unit.name, language)
+                : t('UNIT_CONTAINER.NOT_FOUND')}
+            </h4>
+          )}
+        </div>
+        <div style={{ alignSelf: 'center' }}>
+          <Link
+            to="/"
+            className="unit-container-close-button close-unit-container"
+          >
+            <SMIcon icon="close" aria-label={t('UNIT_CONTAINER.CLOSE')} />
+          </Link>
+        </div>
+      </div>
+      {unit ? (
+        <div className="unit-container-header-description">
+          <UnitIcon
+            unit={unit}
+            alt={getServiceName(unit.services, services, language)}
+          />
           <div>
-            {isLoading ? (
-              <h4>{t('MODAL.LOADING')}</h4>
-            ) : (
-              <h4>
-                {unit ? getAttr(unit.name, language) : t('MODAL.NOT_FOUND')}
-              </h4>
-            )}
-          </div>
-          <div style={{ alignSelf: 'center' }}>
-            <Link to="/" className="modal-close-button close-unit-modal">
-              <SMIcon icon="close" aria-label={t('MODAL.CLOSE')} />
-            </Link>
+            <p>{getServiceName(unit.services, services, language)}</p>
+            <p>
+              {unitAddress ? `${unitAddress}, ` : ''}
+              {unitZIP ? `${unitZIP} ` : ''}
+              <span style={{ textTransform: 'capitalize' }}>
+                {unitMunicipality || ''}
+              </span>
+            </p>
           </div>
         </div>
-        {unit ? (
-          <div className="modal-header-description">
-            <UnitIcon
-              unit={unit}
-              alt={getServiceName(unit.services, services, language)}
-            />
-            <div>
-              <p>{getServiceName(unit.services, services, language)}</p>
-              <p>
-                {unitAddress ? `${unitAddress}, ` : ''}
-                {unitZIP ? `${unitZIP} ` : ''}
-                <span style={{ textTransform: 'capitalize' }}>
-                  {unitMunicipality || ''}
-                </span>
-              </p>
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </Modal.Header>
+      ) : null}
+    </div>
   );
 };
 
 const LocationState = ({ unit }) => {
   const { t } = useTranslation();
   return (
-    <ModalBodyBox title={t('MODAL.QUALITY')}>
+    <BodyBox title={t('UNIT_CONTAINER.QUALITY')}>
       <ObservationStatus unit={unit} />
-    </ModalBodyBox>
+    </BodyBox>
   );
 };
 
@@ -122,10 +122,10 @@ const LocationInfo = ({ unit }) => {
   } = useTranslation();
 
   return (
-    <ModalBodyBox title={t('MODAL.INFO')}>
+    <BodyBox title={t('UNIT_CONTAINER.INFO')}>
       {get(unit, 'extensions.length') && (
         <p>
-          {`${t('MODAL.LENGTH')}: `}
+          {`${t('UNIT_CONTAINER.LENGTH')}: `}
           <strong>
             {unit.extensions.length}
             km
@@ -134,7 +134,7 @@ const LocationInfo = ({ unit }) => {
       )}
       {get(unit, 'extensions.lighting') && (
         <p>
-          {`${t('MODAL.LIGHTING')}: `}
+          {`${t('UNIT_CONTAINER.LIGHTING')}: `}
           <strong>
             {upperFirst(getAttr(unit.extensions.lighting, language))}
           </strong>
@@ -142,7 +142,7 @@ const LocationInfo = ({ unit }) => {
       )}
       {get(unit, 'extensions.skiing_technique') && (
         <p>
-          {`${t('MODAL.SKIING_TECHNIQUE')}: `}
+          {`${t('UNIT_CONTAINER.SKIING_TECHNIQUE')}: `}
           <strong>
             {upperFirst(getAttr(unit.extensions.skiing_technique, language))}
           </strong>
@@ -160,7 +160,7 @@ const LocationInfo = ({ unit }) => {
           </OutboundLink>
         </p>
       )}
-    </ModalBodyBox>
+    </BodyBox>
   );
 };
 
@@ -177,7 +177,7 @@ const NoticeInfo = ({ unit }) => {
   } = useTranslation();
   const notice = getObservation(unit, 'notice');
   return notice ? (
-    <ModalBodyBox title={t('MODAL.NOTICE')}>
+    <BodyBox title={t('UNIT_CONTAINER.NOTICE')}>
       <StatusUpdated time={getObservationTime(notice)} t={t} />
       <ReactMarkdown
         source={getAttr(notice.value, language)}
@@ -188,7 +188,7 @@ const NoticeInfo = ({ unit }) => {
         escapeHtml
         allowedTypes={['text', 'paragraph', 'break']}
       />
-    </ModalBodyBox>
+    </BodyBox>
   ) : null;
 };
 
@@ -196,35 +196,26 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
   const { t } = useTranslation();
 
   return (
-    <ModalBodyBox title={t('MODAL.LINKS')}>
-      <ul className="modal-body-list">
+    <BodyBox title={t('UNIT_CONTAINER.LINKS')}>
+      <ul className="unit-container-body-list">
         {routeUrl && (
           <li>
-            <OutboundLink href={routeUrl}>{t('MODAL.GET_ROUTE')}</OutboundLink>
+            <OutboundLink href={routeUrl}>
+              {t('UNIT_CONTAINER.GET_ROUTE')}
+            </OutboundLink>
           </li>
         )}
         {palvelukarttaUrl && (
           <li>
             <OutboundLink href={palvelukarttaUrl}>
-              {t('MODAL.SEE_ON_SERVICE_MAP')}
+              {t('UNIT_CONTAINER.SEE_ON_SERVICE_MAP')}
             </OutboundLink>
           </li>
         )}
       </ul>
-    </ModalBodyBox>
+    </BodyBox>
   );
 };
-
-// TODO
-// const LocationWeather = ({t}) =>
-//   <ModalBodyBox title={t('MODAL.WEATHER')}>
-//     Wow such weather.
-//   </ModalBodyBox>;
-//
-// const LocationHeightProfile = ({t}) =>
-//   <ModalBodyBox title={t('MODAL.HEIGHT_PROFILE')}>
-//     Wow such profile.
-//   </ModalBodyBox>;
 
 const LocationOpeningHours = ({ unit }) => {
   const {
@@ -240,13 +231,13 @@ const LocationOpeningHours = ({ unit }) => {
   }
 
   return (
-    <ModalBodyBox title={t('MODAL.OPENING_HOURS')}>
+    <BodyBox title={t('UNIT_CONTAINER.OPENING_HOURS')}>
       {openingHours.map((openingHour) => (
-        <div key={openingHour.id} className="modal-body-multi-line">
+        <div key={openingHour.id} className="unit-container-body-multi-line">
           {openingHour}
         </div>
       ))}
-    </ModalBodyBox>
+    </BodyBox>
   );
 };
 
@@ -255,10 +246,10 @@ const LocationTemperature = ({ observation }) => {
   const temperature = get(observation, 'name.fi');
   const observationTime = getObservationTime(observation);
   return (
-    <ModalBodyBox title={t('MODAL.TEMPERATURE')}>
+    <BodyBox title={t('UNIT_CONTAINER.TEMPERATURE')}>
       <StatusUpdated time={observationTime} t={t} />
       {temperature}
-    </ModalBodyBox>
+    </BodyBox>
   );
 };
 
@@ -267,30 +258,25 @@ const LiveLocationTemperature = ({ observation }) => {
   const temperature = get(observation, 'value.fi');
   const observationTime = getObservationTime(observation);
   return (
-    <ModalBodyBox title={t('MODAL.WATER_TEMPERATURE')}>
+    <BodyBox title={t('UNIT_CONTAINER.WATER_TEMPERATURE')}>
       <StatusUpdatedAgo
         time={observationTime}
         t={t}
-        sensorName={t('MODAL.WATER_TEMPERATURE_SENSOR')}
+        sensorName={t('UNIT_CONTAINER.WATER_TEMPERATURE_SENSOR')}
       />
       {`${temperature} °C`}
-    </ModalBodyBox>
+    </BodyBox>
   );
 };
 
-const ModalBodyBox = ({ title, children, className = '', ...rest }) => (
-  <div className={`${className} modal-body-box`} {...rest}>
-    {title && <div className="modal-body-box-headline">{title}</div>}
+const BodyBox = ({ title, children, className = '', ...rest }) => (
+  <div className={`${className} unit-container-body-box`} {...rest}>
+    {title && <div className="unit-container-body-box-headline">{title}</div>}
     {children}
   </div>
 );
 
-// Enzyme is not able to render the legacy portals our version of
-// react-bootstrap uses. By separating the content into its own
-// component and exporting it, we are able to test the content without
-// more convoluted hacks. Ideally we would write tests for the entire
-// component.
-export const SingleUnitModalBody = ({
+const SingleUnitBody = ({
   currentUnit,
   isLoading,
   liveTemperatureObservation,
@@ -299,7 +285,7 @@ export const SingleUnitModalBody = ({
   palvelukarttaUrl,
 }) =>
   currentUnit && !isLoading ? (
-    <Modal.Body>
+    <div className="unit-container-body">
       <LocationState unit={currentUnit} />
       <NoticeInfo unit={currentUnit} />
       {!liveTemperatureObservation && temperatureObservation && (
@@ -318,17 +304,17 @@ export const SingleUnitModalBody = ({
           palvelukarttaUrl={palvelukarttaUrl}
         />
       )}
-    </Modal.Body>
+    </div>
   ) : null;
 
-SingleUnitModalBody.defaultProps = {
+SingleUnitBody.defaultProps = {
   liveTemperatureObservation: null,
   temperatureObservation: null,
   routeUrl: undefined,
   currentUnit: undefined,
 };
 
-SingleUnitModalBody.propTypes = {
+SingleUnitBody.propTypes = {
   currentUnit: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
   liveTemperatureObservation: PropTypes.object,
@@ -336,7 +322,7 @@ SingleUnitModalBody.propTypes = {
   temperatureObservation: PropTypes.object,
 };
 
-const SingleUnitModalContainer = ({
+const SingleUnitContainer = ({
   handleClick,
   isLoading,
   unit: currentUnit,
@@ -358,31 +344,28 @@ const SingleUnitModalContainer = ({
   const palvelukarttaUrl =
     currentUnit && createPalvelukarttaUrl(currentUnit, language);
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <div>
-      <Modal
-        className="single-unit-modal"
-        show={isOpen}
-        backdrop={false}
-        animation={false}
-      >
-        <ModalHeader
-          unit={currentUnit}
-          services={services}
-          handleClick={handleClick}
-          isLoading={isLoading}
-        />
-        <SingleUnitModalBody
-          currentUnit={currentUnit}
-          isLoading={isLoading}
-          liveTemperatureObservation={liveTemperatureObservation}
-          routeUrl={routeUrl}
-          temperatureObservation={temperatureObservation}
-          palvelukarttaUrl={palvelukarttaUrl}
-        />
-      </Modal>
+    <div className="unit-container">
+      <Header
+        unit={currentUnit}
+        services={services}
+        handleClick={handleClick}
+        isLoading={isLoading}
+      />
+      <SingleUnitBody
+        currentUnit={currentUnit}
+        isLoading={isLoading}
+        liveTemperatureObservation={liveTemperatureObservation}
+        routeUrl={routeUrl}
+        temperatureObservation={temperatureObservation}
+        palvelukarttaUrl={palvelukarttaUrl}
+      />
     </div>
   );
 };
 
-export default SingleUnitModalContainer;
+export default SingleUnitContainer;
