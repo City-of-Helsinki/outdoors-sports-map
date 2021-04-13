@@ -129,7 +129,11 @@ function HomeContainer() {
     <Page title={title}>
       <MapLayout
         content={
-          <div className="map-foreground">
+          <div
+            className={className('map-foreground', {
+              'is-filled': isUnitDetailsOpen,
+            })}
+          >
             <ApplicationHeader />
             <div
               className={className('map-foreground-unit-browser', {
