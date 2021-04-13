@@ -1,11 +1,14 @@
 // @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
-const LanguageChanger = ({ isMobile }) => {
+type Props = {
+  isMobile?: boolean,
+};
+
+const LanguageChanger = ({ isMobile = false }: Props) => {
   const {
     i18n,
     i18n: {
@@ -41,14 +44,6 @@ const LanguageChanger = ({ isMobile }) => {
         ))}
     </div>
   );
-};
-
-LanguageChanger.propTypes = {
-  isMobile: PropTypes.bool,
-};
-
-LanguageChanger.defaultProps = {
-  isMobile: false,
 };
 
 export default LanguageChanger;

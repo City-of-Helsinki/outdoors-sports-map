@@ -70,7 +70,7 @@ export const getUnitPosition = (unit: Object): Array<number> => {
   return unit.location.coordinates.slice().reverse();
 };
 
-export const createReittiopasUrl = (unit, lang) => {
+export const createReittiopasUrl = (unit: Object, lang: string) => {
   const lat = get(unit, 'location.coordinates[1]');
   const lon = get(unit, 'location.coordinates[0]');
   const origin = ' '; // sic
@@ -85,7 +85,7 @@ export const createReittiopasUrl = (unit, lang) => {
   return url;
 };
 
-export const createPalvelukarttaUrl = (unit, lang) =>
+export const createPalvelukarttaUrl = (unit: Object, lang: string) =>
   `https://palvelukartta.hel.fi/${lang}/unit/${unit.id}`;
 
 export const getUnitSport = (unit: Object) => {
@@ -140,7 +140,8 @@ export const getOpeningHours = (unit: Object, activeLang: string): string[] => {
 
   return connections
     .filter((connection) => connection.section_type === 'OPENING_HOURS')
-    .map((connection) => getAttr(connection.name, activeLang));
+    .map((connection) => getAttr(connection.name, activeLang) || '')
+    .filter((result) => result !== '');
 };
 
 export const getObservationTime = (observation: Object) =>
@@ -178,7 +179,7 @@ export const getUnitIcon = (unit: Object, selected: ?boolean = false) => ({
   height: getUnitIconHeight(unit),
 });
 
-export const getFilterIconURL = (filter: String) =>
+export const getFilterIconURL = (filter: string) =>
   // eslint-disable-next-line global-require, import/no-dynamic-require
   filter ? require(`@assets/icons/icon-white-${filter}@2x.png`) : '';
 
@@ -221,7 +222,7 @@ export const getDefaultFilters = () => ({
 
 const _sortByDistance = (
   units: Array<Object>,
-  position: Array<number>,
+  position: [number, number],
   leafletMap: Object
 ) => {
   if (leafletMap === null) {

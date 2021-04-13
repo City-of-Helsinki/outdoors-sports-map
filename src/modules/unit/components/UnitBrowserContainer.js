@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
+// $FlowFixMe: Type definitions are out of date
 import { useLocation, useParams } from 'react-router-dom';
 
 import * as fromMap from '../../map/selectors';

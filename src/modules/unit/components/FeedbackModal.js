@@ -12,12 +12,18 @@ import * as unitActions from '../actions';
 import SMIcon from '../../home/components/SMIcon';
 
 type Props = {
-  sendFeedback: (feedback: string) => void,
+  sendFeedback: (feedback: ?string, email: ?string) => void,
   closeModal: () => void,
   t: (string) => string,
 };
 
-class FeedbackModal extends Component<Props> {
+type State = {
+  emailInputOpen: boolean,
+  feedback: ?string,
+  email: ?string,
+};
+
+class FeedbackModal extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +36,7 @@ class FeedbackModal extends Component<Props> {
     this.toggleEmailInput = this.toggleEmailInput.bind(this);
   }
 
+  /*:: toggleEmailInput: Function */
   toggleEmailInput() {
     const { emailInputOpen } = this.state;
 
@@ -40,12 +47,13 @@ class FeedbackModal extends Component<Props> {
     }
   }
 
-  handleFeedbackSubmit(e, feedback) {
+  /*:: handleFeedbackSubmit: Function */
+  handleFeedbackSubmit(e, feedback: ?string, email: ?string) {
     e.preventDefault();
 
     const { sendFeedback, closeModal } = this.props;
 
-    sendFeedback(feedback);
+    sendFeedback(feedback, email);
     closeModal();
   }
 

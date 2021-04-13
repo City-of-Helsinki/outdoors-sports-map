@@ -43,5 +43,5 @@ export const receiveSearchResults = (results: Array<Object>) =>
 export const receiveSearchSuggestions = (results: Array<Object>) =>
   createAction(UnitActions.RECEIVE_SEARCH_SUGGESTIONS)(results);
 
-export const sendFeedback = (feedback: string) =>
-  createAction(UnitActions.SEND_FEEDBACK)({ feedback });
+export const sendFeedback = (feedback: string, email: ?string) =>
+  createAction(UnitActions.SEND_FEEDBACK)({ feedback, email });

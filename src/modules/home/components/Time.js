@@ -29,7 +29,11 @@ export const formatTime = (time: Date, t: Function) => {
   return t(lookup, options);
 };
 
-const Time = ({ time }) => {
+type TimeProps = {
+  time: Date,
+};
+
+const Time = ({ time }: TimeProps) => {
   const { t } = useTranslation();
 
   return (

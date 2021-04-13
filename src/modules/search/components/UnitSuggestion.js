@@ -9,7 +9,7 @@ import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
 
 type Props = {
-  unit: object,
+  unit: Object,
 };
 
 const UnitSuggestion = ({ unit, ...rest }: Props) => {

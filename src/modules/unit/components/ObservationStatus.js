@@ -51,7 +51,7 @@ export const StatusUpdatedAgo = ({
 );
 
 type MaintenanceUpdatedProps = {
-  name: string,
+  name: Object,
   time: Date,
 };
 
@@ -70,7 +70,7 @@ export const MaintenanceUpdated = ({ name, time }: MaintenanceUpdatedProps) => {
 };
 
 type ObservationStatusProps = {
-  unit: object,
+  unit: Object,
 };
 
 const ObservationStatus = ({ unit }: ObservationStatusProps) => {
@@ -91,11 +91,13 @@ const ObservationStatus = ({ unit }: ObservationStatusProps) => {
         quality={quality}
         label={
           condition && condition.name
-            ? getAttr(condition.name, language)
+            ? getAttr(condition.name, language) || t('UNIT.UNKNOWN')
             : t('UNIT.UNKNOWN')
         }
       />
-      <StatusUpdated t={t} time={getObservationTime(condition)} />
+      {condition && (
+        <StatusUpdated t={t} time={getObservationTime(condition)} />
+      )}
       {maintenance && (
         <MaintenanceUpdated
           name={maintenance.name}

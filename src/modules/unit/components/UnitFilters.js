@@ -29,7 +29,7 @@ type FilterOptionsRowProps = {
   className: string,
   filterName: string,
   options: string[],
-  onKeyDown: () => void,
+  onKeyDown: (e: SyntheticKeyboardEvent<HTMLElement>) => void,
   onSelect: (filterName: string, option: string) => void,
 };
 
@@ -59,8 +59,8 @@ type FilterOptionProps = {
   t: (string) => string,
   filter: string,
   isActive: boolean,
-  onAction: () => void,
-  onSelect: () => void,
+  onAction: (filter: Object) => void,
+  onSelect: (filterName: string, option: string) => void,
   filter: UnitFilterProps,
 };
 
@@ -74,14 +74,16 @@ const FilterOption = ({
   const controlId = `control-${filter.name}`;
   const menuId = `menu-${filter.name}`;
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      document.getElementById(controlId).focus();
+  const handleKeyDown = (e: SyntheticKeyboardEvent<HTMLElement>) => {
+    const element = document.getElementById(controlId);
+
+    if (e.key === 'Enter' && element) {
+      element.focus();
     }
   };
 
-  const handleSelect = (...args) => {
-    onSelect(...args);
+  const handleSelect = (filterName: string, option: string) => {
+    onSelect(filterName, option);
   };
 
   return (
@@ -142,11 +144,10 @@ type State = {
 };
 
 export class UnitFiltersComponent extends React.Component<
-  void,
   UnitFiltersProps,
   State
 > {
-  constructor(props) {
+  constructor(props: UnitFiltersProps) {
     super(props);
     this.state = {
       expandedFilter: null,
@@ -160,7 +161,7 @@ export class UnitFiltersComponent extends React.Component<
     updateFilter(key, value);
   };
 
-  toggleExpandedFilter = (filter) => {
+  toggleExpandedFilter = (filter: Object) => {
     const { expandedFilter } = this.state;
 
     const isFilterActive = filterEquals(filter, expandedFilter);

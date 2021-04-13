@@ -12,16 +12,21 @@ import SearchBar from './SearchBar';
 import SearchSuggestions from './SearchSuggestions';
 
 type Props = {
-  unitSuggestions: object[],
+  unitSuggestions: Object[],
   searchUnits: (value: string) => void,
   fetchUnitSuggestions: (value: string) => void,
   searchDisabled: boolean,
   onSearch: (value: string) => void,
   clearSearch: () => void,
-  onViewChange: (coordinates: [Number, number]) => void,
-  setLocation: (coordinates: [Number, number]) => void,
-  addresses: object[],
+  onViewChange: (coordinates: [number, number]) => void,
+  setLocation: (coordinates: [number, number]) => void,
+  addresses: Object[],
   isActive: boolean,
+};
+
+type State = {
+  searchPhrase: string,
+  showSuggestions: boolean,
 };
 
 const initialState = () => ({
@@ -29,7 +34,7 @@ const initialState = () => ({
   showSuggestions: false,
 });
 
-class SearchContainer extends Component<Props> {
+class SearchContainer extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = initialState();
@@ -76,7 +81,7 @@ class SearchContainer extends Component<Props> {
     clearSearch();
   };
 
-  handleAddressClick = (coordinates) => {
+  handleAddressClick = (coordinates: [number, number]) => {
     const { onViewChange, setLocation } = this.props;
     this.clear();
     setLocation(coordinates);

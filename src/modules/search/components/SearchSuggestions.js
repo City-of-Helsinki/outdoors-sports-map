@@ -6,10 +6,10 @@ import UnitSuggestion from './UnitSuggestion';
 import AddressSuggestion from './AddressSuggestion';
 
 type Props = {
-  units: object[],
-  addresses: object[],
-  openAllResults: () => void,
-  handleAddressClick: (address: object) => void,
+  units: Object[],
+  addresses: Object[],
+  openAllResults: (e: SyntheticEvent<HTMLAnchorElement>) => void,
+  handleAddressClick: (coordinates: [number, number]) => void,
 };
 
 const SearchSuggestions = ({

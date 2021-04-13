@@ -24,9 +24,9 @@ const _getVisibleUnits = (state: AppState, query: Object) => {
   let visibleUnits = state.unit[sport];
 
   if (status === UnitFilters.STATUS_OK) {
-    // $FlowFixMe
     visibleUnits = intersection(
       visibleUnits,
+      // $FlowFixMe
       state.unit[UnitFilters.STATUS_OK]
     );
   }

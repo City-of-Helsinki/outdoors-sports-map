@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import { withTranslation } from 'react-i18next';
 import { ReactReduxContext } from 'react-redux';
@@ -32,17 +33,27 @@ import LanguageChanger from './LanguageChanger';
 import TranslationProvider from '../../common/components/translation/TranslationProvider';
 
 type Props = {
-  selectedUnit: object,
-  onCenterMapToUnit: (unit: object) => void,
-  selected: object,
+  selectedUnit: Object,
+  onCenterMapToUnit: (unit: Object) => void,
+  selected: Object,
   activeLanguage: string,
   openUnit: (unitId: string) => void,
   changeLanguage: (language: string) => void,
   t: (string) => string,
   setLocation: (coordinates: [number, number]) => void,
+  position: [number, number],
+  units: Object[],
 };
 
-class MapView extends Component<Props> {
+type State = {
+  isMobile: boolean,
+  menuOpen: boolean,
+  aboutModalOpen: boolean,
+  feedbackModalOpen: boolean,
+  zoomLevel: number,
+};
+
+class MapView extends Component<Props, State> {
   mapRef = null;
 
   constructor(props) {
@@ -79,6 +90,7 @@ class MapView extends Component<Props> {
   };
 
   handleZoom = () => {
+    // $FlowIgnore
     this.setState({ zoomLevel: this.mapRef.leafletElement.getZoom() });
   };
 
@@ -87,6 +99,7 @@ class MapView extends Component<Props> {
   };
 
   locateUser = () => {
+    // $FlowIgnore
     this.mapRef.leafletElement.locate({ setView: true });
   };
 
@@ -101,7 +114,7 @@ class MapView extends Component<Props> {
   setLocation = (event: Object) => {
     const { setLocation } = this.props;
 
-    setLocation(latLngToArray(event.latlng));
+    setLocation(((latLngToArray(event.latlng): any): [number, number]));
   };
 
   toggleMenu = () => {
@@ -115,6 +128,7 @@ class MapView extends Component<Props> {
   };
 
   setView = (coordinates) => {
+    // $FlowIgnore
     this.mapRef.leafletElement.setView(coordinates);
   };
 
@@ -248,7 +262,7 @@ type InfoMenuProps = {
   isMobile: boolean,
   activeLanguage: string,
   changeLanguage: (language: string) => void,
-  store: object,
+  store: Object,
 };
 
 const InfoMenu = ({
@@ -272,7 +286,7 @@ const InfoMenu = ({
         &copy; {t('MAP.ATTRIBUTION')}{' '}
       </OutboundLink>
       {isMobile && Object.keys(SUPPORTED_LANGUAGES).length > 1 && (
-        <InfoMenuItem handleClick={() => null}>
+        <InfoMenuItem handleClick={() => {}}>
           <strong>{t('MAP.INFO_MENU.CHOOSE_LANGUAGE')}</strong>
           <LanguageChanger
             style={{ position: 'static' }}
@@ -287,9 +301,9 @@ const InfoMenu = ({
 );
 
 type InfoMenuItemProps = {
-  children: React.Node,
+  children: Node,
   handleClick: () => void,
-  icon: string,
+  icon?: string,
 };
 
 const InfoMenuItem = ({ children, handleClick, icon }: InfoMenuItemProps) => (

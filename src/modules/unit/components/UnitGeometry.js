@@ -6,7 +6,7 @@ import { GeoJSON } from 'react-leaflet';
 import { getUnitQuality } from '../helpers';
 
 type Props = {
-  unit: object,
+  unit: Object,
   isSelected: boolean,
 };
 

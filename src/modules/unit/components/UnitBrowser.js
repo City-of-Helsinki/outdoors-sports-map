@@ -3,8 +3,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import type { ContextRouter } from 'react-router-dom';
 import values from 'lodash/values';
 import { useTranslation, withTranslation } from 'react-i18next';
+// $FlowIgnore
 import addressBarMarker from '@assets/markers/location.svg';
 
 import SMIcon from '../../home/components/SMIcon';
@@ -101,12 +103,28 @@ AddressBar.propTypes = {
   handleClick: PropTypes.func.isRequired,
 };
 
+type Props = ContextRouter & {
+  address: Object,
+  isLoading: boolean,
+  isSearching: boolean,
+  leafletMap: ?Object,
+  location: Object,
+  params: Object,
+  position: Object,
+  history: Object,
+  services: Object,
+  singleUnitSelected: boolean,
+  t: (string) => string,
+  units: Object[],
+  onViewChange: (unit: Object) => void,
+};
+
 type State = {
   isExpanded: boolean,
   contentMaxHeight: ?number,
 };
 
-class UnitBrowser extends Component<void, void, State> {
+class UnitBrowser extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,7 +142,6 @@ class UnitBrowser extends Component<void, void, State> {
   }
 
   updateContentMaxHeight = () => {
-    // $FlowFixMe
     this.setState({ contentMaxHeight: this.calculateMaxHeight() });
   };
 
@@ -138,11 +155,14 @@ class UnitBrowser extends Component<void, void, State> {
   updateQueryParameter = (key: string, value: string): void => {
     const {
       history,
-      location: { query },
+      location: { search },
     } = this.props;
 
+    const searchParams = new URLSearchParams(search);
+    searchParams.set(key, value);
+
     history.push({
-      query: { ...query, [key]: value },
+      search: searchParams.toString(),
     });
   };
 
@@ -163,8 +183,8 @@ class UnitBrowser extends Component<void, void, State> {
   };
 
   render() {
-    const { t } = this.props;
     const {
+      t,
       units,
       services,
       isLoading,
@@ -175,15 +195,17 @@ class UnitBrowser extends Component<void, void, State> {
       params,
       leafletMap,
       singleUnitSelected,
-      location: { query },
+      location: { search },
     } = this.props;
     const { isExpanded } = this.state;
     const { contentMaxHeight } = this.state;
 
+    const searchParams = new URLSearchParams(search);
     const currentSportFilter =
-      (query && query.sport) || getDefaultSportFilter();
+      searchParams.get('sport') || getDefaultSportFilter();
     const currentStatusFilter =
-      (query && query.status) || getDefaultStatusFilter();
+      searchParams.get('status') || getDefaultStatusFilter();
+
     return (
       <div
         className={`unit-browser ${isExpanded ? 'expanded' : ''}`}
@@ -208,6 +230,7 @@ class UnitBrowser extends Component<void, void, State> {
                 {
                   name: 'status',
                   active: currentStatusFilter,
+                  // $FlowFixMe
                   options: values(StatusFilters),
                 },
               ]}
@@ -247,21 +270,5 @@ class UnitBrowser extends Component<void, void, State> {
     );
   }
 }
-
-UnitBrowser.propTypes = {
-  address: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  leafletMap: PropTypes.objectOf(PropTypes.any).isRequired,
-  location: PropTypes.objectOf(PropTypes.any).isRequired,
-  params: PropTypes.objectOf(PropTypes.any).isRequired,
-  position: PropTypes.arrayOf(PropTypes.number).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  services: PropTypes.objectOf(PropTypes.object).isRequired,
-  singleUnitSelected: PropTypes.bool.isRequired,
-  t: PropTypes.func.isRequired,
-  units: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onViewChange: PropTypes.func.isRequired,
-};
 
 export default withRouter(withTranslation()(UnitBrowser));

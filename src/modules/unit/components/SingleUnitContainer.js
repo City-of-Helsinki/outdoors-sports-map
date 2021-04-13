@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
@@ -38,8 +39,8 @@ function shouldShowInfo(unit) {
 }
 
 type HeaderProps = {
-  unit: object,
-  services: object[],
+  unit: Object,
+  services: Object,
   isLoading: boolean,
 };
 
@@ -101,7 +102,7 @@ export const Header = ({ unit, services, isLoading }: HeaderProps) => {
 };
 
 type LocationStateProps = {
-  unit: object,
+  unit: Object,
 };
 
 const LocationState = ({ unit }: LocationStateProps) => {
@@ -114,7 +115,7 @@ const LocationState = ({ unit }: LocationStateProps) => {
 };
 
 type LocationInfoProps = {
-  unit: object,
+  unit: Object,
 };
 
 const LocationInfo = ({ unit }: LocationInfoProps) => {
@@ -169,7 +170,7 @@ const LocationInfo = ({ unit }: LocationInfoProps) => {
 };
 
 type NoticeInfoProps = {
-  unit: object,
+  unit: Object,
 };
 
 /**
@@ -231,7 +232,7 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }: LocationRouteProps) => {
 };
 
 type LocationOpeningHoursProps = {
-  unit: object,
+  unit: Object,
 };
 
 const LocationOpeningHours = ({ unit }: LocationOpeningHoursProps) => {
@@ -250,7 +251,7 @@ const LocationOpeningHours = ({ unit }: LocationOpeningHoursProps) => {
   return (
     <BodyBox title={t('UNIT_CONTAINER.OPENING_HOURS')}>
       {openingHours.map((openingHour) => (
-        <div key={openingHour.id} className="unit-container-body-multi-line">
+        <div key={openingHour} className="unit-container-body-multi-line">
           {openingHour}
         </div>
       ))}
@@ -259,7 +260,7 @@ const LocationOpeningHours = ({ unit }: LocationOpeningHoursProps) => {
 };
 
 type LocationTemperatureProps = {
-  observation: object,
+  observation: Object,
 };
 
 const LocationTemperature = ({ observation }: LocationTemperatureProps) => {
@@ -275,7 +276,7 @@ const LocationTemperature = ({ observation }: LocationTemperatureProps) => {
 };
 
 type LiveLocationTemperatureProps = {
-  observation: object,
+  observation: Object,
 };
 
 const LiveLocationTemperature = ({
@@ -298,8 +299,8 @@ const LiveLocationTemperature = ({
 
 type BodyBoxProps = {
   title: string,
-  children: React.Node,
-  className: string,
+  children: Node,
+  className?: string,
 };
 
 const BodyBox = ({
@@ -315,11 +316,11 @@ const BodyBox = ({
 );
 
 type SingleUnitBodyProps = {
-  currentUnit: object,
+  currentUnit: Object,
   isLoading: boolean,
-  liveTemperatureObservation: object,
+  liveTemperatureObservation: ?Object,
   routeUrl: string,
-  temperatureObservation: object,
+  temperatureObservation: ?Object,
   palvelukarttaUrl: string,
 };
 
@@ -330,8 +331,14 @@ export const SingleUnitBody = ({
   routeUrl,
   temperatureObservation,
   palvelukarttaUrl,
-}: SingleUnitBodyProps) =>
-  currentUnit && !isLoading ? (
+}: SingleUnitBodyProps) => {
+  const {
+    i18n: {
+      languages: [language],
+    },
+  } = useTranslation();
+
+  return currentUnit && !isLoading ? (
     <div className="unit-container-body">
       <LocationState unit={currentUnit} />
       <NoticeInfo unit={currentUnit} />
@@ -342,7 +349,7 @@ export const SingleUnitBody = ({
         <LiveLocationTemperature observation={liveTemperatureObservation} />
       )}
       {shouldShowInfo(currentUnit) && <LocationInfo unit={currentUnit} />}
-      {getOpeningHours(currentUnit) && (
+      {getOpeningHours(currentUnit, language) && (
         <LocationOpeningHours unit={currentUnit} />
       )}
       {(routeUrl || palvelukarttaUrl) && (
@@ -353,6 +360,7 @@ export const SingleUnitBody = ({
       )}
     </div>
   ) : null;
+};
 
 SingleUnitBody.defaultProps = {
   liveTemperatureObservation: null,
@@ -373,15 +381,13 @@ SingleUnitBody.propTypes = {
 };
 
 type Props = {
-  handleClick: () => void,
   isLoading: boolean,
-  unit: object,
-  services: object[],
+  unit: Object,
+  services: Object,
   isOpen: boolean,
 };
 
 const SingleUnitContainer = ({
-  handleClick,
   isLoading,
   unit: currentUnit,
   services,
@@ -408,12 +414,7 @@ const SingleUnitContainer = ({
 
   return (
     <div className="unit-container">
-      <Header
-        unit={currentUnit}
-        services={services}
-        handleClick={handleClick}
-        isLoading={isLoading}
-      />
+      <Header unit={currentUnit} services={services} isLoading={isLoading} />
       <SingleUnitBody
         currentUnit={currentUnit}
         isLoading={isLoading}

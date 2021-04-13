@@ -3,11 +3,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// $FlowIgnore
 const addressIcon = require('@assets/markers/unknown-satisfactory-off.png');
 
 type Props = {
-  address: object,
-  handleClick: (event: SyntheticEvent<HTMLButtonElement>) => void,
+  address: Object,
+  handleClick: (coordinates: [number, number]) => void,
 };
 
 const AddressSuggestion = ({ address, handleClick }: Props) => (

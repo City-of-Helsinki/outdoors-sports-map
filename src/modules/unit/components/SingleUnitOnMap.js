@@ -7,20 +7,20 @@ import UnitMarker from './UnitMarker';
 import UnitGeometry from './UnitGeometry';
 
 type Props = {
-  unit: object,
+  unit: Object,
   isSelected: boolean,
   zoomLevel: number,
   openUnit: (unitId: string) => void,
 };
 
 class SingleUnitOnMap extends Component<Props> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: Props) {
     const { unit, isSelected, zoomLevel } = this.props;
     const isQualityUpdated =
       getUnitQuality(unit) !== getUnitQuality(nextProps.unit);
@@ -30,7 +30,8 @@ class SingleUnitOnMap extends Component<Props> {
     return isQualityUpdated || isSelectedUpdated || isZoomUpdated;
   }
 
-  handleClick(e) {
+  /*:: handleClick: Function */
+  handleClick(e: SyntheticEvent<HTMLElement>) {
     const { unit, openUnit } = this.props;
     L.DomEvent.stopPropagation(e);
 

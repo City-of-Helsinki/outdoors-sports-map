@@ -17,7 +17,7 @@ import { View } from './View';
 import UnitIcon from './UnitIcon';
 
 type UnitListItemProps = {
-  unit: object,
+  unit: Object,
   activeLanguage: string,
 };
 
@@ -51,8 +51,8 @@ class UnitListItem extends Component<UnitListItemProps> {
 }
 
 type Props = {
-  units: object[],
-  services: object,
+  units: Object[],
+  services: Object,
   isVisible: boolean,
   activeFilter: string,
   isLoading: boolean,
@@ -60,10 +60,17 @@ type Props = {
   i18n: {
     languages: string[],
   },
+  position: [number, number],
+  leafletMap: Object,
 };
 
-export class ListViewBase extends Component<Props> {
-  constructor(props) {
+type State = {
+  sortKey: string,
+  maxUnitCount: number,
+};
+
+export class ListViewBase extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       sortKey: SortKeys.DISTANCE,
@@ -75,11 +82,11 @@ export class ListViewBase extends Component<Props> {
     this.handleLoadMoreClick = this.handleLoadMoreClick.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: Props) {
     return nextProps.isVisible;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     const { activeFilter, units } = this.props;
 
     if (
@@ -90,26 +97,22 @@ export class ListViewBase extends Component<Props> {
     }
   }
 
-  sortUnits = (props, sortKey) => {
+  sortUnits = (sortKey: string) => {
+    const { units, position, leafletMap } = this.props;
     let sortedUnits = [];
     switch (sortKey) {
       case SortKeys.ALPHABETICAL:
-        sortedUnits = unitHelpers.sortByName(props.units, 'fi');
+        sortedUnits = unitHelpers.sortByName(units, 'fi');
         break;
       case SortKeys.CONDITION:
-        sortedUnits = unitHelpers.sortByCondition(props.units);
+        sortedUnits = unitHelpers.sortByCondition(units);
         break;
       case SortKeys.DISTANCE:
-        sortedUnits = unitHelpers.sortByDistance(
-          props.units,
-          props.position,
-          props.leafletMap,
-          props.filter
-        );
+        sortedUnits = unitHelpers.sortByDistance(units, position, leafletMap);
         break;
 
       default:
-        sortedUnits = props.units;
+        sortedUnits = units;
     }
 
     return sortedUnits;
@@ -119,11 +122,13 @@ export class ListViewBase extends Component<Props> {
    * @param  {string} sortKey
    * @return {void}
    */
-  selectSortKey(sortKey) {
+  /*:: selectSortKey: Function */
+  selectSortKey(sortKey: string) {
     this.setState({ sortKey });
     this.resetUnitCount();
   }
 
+  /*:: loadMoreUnits: Function */
   loadMoreUnits() {
     this.setState((prevState) => ({
       maxUnitCount: prevState.maxUnitCount + UNIT_BATCH_SIZE,
@@ -134,7 +139,8 @@ export class ListViewBase extends Component<Props> {
     this.setState({ maxUnitCount: UNIT_BATCH_SIZE });
   }
 
-  handleLoadMoreClick(e) {
+  /*:: handleLoadMoreClick: Function */
+  handleLoadMoreClick(e: SyntheticEvent<HTMLAnchorElement>) {
     e.preventDefault();
     this.loadMoreUnits();
   }
@@ -145,7 +151,7 @@ export class ListViewBase extends Component<Props> {
     const totalUnits = units.length;
     const renderedUnits = isLoading
       ? []
-      : this.sortUnits(this.props, sortKey).slice(0, maxUnitCount);
+      : this.sortUnits(sortKey).slice(0, maxUnitCount);
 
     return (
       <View id="list-view" className="list-view">

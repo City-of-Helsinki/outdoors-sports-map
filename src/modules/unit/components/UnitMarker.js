@@ -13,14 +13,14 @@ const POPUP_OFFSET = 4;
 type Props = {
   isSelected: boolean,
   zoomLevel: number,
-  unit: object,
+  unit: Object,
   handleClick: () => void,
 };
 
 class UnitMarker extends Component<Props> {
   markerRef = null;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.openPopup = this.openPopup.bind(this);
@@ -29,34 +29,38 @@ class UnitMarker extends Component<Props> {
     this.getIconHeight = this.getIconHeight.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     const { isSelected } = this.props;
     if (!isSelected && prevProps.isSelected) {
       this.closePopup();
     }
   }
 
-  getIconWidth = (zoomLevel) => (zoomLevel / MAX_ZOOM) * UNIT_ICON_WIDTH;
+  getIconWidth = (zoomLevel: number) =>
+    (zoomLevel / MAX_ZOOM) * UNIT_ICON_WIDTH;
 
-  getIconHeight = (icon, zoomLevel) => (zoomLevel / MAX_ZOOM) * icon.height;
+  getIconHeight = (icon: Object, zoomLevel: number) =>
+    (zoomLevel / MAX_ZOOM) * icon.height;
 
-  _getAnchorHeight = (iconHeight, unit) =>
+  _getAnchorHeight = (iconHeight: number, unit: Object) =>
     getUnitSport(unit) === UnitFilters.SKIING ? iconHeight / 2 : iconHeight;
 
-  _getPopupOffset = (unit) =>
+  _getPopupOffset = (unit: Object) =>
     -(getUnitSport(unit) === UnitFilters.SKIING
       ? POPUP_OFFSET
       : POPUP_OFFSET + 24);
 
-  setMarkerRef = (ref) => {
+  setMarkerRef = (ref: ?Object) => {
     this.markerRef = ref;
   };
 
+  /*:: openPopup: Function */
   openPopup() {
+    // $FlowIgnore
     this.markerRef.leafletElement.openPopup();
   }
 
-  _createIcon(unit, isSelected) {
+  _createIcon(unit: Object, isSelected: boolean) {
     const { zoomLevel } = this.props;
     const icon = getUnitIcon(unit, isSelected);
     const iconWidth = this.getIconWidth(zoomLevel);
@@ -71,7 +75,9 @@ class UnitMarker extends Component<Props> {
     });
   }
 
+  /*:: closePopup: Function */
   closePopup() {
+    // $FlowIgnore
     this.markerRef.leafletElement.closePopup();
   }
 

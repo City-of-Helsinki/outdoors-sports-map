@@ -25,6 +25,7 @@ function* fetchUnits({ payload: { params } }: FetchAction) {
       bodyAsJson.results,
       new schema.Array(unitSchema)
     );
+    // $FlowFixMe
     yield put(receiveUnits(data));
   } else {
     yield put(setFetchError(bodyAsJson.results));

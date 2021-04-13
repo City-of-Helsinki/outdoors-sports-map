@@ -10,7 +10,9 @@ import { getLocation } from '../selectors';
 import latLngToArray from '../helpers';
 import AriaHiddenIcon from '../AriaHiddenIcon';
 
+// $FlowIgnore
 const iconUrl = require('@assets/markers/location.png');
+// $FlowIgnore
 const iconRetinaUrl = require('@assets/markers/location@2x.png');
 
 type Props = {
@@ -34,10 +36,12 @@ class UserLocationMarker extends Component<Props> {
     this.handleDragEnd = this.handleDragEnd.bind(this);
   }
 
+  /*:: handleDragEnd: Function */
   handleDragEnd() {
     const { setLocation } = this.props;
 
     setLocation(
+      // $FlowIgnore
       latLngToArray(this.locationRef.current.leafletElement.getLatLng())
     );
   }
