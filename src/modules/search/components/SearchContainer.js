@@ -1,28 +1,35 @@
-/*
-   eslint-disable
-   no-shadow,
-   react/destructuring-assignment,
-   react/prop-types,
-   react/require-default-props,
-*/
+// @flow
 
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as selectors from '../selectors';
+
 import { getIsLoading as getIsUnitLoading } from '../../unit/selectors';
-import { searchUnits, fetchUnitSuggestions, clearSearch } from '../actions';
-import { setLocation } from '../../map/actions';
+import * as mapActions from '../../map/actions';
+import * as selectors from '../selectors';
+import * as unitActions from '../actions';
 import SearchBar from './SearchBar';
 import SearchSuggestions from './SearchSuggestions';
+
+type Props = {
+  unitSuggestions: object[],
+  searchUnits: (value: string) => void,
+  fetchUnitSuggestions: (value: string) => void,
+  searchDisabled: boolean,
+  onSearch: (value: string) => void,
+  clearSearch: () => void,
+  onViewChange: (coordinates: [Number, number]) => void,
+  setLocation: (coordinates: [Number, number]) => void,
+  addresses: object[],
+  isActive: boolean,
+};
 
 const initialState = () => ({
   searchPhrase: '',
   showSuggestions: false,
 });
 
-class SearchContainer extends Component {
+class SearchContainer extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = initialState();
@@ -42,8 +49,11 @@ class SearchContainer extends Component {
   };
 
   search = () => {
-    this.props.searchUnits(this.state.searchPhrase);
-    this.props.onSearch(this.state.searchPhrase);
+    const { searchUnits, onSearch } = this.props;
+    const { searchPhrase } = this.state;
+
+    searchUnits(searchPhrase);
+    onSearch(searchPhrase);
     this.setState({
       showSuggestions: false,
     });
@@ -54,12 +64,16 @@ class SearchContainer extends Component {
    * @return {void}              [description]
    */
   getSuggestions = (searchPhrase) => {
-    this.props.fetchUnitSuggestions(searchPhrase);
+    const { fetchUnitSuggestions } = this.props;
+
+    fetchUnitSuggestions(searchPhrase);
   };
 
   clear = () => {
+    const { clearSearch } = this.props;
+
     this.setState(initialState());
-    this.props.clearSearch();
+    clearSearch();
   };
 
   handleAddressClick = (coordinates) => {
@@ -96,14 +110,6 @@ class SearchContainer extends Component {
   }
 }
 
-SearchContainer.propTypes = {
-  unitSuggestions: PropTypes.arrayOf(PropTypes.object),
-  searchUnits: PropTypes.func,
-  fetchUnitSuggestions: PropTypes.func,
-  searchDisabled: PropTypes.bool,
-  onSearch: PropTypes.func,
-};
-
 const mapStateToProps = (state) => ({
   unitSuggestions: selectors.getUnitSuggestions(state),
   isActive: selectors.getIsActive(state),
@@ -114,10 +120,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      searchUnits,
-      fetchUnitSuggestions,
-      clearSearch,
-      setLocation,
+      searchUnits: unitActions.searchUnits,
+      fetchUnitSuggestions: unitActions.fetchUnitSuggestions,
+      clearSearch: unitActions.clearSearch,
+      setLocation: mapActions.setLocation,
     },
     dispatch
   );

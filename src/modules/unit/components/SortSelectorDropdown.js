@@ -1,14 +1,17 @@
-/*
-   eslint-disable
-   react/prop-types,
-*/
+// @flow
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'react-bootstrap';
 import SMIcon from '../../home/components/SMIcon';
 
-const SortSelectorDropdown = ({ active, values, onSelect }) => {
+type Props = {
+  active: string,
+  values: ?(string[]),
+  onSelect: (value: string) => void,
+};
+
+const SortSelectorDropdown = ({ active, values, onSelect }: Props) => {
   const { t } = useTranslation();
 
   return (

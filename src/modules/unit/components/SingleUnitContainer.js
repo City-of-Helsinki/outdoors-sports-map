@@ -1,14 +1,4 @@
-/* eslint-disable react/forbid-prop-types */
-/*
-   eslint-disable
-   class-methods-use-this,
-   jsx-a11y/anchor-is-valid,
-   jsx-a11y/click-events-have-key-events,
-   jsx-a11y/no-static-element-interactions,
-   react/destructuring-assignment,
-   react/jsx-props-no-spreading,
-   react/prop-types,
-*/
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -47,7 +37,13 @@ function shouldShowInfo(unit) {
   return hasExtensions || unit.phone || unit.url;
 }
 
-const Header = ({ unit, services, isLoading }) => {
+type HeaderProps = {
+  unit: object,
+  services: object[],
+  isLoading: boolean,
+};
+
+export const Header = ({ unit, services, isLoading }: HeaderProps) => {
   const {
     t,
     i18n: {
@@ -104,7 +100,11 @@ const Header = ({ unit, services, isLoading }) => {
   );
 };
 
-const LocationState = ({ unit }) => {
+type LocationStateProps = {
+  unit: object,
+};
+
+const LocationState = ({ unit }: LocationStateProps) => {
   const { t } = useTranslation();
   return (
     <BodyBox title={t('UNIT_CONTAINER.QUALITY')}>
@@ -113,7 +113,11 @@ const LocationState = ({ unit }) => {
   );
 };
 
-const LocationInfo = ({ unit }) => {
+type LocationInfoProps = {
+  unit: object,
+};
+
+const LocationInfo = ({ unit }: LocationInfoProps) => {
   const {
     t,
     i18n: {
@@ -164,11 +168,15 @@ const LocationInfo = ({ unit }) => {
   );
 };
 
+type NoticeInfoProps = {
+  unit: object,
+};
+
 /**
  * [NoticeInfo description]
  * @param {Object} unit       [description]
  */
-const NoticeInfo = ({ unit }) => {
+const NoticeInfo = ({ unit }: NoticeInfoProps) => {
   const {
     t,
     i18n: {
@@ -192,7 +200,12 @@ const NoticeInfo = ({ unit }) => {
   ) : null;
 };
 
-const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
+type LocationRouteProps = {
+  routeUrl: string,
+  palvelukarttaUrl: string,
+};
+
+const LocationRoute = ({ routeUrl, palvelukarttaUrl }: LocationRouteProps) => {
   const { t } = useTranslation();
 
   return (
@@ -217,7 +230,11 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
   );
 };
 
-const LocationOpeningHours = ({ unit }) => {
+type LocationOpeningHoursProps = {
+  unit: object,
+};
+
+const LocationOpeningHours = ({ unit }: LocationOpeningHoursProps) => {
   const {
     t,
     i18n: {
@@ -241,7 +258,11 @@ const LocationOpeningHours = ({ unit }) => {
   );
 };
 
-const LocationTemperature = ({ observation }) => {
+type LocationTemperatureProps = {
+  observation: object,
+};
+
+const LocationTemperature = ({ observation }: LocationTemperatureProps) => {
   const { t } = useTranslation();
   const temperature = get(observation, 'name.fi');
   const observationTime = getObservationTime(observation);
@@ -253,7 +274,13 @@ const LocationTemperature = ({ observation }) => {
   );
 };
 
-const LiveLocationTemperature = ({ observation }) => {
+type LiveLocationTemperatureProps = {
+  observation: object,
+};
+
+const LiveLocationTemperature = ({
+  observation,
+}: LiveLocationTemperatureProps) => {
   const { t } = useTranslation();
   const temperature = get(observation, 'value.fi');
   const observationTime = getObservationTime(observation);
@@ -269,21 +296,41 @@ const LiveLocationTemperature = ({ observation }) => {
   );
 };
 
-const BodyBox = ({ title, children, className = '', ...rest }) => (
+type BodyBoxProps = {
+  title: string,
+  children: React.Node,
+  className: string,
+};
+
+const BodyBox = ({
+  title,
+  children,
+  className = '',
+  ...rest
+}: BodyBoxProps) => (
   <div className={`${className} unit-container-body-box`} {...rest}>
     {title && <div className="unit-container-body-box-headline">{title}</div>}
     {children}
   </div>
 );
 
-const SingleUnitBody = ({
+type SingleUnitBodyProps = {
+  currentUnit: object,
+  isLoading: boolean,
+  liveTemperatureObservation: object,
+  routeUrl: string,
+  temperatureObservation: object,
+  palvelukarttaUrl: string,
+};
+
+export const SingleUnitBody = ({
   currentUnit,
   isLoading,
   liveTemperatureObservation,
   routeUrl,
   temperatureObservation,
   palvelukarttaUrl,
-}) =>
+}: SingleUnitBodyProps) =>
   currentUnit && !isLoading ? (
     <div className="unit-container-body">
       <LocationState unit={currentUnit} />
@@ -315,11 +362,22 @@ SingleUnitBody.defaultProps = {
 };
 
 SingleUnitBody.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   currentUnit: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   liveTemperatureObservation: PropTypes.object,
   routeUrl: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
   temperatureObservation: PropTypes.object,
+};
+
+type Props = {
+  handleClick: () => void,
+  isLoading: boolean,
+  unit: object,
+  services: object[],
+  isOpen: boolean,
 };
 
 const SingleUnitContainer = ({
@@ -328,7 +386,7 @@ const SingleUnitContainer = ({
   unit: currentUnit,
   services,
   isOpen,
-}) => {
+}: Props) => {
   const {
     i18n: {
       languages: [language],

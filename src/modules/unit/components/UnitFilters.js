@@ -1,11 +1,5 @@
 // @flow
 
-/*
-   eslint-disable
-   react/destructuring-assignment,
-   react/prop-types,
-*/
-
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -30,6 +24,15 @@ type UnitFiltersProps = {
   updateFilter: (filter: string, value: string) => void,
 };
 
+type FilterOptionsRowProps = {
+  t: (string) => string,
+  className: string,
+  filterName: string,
+  options: string[],
+  onKeyDown: () => void,
+  onSelect: (filterName: string, option: string) => void,
+};
+
 const FilterOptionsRow = ({
   t,
   className,
@@ -37,7 +40,7 @@ const FilterOptionsRow = ({
   options,
   onKeyDown,
   onSelect,
-}) => (
+}: FilterOptionsRowProps) => (
   <Row className={`${className} filter-options-row`}>
     {options.map((option) => (
       <Col className="unit-filters__option" xs={6} key={option}>
@@ -52,15 +55,22 @@ const FilterOptionsRow = ({
   </Row>
 );
 
+type FilterOptionProps = {
+  t: (string) => string,
+  filter: string,
+  isActive: boolean,
+  onAction: () => void,
+  onSelect: () => void,
+  filter: UnitFilterProps,
+};
+
 const FilterOption = ({
   t,
   filter,
   isActive,
   onAction,
   onSelect,
-}: {
-  filter: UnitFilterProps,
-}) => {
+}: FilterOptionProps) => {
   const controlId = `control-${filter.name}`;
   const menuId = `menu-${filter.name}`;
 
@@ -144,12 +154,16 @@ export class UnitFiltersComponent extends React.Component<
   }
 
   onMenuSelect = (key: string, value: string): void => {
+    const { updateFilter } = this.props;
+
     this.setState({ expandedFilter: null });
-    this.props.updateFilter(key, value);
+    updateFilter(key, value);
   };
 
   toggleExpandedFilter = (filter) => {
-    const isFilterActive = filterEquals(filter, this.state.expandedFilter);
+    const { expandedFilter } = this.state;
+
+    const isFilterActive = filterEquals(filter, expandedFilter);
     this.setState({ expandedFilter: isFilterActive ? null : filter });
   };
 

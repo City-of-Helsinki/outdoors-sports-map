@@ -1,8 +1,4 @@
-/*
-   eslint-disable
-   react/jsx-props-no-spreading,
-   react/prop-types,
-*/
+// @flow
 
 import React, { Component } from 'react';
 import L from 'leaflet';
@@ -10,7 +6,14 @@ import { getUnitQuality } from '../helpers';
 import UnitMarker from './UnitMarker';
 import UnitGeometry from './UnitGeometry';
 
-class SingleUnitOnMap extends Component {
+type Props = {
+  unit: object,
+  isSelected: boolean,
+  zoomLevel: number,
+  openUnit: (unitId: string) => void,
+};
+
+class SingleUnitOnMap extends Component<Props> {
   constructor(props) {
     super(props);
 

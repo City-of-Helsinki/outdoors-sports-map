@@ -1,15 +1,5 @@
 // @flow
 
-/*
-   eslint-disable
-   jsx-a11y/alt-text,
-   jsx-a11y/click-events-have-key-events,
-   jsx-a11y/no-static-element-interactions,
-   react/button-has-type,
-   react/destructuring-assignment,
-   react/require-default-props,
-*/
-
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
@@ -31,7 +21,12 @@ import ListView from './ListView';
 import UnitFilters from './UnitFilters';
 
 const ActionButton = ({ action, icon, isActive, name }) => (
-  <button className="action-button" aria-pressed={isActive} onClick={action}>
+  <button
+    className="action-button"
+    aria-pressed={isActive}
+    onClick={action}
+    type="button"
+  >
     <SMIcon className="unit-browser__action" icon={icon} aria-label={name} />
   </button>
 );
@@ -257,7 +252,7 @@ UnitBrowser.propTypes = {
   address: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
   isSearching: PropTypes.bool.isRequired,
-  leafletMap: PropTypes.objectOf(PropTypes.any),
+  leafletMap: PropTypes.objectOf(PropTypes.any).isRequired,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
   params: PropTypes.objectOf(PropTypes.any).isRequired,
   position: PropTypes.arrayOf(PropTypes.number).isRequired,

@@ -1,14 +1,17 @@
-/*
-   eslint-disable
-   jsx-a11y/click-events-have-key-events,
-   jsx-a11y/label-has-associated-control,
-   jsx-a11y/no-static-element-interactions,
-   react/prop-types,
-*/
+// @flow
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SMIcon from '../../home/components/SMIcon';
+
+type Props = {
+  input: string,
+  onInput: (value: string) => void,
+  onSubmit: () => void,
+  onClear: () => void,
+  searchActive: boolean,
+  disabled: boolean,
+};
 
 const SearchBar = ({
   input,
@@ -17,7 +20,7 @@ const SearchBar = ({
   onClear,
   searchActive,
   disabled,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -31,6 +34,8 @@ const SearchBar = ({
         }}
       >
         {disabled && (
+          // TODO: Use buttons instead of a span
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
           <span className="search-bar__input-loading" onClick={onClear}>
             <SMIcon icon="loading" aria-label={t('SEARCH.LOADING')} />
           </span>

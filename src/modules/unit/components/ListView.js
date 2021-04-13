@@ -1,15 +1,6 @@
-/*
-   eslint-disable
-   max-classes-per-file,
-   jsx-a11y/anchor-is-valid,
-   jsx-a11y/click-events-have-key-events,
-   jsx-a11y/no-static-element-interactions,
-   react/destructuring-assignment,
-   react/prop-types,
-   react/require-default-props,
-*/
+// @flow
 
-import PropTypes from 'prop-types';
+// eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -17,17 +8,24 @@ import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
 
 import SMIcon from '../../home/components/SMIcon';
+import Loading from '../../home/components/Loading';
 import * as unitHelpers from '../helpers';
 import { SortKeys, UNIT_BATCH_SIZE } from '../constants';
-import { View } from './View';
-import Loading from '../../home/components/Loading';
 import ObservationStatus from './ObservationStatus';
 import SortSelectorDropdown from './SortSelectorDropdown';
+import { View } from './View';
 import UnitIcon from './UnitIcon';
 
-class UnitListItem extends Component {
+type UnitListItemProps = {
+  unit: object,
+  activeLanguage: string,
+};
+
+class UnitListItem extends Component<UnitListItemProps> {
   shouldComponentUpdate({ unit }) {
-    return JSON.stringify(this.props.unit) !== JSON.stringify(unit);
+    const { unit: currentUnit } = this.props;
+
+    return JSON.stringify(currentUnit) !== JSON.stringify(unit);
   }
 
   render() {
@@ -52,7 +50,19 @@ class UnitListItem extends Component {
   }
 }
 
-export class ListViewBase extends Component {
+type Props = {
+  units: object[],
+  services: object,
+  isVisible: boolean,
+  activeFilter: string,
+  isLoading: boolean,
+  t: (string) => string,
+  i18n: {
+    languages: string[],
+  },
+};
+
+export class ListViewBase extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
@@ -70,9 +80,11 @@ export class ListViewBase extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { activeFilter, units } = this.props;
+
     if (
-      !isEqual(prevProps.units, this.props.units) ||
-      !isEqual(prevProps.activeFilter, this.props.activeFilter)
+      !isEqual(prevProps.units, units) ||
+      !isEqual(prevProps.activeFilter, activeFilter)
     ) {
       this.resetUnitCount();
     }
@@ -128,10 +140,10 @@ export class ListViewBase extends Component {
   }
 
   render() {
-    const { services, isLoading, t, i18n } = this.props;
+    const { services, isLoading, t, i18n, units } = this.props;
     const { sortKey, maxUnitCount } = this.state;
-    const totalUnits = this.props.units.length;
-    const units = isLoading
+    const totalUnits = units.length;
+    const renderedUnits = isLoading
       ? []
       : this.sortUnits(this.props, sortKey).slice(0, maxUnitCount);
 
@@ -147,16 +159,17 @@ export class ListViewBase extends Component {
           </div>
           <div className="list-view__block">
             {isLoading && <Loading />}
-            {units &&
-              units.map((unit) => (
+            {renderedUnits &&
+              renderedUnits.map((unit) => (
                 <UnitListItem
                   unit={unit}
                   services={services}
                   key={unit.id}
-                  activeLanguage={i18n.language}
+                  activeLanguage={i18n.languages[0]}
                 />
               ))}
-            {units.length !== totalUnits && (
+            {renderedUnits.length !== totalUnits && (
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a
                 style={{
                   display: 'block',
@@ -176,10 +189,5 @@ export class ListViewBase extends Component {
     );
   }
 }
-
-ListViewBase.propTypes = {
-  units: PropTypes.arrayOf(PropTypes.object).isRequired,
-  services: PropTypes.objectOf(PropTypes.object).isRequired,
-};
 
 export default withTranslation()(ListViewBase);
