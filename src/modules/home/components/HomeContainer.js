@@ -12,6 +12,7 @@ import { getUnitById } from '../../unit/selectors';
 import UnitDetails from '../../unit/components/UnitDetailsContainer';
 import UnitBrowserContainer from '../../unit/components/UnitBrowserContainer';
 import routerPaths from '../../common/routes';
+import ApplicationHeader from '../../common/components/ApplicationHeader';
 import useIsMobile from '../../common/hooks/useIsMobile';
 import Page from '../../common/components/Page';
 import Map from '../../map/components/Map';
@@ -129,6 +130,7 @@ function HomeContainer() {
       <MapLayout
         content={
           <div className="map-foreground">
+            <ApplicationHeader />
             <div
               className={className('map-foreground-unit-browser', {
                 // Hide unit browser when the unit details is open with styling.
