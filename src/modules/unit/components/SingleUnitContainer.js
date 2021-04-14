@@ -130,6 +130,8 @@ const LocationInfo = ({ unit }: LocationInfoProps) => {
     },
   } = useTranslation();
 
+  const unitWww = getAttr(unit.www, language);
+
   return (
     <BodyBox title={t('UNIT_CONTAINER.INFO')}>
       {get(unit, 'extensions.length') && (
@@ -162,11 +164,9 @@ const LocationInfo = ({ unit }: LocationInfoProps) => {
           {t('UNIT.PHONE')}: <a href={`tel:${unit.phone}`}>{unit.phone}</a>
         </p>
       )}
-      {unit.www && (
+      {unitWww && (
         <p>
-          <OutboundLink href={getAttr(unit.www, language)}>
-            {t('UNIT.FURTHER_INFO')}
-          </OutboundLink>
+          <OutboundLink href={unitWww}>{t('UNIT.FURTHER_INFO')}</OutboundLink>
         </p>
       )}
     </BodyBox>

@@ -262,7 +262,7 @@ const InfoMenu = ({
         {t('MAP.INFO_MENU.ABOUT_SERVICE')}
       </InfoMenuItem>
       <OutboundLink className="info-menu-item" href="http://osm.org/copyright">
-        &copy; {t('MAP.ATTRIBUTION')}{' '}
+        {`\u00a9 ${t('MAP.ATTRIBUTION')} `}
       </OutboundLink>
     </div>
   </TranslationProvider>
