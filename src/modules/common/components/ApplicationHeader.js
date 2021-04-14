@@ -4,12 +4,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 // $FlowIgnore
 import { Link as RRLink, useLocation } from 'react-router-dom';
-// $FlowIgnore
-import FlagFinland24pxFlat from '@assets/icons/flag-finland-24-flat.png';
-// $FlowIgnore
-import FlagSweden24pxFlat from '@assets/icons/flag-sweden-24-flat.png';
-// $FlowIgnore
-import FlagUnitedKingdom24pxFlat from '@assets/icons/flag-united-kingdom-24-flat.png';
+import FlagFinland24pxFlat from '../../../assets/icons/flag-finland-24-flat.png';
+import FlagSweden24pxFlat from '../../../assets/icons/flag-sweden-24-flat.png';
+import FlagUnitedKingdom24pxFlat from '../../../assets/icons/flag-united-kingdom-24-flat.png';
 
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 import { replaceLanguageInPath } from '../pathUtils';

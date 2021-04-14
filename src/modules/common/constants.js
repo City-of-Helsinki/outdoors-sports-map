@@ -3,9 +3,10 @@ import type { UnitState } from '../unit/constants';
 import type { ServiceState } from '../service/constants';
 import type { SearchState } from '../search/constants';
 
-export const API_BASE_URL = process.env.API_URL;
-export const DIGITRANSIT_API_BASE_URL = process.env.DIGITRANSIT_API_URL;
-export const { APP_NAME } = process.env;
+export const API_BASE_URL = process.env.REACT_APP_API_URL;
+export const DIGITRANSIT_API_BASE_URL =
+  process.env.REACT_APP_DIGITRANSIT_API_URL;
+export const APP_NAME = process.env.REACT_APP_APP_NAME;
 
 export const DEFAULT_LANG = 'fi';
 

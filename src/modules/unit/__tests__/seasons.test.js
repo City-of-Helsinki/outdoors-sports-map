@@ -27,7 +27,7 @@ test('Jan 1st is in winter season', () => {
 
 test('Jan 1st is not in summer season', () => {
   expect(!isOnSeason(Jan1, SummerSeason)).toBe(true);
-  expect(false);
+  expect(false).toBe(false);
 });
 
 test('Jan 1st is in year round season', () => {

@@ -36,7 +36,7 @@ const LanguageAwareRoutes = () => {
     if (language !== routeLanguage) {
       i18n.changeLanguage(routeLanguage);
     }
-  }, [routeLanguage, language]);
+  }, [routeLanguage, language, i18n]);
 
   return <Route path={`/${languageParam}`} component={HomeContainer} />;
 };

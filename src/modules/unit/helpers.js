@@ -165,7 +165,8 @@ export const getUnitIconURL = (
   const resolution = retina ? '@2x' : '';
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  return require(`@assets/markers/${sport}-${quality}-${onOff}${resolution}.png`);
+  return require(`../../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`)
+    .default;
 };
 
 export const getUnitIconHeight = (unit: Object) =>
@@ -181,7 +182,9 @@ export const getUnitIcon = (unit: Object, selected: ?boolean = false) => ({
 
 export const getFilterIconURL = (filter: string) =>
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  filter ? require(`@assets/icons/icon-white-${filter}@2x.png`) : '';
+  filter
+    ? require(`../../assets/icons/icon-white-${filter}@2x.png`).default
+    : '';
 
 /**
  * FILTERZ

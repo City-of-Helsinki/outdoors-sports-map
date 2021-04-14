@@ -4,7 +4,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // $FlowIgnore
-const addressIcon = require('@assets/markers/unknown-satisfactory-off.png');
+const addressIcon = require('../../../assets/markers/unknown-satisfactory-off.png')
+  .default;
 
 type Props = {
   address: Object,

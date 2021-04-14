@@ -5,15 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Marker } from 'react-leaflet';
 
+import iconUrl from '../../../assets/markers/location.png';
+import iconRetinaUrl from '../../../assets/markers/location@2x.png';
 import { setLocation as setLocationActionFactory } from '../actions';
 import { getLocation } from '../selectors';
 import latLngToArray from '../helpers';
 import AriaHiddenIcon from '../AriaHiddenIcon';
-
-// $FlowIgnore
-const iconUrl = require('@assets/markers/location.png');
-// $FlowIgnore
-const iconRetinaUrl = require('@assets/markers/location@2x.png');
 
 type Props = {
   setLocation: (coordinates: [Number, number]) => void,

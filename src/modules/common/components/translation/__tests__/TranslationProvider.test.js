@@ -28,7 +28,7 @@ const getWrapper = () =>
     </TranslationProvider>
   );
 
-describe('', () => {
+describe('<TranslationProvider />', () => {
   it('should ensure that HTML document language, moment locale and language are in sync', () => {
     const language = i18n.languages[0];
 

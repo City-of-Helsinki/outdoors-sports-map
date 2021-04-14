@@ -162,7 +162,7 @@ function HomeContainer() {
     // Fetch initial data
     dispatch(fetchUnits({}));
     dispatch(fetchServices({}));
-  }, []);
+  }, [dispatch]);
 
   return (
     <MapLayout
