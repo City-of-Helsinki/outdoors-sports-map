@@ -50,7 +50,7 @@ const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
   const openUnit = useCallback(
     (unitId: string) => {
       history.push({
-        pathname: `/unit/${unitId}`,
+        pathname: `/${language}/unit/${unitId}`,
         search,
       });
     },
