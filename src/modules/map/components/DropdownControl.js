@@ -141,7 +141,11 @@ class DropdownControl extends MapControl<Control, Props> {
       button.setAttribute('id', this.controlId);
       button.setAttribute('aria-controls', this.optionsId);
 
-      L.DomEvent.on(button, 'mousedown dblclick', L.DomEvent.stopPropagation)
+      L.DomEvent.on(
+        button,
+        'mousedown dblclick doubletap touchstart',
+        L.DomEvent.stopPropagation
+      )
         .on(button, 'click', L.DomEvent.stop)
         .on(button, 'click', this.handleClick, control);
 
