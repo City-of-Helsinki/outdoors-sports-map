@@ -1,16 +1,20 @@
-import PropTypes from 'prop-types';
+// @flow
+
 import ReactDOM from 'react-dom';
 import L from 'leaflet';
+import type { MapControlProps, Control } from 'leaflet';
 import { MapControl, withLeaflet } from 'react-leaflet';
 import pick from 'lodash/pick';
 
-class DropdownControl extends MapControl {
-  // eslint-disable-next-line react/static-property-placement
-  static propTypes = {
-    id: PropTypes.string,
-    handleClick: PropTypes.func,
-  };
+type Props = MapControlProps & {
+  id: string,
+  handleClick: Function,
+  wrapperAttrs?: {
+    [name: string]: string,
+  },
+};
 
+class DropdownControl extends MapControl<Control, Props> {
   constructor(props) {
     super(props);
 
@@ -47,9 +51,10 @@ class DropdownControl extends MapControl {
   componentDidUpdate(prevProps) {
     const { isOpen, activeLanguage } = this.props;
     const ariaExpanded = this.props['aria-expanded'];
+    const element = this.control;
 
-    if (prevProps['aria-expanded'] !== ariaExpanded) {
-      this.syncProps(this.control, ['aria-expanded']);
+    if (prevProps['aria-expanded'] !== ariaExpanded && element) {
+      this.syncProps(element, ['aria-expanded']);
     }
 
     if (
@@ -60,10 +65,11 @@ class DropdownControl extends MapControl {
     }
   }
 
-  syncProps(element, propsList) {
+  syncProps(element: HTMLElement, propsList: string[]) {
     const attributes = pick(this.props, propsList);
 
     Object.entries(attributes).forEach(([attribute, value]) => {
+      // $FlowIgnore
       element.setAttribute(attribute, value.toString());
     });
   }
@@ -78,20 +84,26 @@ class DropdownControl extends MapControl {
     return element;
   }
 
+  /*:: updateOptions: Function */
   updateOptions() {
     const { options, isOpen } = this.props;
 
     if (isOpen) {
-      if (!this.optionsWrapper) {
+      if (!this.optionsWrapper && this.wrapper) {
+        // Create options wrapper if it's missing
         this.wrapper.append(this.makeOptionsWrapper());
       }
 
-      ReactDOM.render(options, this.optionsWrapper);
+      // Verify that the created options wrapper is available
+      if (this.optionsWrapper) {
+        ReactDOM.render(options, this.optionsWrapper);
+      }
     } else if (this.optionsWrapper) {
       this.optionsWrapper.remove();
     }
   }
 
+  /*:: handleClick: Function */
   handleClick(event) {
     L.DomEvent.stopPropagation(event);
     event.stopPropagation();
@@ -101,7 +113,7 @@ class DropdownControl extends MapControl {
   }
 
   createLeafletElement() {
-    const { className, children } = this.props;
+    const { className, children, wrapperAttrs } = this.props;
 
     const control = L.control({
       position: this.props.position || 'bottomright',
@@ -112,6 +124,14 @@ class DropdownControl extends MapControl {
     // eslint-disable-next-line func-names
     control.onAdd = () => {
       const div = L.DomUtil.create('div', `custom-control ${className}`);
+
+      Object.entries(wrapperAttrs).forEach(
+        ([attributeName, attributeValue]) => {
+          // $FlowIgnore
+          div.setAttribute(attributeName, attributeValue);
+        }
+      );
+
       const button = L.DomUtil.create('button', 'custom-control-button', div);
 
       this.syncProps(div, ['id']);

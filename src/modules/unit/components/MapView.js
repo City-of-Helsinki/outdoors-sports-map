@@ -215,6 +215,9 @@ class MapView extends Component<Props, State> {
                     openFeedbackModal={this.openFeedbackModal}
                   />
                 }
+                wrapperAttrs={{
+                  role: 'contentinfo',
+                }}
               >
                 <SMIcon icon="info" aria-label={t('APP.ABOUT')} />
               </DropdownControl>
