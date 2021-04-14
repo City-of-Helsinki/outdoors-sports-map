@@ -21,15 +21,22 @@ function getRouteLanguage(match: ?Object) {
 }
 
 const LanguageAwareRoutes = () => {
-  const { i18n } = useTranslation();
+  const {
+    i18n,
+    i18n: {
+      languages: [language],
+    },
+  } = useTranslation();
   const match = useRouteMatch();
 
   const routeLanguage = getRouteLanguage(match);
 
   useEffect(() => {
     // Sync language with i18next in case it is changed by changing the url
-    i18n.changeLanguage(routeLanguage);
-  }, [routeLanguage]);
+    if (language !== routeLanguage) {
+      i18n.changeLanguage(routeLanguage);
+    }
+  }, [routeLanguage, language]);
 
   return <Route path={`/${languageParam}`} component={HomeContainer} />;
 };
