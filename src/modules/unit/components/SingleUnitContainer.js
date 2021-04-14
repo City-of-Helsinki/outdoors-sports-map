@@ -9,6 +9,8 @@ import breaks from 'remark-breaks';
 import upperFirst from 'lodash/upperFirst';
 import get from 'lodash/get';
 import has from 'lodash/has';
+// $FlowIgnore
+import { useLocation } from 'react-router';
 
 import Link from '../../common/components/Link';
 import SMIcon from '../../home/components/SMIcon';
@@ -51,6 +53,7 @@ export const Header = ({ unit, services, isLoading }: HeaderProps) => {
       languages: [language],
     },
   } = useTranslation();
+  const location = useLocation();
 
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
@@ -72,7 +75,8 @@ export const Header = ({ unit, services, isLoading }: HeaderProps) => {
         </div>
         <div style={{ alignSelf: 'center' }}>
           <Link
-            to="/"
+            // If there was a search saved into location state, re-apply it
+            to={`/${location.state ? location.state.search : ''}`}
             className="unit-container-close-button close-unit-container"
           >
             <SMIcon icon="close" aria-label={t('UNIT_CONTAINER.CLOSE')} />

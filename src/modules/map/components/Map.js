@@ -49,10 +49,9 @@ const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
 
   const openUnit = useCallback(
     (unitId: string) => {
-      history.push({
-        pathname: `/${language}/unit/${unitId}`,
-        search,
-      });
+      // Store current search so it can be re-applied if the user returns from
+      // the unit details view
+      history.push(`/${language}/unit/${unitId}`, { search });
     },
     [history, search]
   );
