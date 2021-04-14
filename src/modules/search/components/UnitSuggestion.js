@@ -1,9 +1,9 @@
 // @flow
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import Link from '../../common/components/Link';
 import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';

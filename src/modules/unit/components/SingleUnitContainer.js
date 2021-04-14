@@ -5,12 +5,12 @@ import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import breaks from 'remark-breaks';
 import upperFirst from 'lodash/upperFirst';
 import get from 'lodash/get';
 import has from 'lodash/has';
 
+import Link from '../../common/components/Link';
 import SMIcon from '../../home/components/SMIcon';
 import {
   getAttr,

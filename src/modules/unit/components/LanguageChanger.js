@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 // $FlowIgnore
 import { useLocation, Link } from 'react-router-dom';
 
-import { replaceLanguageInPath } from '../../common/helpers';
+import { replaceLanguageInPath } from '../../common/pathUtils';
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
 type Props = {

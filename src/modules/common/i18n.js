@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { SUPPORTED_LANGUAGES } from '../language/constants';
 import { DEFAULT_LANG } from './constants';
-import { replaceLanguageInPath } from './helpers';
+import { replaceLanguageInPath } from './pathUtils';
 import history from './history';
 
 const getTranslations = () => ({

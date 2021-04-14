@@ -3,10 +3,10 @@
 // eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
 
+import Link from '../../common/components/Link';
 import SMIcon from '../../home/components/SMIcon';
 import Loading from '../../home/components/Loading';
 import * as unitHelpers from '../helpers';
