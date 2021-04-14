@@ -1,14 +1,14 @@
 // @flow
 import { all, call, fork, takeLatest, put } from 'redux-saga/effects';
+
+import { createUrl, createRequest, callApi } from '../api/helpers';
+import type { PositionAction } from '../common/constants';
 import { receiveAddress } from './actions';
 import { mapActions } from './constants';
-import { createUrl, createRequest, callApi } from '../api/helpers';
-import type { FetchAction } from '../common/constants';
 
 function* onSetLocation({
-  payload: position,
-}: // $FlowFixMe
-FetchAction): Generator<any, void, void> {
+  payload: { position },
+}: PositionAction): Generator<*, *, *> {
   const addressParams = {
     lat: position[0],
     lon: position[1],
