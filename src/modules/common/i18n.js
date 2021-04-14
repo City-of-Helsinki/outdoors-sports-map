@@ -66,7 +66,7 @@ i18n
 // Replace language only when it is changed, not on initialization.
 i18n.on('languageChanged', (nextLanguage) => {
   // If necessary, change language in pathname
-  const { pathname } = window.location;
+  const { pathname, ...rest } = window.location;
   const containsLanguage = supportedLanguages.reduce(
     (contains, language) => contains || pathname.includes(`/${language}/`),
     false
@@ -75,7 +75,7 @@ i18n.on('languageChanged', (nextLanguage) => {
   if (containsLanguage) {
     const nextPathname = replaceLanguageInPath(pathname, nextLanguage);
 
-    history.replace(nextPathname);
+    history.replace({ pathname: nextPathname, ...rest });
   }
 });
 
