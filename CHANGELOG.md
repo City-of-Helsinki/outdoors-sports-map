@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+-   Robots.txt file
+
 ### Fixed
 
 -   [Accessibility] Capturing focus to the middle of the page when opening the details of an unit

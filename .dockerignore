@@ -6,7 +6,7 @@
 !assets/
 !config/
 !docker-entrypoint.sh
-!favicon/
+!public/
 !locales/
 !package*.json
 !src/

@@ -16,6 +16,7 @@ env:
   K8S_REQUEST_RAM: 10Mi
   K8S_LIMIT_CPU: 5m
   K8S_LIMIT_RAM: 20Mi
+  K8S_INGRESS_PREVENT_ROBOTS: 1
 
 jobs:
   build:
