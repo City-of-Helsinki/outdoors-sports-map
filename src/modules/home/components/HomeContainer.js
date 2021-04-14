@@ -1,5 +1,9 @@
+// @flow
+
+// $FlowIgnore
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+// $FlowIgnore
 import { useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +44,7 @@ function useTitle(selectedUnitId) {
     title.push(t('APP.NAME'));
 
     if (selectedUnit) {
-      title.push(` - ${getAttr(selectedUnit.name, activeLanguage)}`);
+      title.push(` - ${getAttr(selectedUnit.name, activeLanguage) || ''}`);
     }
 
     return title.join('');
@@ -127,6 +131,10 @@ function HomeContainer() {
       const location = getUnitPosition(unit);
       const pixelLocation = getLatLngToContainerPoint(mapRef, location);
 
+      if (!pixelLocation) {
+        return;
+      }
+
       if (!isMobile) {
         // Offset by half the width of unit modal in order to center focus
         // on the visible map
@@ -148,8 +156,8 @@ function HomeContainer() {
 
   useEffect(() => {
     // Fetch initial data
-    dispatch(fetchUnits());
-    dispatch(fetchServices());
+    dispatch(fetchUnits({}));
+    dispatch(fetchServices({}));
   }, []);
 
   return (
@@ -171,7 +179,7 @@ function HomeContainer() {
               expandedState={[isExpanded, setExpanded]}
             />
           </div>
-          {isUnitDetailsOpen && (
+          {isUnitDetailsOpen && typeof selectedUnitId === 'string' && (
             <UnitDetails
               unitId={selectedUnitId}
               onCenterMapToUnit={handleCenterMapToUnit}

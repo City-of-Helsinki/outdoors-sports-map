@@ -9,7 +9,7 @@ export const MAIN_CONTENT_ID = 'main-content';
 type Props = {
   children: Node,
   title: string,
-  className?: String,
+  className?: string,
 };
 
 class Page extends Component<Props> {
