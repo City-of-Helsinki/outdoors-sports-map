@@ -18,9 +18,10 @@ export const getUnitById = (state: AppState, props: Object) =>
 export const getAllUnits = (state: AppState /* , props: Object */) =>
   state.unit.all.map((id) => getUnitById(state, { id }));
 
-const _getVisibleUnits = (state: AppState, query: Object) => {
-  const sport = (query && query.sport) || getDefaultSportFilter();
-  const status = (query && query.status) || getDefaultStatusFilter();
+const _getVisibleUnits = (state: AppState, search: string) => {
+  const searchPrams = new URLSearchParams(search);
+  const sport = searchPrams.get('sport') || getDefaultSportFilter();
+  const status = searchPrams.get('status') || getDefaultStatusFilter();
   let visibleUnits = state.unit[sport];
 
   if (status === UnitFilters.STATUS_OK) {
