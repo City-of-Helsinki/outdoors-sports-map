@@ -11,12 +11,21 @@
   z-index: 1010;
   background: transparent;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 
   &.is-filled {
     background-color: $ui-content;
 
     @media only screen and (min-width: 768px) {
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    &.fill-color-background {
+      border-bottom: solid #4d4d4d 4px;
+      background-color: $ui-background;
+
+      box-shadow: none;
     }
   }
 
@@ -29,6 +38,10 @@
     & > * {
       pointer-events: initial;
     }
+  }
+
+  &-content {
+    overflow-y: auto;
   }
 
   &-unit-browser {

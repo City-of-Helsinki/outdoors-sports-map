@@ -12,9 +12,7 @@
   }
 
   &.expanded {
-    background: $ui-background;
     height: 100%;
-    border-bottom: solid #4d4d4d 4px;
 
     .unit-browser__content {
       padding-top: 0;

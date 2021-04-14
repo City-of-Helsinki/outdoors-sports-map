@@ -27,9 +27,14 @@ function getLeafletMap(ref) {
 type Props = {
   mapRef: Object,
   onViewChange: (coordinates: [number, number]) => void,
+  expandedState: [boolean, (value: boolean) => void],
 };
 
-const UnitBrowserContainer = ({ mapRef, onViewChange }: Props) => {
+const UnitBrowserContainer = ({
+  mapRef,
+  onViewChange,
+  expandedState,
+}: Props) => {
   const { search } = useLocation();
   const params = useParams();
   const location = useLocation();
@@ -61,6 +66,7 @@ const UnitBrowserContainer = ({ mapRef, onViewChange }: Props) => {
       leafletMap={getLeafletMap(mapRef)}
       singleUnitSelected={!!params.unitId}
       onViewChange={onViewChange}
+      expandedState={expandedState}
     />
   );
 };

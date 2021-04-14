@@ -117,10 +117,10 @@ type Props = ContextRouter & {
   t: (string) => string,
   units: Object[],
   onViewChange: (unit: Object) => void,
+  expandedState: [boolean, (value: boolean) => void],
 };
 
 type State = {
-  isExpanded: boolean,
   contentMaxHeight: ?number,
 };
 
@@ -128,7 +128,6 @@ class UnitBrowser extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      isExpanded: false,
       contentMaxHeight: null,
     };
   }
@@ -175,11 +174,19 @@ class UnitBrowser extends Component<Props, State> {
   };
 
   collapse = () => {
-    this.setState({ isExpanded: false });
+    const {
+      expandedState: [, setIsExpanded],
+    } = this.props;
+
+    setIsExpanded(false);
   };
 
   expand = () => {
-    this.setState({ isExpanded: true });
+    const {
+      expandedState: [, setIsExpanded],
+    } = this.props;
+
+    setIsExpanded(true);
   };
 
   render() {
@@ -196,8 +203,8 @@ class UnitBrowser extends Component<Props, State> {
       leafletMap,
       singleUnitSelected,
       location: { search },
+      expandedState: [isExpanded],
     } = this.props;
-    const { isExpanded } = this.state;
     const { contentMaxHeight } = this.state;
 
     const searchParams = new URLSearchParams(search);
