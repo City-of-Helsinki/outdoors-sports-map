@@ -9,7 +9,7 @@ const centerReducer = handleActions(
   {
     [mapActions.SET_LOCATION]: (
       state: Array<number>,
-      { payload: position }: Action
+      { payload: { position } }: Action
     ) => position,
   },
   locations.HELSINKI
@@ -19,7 +19,7 @@ const addressReducer = handleActions(
   {
     [mapActions.RECEIVE_ADDRESS]: (
       state: Array<number>,
-      { payload: address }: Action
+      { payload: { address } }: Action
     ) => address || {},
   },
   {}

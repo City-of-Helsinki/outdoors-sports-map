@@ -1,12 +1,4 @@
-/*
-   eslint-disable
-   class-methods-use-this,
-   jsx-a11y/mouse-events-have-key-events,
-   react/destructuring-assignment,
-   react/jsx-props-no-spreading,
-   react/no-string-refs,
-   react/prop-types,
-*/
+// @flow
 
 import React, { Component } from 'react';
 import { Marker } from 'react-leaflet';
@@ -18,10 +10,17 @@ import UnitPopup from './UnitPopup';
 
 const POPUP_OFFSET = 4;
 
-class UnitMarker extends Component {
+type Props = {
+  isSelected: boolean,
+  zoomLevel: number,
+  unit: Object,
+  handleClick: () => void,
+};
+
+class UnitMarker extends Component<Props> {
   markerRef = null;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.openPopup = this.openPopup.bind(this);
@@ -30,33 +29,42 @@ class UnitMarker extends Component {
     this.getIconHeight = this.getIconHeight.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     const { isSelected } = this.props;
     if (!isSelected && prevProps.isSelected) {
       this.closePopup();
     }
   }
 
-  getIconWidth(zoomLevel) {
-    return (zoomLevel / MAX_ZOOM) * UNIT_ICON_WIDTH;
-  }
+  getIconWidth = (zoomLevel: number) =>
+    (zoomLevel / MAX_ZOOM) * UNIT_ICON_WIDTH;
 
-  getIconHeight(icon, zoomLevel) {
-    return (zoomLevel / MAX_ZOOM) * icon.height;
-  }
+  getIconHeight = (icon: Object, zoomLevel: number) =>
+    (zoomLevel / MAX_ZOOM) * icon.height;
 
-  setMarkerRef = (ref) => {
+  _getAnchorHeight = (iconHeight: number, unit: Object) =>
+    getUnitSport(unit) === UnitFilters.SKIING ? iconHeight / 2 : iconHeight;
+
+  _getPopupOffset = (unit: Object) =>
+    -(getUnitSport(unit) === UnitFilters.SKIING
+      ? POPUP_OFFSET
+      : POPUP_OFFSET + 24);
+
+  setMarkerRef = (ref: ?Object) => {
     this.markerRef = ref;
   };
 
-  closePopup() {
-    this.markerRef.leafletElement.closePopup();
+  /*:: openPopup: Function */
+  openPopup() {
+    // $FlowIgnore
+    this.markerRef.leafletElement.openPopup();
   }
 
-  _createIcon(unit, isSelected) {
+  _createIcon(unit: Object, isSelected: boolean) {
+    const { zoomLevel } = this.props;
     const icon = getUnitIcon(unit, isSelected);
-    const iconWidth = this.getIconWidth(this.props.zoomLevel);
-    const iconHeight = this.getIconHeight(icon, this.props.zoomLevel);
+    const iconWidth = this.getIconWidth(zoomLevel);
+    const iconHeight = this.getIconHeight(icon, zoomLevel);
     const anchorHeight = this._getAnchorHeight(iconHeight, unit);
 
     return new AriaHiddenIcon({
@@ -67,25 +75,16 @@ class UnitMarker extends Component {
     });
   }
 
-  openPopup() {
-    this.markerRef.leafletElement.openPopup();
-  }
-
-  _getAnchorHeight(iconHeight, unit) {
-    return getUnitSport(unit) === UnitFilters.SKIING
-      ? iconHeight / 2
-      : iconHeight;
-  }
-
-  _getPopupOffset(unit) {
-    return -(getUnitSport(unit) === UnitFilters.SKIING
-      ? POPUP_OFFSET
-      : POPUP_OFFSET + 24);
+  /*:: closePopup: Function */
+  closePopup() {
+    // $FlowIgnore
+    this.markerRef.leafletElement.closePopup();
   }
 
   render() {
     const { unit, isSelected, handleClick, ...rest } = this.props;
     return (
+      // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
       <Marker
         ref={this.setMarkerRef}
         position={getUnitPosition(unit)}

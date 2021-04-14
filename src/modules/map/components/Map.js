@@ -1,8 +1,10 @@
 // @flow
 
+// $FlowIgnore
 import React, { useCallback, forwardRef, useRef } from 'react';
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+// $FlowIgnore
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -15,7 +17,7 @@ import * as fromMap from '../selectors';
 
 type Props = {
   selectedUnitId: String,
-  onCenterMapToUnit: (unit: object) => void,
+  onCenterMapToUnit: (unit: Object) => void,
 };
 
 const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {

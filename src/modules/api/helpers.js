@@ -26,9 +26,9 @@ export const createRequest = (url: string, init: Object | void): Request =>
   new Request(url, init);
 
 export const createUrl = (url: string, params: Object): string =>
-  `${API_BASE_URL}/${url}${params ? `?${stringifyQuery(params)}` : ''}`;
+  `${API_BASE_URL || ''}/${url}${params ? `?${stringifyQuery(params)}` : ''}`;
 
 export const createDigitransitUrl = (url: string, params: Object): string =>
-  `${DIGITRANSIT_API_BASE_URL}/${url}${
+  `${DIGITRANSIT_API_BASE_URL || ''}/${url}${
     params ? `?${stringifyQuery(params)}` : ''
   }`;

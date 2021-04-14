@@ -1,11 +1,5 @@
-/*
-   eslint-disable
-   react/destructuring-assignment,
-   react/jsx-props-no-spreading,
-   react/require-default-props,
-*/
+// @flow
 
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +8,11 @@ import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
 
-const UnitSuggestion = ({ unit, ...rest }) => {
+type Props = {
+  unit: Object,
+};
+
+const UnitSuggestion = ({ unit, ...rest }: Props) => {
   const {
     i18n: {
       languages: [language],
@@ -38,10 +36,6 @@ const UnitSuggestion = ({ unit, ...rest }) => {
       </div>
     </Link>
   );
-};
-
-UnitSuggestion.propTypes = {
-  unit: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default UnitSuggestion;

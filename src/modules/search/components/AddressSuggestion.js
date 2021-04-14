@@ -1,16 +1,18 @@
-/*
-   eslint-disable
-   jsx-a11y/alt-text,
-   jsx-a11y/anchor-is-valid,
-   react/prop-types,
-*/
+// @flow
 
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// $FlowIgnore
 const addressIcon = require('@assets/markers/unknown-satisfactory-off.png');
 
-const AddressSuggestion = ({ address, handleClick }) => (
+type Props = {
+  address: Object,
+  handleClick: (coordinates: [number, number]) => void,
+};
+
+const AddressSuggestion = ({ address, handleClick }: Props) => (
+  // eslint-disable-next-line jsx-a11y/anchor-is-valid
   <Link
     to=""
     className="search-suggestions__result"
@@ -20,7 +22,7 @@ const AddressSuggestion = ({ address, handleClick }) => (
     }}
   >
     <div className="search-suggestions__address-icon">
-      <img src={addressIcon} height="21px" />
+      <img src={addressIcon} height="21px" alt="" />
     </div>
     <div className="search-suggestions__result-details">
       <div className="search-suggestions__result-details__name">

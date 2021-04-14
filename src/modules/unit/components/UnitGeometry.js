@@ -1,14 +1,16 @@
-/*
-   eslint-disable
-   react/jsx-props-no-spreading,
-   react/prop-types,
-*/
+// @flow
 
 import React from 'react';
 import { GeoJSON } from 'react-leaflet';
+
 import { getUnitQuality } from '../helpers';
 
-const UnitGeometry = ({ unit, isSelected, ...rest }) => (
+type Props = {
+  unit: Object,
+  isSelected: boolean,
+};
+
+const UnitGeometry = ({ unit, isSelected, ...rest }: Props) => (
   <div className="unit-geometry">
     {
       // hilight background for selected unit

@@ -1,16 +1,7 @@
-/* eslint-disable react/forbid-prop-types */
-/*
-   eslint-disable
-   class-methods-use-this,
-   jsx-a11y/anchor-is-valid,
-   jsx-a11y/click-events-have-key-events,
-   jsx-a11y/no-static-element-interactions,
-   react/destructuring-assignment,
-   react/jsx-props-no-spreading,
-   react/prop-types,
-*/
+// @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
@@ -47,7 +38,13 @@ function shouldShowInfo(unit) {
   return hasExtensions || unit.phone || unit.url;
 }
 
-const Header = ({ unit, services, isLoading }) => {
+type HeaderProps = {
+  unit: Object,
+  services: Object,
+  isLoading: boolean,
+};
+
+export const Header = ({ unit, services, isLoading }: HeaderProps) => {
   const {
     t,
     i18n: {
@@ -104,7 +101,11 @@ const Header = ({ unit, services, isLoading }) => {
   );
 };
 
-const LocationState = ({ unit }) => {
+type LocationStateProps = {
+  unit: Object,
+};
+
+const LocationState = ({ unit }: LocationStateProps) => {
   const { t } = useTranslation();
   return (
     <BodyBox title={t('UNIT_CONTAINER.QUALITY')}>
@@ -113,7 +114,11 @@ const LocationState = ({ unit }) => {
   );
 };
 
-const LocationInfo = ({ unit }) => {
+type LocationInfoProps = {
+  unit: Object,
+};
+
+const LocationInfo = ({ unit }: LocationInfoProps) => {
   const {
     t,
     i18n: {
@@ -164,11 +169,15 @@ const LocationInfo = ({ unit }) => {
   );
 };
 
+type NoticeInfoProps = {
+  unit: Object,
+};
+
 /**
  * [NoticeInfo description]
  * @param {Object} unit       [description]
  */
-const NoticeInfo = ({ unit }) => {
+const NoticeInfo = ({ unit }: NoticeInfoProps) => {
   const {
     t,
     i18n: {
@@ -192,7 +201,12 @@ const NoticeInfo = ({ unit }) => {
   ) : null;
 };
 
-const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
+type LocationRouteProps = {
+  routeUrl: string,
+  palvelukarttaUrl: string,
+};
+
+const LocationRoute = ({ routeUrl, palvelukarttaUrl }: LocationRouteProps) => {
   const { t } = useTranslation();
 
   return (
@@ -217,7 +231,11 @@ const LocationRoute = ({ routeUrl, palvelukarttaUrl }) => {
   );
 };
 
-const LocationOpeningHours = ({ unit }) => {
+type LocationOpeningHoursProps = {
+  unit: Object,
+};
+
+const LocationOpeningHours = ({ unit }: LocationOpeningHoursProps) => {
   const {
     t,
     i18n: {
@@ -233,7 +251,7 @@ const LocationOpeningHours = ({ unit }) => {
   return (
     <BodyBox title={t('UNIT_CONTAINER.OPENING_HOURS')}>
       {openingHours.map((openingHour) => (
-        <div key={openingHour.id} className="unit-container-body-multi-line">
+        <div key={openingHour} className="unit-container-body-multi-line">
           {openingHour}
         </div>
       ))}
@@ -241,7 +259,11 @@ const LocationOpeningHours = ({ unit }) => {
   );
 };
 
-const LocationTemperature = ({ observation }) => {
+type LocationTemperatureProps = {
+  observation: Object,
+};
+
+const LocationTemperature = ({ observation }: LocationTemperatureProps) => {
   const { t } = useTranslation();
   const temperature = get(observation, 'name.fi');
   const observationTime = getObservationTime(observation);
@@ -253,7 +275,13 @@ const LocationTemperature = ({ observation }) => {
   );
 };
 
-const LiveLocationTemperature = ({ observation }) => {
+type LiveLocationTemperatureProps = {
+  observation: Object,
+};
+
+const LiveLocationTemperature = ({
+  observation,
+}: LiveLocationTemperatureProps) => {
   const { t } = useTranslation();
   const temperature = get(observation, 'value.fi');
   const observationTime = getObservationTime(observation);
@@ -269,22 +297,48 @@ const LiveLocationTemperature = ({ observation }) => {
   );
 };
 
-const BodyBox = ({ title, children, className = '', ...rest }) => (
+type BodyBoxProps = {
+  title: string,
+  children: Node,
+  className?: string,
+};
+
+const BodyBox = ({
+  title,
+  children,
+  className = '',
+  ...rest
+}: BodyBoxProps) => (
   <div className={`${className} unit-container-body-box`} {...rest}>
     {title && <div className="unit-container-body-box-headline">{title}</div>}
     {children}
   </div>
 );
 
-const SingleUnitBody = ({
+type SingleUnitBodyProps = {
+  currentUnit: Object,
+  isLoading: boolean,
+  liveTemperatureObservation: ?Object,
+  routeUrl: string,
+  temperatureObservation: ?Object,
+  palvelukarttaUrl: string,
+};
+
+export const SingleUnitBody = ({
   currentUnit,
   isLoading,
   liveTemperatureObservation,
   routeUrl,
   temperatureObservation,
   palvelukarttaUrl,
-}) =>
-  currentUnit && !isLoading ? (
+}: SingleUnitBodyProps) => {
+  const {
+    i18n: {
+      languages: [language],
+    },
+  } = useTranslation();
+
+  return currentUnit && !isLoading ? (
     <div className="unit-container-body">
       <LocationState unit={currentUnit} />
       <NoticeInfo unit={currentUnit} />
@@ -295,7 +349,7 @@ const SingleUnitBody = ({
         <LiveLocationTemperature observation={liveTemperatureObservation} />
       )}
       {shouldShowInfo(currentUnit) && <LocationInfo unit={currentUnit} />}
-      {getOpeningHours(currentUnit) && (
+      {getOpeningHours(currentUnit, language) && (
         <LocationOpeningHours unit={currentUnit} />
       )}
       {(routeUrl || palvelukarttaUrl) && (
@@ -306,6 +360,7 @@ const SingleUnitBody = ({
       )}
     </div>
   ) : null;
+};
 
 SingleUnitBody.defaultProps = {
   liveTemperatureObservation: null,
@@ -315,20 +370,29 @@ SingleUnitBody.defaultProps = {
 };
 
 SingleUnitBody.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   currentUnit: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   liveTemperatureObservation: PropTypes.object,
   routeUrl: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
   temperatureObservation: PropTypes.object,
 };
 
+type Props = {
+  isLoading: boolean,
+  unit: Object,
+  services: Object,
+  isOpen: boolean,
+};
+
 const SingleUnitContainer = ({
-  handleClick,
   isLoading,
   unit: currentUnit,
   services,
   isOpen,
-}) => {
+}: Props) => {
   const {
     i18n: {
       languages: [language],
@@ -350,12 +414,7 @@ const SingleUnitContainer = ({
 
   return (
     <div className="unit-container">
-      <Header
-        unit={currentUnit}
-        services={services}
-        handleClick={handleClick}
-        isLoading={isLoading}
-      />
+      <Header unit={currentUnit} services={services} isLoading={isLoading} />
       <SingleUnitBody
         currentUnit={currentUnit}
         isLoading={isLoading}

@@ -5,7 +5,7 @@ import { APP_NAME } from './constants';
 import type { QueryValue } from './constants';
 
 export const normalizeActionName = (name: string): string =>
-  `${APP_NAME}/${name}`;
+  `${APP_NAME || ''}/${name}`;
 
 export const arrayifyQueryValue = (queryValue: QueryValue): Array<string> => {
   // Handle undefined

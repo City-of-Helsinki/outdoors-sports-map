@@ -1,12 +1,13 @@
 // @flow
-import React, { Component, Node } from 'react';
+import React, { Component } from 'react';
+import type { Node } from 'react';
 import PropTypes from 'prop-types';
 
 export const MAIN_CONTENT_ID = 'main-content';
 
 type Props = {
   children: Node,
-  title: String,
+  title: string,
 };
 
 class Page extends Component<Props> {
@@ -14,7 +15,7 @@ class Page extends Component<Props> {
     this.updateTitle();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     const { title } = this.props;
 
     if (title !== prevProps.title) {

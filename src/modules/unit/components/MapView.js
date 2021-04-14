@@ -1,18 +1,8 @@
 // @flow
 
-/*
-   eslint-disable
-   jsx-a11y/anchor-is-valid,
-   jsx-a11y/click-events-have-key-events,
-   jsx-a11y/no-static-element-interactions,
-   react/destructuring-assignment,
-   react/no-string-refs,
-   react/prop-types,
-   react/require-default-props,
-*/
-
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import { Map, TileLayer, ZoomControl } from 'react-leaflet';
 import { withTranslation } from 'react-i18next';
 import { ReactReduxContext } from 'react-redux';
@@ -42,7 +32,28 @@ import OutboundLink from '../../common/components/OutboundLink';
 import LanguageChanger from './LanguageChanger';
 import TranslationProvider from '../../common/components/translation/TranslationProvider';
 
-class MapView extends Component {
+type Props = {
+  selectedUnit: Object,
+  onCenterMapToUnit: (unit: Object) => void,
+  selected: Object,
+  activeLanguage: string,
+  openUnit: (unitId: string) => void,
+  changeLanguage: (language: string) => void,
+  t: (string) => string,
+  setLocation: (coordinates: [number, number]) => void,
+  position: [number, number],
+  units: Object[],
+};
+
+type State = {
+  isMobile: boolean,
+  menuOpen: boolean,
+  aboutModalOpen: boolean,
+  feedbackModalOpen: boolean,
+  zoomLevel: number,
+};
+
+class MapView extends Component<Props, State> {
   mapRef = null;
 
   constructor(props) {
@@ -79,6 +90,7 @@ class MapView extends Component {
   };
 
   handleZoom = () => {
+    // $FlowIgnore
     this.setState({ zoomLevel: this.mapRef.leafletElement.getZoom() });
   };
 
@@ -87,6 +99,7 @@ class MapView extends Component {
   };
 
   locateUser = () => {
+    // $FlowIgnore
     this.mapRef.leafletElement.locate({ setView: true });
   };
 
@@ -99,11 +112,15 @@ class MapView extends Component {
   };
 
   setLocation = (event: Object) => {
-    this.props.setLocation(latLngToArray(event.latlng));
+    const { setLocation } = this.props;
+
+    setLocation(((latLngToArray(event.latlng): any): [number, number]));
   };
 
   toggleMenu = () => {
-    if (this.state.menuOpen) {
+    const { menuOpen } = this.state;
+
+    if (menuOpen) {
       this.setState({ menuOpen: false });
     } else {
       this.setState({ menuOpen: true });
@@ -111,6 +128,7 @@ class MapView extends Component {
   };
 
   setView = (coordinates) => {
+    // $FlowIgnore
     this.mapRef.leafletElement.setView(coordinates);
   };
 
@@ -141,7 +159,13 @@ class MapView extends Component {
       changeLanguage,
       t,
     } = this.props;
-    const { isMobile, zoomLevel, menuOpen } = this.state;
+    const {
+      isMobile,
+      zoomLevel,
+      menuOpen,
+      aboutModalOpen,
+      feedbackModalOpen,
+    } = this.state;
 
     return (
       <ReactReduxContext.Consumer>
@@ -210,10 +234,10 @@ class MapView extends Component {
               </DropdownControl>
             </Map>
             <Logo />
-            {this.state.aboutModalOpen ? (
+            {aboutModalOpen ? (
               <AboutModal closeModal={this.closeAboutModal} t={t} />
             ) : null}
-            {this.state.feedbackModalOpen ? (
+            {feedbackModalOpen ? (
               <FeedbackModal closeModal={this.closeFeedbackModal} />
             ) : null}
           </View>
@@ -226,10 +250,20 @@ class MapView extends Component {
 MapView.propTypes = {
   position: PropTypes.arrayOf(PropTypes.number).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  units: PropTypes.arrayOf(PropTypes.object),
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default withTranslation(null, { withRef: true })(MapView);
+
+type InfoMenuProps = {
+  openAboutModal: () => void,
+  openFeedbackModal: () => void,
+  t: (string) => string,
+  isMobile: boolean,
+  activeLanguage: string,
+  changeLanguage: (language: string) => void,
+  store: Object,
+};
 
 const InfoMenu = ({
   openAboutModal,
@@ -239,7 +273,7 @@ const InfoMenu = ({
   activeLanguage,
   changeLanguage,
   store,
-}) => (
+}: InfoMenuProps) => (
   <TranslationProvider store={store}>
     <div className="info-menu">
       <InfoMenuItem icon="info" handleClick={openFeedbackModal} t={t}>
@@ -252,7 +286,7 @@ const InfoMenu = ({
         &copy; {t('MAP.ATTRIBUTION')}{' '}
       </OutboundLink>
       {isMobile && Object.keys(SUPPORTED_LANGUAGES).length > 1 && (
-        <InfoMenuItem handleClick={() => null}>
+        <InfoMenuItem handleClick={() => {}}>
           <strong>{t('MAP.INFO_MENU.CHOOSE_LANGUAGE')}</strong>
           <LanguageChanger
             style={{ position: 'static' }}
@@ -266,7 +300,13 @@ const InfoMenu = ({
   </TranslationProvider>
 );
 
-const InfoMenuItem = ({ children, handleClick, icon }) => (
+type InfoMenuItemProps = {
+  children: Node,
+  handleClick: () => void,
+  icon?: string,
+};
+
+const InfoMenuItem = ({ children, handleClick, icon }: InfoMenuItemProps) => (
   <button type="button" className="info-menu-item" onClick={handleClick}>
     {icon ? (
       <SMIcon icon={icon} style={{ paddingRight: 2 }} aria-hidden="true" />
@@ -275,7 +315,12 @@ const InfoMenuItem = ({ children, handleClick, icon }) => (
   </button>
 );
 
-const AboutModal = ({ closeModal, t }) => (
+type AboutModalProps = {
+  closeModal: () => void,
+  t: (string) => string,
+};
+
+const AboutModal = ({ closeModal, t }: AboutModalProps) => (
   <div className="about-modal-backdrop">
     <div className="about-modal-box">
       <div className="about-modal-controls">

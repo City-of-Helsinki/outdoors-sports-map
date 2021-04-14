@@ -7,7 +7,8 @@ import type { FetchAction } from '../common/constants';
 
 function* onSetLocation({
   payload: position,
-}: FetchAction): Generator<any, void, void> {
+}: // $FlowFixMe
+FetchAction): Generator<any, void, void> {
   const addressParams = {
     lat: position[0],
     lon: position[1],

@@ -1,8 +1,4 @@
-/*
-   eslint-disable
-   react/destructuring-assignment,
-   react/prop-types,
-*/
+// @flow
 
 import React, { Component } from 'react';
 
@@ -12,10 +8,22 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { sendFeedback } from '../actions';
+import * as unitActions from '../actions';
 import SMIcon from '../../home/components/SMIcon';
 
-class FeedbackModal extends Component {
+type Props = {
+  sendFeedback: (feedback: ?string, email: ?string) => void,
+  closeModal: () => void,
+  t: (string) => string,
+};
+
+type State = {
+  emailInputOpen: boolean,
+  feedback: ?string,
+  email: ?string,
+};
+
+class FeedbackModal extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,18 +36,25 @@ class FeedbackModal extends Component {
     this.toggleEmailInput = this.toggleEmailInput.bind(this);
   }
 
+  /*:: toggleEmailInput: Function */
   toggleEmailInput() {
-    if (this.state.emailInputOpen) {
+    const { emailInputOpen } = this.state;
+
+    if (emailInputOpen) {
       this.setState({ emailInputOpen: false });
     } else {
       this.setState({ emailInputOpen: true });
     }
   }
 
-  handleFeedbackSubmit(e, feedback) {
+  /*:: handleFeedbackSubmit: Function */
+  handleFeedbackSubmit(e, feedback: ?string, email: ?string) {
     e.preventDefault();
-    this.props.sendFeedback(feedback);
-    this.props.closeModal();
+
+    const { sendFeedback, closeModal } = this.props;
+
+    sendFeedback(feedback, email);
+    closeModal();
   }
 
   render() {
@@ -55,13 +70,11 @@ class FeedbackModal extends Component {
           <div className="about-modal-content">
             <h3>{t('MAP.INFO_MENU.GIVE_FEEDBACK')}</h3>
             <Form
-              onSubmit={(e) =>
-                this.handleFeedbackSubmit(
-                  e,
-                  this.state.feedback,
-                  this.state.email
-                )
-              }
+              onSubmit={(e) => {
+                const { feedback, email } = this.state;
+
+                this.handleFeedbackSubmit(e, feedback, email);
+              }}
             >
               <Form.Group
                 controlId="formControlsTextarea"
@@ -103,7 +116,7 @@ class FeedbackModal extends Component {
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ sendFeedback }, dispatch);
+  bindActionCreators({ sendFeedback: unitActions.sendFeedback }, dispatch);
 
 export default connect(
   null,

@@ -1,8 +1,4 @@
-/*
-   eslint-disable
-   react/jsx-props-no-spreading,
-   react/prop-types,
-*/
+// @flow
 
 import React, { Component } from 'react';
 import L from 'leaflet';
@@ -10,14 +6,21 @@ import { getUnitQuality } from '../helpers';
 import UnitMarker from './UnitMarker';
 import UnitGeometry from './UnitGeometry';
 
-class SingleUnitOnMap extends Component {
-  constructor(props) {
+type Props = {
+  unit: Object,
+  isSelected: boolean,
+  zoomLevel: number,
+  openUnit: (unitId: string) => void,
+};
+
+class SingleUnitOnMap extends Component<Props> {
+  constructor(props: Props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: Props) {
     const { unit, isSelected, zoomLevel } = this.props;
     const isQualityUpdated =
       getUnitQuality(unit) !== getUnitQuality(nextProps.unit);
@@ -27,7 +30,8 @@ class SingleUnitOnMap extends Component {
     return isQualityUpdated || isSelectedUpdated || isZoomUpdated;
   }
 
-  handleClick(e) {
+  /*:: handleClick: Function */
+  handleClick(e: SyntheticEvent<HTMLElement>) {
     const { unit, openUnit } = this.props;
     L.DomEvent.stopPropagation(e);
 
