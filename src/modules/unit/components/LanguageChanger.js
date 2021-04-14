@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+// $FlowIgnore
+import { useLocation, Link } from 'react-router-dom';
 
+import { replaceLanguageInPath } from '../../common/helpers';
 import { SUPPORTED_LANGUAGES } from '../../language/constants';
 
 type Props = {
@@ -10,11 +13,11 @@ type Props = {
 
 const LanguageChanger = ({ isMobile = false }: Props) => {
   const {
-    i18n,
     i18n: {
       languages: [activeLanguage],
     },
   } = useTranslation();
+  const { pathname } = useLocation();
 
   return (
     <div className={isMobile ? 'language-changer__mobile' : 'language-changer'}>
@@ -25,17 +28,13 @@ const LanguageChanger = ({ isMobile = false }: Props) => {
         .map(([languageKey, languageValue], index) => (
           <div key={languageKey} style={{ display: 'flex' }}>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                i18n.changeLanguage(SUPPORTED_LANGUAGES[languageKey]);
-              }}
+            <Link
               lang={languageValue}
-              // Empty href makes the anchor focusable
-              href=""
+              // $FlowIgnore
+              to={replaceLanguageInPath(pathname, languageValue)}
             >
               {languageKey}
-            </a>
+            </Link>
             {index < Object.keys(SUPPORTED_LANGUAGES).length - 2 &&
             !isMobile ? (
               <div style={{ marginLeft: 2, marginRight: 2 }}>|</div>
