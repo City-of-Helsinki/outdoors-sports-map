@@ -1,7 +1,8 @@
 {
   "APP": {
     "NAME": "Utemotionskarta",
-    "ABOUT": "Information om tjänsten"
+    "ABOUT": "Information om tjänsten",
+    "DESCRIPTION": ""
   },
   "GENERAL": {
     "LOADING": "Laddar..."

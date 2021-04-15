@@ -2,7 +2,7 @@
 
 // $FlowIgnore
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import type { Node } from 'react';
 // $FlowIgnore
 import { useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +31,7 @@ function useIsUnitBrowserView() {
   return Boolean(match && match.isExact);
 }
 
-function useTitle(selectedUnitId) {
+function useHomeMeta(selectedUnitId) {
   const {
     t,
     i18n: {
@@ -45,16 +45,38 @@ function useTitle(selectedUnitId) {
   const getTitle = () => {
     const title = [];
 
-    title.push(t('APP.NAME'));
-
     if (selectedUnit) {
-      title.push(` - ${getAttr(selectedUnit.name, activeLanguage) || ''}`);
+      title.push(`${getAttr(selectedUnit.name, activeLanguage) || ''} | `);
     }
+
+    title.push(t('APP.NAME'));
 
     return title.join('');
   };
 
-  return getTitle();
+  const getDescription = () => {
+    if (selectedUnit) {
+      const description = selectedUnit.description;
+
+      if (description) {
+        return getAttr(description, activeLanguage);
+      }
+    }
+
+    return t('APP.DESCRIPTION');
+  };
+
+  const getImage = () => {
+    if (selectedUnit) {
+      return selectedUnit.picture_url;
+    }
+  };
+
+  return {
+    title: getTitle(),
+    description: getDescription(),
+    image: getImage(),
+  };
 }
 
 function getLatLngToContainerPoint(ref, location) {
@@ -85,7 +107,23 @@ function setView(ref, coordinates) {
   }
 }
 
-function MapLayout({ content, map, isFilled, title }) {
+type MapLayoutProps = {
+  content: Node,
+  map: Node,
+  isFilled: boolean,
+  title: string,
+  description: ?string,
+  image?: ?string,
+};
+
+function MapLayout({
+  content,
+  map,
+  isFilled,
+  title,
+  description,
+  image,
+}: MapLayoutProps) {
   const isUnitBrowserView = useIsUnitBrowserView();
 
   return (
@@ -98,7 +136,12 @@ function MapLayout({ content, map, isFilled, title }) {
         })}
       >
         <ApplicationHeader />
-        <Page title={title} className="map-foreground-content">
+        <Page
+          title={title}
+          description={description}
+          image={image}
+          className="map-foreground-content"
+        >
           {content}
         </Page>
       </div>
@@ -106,13 +149,6 @@ function MapLayout({ content, map, isFilled, title }) {
     </>
   );
 }
-
-MapLayout.propTypes = {
-  content: PropTypes.node.isRequired,
-  map: PropTypes.node.isRequired,
-  isFilled: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-};
 
 function HomeContainer() {
   const mapRef = useRef(null);
@@ -124,7 +160,7 @@ function HomeContainer() {
   const selectedUnitId = match ? match.params.unitId : null;
   const isUnitDetailsOpen = selectedUnitId !== null;
 
-  const title = useTitle(selectedUnitId);
+  const { title, description, image } = useHomeMeta(selectedUnitId);
 
   const handleOnViewChange = useCallback((coordinates) => {
     setView(mapRef, coordinates);
@@ -167,6 +203,8 @@ function HomeContainer() {
   return (
     <MapLayout
       title={title}
+      description={description}
+      image={image}
       isFilled={isUnitDetailsOpen || isExpanded}
       content={
         <>

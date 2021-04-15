@@ -1,7 +1,8 @@
 {
   "APP": {
     "NAME": "Outdoor Exercise Map",
-    "ABOUT": "Information on the service"
+    "ABOUT": "Information on the service",
+    "DESCRIPTION": ""
   },
   "GENERAL": {
     "LOADING": "Loading..."

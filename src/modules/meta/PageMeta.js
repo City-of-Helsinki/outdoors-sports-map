@@ -4,18 +4,20 @@ import Helmet from 'react-helmet';
 
 type Props = {
   title: string,
-  description?: string,
+  description?: ?string,
+  image?: ?string,
 };
 
-const PageMeta = ({ title, description }: Props) => (
+const PageMeta = ({ title, description, image }: Props) => (
   <Helmet>
     {/* HTML page level meta */}
     <title>{title}</title>
-    <meta name="description" content={description} />
+    {description && <meta name="description" content={description} />}
 
     {/* OpenGraph page level meta */}
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    {description && <meta property="og:description" content={description} />}
+    {image && <meta property="og:image" content={image} />}
   </Helmet>
 );
 
