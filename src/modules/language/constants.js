@@ -14,3 +14,7 @@ export const languageActions = {
 export const MODULE_NAME = 'language';
 
 export type LanguageState = string;
+
+export const languageParam = `:language(${Object.values(
+  SUPPORTED_LANGUAGES
+).join('|')})`;

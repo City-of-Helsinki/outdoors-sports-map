@@ -1,24 +1,39 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Router, Route } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import type { ContextRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import HomeContainer from '../../home/components/HomeContainer';
-import TranslationProvider from './translation/TranslationProvider';
+import { languageParam } from '../../language/constants';
+import useScrollToTop from '../hooks/useScrollToTop';
+import ResetFocus from './ResetFocus';
 import JumpLink from './JumpLink';
+import LanguageAwareRoutes from './LanguageAwareRoutes';
 
-const App = ({ history }) => (
-  <TranslationProvider>
+const App = () => {
+  useScrollToTop();
+
+  const {
+    i18n: {
+      languages: [language],
+    },
+  } = useTranslation();
+
+  return (
     <div id="app-wrapper">
+      <ResetFocus />
       <JumpLink />
-      <Router history={history}>
-        <Route path="/" component={HomeContainer} />
-      </Router>
+      <Switch>
+        <Route path={`/${languageParam}`} component={LanguageAwareRoutes} />
+        <Route
+          render={(props: ContextRouter) => (
+            <Redirect to={`/${language}${props.location.pathname}`} />
+          )}
+        />
+      </Switch>
     </div>
-  </TranslationProvider>
-);
-
-App.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  );
 };
 
 export default App;

@@ -1,9 +1,11 @@
 // @flow
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+// $FlowIgnore
+import { useLocation } from 'react-router';
 
+import Link from '../../common/components/Link';
 import ObservationStatus from '../../unit/components/ObservationStatus';
 import { getAttr } from '../../unit/helpers';
 import UnitIcon from '../../unit/components/UnitIcon';
@@ -18,10 +20,11 @@ const UnitSuggestion = ({ unit, ...rest }: Props) => {
       languages: [language],
     },
   } = useTranslation();
+  const { search } = useLocation();
 
   return (
     <Link
-      to={`/unit/${unit.id}`}
+      to={{ pathname: `/unit/${unit.id}`, state: { search } }}
       className="search-suggestions__result"
       {...rest}
     >

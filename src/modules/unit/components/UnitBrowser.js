@@ -161,7 +161,7 @@ class UnitBrowser extends Component<Props, State> {
     const searchParams = new URLSearchParams(search);
     searchParams.set(key, value);
 
-    history.push({
+    history.replace({
       search: searchParams.toString(),
     });
   };

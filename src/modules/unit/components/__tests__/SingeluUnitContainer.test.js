@@ -182,7 +182,7 @@ describe('<SingleUnitContainer />', () => {
       // It should exist
       expect(closeButton.length > 0).toBeTruthy();
       // It should take the user to the root route
-      expect(closeButton.prop('href')).toEqual('/');
+      expect(closeButton.prop('href')).toEqual('/fi/');
     });
   });
 

@@ -3,10 +3,11 @@
 // eslint-disable-next-line max-classes-per-file
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import values from 'lodash/values';
 
+import Link from '../../common/components/Link';
 import SMIcon from '../../home/components/SMIcon';
 import Loading from '../../home/components/Loading';
 import * as unitHelpers from '../helpers';
@@ -19,6 +20,7 @@ import UnitIcon from './UnitIcon';
 type UnitListItemProps = {
   unit: Object,
   activeLanguage: string,
+  locationSearch: string,
 };
 
 class UnitListItem extends Component<UnitListItemProps> {
@@ -29,10 +31,13 @@ class UnitListItem extends Component<UnitListItemProps> {
   }
 
   render() {
-    const { unit, activeLanguage } = this.props;
+    const { unit, activeLanguage, locationSearch } = this.props;
 
     return (
-      <Link to={`/unit/${unit.id}`} className="list-view-item">
+      <Link
+        to={{ pathname: `/unit/${unit.id}`, state: { search: locationSearch } }}
+        className="list-view-item"
+      >
         <div className="list-view-item__unit-marker">
           <UnitIcon unit={unit} />
         </div>
@@ -62,6 +67,9 @@ type Props = {
   },
   position: [number, number],
   leafletMap: Object,
+  location: {
+    search: string,
+  },
 };
 
 type State = {
@@ -146,7 +154,7 @@ export class ListViewBase extends Component<Props, State> {
   }
 
   render() {
-    const { services, isLoading, t, i18n, units } = this.props;
+    const { services, isLoading, t, i18n, units, location } = this.props;
     const { sortKey, maxUnitCount } = this.state;
     const totalUnits = units.length;
     const renderedUnits = isLoading
@@ -172,6 +180,7 @@ export class ListViewBase extends Component<Props, State> {
                   services={services}
                   key={unit.id}
                   activeLanguage={i18n.languages[0]}
+                  locationSearch={location.search}
                 />
               ))}
             {renderedUnits.length !== totalUnits && (
@@ -196,4 +205,4 @@ export class ListViewBase extends Component<Props, State> {
   }
 }
 
-export default withTranslation()(ListViewBase);
+export default withRouter(withTranslation()(ListViewBase));

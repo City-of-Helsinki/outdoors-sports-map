@@ -11,7 +11,7 @@ import { getUnitPosition, getAttr } from '../../unit/helpers';
 import { getUnitById } from '../../unit/selectors';
 import UnitDetails from '../../unit/components/UnitDetailsContainer';
 import UnitBrowserContainer from '../../unit/components/UnitBrowserContainer';
-import { routerPaths } from '../../common/constants';
+import routerPaths from '../../common/routes';
 import useIsMobile from '../../common/hooks/useIsMobile';
 import Page from '../../common/components/Page';
 import Map from '../../map/components/Map';

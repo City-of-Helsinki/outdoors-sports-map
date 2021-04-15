@@ -5,6 +5,8 @@ import moment from 'moment';
 
 import { SUPPORTED_LANGUAGES } from '../language/constants';
 import { DEFAULT_LANG } from './constants';
+import { replaceLanguageInPath } from './pathUtils';
+import history from './history';
 
 const getTranslations = () => ({
   fi: {
@@ -46,6 +48,10 @@ i18n
       interpolation: {
         escapeValue: false,
       },
+      detection: {
+        order: ['path', 'localStorage'],
+        checkWhitelist: true,
+      },
     },
     (err, t) => {
       if (err) {
@@ -54,6 +60,24 @@ i18n
       }
     }
   );
+
+// replace language in url so that the pathname will reflect the current
+// language when language is changed by using i18n.changeLanguage
+// Replace language only when it is changed, not on initialization.
+i18n.on('languageChanged', (nextLanguage) => {
+  // If necessary, change language in pathname
+  const { pathname, ...rest } = window.location;
+  const containsLanguage = supportedLanguages.reduce(
+    (contains, language) => contains || pathname.includes(`/${language}/`),
+    false
+  );
+
+  if (containsLanguage) {
+    const nextPathname = replaceLanguageInPath(pathname, nextLanguage);
+
+    history.replace({ pathname: nextPathname, ...rest });
+  }
+});
 
 // Auto-detected language generally has a country code. Ignore it.
 export const getCurrentLanguage = () => i18n.language.split('-')[0];
