@@ -5,9 +5,9 @@
 .ignore
 coverage
 flow-typed
-dist
+build
 node_modules
 log/capistrano.log
 yarn-error.log
 xeno
-.DS_store
+.DS_Store

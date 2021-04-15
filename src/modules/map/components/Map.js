@@ -53,7 +53,7 @@ const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
       // the unit details view
       history.push(`/${language}/unit/${unitId}`, { search });
     },
-    [history, search]
+    [history, search, language]
   );
 
   return (

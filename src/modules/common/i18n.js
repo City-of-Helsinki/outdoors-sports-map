@@ -11,15 +11,15 @@ import history from './history';
 const getTranslations = () => ({
   fi: {
     // eslint-disable-next-line global-require
-    translation: require('../../../locales/fi.json'),
+    translation: require('../../locales/fi.json'),
   },
   sv: {
     // eslint-disable-next-line global-require
-    translation: require('../../../locales/sv.json'),
+    translation: require('../../locales/sv.json'),
   },
   en: {
     // eslint-disable-next-line global-require
-    translation: require('../../../locales/en.json'),
+    translation: require('../../locales/en.json'),
   },
 });
 

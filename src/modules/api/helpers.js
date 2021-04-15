@@ -1,6 +1,7 @@
 // @flow
 import { call } from 'redux-saga/effects';
 import { normalize } from 'normalizr';
+
 import { API_BASE_URL, DIGITRANSIT_API_BASE_URL } from '../common/constants';
 import type { ApiResponse } from './constants';
 
@@ -9,6 +10,7 @@ export const normalizeEntityResults = (results: Object, schema: Object) =>
 
 export function* callApi(request: Request): Generator<any, ApiResponse, any> {
   const response: Object = yield call(fetch, request);
+
   if (response.status === 404) {
     const bodyAsJson = { results: 'Error, 404 not found' };
     return { response, bodyAsJson };

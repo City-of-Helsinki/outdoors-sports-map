@@ -1,12 +1,22 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-/* eslint-enable import/no-extraneous-dependencies */
-import { createElement } from 'react';
-import { render } from 'react-dom';
+import 'whatwg-fetch';
+
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import './index.scss';
 import history from './modules/common/history';
 import Root from './modules/common/components/Root';
+import reportWebVitals from './reportWebVitals';
 
-render(createElement(Root, { history }), document.getElementById('root'));
+ReactDOM.render(
+  <React.StrictMode>
+    <Root history={history} />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

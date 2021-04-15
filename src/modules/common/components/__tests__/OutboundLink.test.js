@@ -16,6 +16,6 @@ describe('<OutboundLink />', () => {
     const link = wrapper.find('a');
 
     expect(link.length).toEqual(1);
-    expect(link.find('[title="Avaa uuden ikkunan"]'));
+    expect(link.find('span[title="Avaa uuden ikkunan"]').length).toEqual(1);
   });
 });

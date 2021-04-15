@@ -1,13 +1,8 @@
 *
 
-!.babelrc
 !.prod/
-!.eslintrc
-!assets/
-!config/
 !docker-entrypoint.sh
 !public/
-!locales/
 !package*.json
 !src/
 !*yarn*

@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 -   Robots.txt file
 
+### Changed
+
+-   Upgrade React and its related dependencies from 15.x to 16.x
+-   Use create-react-app tool chain
+
 ### Fixed
 
 -   [Accessibility] Capturing focus to the middle of the page when opening the details of an unit

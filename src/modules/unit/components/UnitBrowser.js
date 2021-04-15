@@ -6,8 +6,7 @@ import { withRouter } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
 import values from 'lodash/values';
 import { useTranslation, withTranslation } from 'react-i18next';
-// $FlowIgnore
-import addressBarMarker from '@assets/markers/location.svg';
+import addressBarMarker from '../../../assets/markers/location.svg';
 
 import SMIcon from '../../home/components/SMIcon';
 import SearchContainer from '../../search/components/SearchContainer';
