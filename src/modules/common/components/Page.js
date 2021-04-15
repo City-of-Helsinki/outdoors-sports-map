@@ -1,8 +1,9 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import type { Node } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
+import PageMeta from '../../meta/PageMeta';
 
 export const MAIN_CONTENT_ID = 'main-content';
 
@@ -10,43 +11,19 @@ type Props = {
   children: Node,
   title: string,
   className?: string,
+  description?: string,
 };
 
-class Page extends Component<Props> {
-  componentDidMount() {
-    this.updateTitle();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { title } = this.props;
-
-    if (title !== prevProps.title) {
-      this.updateTitle();
-    }
-  }
-
-  updateTitle() {
-    const { title } = this.props;
-
-    document.title = title;
-  }
-
-  render() {
-    const { children, className } = this.props;
-
-    return (
-      <main
-        id={MAIN_CONTENT_ID}
-        className={classNames('main-content', className)}
-      >
-        {children}
-      </main>
-    );
-  }
-}
-
-Page.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const Page = ({ children, title, description, className }: Props) => (
+  <>
+    <PageMeta title={title} description={description} />
+    <main
+      id={MAIN_CONTENT_ID}
+      className={classNames('main-content', className)}
+    >
+      {children}
+    </main>
+  </>
+);
 
 export default Page;
