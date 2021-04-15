@@ -1,10 +1,16 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import SMIcon from '../../home/components/SMIcon';
 
-const OutboundLink = ({ href, children, ...rest }) => {
+type Props = {
+  href: string,
+  children: string,
+};
+
+const OutboundLink = ({ href, children, ...rest }: Props) => {
   const { t } = useTranslation();
 
   const name = t('OUTBOUND_LINK.DESCRIPTION');
@@ -14,11 +20,6 @@ const OutboundLink = ({ href, children, ...rest }) => {
       {children} <SMIcon icon="outbound-link" aria-label={name} title={name} />
     </a>
   );
-};
-
-OutboundLink.propTypes = {
-  href: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
 };
 
 export default OutboundLink;

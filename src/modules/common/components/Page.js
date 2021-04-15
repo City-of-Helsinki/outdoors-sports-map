@@ -2,12 +2,14 @@
 import React, { Component } from 'react';
 import type { Node } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 export const MAIN_CONTENT_ID = 'main-content';
 
 type Props = {
   children: Node,
   title: string,
+  className?: string,
 };
 
 class Page extends Component<Props> {
@@ -30,10 +32,13 @@ class Page extends Component<Props> {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, className } = this.props;
 
     return (
-      <main id={MAIN_CONTENT_ID} className="main-content">
+      <main
+        id={MAIN_CONTENT_ID}
+        className={classNames('main-content', className)}
+      >
         {children}
       </main>
     );

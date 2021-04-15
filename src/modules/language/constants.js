@@ -2,9 +2,9 @@
 import { normalizeActionName } from '../common/helpers';
 
 export const SUPPORTED_LANGUAGES = {
-  English: 'en',
-  Svenska: 'sv',
   Suomi: 'fi',
+  Svenska: 'sv',
+  English: 'en',
 };
 
 export const languageActions = {

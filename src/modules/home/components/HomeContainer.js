@@ -1,5 +1,9 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+// @flow
+
+// $FlowIgnore
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+// $FlowIgnore
 import { useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +16,20 @@ import { getUnitById } from '../../unit/selectors';
 import UnitDetails from '../../unit/components/UnitDetailsContainer';
 import UnitBrowserContainer from '../../unit/components/UnitBrowserContainer';
 import routerPaths from '../../common/routes';
+import { languageParam } from '../../language/constants';
+import ApplicationHeader from '../../common/components/ApplicationHeader';
 import useIsMobile from '../../common/hooks/useIsMobile';
 import Page from '../../common/components/Page';
 import Map from '../../map/components/Map';
+
+function useIsUnitBrowserView() {
+  const match = useRouteMatch({
+    path: ['/', `/${languageParam}`],
+    exact: true,
+  });
+
+  return Boolean(match && match.isExact);
+}
 
 function useTitle(selectedUnitId) {
   const {
@@ -26,15 +41,20 @@ function useTitle(selectedUnitId) {
   const selectedUnit = useSelector((state) =>
     getUnitById(state, { id: selectedUnitId })
   );
-  const title = [];
 
-  title.push(t('APP.NAME'));
+  const getTitle = () => {
+    const title = [];
 
-  if (selectedUnit) {
-    title.push(` - ${getAttr(selectedUnit.name, activeLanguage)}`);
-  }
+    title.push(t('APP.NAME'));
 
-  return title.join('');
+    if (selectedUnit) {
+      title.push(` - ${getAttr(selectedUnit.name, activeLanguage) || ''}`);
+    }
+
+    return title.join('');
+  };
+
+  return getTitle();
 }
 
 function getLatLngToContainerPoint(ref, location) {
@@ -65,10 +85,23 @@ function setView(ref, coordinates) {
   }
 }
 
-function MapLayout({ content, map }) {
+function MapLayout({ content, map, isFilled, title }) {
+  const isUnitBrowserView = useIsUnitBrowserView();
+
   return (
     <>
-      {content}
+      <div
+        className={className('map-foreground', {
+          'is-filled': isFilled,
+          'fill-color-content': !isUnitBrowserView,
+          'fill-color-background': isUnitBrowserView,
+        })}
+      >
+        <ApplicationHeader />
+        <Page title={title} className="map-foreground-content">
+          {content}
+        </Page>
+      </div>
       <div className="map-container">{map}</div>
     </>
   );
@@ -77,10 +110,13 @@ function MapLayout({ content, map }) {
 MapLayout.propTypes = {
   content: PropTypes.node.isRequired,
   map: PropTypes.node.isRequired,
+  isFilled: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 function HomeContainer() {
   const mapRef = useRef(null);
+  const [isExpanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
   const match = useRouteMatch(routerPaths.singleUnit);
   const isMobile = useIsMobile();
@@ -98,6 +134,10 @@ function HomeContainer() {
     (unit) => {
       const location = getUnitPosition(unit);
       const pixelLocation = getLatLngToContainerPoint(mapRef, location);
+
+      if (!pixelLocation) {
+        return;
+      }
 
       if (!isMobile) {
         // Offset by half the width of unit modal in order to center focus
@@ -120,44 +160,45 @@ function HomeContainer() {
 
   useEffect(() => {
     // Fetch initial data
-    dispatch(fetchUnits());
-    dispatch(fetchServices());
+    dispatch(fetchUnits({}));
+    dispatch(fetchServices({}));
   }, []);
 
   return (
-    <Page title={title}>
-      <MapLayout
-        content={
-          <div className="map-foreground">
-            <div
-              className={className('map-foreground-unit-browser', {
-                // Hide unit browser when the unit details is open with styling.
-                // This is an easy way to retain the search state.
-                hidden: isUnitDetailsOpen,
-              })}
-            >
-              <UnitBrowserContainer
-                mapRef={mapRef}
-                onViewChange={handleOnViewChange}
-              />
-            </div>
-            {isUnitDetailsOpen && (
-              <UnitDetails
-                unitId={selectedUnitId}
-                onCenterMapToUnit={handleCenterMapToUnit}
-              />
-            )}
+    <MapLayout
+      title={title}
+      isFilled={isUnitDetailsOpen || isExpanded}
+      content={
+        <>
+          <div
+            className={className('map-foreground-unit-browser', {
+              // Hide unit browser when the unit details is open with styling.
+              // This is an easy way to retain the search state.
+              hidden: isUnitDetailsOpen,
+            })}
+          >
+            <UnitBrowserContainer
+              mapRef={mapRef}
+              onViewChange={handleOnViewChange}
+              expandedState={[isExpanded, setExpanded]}
+            />
           </div>
-        }
-        map={
-          <Map
-            ref={mapRef}
-            selectedUnitId={selectedUnitId}
-            onCenterMapToUnit={handleCenterMapToUnit}
-          />
-        }
-      />
-    </Page>
+          {isUnitDetailsOpen && typeof selectedUnitId === 'string' && (
+            <UnitDetails
+              unitId={selectedUnitId}
+              onCenterMapToUnit={handleCenterMapToUnit}
+            />
+          )}
+        </>
+      }
+      map={
+        <Map
+          ref={mapRef}
+          selectedUnitId={selectedUnitId}
+          onCenterMapToUnit={handleCenterMapToUnit}
+        />
+      }
+    />
   );
 }
 

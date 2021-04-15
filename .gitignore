@@ -10,3 +10,4 @@ node_modules
 log/capistrano.log
 yarn-error.log
 xeno
+.DS_store

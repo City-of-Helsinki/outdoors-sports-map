@@ -23,6 +23,13 @@ export type FetchAction = {
   },
 };
 
+export type PositionAction = {
+  type: string,
+  payload: {
+    position: Object,
+  },
+};
+
 export type EntityAction = {
   type: string,
   payload: {

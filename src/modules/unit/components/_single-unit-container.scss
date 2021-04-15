@@ -1,15 +1,11 @@
 .unit-container {
-  max-height: 70vh;
+  max-height: 60vh;
   padding: 10px;
   overflow-y: auto;
-
-  background: #0072c6;
 
   @media only screen and (min-width: 768px) {
     max-height: unset;
     height: 100%;
-
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
 
   h4 {

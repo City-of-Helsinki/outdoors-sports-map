@@ -11,11 +11,9 @@ import SMIcon from '../../home/components/SMIcon';
 import OSMIcon from '../../home/components/OSMIcon';
 import FeedbackModal from './FeedbackModal';
 import { View } from './View';
-import Logo from '../../home/components/Logo';
 import Control from '../../map/components/Control';
 import DropdownControl from '../../map/components/DropdownControl';
 import { mobileBreakpoint } from '../../common/constants';
-import { SUPPORTED_LANGUAGES } from '../../language/constants';
 import {
   MAP_URL,
   MAP_RETINA_URL,
@@ -29,7 +27,6 @@ import UnitsOnMap from './UnitsOnMap';
 import UserLocationMarker from '../../map/components/UserLocationMarker';
 import { isRetina } from '../../common/helpers';
 import OutboundLink from '../../common/components/OutboundLink';
-import LanguageChanger from './LanguageChanger';
 import TranslationProvider from '../../common/components/translation/TranslationProvider';
 
 type Props = {
@@ -38,7 +35,6 @@ type Props = {
   selected: Object,
   activeLanguage: string,
   openUnit: (unitId: string) => void,
-  changeLanguage: (language: string) => void,
   t: (string) => string,
   setLocation: (coordinates: [number, number]) => void,
   position: [number, number],
@@ -156,7 +152,6 @@ class MapView extends Component<Props, State> {
       selected,
       activeLanguage,
       openUnit,
-      changeLanguage,
       t,
     } = this.props;
     const {
@@ -203,12 +198,6 @@ class MapView extends Component<Props, State> {
               >
                 <OSMIcon icon="locate" />
               </Control>
-              {Object.keys(SUPPORTED_LANGUAGES).length > 1 && !isMobile && (
-                <LanguageChanger
-                  activeLanguage={activeLanguage}
-                  changeLanguage={changeLanguage}
-                />
-              )}
               <DropdownControl
                 id="info-dropdown"
                 handleClick={this.toggleMenu}
@@ -222,18 +211,17 @@ class MapView extends Component<Props, State> {
                   <InfoMenu
                     store={store}
                     t={t}
-                    isMobile={isMobile}
                     openAboutModal={this.openAboutModal}
                     openFeedbackModal={this.openFeedbackModal}
-                    activeLanguage={activeLanguage}
-                    changeLanguage={changeLanguage}
                   />
                 }
+                wrapperAttrs={{
+                  role: 'contentinfo',
+                }}
               >
                 <SMIcon icon="info" aria-label={t('APP.ABOUT')} />
               </DropdownControl>
             </Map>
-            <Logo />
             {aboutModalOpen ? (
               <AboutModal closeModal={this.closeAboutModal} t={t} />
             ) : null}
@@ -259,9 +247,6 @@ type InfoMenuProps = {
   openAboutModal: () => void,
   openFeedbackModal: () => void,
   t: (string) => string,
-  isMobile: boolean,
-  activeLanguage: string,
-  changeLanguage: (language: string) => void,
   store: Object,
 };
 
@@ -269,9 +254,6 @@ const InfoMenu = ({
   openAboutModal,
   openFeedbackModal,
   t,
-  isMobile,
-  activeLanguage,
-  changeLanguage,
   store,
 }: InfoMenuProps) => (
   <TranslationProvider store={store}>
@@ -283,19 +265,8 @@ const InfoMenu = ({
         {t('MAP.INFO_MENU.ABOUT_SERVICE')}
       </InfoMenuItem>
       <OutboundLink className="info-menu-item" href="http://osm.org/copyright">
-        &copy; {t('MAP.ATTRIBUTION')}{' '}
+        {`\u00a9 ${t('MAP.ATTRIBUTION')} `}
       </OutboundLink>
-      {isMobile && Object.keys(SUPPORTED_LANGUAGES).length > 1 && (
-        <InfoMenuItem handleClick={() => {}}>
-          <strong>{t('MAP.INFO_MENU.CHOOSE_LANGUAGE')}</strong>
-          <LanguageChanger
-            style={{ position: 'static' }}
-            activeLanguage={activeLanguage}
-            changeLanguage={changeLanguage}
-            isMobile={isMobile}
-          />
-        </InfoMenuItem>
-      )}
     </div>
   </TranslationProvider>
 );
