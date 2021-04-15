@@ -16,13 +16,17 @@ import { getUnitById } from '../../unit/selectors';
 import UnitDetails from '../../unit/components/UnitDetailsContainer';
 import UnitBrowserContainer from '../../unit/components/UnitBrowserContainer';
 import routerPaths from '../../common/routes';
+import { languageParam } from '../../language/constants';
 import ApplicationHeader from '../../common/components/ApplicationHeader';
 import useIsMobile from '../../common/hooks/useIsMobile';
 import Page from '../../common/components/Page';
 import Map from '../../map/components/Map';
 
 function useIsUnitBrowserView() {
-  const match = useRouteMatch('/');
+  const match = useRouteMatch({
+    path: ['/', `/${languageParam}`],
+    exact: true,
+  });
 
   return Boolean(match && match.isExact);
 }
