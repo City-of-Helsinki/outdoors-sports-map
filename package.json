@@ -117,8 +117,6 @@
     "cross-env": "^6.0.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "flow-bin": "0.75.0",
-    "flow-typed": "2.5.1",
     "prettier": "^2.2.1"
   }
 }
