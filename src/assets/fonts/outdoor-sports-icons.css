@@ -6,21 +6,23 @@
   font-family: "outdoor-sports-icons";
   src: url("./outdoor-sports-icons.eot");
   src: url("./outdoor-sports-icons.eot?#iefix") format("embedded-opentype"),
-       url("./outdoor-sports-icons.woff") format("woff"),
-       url("./outdoor-sports-icons.ttf") format("truetype"),
-       url("./outdoor-sports-icons.svg#outdoor-sports-icons") format("svg");
+    url("./outdoor-sports-icons.woff") format("woff"),
+    url("./outdoor-sports-icons.ttf") format("truetype"),
+    url("./outdoor-sports-icons.svg#outdoor-sports-icons") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
     font-family: "outdoor-sports-icons";
     src: url("./outdoor-sports-icons.svg#outdoor-sports-icons") format("svg");
   }
 }
 
-[data-icon]:before { content: attr(data-icon); }
+[data-icon]:before {
+  content: attr(data-icon);
+}
 
 [data-icon]:before,
 .icon-crosscountry:before,
@@ -44,10 +46,24 @@
   font-smoothing: antialiased;
 }
 
-.icon-crosscountry:before { content: "\f100"; }
-.icon-iceskate:before { content: "\f101"; }
-.icon-locate:before { content: "\f102"; }
-.icon-location:before { content: "\f103"; }
-.icon-status-ok:before { content: "\f104"; }
-.icon-status-unknown:before { content: "\f105"; }
-.icon-swim:before { content: "\f106"; }
+.icon-crosscountry:before {
+  content: "\f100";
+}
+.icon-iceskate:before {
+  content: "\f101";
+}
+.icon-locate:before {
+  content: "\f102";
+}
+.icon-location:before {
+  content: "\f103";
+}
+.icon-status-ok:before {
+  content: "\f104";
+}
+.icon-status-unknown:before {
+  content: "\f105";
+}
+.icon-swim:before {
+  content: "\f106";
+}

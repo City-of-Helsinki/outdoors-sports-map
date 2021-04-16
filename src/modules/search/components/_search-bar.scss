@@ -6,7 +6,7 @@
     align-items: center;
     position: relative;
 
-    input[name='search'] {
+    input[name="search"] {
       flex: 2 1 auto;
       display: inline-block;
       border: 2px solid $ui-content;
@@ -14,7 +14,7 @@
       padding: 0 $gap;
       line-height: 30px;
       height: 34px;
-      font-family: 'Lato', sans-serif !important;
+      font-family: "Lato", sans-serif !important;
 
       &:focus {
         box-shadow: 0 0 0 2px $content-background !important;

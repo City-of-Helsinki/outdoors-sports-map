@@ -1,0 +1,70 @@
+import L from "leaflet";
+import React, { Component } from "react";
+
+import { getUnitQuality } from "../helpers";
+import UnitGeometry from "./UnitGeometry";
+import UnitMarker from "./UnitMarker";
+
+type Props = {
+  unit: Record<string, any>;
+  isSelected: boolean;
+  zoomLevel: number;
+  openUnit: (unitId: string) => void;
+};
+
+class SingleUnitOnMap extends Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    const { unit, isSelected, zoomLevel } = this.props;
+
+    const isQualityUpdated =
+      getUnitQuality(unit) !== getUnitQuality(nextProps.unit);
+
+    const isSelectedUpdated = isSelected !== nextProps.isSelected;
+    const isZoomUpdated = zoomLevel !== nextProps.zoomLevel;
+
+    return isQualityUpdated || isSelectedUpdated || isZoomUpdated;
+  }
+
+  /*:: handleClick: Function */
+  handleClick(e: React.SyntheticEvent<HTMLElement>) {
+    const { unit, openUnit } = this.props;
+
+    L.DomEvent.stopPropagation(e);
+    openUnit(unit.id);
+  }
+
+  render() {
+    const { unit, zoomLevel, isSelected, ...rest } = this.props;
+
+    const geometry =
+      unit.geometry && unit.geometry.type === "MultiLineString"
+        ? unit.geometry
+        : null;
+
+    return (
+      <div>
+        <UnitMarker
+          unit={unit}
+          zoomLevel={zoomLevel}
+          isSelected={isSelected}
+          handleClick={this.handleClick}
+          {...rest}
+        />
+        {geometry && (
+          <UnitGeometry
+            unit={unit}
+            onClick={this.handleClick}
+            isSelected={isSelected}
+          />
+        )}
+      </div>
+    );
+  }
+}
+
+export default SingleUnitOnMap;

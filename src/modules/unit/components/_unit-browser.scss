@@ -74,7 +74,7 @@
       color: $ui-text;
       border: 0;
       line-height: 24px;
-      &[aria-pressed='true'] {
+      &[aria-pressed="true"] {
         background: $ui-enabled;
       }
 

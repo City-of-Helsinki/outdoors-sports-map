@@ -15,7 +15,38 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "import/order": [
+        "error",
+        {
+          "groups": [
+            [
+              "builtin",
+              "external"
+            ],
+            [
+              "internal",
+              "parent",
+              "index",
+              "sibling",
+              "object"
+            ]
+          ],
+          "newlines-between": "always",
+          "alphabetize": {
+            "order": "asc"
+          }
+        }
+      ],
+      "react/function-component-definition": [
+        "error",
+        {
+          "namedComponents": "function-declaration"
+        }
+      ],
+      "react/destructuring-assignment": "error"
+    }
   },
   "browserslist": {
     "production": [
@@ -43,6 +74,7 @@
     "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/react-helmet": "^6.1.1",
     "bootstrap": "4.6",
     "classnames": "^2.3.1",
     "date-fns": "^2.9.0",

@@ -1,9 +1,9 @@
 ---
 name: Question
 about: Post a question and ask help from the community.
-title: ''
-labels: 'i: question'
-assignees: ''
+title: ""
+labels: "i: question"
+assignees: ""
 ---
 
 ## Question

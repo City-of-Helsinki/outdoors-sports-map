@@ -1,0 +1,56 @@
+import keys from "lodash/keys";
+import { combineReducers } from "redux";
+import { handleActions } from "redux-actions";
+
+import type { EntityAction } from "../common/constants";
+import { ServiceActions } from "./constants";
+
+const isFetchingReducer = handleActions(
+  {
+    [ServiceActions.FETCH]: () => true,
+    [ServiceActions.RECEIVE]: () => false,
+    [ServiceActions.FETCH_ERROR]: () => false,
+  },
+  false
+);
+
+const fetchErrorReducer = handleActions(
+  {
+    [ServiceActions.FETCH]: () => null,
+    [ServiceActions.RECEIVE]: () => null,
+    [ServiceActions.FETCH_ERROR]: (
+      state: Record<string, any>,
+      { payload: { error } }
+    ) => error,
+  },
+  null
+);
+
+const byIdReducer = handleActions(
+  {
+    [ServiceActions.RECEIVE]: (
+      state: Record<string, any>,
+      { payload: { entities } }: EntityAction
+    ) => ({ ...entities.service }),
+  },
+  {}
+);
+
+const all = handleActions(
+  {
+    [ServiceActions.RECEIVE]: (
+      state: Record<string, any>,
+      { payload: { entities } }: EntityAction
+    ) => [...keys(entities.service)],
+  },
+  []
+);
+
+const reducer = combineReducers({
+  isFetching: isFetchingReducer,
+  fetchError: fetchErrorReducer,
+  byId: byIdReducer,
+  all,
+});
+
+export default reducer;
