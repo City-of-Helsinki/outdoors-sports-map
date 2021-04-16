@@ -1,11 +1,17 @@
-/* eslint-disable react/prop-types */
 import isEmpty from "lodash/isEmpty";
-import React from "react";
 
+import { Unit } from "../constants";
 import { getUnitQuality, sortByCondition } from "../helpers";
 import SingleUnitOnMap from "./SingleUnitOnMap";
 
-function UnitsOnMap({ units, selectedUnit, openUnit, zoomLevel }) {
+type Props = {
+  units: Unit[];
+  selectedUnit: Unit;
+  openUnit: (unitId: string) => void;
+  zoomLevel: number;
+};
+
+function UnitsOnMap({ units, selectedUnit, openUnit, zoomLevel }: Props) {
   let unitsInOrder = units.slice();
   const originalLength = unitsInOrder.length;
 

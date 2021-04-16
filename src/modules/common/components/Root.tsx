@@ -1,5 +1,4 @@
-import PropTypes from "prop-types";
-import React from "react";
+import { History } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { PersistGate } from "redux-persist/es/integration/react";
@@ -10,20 +9,22 @@ import TranslationProvider from "./translation/TranslationProvider";
 
 const { persistor, store } = createStore();
 
-function Root({ history }) {
-  return <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <TranslationProvider>
-        <Router history={history}>
-          <App />
-        </Router>
-      </TranslationProvider>
-    </PersistGate>
-  </Provider>
-}
-
-Root.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+type Props = {
+  history: History;
 };
+
+function Root({ history }: Props) {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <TranslationProvider>
+          <Router history={history}>
+            <App />
+          </Router>
+        </TranslationProvider>
+      </PersistGate>
+    </Provider>
+  );
+}
 
 export default Root;

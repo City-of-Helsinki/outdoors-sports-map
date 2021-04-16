@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "../../../common/enzymeHelpers";
 import SearchBar from "../SearchBar";
 

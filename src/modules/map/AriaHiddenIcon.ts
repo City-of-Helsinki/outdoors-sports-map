@@ -1,9 +1,12 @@
-import { Icon } from "leaflet";
+import L from "leaflet";
 
-export default Icon.extend({
-  _setIconStyles(img, name) {
-    Icon.prototype._setIconStyles.call(this, img, name);
+const AriaHiddenIcon = L.Icon.extend({
+  _setIconStyles(img: HTMLImageElement, name: string) {
+    // @ts-ignore
+    L.Icon.prototype._setIconStyles.call(this, img, name);
 
-    img.setAttribute("aria-hidden", true);
+    img.setAttribute("aria-hidden", "true");
   },
 });
+
+export default AriaHiddenIcon;

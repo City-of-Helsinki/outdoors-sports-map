@@ -1,10 +1,19 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 
-class UnitFilterOptionsWrapper extends React.Component<{
+type Props = {
   id: string;
-}> {
-  constructor(props) {
+  className?: string;
+  tabIndex?: number;
+  role?: string;
+};
+
+type State = {
+  height: number;
+};
+
+class UnitFilterOptionsWrapper extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       height: 0,
@@ -14,11 +23,14 @@ class UnitFilterOptionsWrapper extends React.Component<{
   componentDidMount() {
     const { id } = this.props;
     const menuWrapper = document.getElementById(id);
-    const wrapperHeight = menuWrapper.clientHeight;
 
-    this.setState({
-      height: wrapperHeight,
-    });
+    if (menuWrapper) {
+      const wrapperHeight = menuWrapper.clientHeight;
+
+      this.setState({
+        height: wrapperHeight,
+      });
+    }
   }
 
   componentWillUnmount() {

@@ -7,7 +7,7 @@ import {
   getIsActive as getSearchActive,
   getUnitResultIDs,
 } from "../search/selectors";
-import { UnitFilters } from "./constants";
+import { SportFilter, Unit, UnitFilters, UnitFilterValues } from "./constants";
 // eslint-disable-next-line import/no-cycle
 import { getDefaultSportFilter, getDefaultStatusFilter } from "./helpers";
 
@@ -22,10 +22,11 @@ export const getAllUnits = (state: AppState) =>
     })
   );
 
-const _getVisibleUnits = (state: AppState, search: string) => {
-  const searchPrams = new URLSearchParams(search);
-  const sport = searchPrams.get("sport") || getDefaultSportFilter();
-  const status = searchPrams.get("status") || getDefaultStatusFilter();
+const _getVisibleUnits = (
+  state: AppState,
+  sport: SportFilter = getDefaultSportFilter(),
+  status: UnitFilterValues = getDefaultStatusFilter()
+): Unit[] => {
   let visibleUnits = state.unit[sport];
 
   if (status === UnitFilters.STATUS_OK) {
@@ -39,7 +40,7 @@ const _getVisibleUnits = (state: AppState, search: string) => {
     visibleUnits = intersection(visibleUnits, getUnitResultIDs(state));
   }
 
-  return visibleUnits.map((id) =>
+  return visibleUnits.map((id: string) =>
     getUnitById(state, {
       id,
     })
@@ -48,28 +49,11 @@ const _getVisibleUnits = (state: AppState, search: string) => {
 
 export const getVisibleUnits = memoize(
   _getVisibleUnits,
-  (state: AppState, query: Array<string>) =>
+  (state, sport, status) =>
     `${JSON.stringify(state.unit)}${String(
       getSearchActive(state)
-    )}${JSON.stringify(getUnitResultIDs(state))}${JSON.stringify(query)}`
+    )}${JSON.stringify(getUnitResultIDs(state))}${sport},${status}`
 );
-
-export const getSearchResults = (state: AppState) =>
-  /* , props: Object */
-  state.unit.searchResults.map((id) =>
-    getUnitById(state, {
-      id,
-    })
-  );
-
-export const getSearchSuggestions = (
-  state: AppState
-): Array<Record<string, any>> =>
-  state.unit.searchSuggestions.map((id) =>
-    getUnitById(state, {
-      id,
-    })
-  );
 
 export const getIsFetchingUnits = (state: AppState) => state.unit.isFetching;
 

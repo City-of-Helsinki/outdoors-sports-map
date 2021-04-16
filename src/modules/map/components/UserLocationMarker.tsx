@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 import { Marker } from "react-leaflet";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, Dispatch } from "redux";
 
 import iconUrl from "../../../assets/markers/location.png";
 import iconRetinaUrl from "../../../assets/markers/location@2x.png";
+import { AppState } from "../../common/constants";
 import AriaHiddenIcon from "../AriaHiddenIcon";
 import { setLocation as setLocationActionFactory } from "../actions";
 import latLngToArray from "../helpers";
 import { getLocation } from "../selectors";
 
 type Props = {
-  setLocation: (coordinates: [Number, number]) => void;
+  setLocation: (coordinates: number[]) => void;
+  position: [number, number];
 };
 
 const createIcon = () =>
+  // @ts-ignore
   new AriaHiddenIcon({
     iconUrl,
     iconRetinaUrl,
@@ -23,20 +26,22 @@ const createIcon = () =>
   });
 
 class UserLocationMarker extends Component<Props> {
-  locationRef = React.createRef();
+  locationRef = React.createRef<Marker>();
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.handleDragEnd = this.handleDragEnd.bind(this);
   }
 
-  /*:: handleDragEnd: Function */
   handleDragEnd() {
     const { setLocation } = this.props;
+    const latLng = this.locationRef.current?.leafletElement.getLatLng();
 
-    setLocation(
-      latLngToArray(this.locationRef.current.leafletElement.getLatLng())
-    );
+    if (latLng) {
+      const latLngArray = latLngToArray(latLng);
+
+      setLocation(latLngArray);
+    }
   }
 
   render() {
@@ -46,18 +51,18 @@ class UserLocationMarker extends Component<Props> {
         icon={createIcon()}
         zIndexOffset={1000}
         draggable
-        onDragEnd={this.handleDragEnd}
+        ondragend={this.handleDragEnd}
         {...this.props}
       />
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppState) => ({
   position: getLocation(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       setLocation: setLocationActionFactory,

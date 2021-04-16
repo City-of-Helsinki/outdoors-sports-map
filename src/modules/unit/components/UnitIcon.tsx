@@ -1,11 +1,13 @@
-/* eslint-disable react/prop-types */
-import React from "react";
-
 import OSMIcon from "../../home/components/OSMIcon";
-import { UnitFilters } from "../constants";
+import { Unit, UnitFilters } from "../constants";
 import { getUnitSport } from "../helpers";
 
-function UnitIcon({ unit }) {
+type Props = {
+  unit: Unit;
+  alt?: string;
+};
+
+function UnitIcon({ unit, alt }: Props) {
   let icon = "status-unknown";
 
   switch (getUnitSport(unit)) {
@@ -24,7 +26,7 @@ function UnitIcon({ unit }) {
     default: // Use default value
   }
 
-  return <OSMIcon className="unit-icon" icon={icon} />;
+  return <OSMIcon className="unit-icon" icon={icon} alt={alt} />;
 }
 
 export default UnitIcon;

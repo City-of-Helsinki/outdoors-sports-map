@@ -1,6 +1,6 @@
-import { schema } from "normalizr";
+import { Geometry } from "geojson";
+import { NormalizedSchema, schema } from "normalizr";
 
-// eslint-disable-next-line import/no-cycle
 import { normalizeActionName } from "../common/helpers";
 
 export const UNIT_PIN_HEIGHT = 40;
@@ -15,15 +15,74 @@ export const UnitFilters = {
   SWIMMING: "swim",
   STATUS_OK: "status_ok",
   STATUS_ALL: "status_all",
-};
+} as const;
 
-export const StatusFilters = [UnitFilters.STATUS_ALL, UnitFilters.STATUS_OK];
+export type UnitFilterValues = typeof UnitFilters[keyof typeof UnitFilters];
+
+export const StatusFilters = [
+  UnitFilters.STATUS_ALL,
+  UnitFilters.STATUS_OK,
+] as const;
+
+export type StatusFilter = typeof StatusFilters[number];
 
 export const SportFilters = [
   UnitFilters.SKIING,
   UnitFilters.ICE_SKATING,
   UnitFilters.SWIMMING,
-];
+] as const;
+
+export type SportFilter = typeof SportFilters[number];
+
+type Translatable<T = string> = {
+  fi: T;
+  sv: T;
+  en: T;
+};
+
+export type Unit = {
+  id: string;
+  name: Translatable<string>;
+  description: Translatable<string>;
+  extensions?: {
+    lighting?: Translatable<string>;
+    skiing_technique?: string;
+    // This field name may misguide you
+    length?: number;
+  };
+  phone?: string;
+  url?: string;
+  geometry: Geometry;
+  location: {
+    coordinates: [number, number];
+  };
+  street_address: Translatable<string>;
+  address_zip?: string;
+  municipality?: string;
+  services: number[];
+  observations: Array<{
+    property: string[];
+    primary: boolean;
+    quality: string;
+    name: Translatable<string>;
+    value: Translatable<string>;
+    time: string;
+  }>;
+  www: Translatable<string>;
+  connections: Array<{
+    section_type: string;
+    name: Translatable<string>;
+  }>;
+  picture_url?: string;
+};
+
+export type NormalizedUnit = {
+  unit: {
+    [id: number]: NormalizedSchema<Unit, number>;
+  };
+};
+
+export type NormalizedUnitSchema = NormalizedSchema<NormalizedUnit, number[]>;
 
 export type SeasonDelimiter = {
   day: number;
@@ -33,7 +92,7 @@ export type SeasonDelimiter = {
 export type Season = {
   start: SeasonDelimiter;
   end: SeasonDelimiter;
-  filters: Array<string>;
+  filters: SportFilter[];
 };
 
 export const SummerSeason: Season = {
@@ -128,7 +187,6 @@ export type UnitState = {
   searchResults: Array<string>;
 };
 
-export const unitSchema = new schema.Entity(
-  "unit"
-  /* , {} */
-);
+export const unitSchema = new schema.Entity<Unit>("unit", undefined, {
+  idAttribute: (value) => value.id.toString(),
+});

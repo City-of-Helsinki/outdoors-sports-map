@@ -1,64 +1,51 @@
-import React from "react";
 import { useSelector } from "react-redux";
-// @ts-expect-error: Type definitions are out of date
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import { arrayifyQueryValue } from "../../common/helpers";
+import { Address, AppState } from "../../common/constants";
+import useSearch from "../../common/hooks/useSearch";
 import getIsLoading from "../../home/selectors";
+import { MapRef } from "../../map/constants";
 import * as fromMap from "../../map/selectors";
 import * as fromSearch from "../../search/selectors";
-import * as fromService from "../../service/selectors";
-import { getDefaultFilters } from "../helpers";
+import { SportFilter, StatusFilter, Unit } from "../constants";
 import * as fromUnit from "../selectors";
 import UnitBrowser from "./UnitBrowser";
 
-function getLeafletMap(ref) {
-  const map = ref.current;
-
-  if (!map) {
-    return null;
-  }
-
-  return map.mapRef.leafletElement;
+function getLeafletMap(ref: MapRef) {
+  return ref.current?.leafletElement;
 }
 
 type Props = {
-  mapRef: Record<string, any>;
+  mapRef: MapRef;
   onViewChange: (coordinates: [number, number]) => void;
   expandedState: [boolean, (value: boolean) => void];
 };
 
-function UnitBrowserContainer({
-  mapRef,
-  onViewChange,
-  expandedState,
-}: Props) {
-  const { search } = useLocation();
-  const params = useParams();
-  const location = useLocation();
+function UnitBrowserContainer({ mapRef, onViewChange, expandedState }: Props) {
+  const params = useParams<{ unitId: string }>();
+  const { sport, status } = useSearch<{
+    sport?: SportFilter;
+    status?: StatusFilter;
+  }>();
 
-  const unitData = useSelector((state) =>
-    fromUnit.getVisibleUnits(state, location.search)
+  const unitData = useSelector<AppState, Unit[]>((state) =>
+    fromUnit.getVisibleUnits(state, sport, status)
   );
 
-  const serviceData = useSelector(fromService.getServicesObject);
-  const isLoading = useSelector(getIsLoading);
-  const isSearching = useSelector(fromSearch.getIsFetching);
-  const mapCenter = useSelector(fromMap.getLocation);
-  const address = useSelector(fromMap.getAddress);
-  const filter = new URLSearchParams(search).get("filter");
-
-  const activeFilter = filter
-    ? arrayifyQueryValue(filter)
-    : getDefaultFilters();
+  const isLoading = useSelector<AppState, boolean>(getIsLoading);
+  const isSearching = useSelector<AppState, boolean>(fromSearch.getIsFetching);
+  const mapCenter = useSelector<AppState, [number, number]>(
+    fromMap.getLocation
+  );
+  const address = useSelector<AppState, Address | undefined | null>(
+    fromMap.getAddress
+  );
 
   return (
     <UnitBrowser
       isLoading={isLoading}
       isSearching={isSearching}
       units={unitData}
-      services={serviceData}
-      activeFilter={activeFilter}
       position={mapCenter}
       address={address}
       params={params}

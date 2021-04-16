@@ -1,14 +1,15 @@
 // eslint-disable-next-line max-classes-per-file
+import L from "leaflet";
 import isEqual from "lodash/isEqual";
 import values from "lodash/values";
-import React, { Component } from "react";
-import { withTranslation } from "react-i18next";
-import { withRouter } from "react-router-dom";
+import { Component } from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import Link from "../../common/components/Link";
 import Loading from "../../home/components/Loading";
 import SMIcon from "../../home/components/SMIcon";
-import { SortKeys, UNIT_BATCH_SIZE } from "../constants";
+import { SortKeys, Unit, UNIT_BATCH_SIZE } from "../constants";
 import * as unitHelpers from "../helpers";
 import ObservationStatus from "./ObservationStatus";
 import SortSelectorDropdown from "./SortSelectorDropdown";
@@ -16,13 +17,13 @@ import UnitIcon from "./UnitIcon";
 import { View } from "./View";
 
 type UnitListItemProps = {
-  unit: Record<string, any>;
+  unit: Unit;
   activeLanguage: string;
   locationSearch: string;
 };
 
 class UnitListItem extends Component<UnitListItemProps> {
-  shouldComponentUpdate({ unit }) {
+  shouldComponentUpdate({ unit }: UnitListItemProps) {
     const { unit: currentUnit } = this.props;
 
     return JSON.stringify(currentUnit) !== JSON.stringify(unit);
@@ -58,22 +59,16 @@ class UnitListItem extends Component<UnitListItemProps> {
   }
 }
 
-type Props = {
-  units: Record<string, any>[];
-  services: Record<string, any>;
-  isVisible: boolean;
-  activeFilter: string;
-  isLoading: boolean;
-  t: (arg0: string) => string;
-  i18n: {
-    languages: string[];
+type Props = WithTranslation &
+  RouteComponentProps & {
+    units: Unit[];
+    isVisible: boolean;
+    activeFilter: string;
+    isLoading: boolean;
+    position: [number, number];
+    leafletMap: L.Map;
   };
-  position: [number, number];
-  leafletMap: Record<string, any>;
-  location: {
-    search: string;
-  };
-};
+
 type State = {
   sortKey: string;
   maxUnitCount: number;
@@ -134,16 +129,15 @@ export class ListViewBase extends Component<Props, State> {
    * @param  {string} sortKey
    * @return {void}
    */
-
-  /*:: selectSortKey: Function */
-  selectSortKey(sortKey: string) {
-    this.setState({
-      sortKey,
-    });
-    this.resetUnitCount();
+  selectSortKey(sortKey: string | null): void {
+    if (sortKey) {
+      this.setState({
+        sortKey,
+      });
+      this.resetUnitCount();
+    }
   }
 
-  /*:: loadMoreUnits: Function */
   loadMoreUnits() {
     this.setState((prevState) => ({
       maxUnitCount: prevState.maxUnitCount + UNIT_BATCH_SIZE,
@@ -156,14 +150,13 @@ export class ListViewBase extends Component<Props, State> {
     });
   }
 
-  /*:: handleLoadMoreClick: Function */
   handleLoadMoreClick(e: React.SyntheticEvent<HTMLAnchorElement>) {
     e.preventDefault();
     this.loadMoreUnits();
   }
 
   render() {
-    const { services, isLoading, t, i18n, units, location } = this.props;
+    const { isLoading, t, i18n, units, location } = this.props;
     const { sortKey, maxUnitCount } = this.state;
     const totalUnits = units.length;
 
@@ -187,7 +180,6 @@ export class ListViewBase extends Component<Props, State> {
               renderedUnits.map((unit) => (
                 <UnitListItem
                   unit={unit}
-                  services={services}
                   key={unit.id}
                   activeLanguage={i18n.languages[0]}
                   locationSearch={location.search}
@@ -214,4 +206,4 @@ export class ListViewBase extends Component<Props, State> {
   }
 }
 
-export default withRouter(withTranslation()(ListViewBase));
+export default withTranslation()(withRouter(ListViewBase));

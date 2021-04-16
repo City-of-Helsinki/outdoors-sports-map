@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "../../enzymeHelpers";
 import JumpLink from "../JumpLink";
 import { MAIN_CONTENT_ID } from "../Page";

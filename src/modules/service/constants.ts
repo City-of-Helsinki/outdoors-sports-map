@@ -1,6 +1,5 @@
-import { schema } from "normalizr";
+import { schema, NormalizedSchema } from "normalizr";
 
-// eslint-disable-next-line import/no-cycle
 import { normalizeActionName } from "../common/helpers";
 
 export const UnitServices = {
@@ -48,7 +47,21 @@ export type ServiceState = {
   all: Array<string>;
 };
 
-export const serviceSchema = new schema.Entity(
-  "service"
-  /* , {} */
-);
+export const serviceSchema = new schema.Entity<Service>("service", undefined, {
+  idAttribute: (value) => value.id.toString(),
+});
+
+export type Service = {
+  id: string;
+};
+
+export type NormalizedService = {
+  unit: {
+    [id: number]: NormalizedSchema<Service, number>;
+  };
+};
+
+export type NormalizedServiceSchema = NormalizedSchema<
+  NormalizedService,
+  number[]
+>;

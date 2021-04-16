@@ -8,8 +8,13 @@ import {
   createUrl,
   normalizeEntityResults,
 } from "../api/helpers";
-import type { FetchAction } from "../common/constants";
-import { unitSchema } from "../unit/constants";
+import { FetchAction } from "../common/constants";
+import {
+  Unit,
+  NormalizedUnit,
+  NormalizedUnitSchema,
+  unitSchema,
+} from "../unit/constants";
 import { getFetchUnitsRequest } from "../unit/helpers";
 import {
   receiveAddressSuggestions,
@@ -21,7 +26,7 @@ import { SearchActions } from "./constants";
 function* searchUnits({
   payload: { params },
 }: FetchAction): Generator<any, any, any> {
-  let data = [];
+  let data: NormalizedUnitSchema = { entities: { unit: {} }, result: [] };
   let request = null;
 
   // Make search request only when there's input
@@ -34,15 +39,18 @@ function* searchUnits({
 
   const { bodyAsJson } = yield call(callApi, request);
 
-  data = bodyAsJson.results
-    ? normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema))
-    : [];
+  if (bodyAsJson.results) {
+    data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
+      bodyAsJson.results,
+      new schema.Array(unitSchema)
+    );
+  }
 
   yield put(receiveUnits(data));
 }
 
 function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
-  let data = [];
+  let data: NormalizedUnitSchema = { entities: { unit: {} }, result: [] };
   let addressData = [];
 
   const digitransitParams = {
@@ -74,12 +82,16 @@ function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
 
     addressData = addressBodyAsJson
       ? addressBodyAsJson.features.filter(
-          (feature) => feature.properties.layer !== "stop"
+          (feature: any) => feature.properties.layer !== "stop"
         )
       : [];
-    data = bodyAsJson.results
-      ? normalizeEntityResults(bodyAsJson.results, new schema.Array(unitSchema))
-      : [];
+
+    if (bodyAsJson.results) {
+      data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
+        bodyAsJson.results,
+        new schema.Array(unitSchema)
+      );
+    }
   }
 
   yield put(receiveUnitSuggestions(data));
@@ -88,7 +100,7 @@ function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
 
 function* clearSearch() {
   // yield put(receiveSearchResults([]));
-  yield put(receiveUnitSuggestions([]));
+  yield put(receiveUnitSuggestions({ entities: { unit: {} }, result: [] }));
 }
 
 function* watchSearchUnits() {

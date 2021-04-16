@@ -26,16 +26,18 @@ const getTranslations = () => ({
 const localesByName = getTranslations();
 const supportedLanguages = Object.values(SUPPORTED_LANGUAGES);
 
-function changeDocumentLanguage(nextLanguage) {
+function changeDocumentLanguage(nextLanguage: string) {
   document.documentElement.lang = nextLanguage;
 }
 
-i18n // Configure language changed hook first so that it is fired on language
-  // initialization as well.
-  .on("languageChanged", (nextLanguage) => {
-    moment.locale(nextLanguage);
-    changeDocumentLanguage(nextLanguage);
-  })
+// Configure language changed hook first so that it is fired on language
+// initialization as well.
+i18n.on("languageChanged", (nextLanguage) => {
+  moment.locale(nextLanguage);
+  changeDocumentLanguage(nextLanguage);
+});
+
+i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init(
@@ -59,6 +61,7 @@ i18n // Configure language changed hook first so that it is fired on language
       }
     }
   );
+
 // replace language in url so that the pathname will reflect the current
 // language when language is changed by using i18n.changeLanguage
 // Replace language only when it is changed, not on initialization.

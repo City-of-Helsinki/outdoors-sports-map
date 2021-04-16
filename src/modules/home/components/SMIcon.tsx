@@ -1,8 +1,13 @@
-import React from "react";
+type Props = {
+  icon: string;
+  className?: string;
+  title?: string;
+  onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+  style?: Record<string, unknown>;
+};
 
-// eslint-disable-next-line react/jsx-props-no-spreading, react/prop-types
-function SMIcon({ icon, className, ...rest }) {
-  return <span className={`icon-icon-${icon} ${className || ""}`} {...rest} />
+function SMIcon({ icon, className, ...rest }: Props) {
+  return <span className={`icon-icon-${icon} ${className || ""}`} {...rest} />;
 }
 
 export default SMIcon;

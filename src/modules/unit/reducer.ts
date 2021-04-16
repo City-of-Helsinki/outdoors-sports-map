@@ -2,7 +2,7 @@ import keys from "lodash/keys";
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
 
-import type { EntityAction } from "../common/constants";
+import type { Action, EntityAction } from "../common/constants";
 import {
   IceSkatingServices,
   SkiingServices,
@@ -25,8 +25,8 @@ const fetchErrorReducer = handleActions(
     [UnitActions.FETCH]: () => null,
     [UnitActions.RECEIVE]: () => null,
     [UnitActions.FETCH_ERROR]: (
-      state: Record<string, any>,
-      { payload: { error } }
+      state: Record<string, any> | null,
+      { payload: { error } }: Action
     ) => error,
   },
   null
@@ -37,7 +37,7 @@ const byIdReducer = handleActions(
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
       { payload: { entities } }: EntityAction
-    ) => ({ ...entities.unit }),
+    ) => entities.unit,
   },
   {}
 );
@@ -46,8 +46,8 @@ const all = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
-    ) => [...keys(entities.unit)],
+      { payload: { result } }: EntityAction
+    ) => result,
   },
   []
 );
@@ -60,7 +60,8 @@ const iceskate = handleActions(
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
-          (unitService) => IceSkatingServices.indexOf(unitService) !== -1
+          (unitService: number) =>
+            IceSkatingServices.indexOf(unitService) !== -1
         )
       ),
     ],
@@ -76,7 +77,7 @@ const ski = handleActions(
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
-          (unitService) => SkiingServices.indexOf(unitService) !== -1
+          (unitService: number) => SkiingServices.indexOf(unitService) !== -1
         )
       ),
     ],
@@ -92,7 +93,7 @@ const swim = handleActions(
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
-          (unitService) => SwimmingServices.indexOf(unitService) !== -1
+          (unitService: number) => SwimmingServices.indexOf(unitService) !== -1
         )
       ),
     ],

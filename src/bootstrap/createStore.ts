@@ -8,9 +8,9 @@ import { APP_NAME } from "../modules/common/constants";
 import createRootReducer from "./createRootReducer";
 import rootSaga from "./rootSaga";
 
-/**
- * @returns {function}
- */
+export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;
+export type RootAction = Parameters<ReturnType<typeof createRootReducer>>[1];
+
 const createStore = () => {
   const persistConfig = {
     key: "primary",

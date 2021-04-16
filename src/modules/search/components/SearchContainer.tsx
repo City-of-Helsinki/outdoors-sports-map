@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, Dispatch } from "redux";
 
+import { AppState } from "../../common/constants";
 import * as mapActions from "../../map/actions";
+import { Unit } from "../../unit/constants";
 import { getIsLoading as getIsUnitLoading } from "../../unit/selectors";
 import * as unitActions from "../actions";
 import * as selectors from "../selectors";
@@ -10,8 +12,8 @@ import SearchBar from "./SearchBar";
 import SearchSuggestions from "./SearchSuggestions";
 
 type Props = {
-  unitSuggestions: Record<string, any>[];
-  searchUnits: (value: string) => void;
+  unitSuggestions: Unit[];
+  searchUnits: (input: string, params?: Record<string, any>) => void;
   fetchUnitSuggestions: (value: string) => void;
   searchDisabled: boolean;
   onSearch: (value: string) => void;
@@ -21,6 +23,7 @@ type Props = {
   addresses: Record<string, any>[];
   isActive: boolean;
 };
+
 type State = {
   searchPhrase: string;
   showSuggestions: boolean;
@@ -32,7 +35,7 @@ const initialState = () => ({
 });
 
 class SearchContainer extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = initialState();
   }
@@ -42,7 +45,7 @@ class SearchContainer extends Component<Props, State> {
    * @param  {string} value [description]
    * @return {void}       [description]
    */
-  onInputChange = (value) => {
+  onInputChange = (value: string): void => {
     this.setState({
       searchPhrase: value,
       showSuggestions: true,
@@ -65,7 +68,7 @@ class SearchContainer extends Component<Props, State> {
    * @param  {string} searchPhrase [description]
    * @return {void}              [description]
    */
-  getSuggestions = (searchPhrase) => {
+  getSuggestions = (searchPhrase: string): void => {
     const { fetchUnitSuggestions } = this.props;
 
     fetchUnitSuggestions(searchPhrase);
@@ -113,14 +116,14 @@ class SearchContainer extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppState) => ({
   unitSuggestions: selectors.getUnitSuggestions(state),
   isActive: selectors.getIsActive(state),
   searchDisabled: getIsUnitLoading(state),
   addresses: selectors.getAddresses(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       searchUnits: unitActions.searchUnits,

@@ -1,17 +1,23 @@
 import L from "leaflet";
-import type { Control, MapControlProps } from "leaflet";
 import pick from "lodash/pick";
+import { ReactElement } from "react";
 import ReactDOM from "react-dom";
-import { MapControl, withLeaflet } from "react-leaflet";
+import { MapControl, withLeaflet, MapControlProps } from "react-leaflet";
 
 type Props = MapControlProps & {
   id: string;
   handleClick: (...args: Array<any>) => any;
   wrapperAttrs?: Record<string, string>;
+  isOpen: boolean;
+  activeLanguage: string;
+  "aria-expanded": boolean;
+  options: ReactElement;
+  className?: string;
+  children: ReactElement;
 };
 
-class DropdownControl extends MapControl<Control, Props> {
-  constructor(props) {
+class DropdownControl extends MapControl<Props> {
+  constructor(props: Props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.updateOptions = this.updateOptions.bind(this);
@@ -43,7 +49,7 @@ class DropdownControl extends MapControl<Control, Props> {
     return document.getElementById(this.optionsId);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     const { isOpen, activeLanguage } = this.props;
     const ariaExpanded = this.props["aria-expanded"];
     const element = this.control;
@@ -64,7 +70,9 @@ class DropdownControl extends MapControl<Control, Props> {
     const attributes = pick(this.props, propsList);
 
     Object.entries(attributes).forEach(([attribute, value]) => {
-      element.setAttribute(attribute, value.toString());
+      if (value) {
+        element.setAttribute(attribute, value.toString());
+      }
     });
   }
 
@@ -78,7 +86,6 @@ class DropdownControl extends MapControl<Control, Props> {
     return element;
   }
 
-  /*:: updateOptions: Function */
   updateOptions() {
     const { options, isOpen } = this.props;
 
@@ -97,33 +104,29 @@ class DropdownControl extends MapControl<Control, Props> {
     }
   }
 
-  /*:: handleClick: Function */
-  handleClick(event) {
+  handleClick(event: Event) {
     L.DomEvent.stopPropagation(event);
-    event.stopPropagation();
-    // eslint-disable-next-line no-unused-expressions
+
     this.props.handleClick && this.props.handleClick(event);
   }
 
   createLeafletElement() {
     const { className, children, wrapperAttrs } = this.props;
 
-    const control = L.control({
+    const control = new L.Control({
       position: this.props.position || "bottomright",
     });
 
-    // see http://leafletjs.com/reference.html#control-positions for other positions
-    control.handleClick = this.handleClick;
-
-    // eslint-disable-next-line func-names
     control.onAdd = () => {
       const div = L.DomUtil.create("div", `custom-control ${className}`);
 
-      Object.entries(wrapperAttrs).forEach(
-        ([attributeName, attributeValue]) => {
-          div.setAttribute(attributeName, attributeValue);
-        }
-      );
+      if (wrapperAttrs) {
+        Object.entries(wrapperAttrs).forEach(
+          ([attributeName, attributeValue]) => {
+            div.setAttribute(attributeName, attributeValue);
+          }
+        );
+      }
 
       const button = L.DomUtil.create("button", "custom-control-button", div);
 
@@ -139,7 +142,9 @@ class DropdownControl extends MapControl<Control, Props> {
       )
         .on(button, "click", L.DomEvent.stop)
         .on(button, "click", this.handleClick, control);
+
       ReactDOM.render(children, button);
+
       this.updateOptions();
 
       return div;

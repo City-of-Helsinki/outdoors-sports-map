@@ -1,31 +1,40 @@
 import L from "leaflet";
-import PropTypes from "prop-types";
+import { ReactElement } from "react";
 import ReactDOM from "react-dom";
-import { MapControl, withLeaflet } from "react-leaflet";
+import { MapControl, withLeaflet, MapControlProps } from "react-leaflet";
 
-class Control extends MapControl {
+type Props = MapControlProps & {
+  handleClick: (e: Event) => void;
+  className?: string;
+  children: ReactElement;
+};
+
+class Control extends MapControl<Props> {
   // note we're extending MapControl from react-leaflet, not Component from react
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  createLeafletElement({ className, children }) {
-    const control = L.control({
+  handleClick(event: Event) {
+    L.DomEvent.stopPropagation(event);
+
+    this.props.handleClick && this.props.handleClick(event);
+  }
+
+  createLeafletElement({ className, children }: Props) {
+    const control = new L.Control({
       position: this.props.position || "bottomright",
     });
 
-    // see http://leafletjs.com/reference.html#control-positions for other positions
-    control.handleClick = this.handleClick;
-
-    // eslint-disable-next-line func-names
-    control.onAdd = function () {
+    control.onAdd = () => {
       const div = L.DomUtil.create("div", `custom-control ${className}`);
       const link = L.DomUtil.create("button", "custom-control-button", div);
 
       L.DomEvent.on(link, "mousedown dblclick", L.DomEvent.stopPropagation)
         .on(link, "click", L.DomEvent.stop)
         .on(link, "click", this.handleClick, control);
+
       ReactDOM.render(children, link);
 
       return div;
@@ -33,17 +42,6 @@ class Control extends MapControl {
 
     return control;
   }
-
-  handleClick(event) {
-    L.DomEvent.stopPropagation(event);
-    event.stopPropagation();
-    // eslint-disable-next-line no-unused-expressions
-    this.props.handleClick && this.props.handleClick(event);
-  }
 }
-
-Control.propTypes = {
-  handleClick: PropTypes.func,
-};
 
 export default withLeaflet(Control);

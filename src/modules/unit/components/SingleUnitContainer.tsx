@@ -1,19 +1,18 @@
 import get from "lodash/get";
 import has from "lodash/has";
 import upperFirst from "lodash/upperFirst";
-import PropTypes from "prop-types";
-import React from "react";
-import type { Node } from "react";
+import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useLocation } from "react-router";
-import breaks from "remark-breaks";
 // @ts-ignore
+import breaks from "remark-breaks";
 
 import Link from "../../common/components/Link";
 import OutboundLink from "../../common/components/OutboundLink";
 import SMIcon from "../../home/components/SMIcon";
 import getServiceName from "../../service/helpers";
+import { Unit } from "../constants";
 import {
   createPalvelukarttaUrl,
   createReittiopasUrl,
@@ -28,18 +27,20 @@ import ObservationStatus, {
 } from "./ObservationStatus";
 import UnitIcon from "./UnitIcon";
 
-function shouldShowInfo(unit) {
+function shouldShowInfo(unit: Unit) {
   const hasExtensions =
     unit.extensions &&
     (unit.extensions.length ||
       unit.extensions.lighting ||
       unit.extensions.skiing_technique);
 
+  // Should show info if at least some interesting extension is available,
+  // or if there's a phone or a unit number
   return hasExtensions || unit.phone || unit.url;
 }
 
 type HeaderProps = {
-  unit: Record<string, any>;
+  unit: Unit;
   services: Record<string, any>;
   isLoading: boolean;
 };
@@ -52,7 +53,7 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
     },
   } = useTranslation();
 
-  const location = useLocation();
+  const location = useLocation<{ search: string }>();
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
   const unitMunicipality = unit ? unit.municipality : null;
@@ -111,7 +112,7 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
 }
 
 type LocationStateProps = {
-  unit: Record<string, any>;
+  unit: Unit;
 };
 
 function LocationState({ unit }: LocationStateProps) {
@@ -125,7 +126,7 @@ function LocationState({ unit }: LocationStateProps) {
 }
 
 type LocationInfoProps = {
-  unit: Record<string, any>;
+  unit: Unit;
 };
 
 function LocationInfo({ unit }: LocationInfoProps) {
@@ -137,14 +138,19 @@ function LocationInfo({ unit }: LocationInfoProps) {
   } = useTranslation();
 
   const unitWww = getAttr(unit.www, language);
+  const unitExtensionLength = get(unit, "extensions.length");
+  const unitExtensionLighting = unit?.extensions?.lighting
+    ? upperFirst(getAttr(unit.extensions.lighting, language))
+    : null;
+  const unitExtensionSkiingTechnique = get(unit, "extensions.skiing_technique");
 
   return (
     <BodyBox title={t("UNIT_CONTAINER.INFO")}>
-      {get(unit, "extensions.length") && (
+      {unitExtensionLength && (
         <p>
           {`${t("UNIT_CONTAINER.LENGTH")}: `}
           <strong>
-            {unit.extensions.length}
+            {unitExtensionLength}
             km
           </strong>
         </p>
@@ -152,17 +158,13 @@ function LocationInfo({ unit }: LocationInfoProps) {
       {get(unit, "extensions.lighting") && (
         <p>
           {`${t("UNIT_CONTAINER.LIGHTING")}: `}
-          <strong>
-            {upperFirst(getAttr(unit.extensions.lighting, language))}
-          </strong>
+          <strong>{unitExtensionLighting}</strong>
         </p>
       )}
-      {get(unit, "extensions.skiing_technique") && (
+      {unitExtensionSkiingTechnique && (
         <p>
           {`${t("UNIT_CONTAINER.SKIING_TECHNIQUE")}: `}
-          <strong>
-            {upperFirst(getAttr(unit.extensions.skiing_technique, language))}
-          </strong>
+          <strong>{unitExtensionSkiingTechnique}</strong>
         </p>
       )}
       {unit.phone && (
@@ -180,7 +182,7 @@ function LocationInfo({ unit }: LocationInfoProps) {
 }
 
 type NoticeInfoProps = {
-  unit: Record<string, any>;
+  unit: Unit;
 };
 
 /**
@@ -199,12 +201,11 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
 
   return notice ? (
     <BodyBox title={t("UNIT_CONTAINER.NOTICE")}>
-      <StatusUpdated time={getObservationTime(notice)} t={t} />
+      <StatusUpdated time={getObservationTime(notice)} />
       <ReactMarkdown
         source={getAttr(notice.value, language)} // Insert a break for each newline character
         // https://github.com/rexxars/react-markdown/issues/105#issuecomment-346103734
         plugins={[breaks]}
-        break="br"
         escapeHtml
         allowedTypes={["text", "paragraph", "break"]}
       />
@@ -243,7 +244,7 @@ function LocationRoute({ routeUrl, palvelukarttaUrl }: LocationRouteProps) {
 }
 
 type LocationOpeningHoursProps = {
-  unit: Record<string, any>;
+  unit: Unit;
 };
 
 function LocationOpeningHours({ unit }: LocationOpeningHoursProps) {
@@ -282,7 +283,7 @@ function LocationTemperature({ observation }: LocationTemperatureProps) {
 
   return (
     <BodyBox title={t("UNIT_CONTAINER.TEMPERATURE")}>
-      <StatusUpdated time={observationTime} t={t} />
+      <StatusUpdated time={observationTime} />
       {temperature}
     </BodyBox>
   );
@@ -303,7 +304,6 @@ function LiveLocationTemperature({
     <BodyBox title={t("UNIT_CONTAINER.WATER_TEMPERATURE")}>
       <StatusUpdatedAgo
         time={observationTime}
-        t={t}
         sensorName={t("UNIT_CONTAINER.WATER_TEMPERATURE_SENSOR")}
       />
       {`${temperature} °C`}
@@ -313,24 +313,21 @@ function LiveLocationTemperature({
 
 type BodyBoxProps = {
   title: string;
-  children: Node;
+  children: ReactNode;
   className?: string;
 };
 
-function BodyBox({
-  title,
-  children,
-  className = "",
-  ...rest
-}: BodyBoxProps) {
-  return <div className={`${className} unit-container-body-box`} {...rest}>
-    {title && <div className="unit-container-body-box-headline">{title}</div>}
-    {children}
-  </div>
+function BodyBox({ title, children, className = "", ...rest }: BodyBoxProps) {
+  return (
+    <div className={`${className} unit-container-body-box`} {...rest}>
+      {title && <div className="unit-container-body-box-headline">{title}</div>}
+      {children}
+    </div>
+  );
 }
 
 type SingleUnitBodyProps = {
-  currentUnit: Record<string, any>;
+  currentUnit: Unit;
   isLoading: boolean;
   liveTemperatureObservation: Record<string, any> | null | undefined;
   routeUrl: string;
@@ -376,25 +373,9 @@ export function SingleUnitBody({
   ) : null;
 }
 
-SingleUnitBody.defaultProps = {
-  liveTemperatureObservation: null,
-  temperatureObservation: null,
-  routeUrl: undefined,
-  currentUnit: undefined,
-};
-SingleUnitBody.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  currentUnit: PropTypes.object,
-  isLoading: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  liveTemperatureObservation: PropTypes.object,
-  routeUrl: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  temperatureObservation: PropTypes.object,
-};
 type Props = {
   isLoading: boolean;
-  unit: Record<string, any>;
+  unit: Unit;
   services: Record<string, any>;
   isOpen: boolean;
 };

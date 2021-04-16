@@ -1,5 +1,4 @@
-// @ts-ignore
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 import useReactRouterNavigationSideEffect from "../hooks/useReactRouterNavigationSideEffect";
 
@@ -8,7 +7,7 @@ import useReactRouterNavigationSideEffect from "../hooks/useReactRouterNavigatio
  * <Link> from react-router-dom.
  */
 function ResetFocus() {
-  const elementRef = useRef(null);
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
   useReactRouterNavigationSideEffect(() => {
     const element = elementRef.current;

@@ -13,7 +13,7 @@ type UnitFilterProps = {
   name: string;
   active: string;
   options: Array<string>;
-  secondaryOptions: Array<string> | null | undefined;
+  secondaryOptions?: Array<string> | null | undefined;
 };
 type UnitFiltersProps = {
   filters: Array<UnitFilterProps>;
@@ -37,23 +37,24 @@ function FilterOptionsRow({
   onKeyDown,
   onSelect,
 }: FilterOptionsRowProps) {
-  return <Row className={`${className} filter-options-row`}>
-    {options.map((option) => (
-      <Col className="unit-filters__option" xs={6} key={option}>
-        <UnitFilterButton
-          filterName={option}
-          onKeyDown={onKeyDown}
-          onClick={() => onSelect(filterName, option)}
-          message={t(`UNIT.FILTER.${invert(UnitFilters)[option]}`)}
-        />
-      </Col>
-    ))}
-  </Row>
+  return (
+    <Row className={`${className} filter-options-row`}>
+      {options.map((option) => (
+        <Col className="unit-filters__option" xs={6} key={option}>
+          <UnitFilterButton
+            filterName={option}
+            onKeyDown={onKeyDown}
+            onClick={() => onSelect(filterName, option)}
+            message={t(`UNIT.FILTER.${invert(UnitFilters)[option]}`)}
+          />
+        </Col>
+      ))}
+    </Row>
+  );
 }
 
 type FilterOptionProps = {
   t: (arg0: string) => string;
-  filter: string;
   isActive: boolean;
   onAction: (filter: Record<string, any>) => void;
   onSelect: (filterName: string, option: string) => void;
@@ -96,7 +97,7 @@ function FilterOption({
         <UnitFilterOptionsWrapper
           id={menuId}
           className="unit-filters__options-wrapper"
-          tabIndex="-1"
+          tabIndex={-1}
           role="region"
           aria-labelledby={controlId}
         >
@@ -127,7 +128,7 @@ function FilterOption({
   );
 }
 
-const filterEquals = (a, b) => {
+const filterEquals = (a: any, b: any) => {
   // Checks if a and b are the same by comparing their names.
   if (a && b) {
     return get(a, "name") === get(b, "name");

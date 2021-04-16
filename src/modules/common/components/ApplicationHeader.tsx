@@ -1,6 +1,4 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
-// @ts-ignore
 import { Link as RRLink, useLocation } from "react-router-dom";
 
 import FlagFinland24pxFlat from "../../../assets/icons/flag-finland-24-flat.png";
@@ -10,7 +8,10 @@ import { SUPPORTED_LANGUAGES } from "../../language/constants";
 import { replaceLanguageInPath } from "../pathUtils";
 import Link from "./Link";
 
-const countryFlags = {
+type SupportedLanguageValues = typeof SUPPORTED_LANGUAGES[keyof typeof SUPPORTED_LANGUAGES];
+const countryFlags: {
+  [key in SupportedLanguageValues]: string;
+} = {
   fi: FlagFinland24pxFlat,
   sv: FlagSweden24pxFlat,
   en: FlagUnitedKingdom24pxFlat,

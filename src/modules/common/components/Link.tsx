@@ -1,12 +1,9 @@
-import React from "react";
-import type { Node } from "react";
 import { useTranslation } from "react-i18next";
-import type { LocationShape } from "react-router-dom";
-import { Link as RRLink } from "react-router-dom";
+import { Link as RRLink, LinkProps } from "react-router-dom";
 
 import * as PathUtils from "../pathUtils";
 
-export function getToWithLanguage(to: string | LocationShape, lang: string) {
+export function getToWithLanguage(to: LinkProps["to"], lang: string) {
   if (typeof to === "function") {
     return PathUtils.getLocationFactoryWithLanguage(to, lang);
   }
@@ -18,12 +15,7 @@ export function getToWithLanguage(to: string | LocationShape, lang: string) {
   return PathUtils.getLocationWithLanguage(to, lang);
 }
 
-type Props = {
-  className?: string;
-  to: string | LocationShape;
-  replace?: boolean;
-  children?: Node;
-} & {
+type Props = LinkProps & {
   lang?: false | string;
 };
 

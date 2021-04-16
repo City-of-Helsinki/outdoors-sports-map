@@ -1,14 +1,12 @@
 import invert from "lodash/invert";
 import pick from "lodash/pick";
-import PropTypes from "prop-types";
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { UnitFilters } from "../constants";
 import UnitFilterButton from "./UnitFilterButton";
 import UnitFilterLabel from "./UnitFilterLabel";
 
-const filterNameToLabel = (filterName) => {
+const filterNameToLabel = (filterName: string) => {
   switch (filterName) {
     case "sport":
       return "UNIT.FILTER_SPORT";
@@ -21,7 +19,24 @@ const filterNameToLabel = (filterName) => {
   }
 };
 
-function UnitFilterLabelButton({ filter, onAction, isActive, ...rest }) {
+type Filter = {
+  name: string;
+  active: string;
+};
+
+type UnitFilterLabelButtonProps = {
+  filter: Filter;
+  onAction: (filter: Filter) => void;
+  isActive: boolean;
+  id?: string;
+};
+
+function UnitFilterLabelButton({
+  filter,
+  onAction,
+  isActive,
+  ...rest
+}: UnitFilterLabelButtonProps) {
   const { t } = useTranslation();
   const labelMessage = t(filterNameToLabel(filter.name));
   const buttonMessage = t(`UNIT.FILTER.${invert(UnitFilters)[filter.active]}`);
@@ -42,11 +57,5 @@ function UnitFilterLabelButton({ filter, onAction, isActive, ...rest }) {
     </div>
   );
 }
-
-UnitFilterLabelButton.propTypes = {
-  filter: PropTypes.objectOf(PropTypes.any).isRequired,
-  onAction: PropTypes.func.isRequired,
-  isActive: PropTypes.bool.isRequired,
-};
 
 export default UnitFilterLabelButton;

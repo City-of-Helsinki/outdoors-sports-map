@@ -1,6 +1,5 @@
-export const getLocation = (
-  state
-  /* , props */
-) => state.map.location;
+import { AppState } from "../common/constants";
 
-export const getAddress = (state) => state.map.address;
+export const getLocation = (state: AppState) => state.map.location;
+
+export const getAddress = (state: AppState) => state.map.address;

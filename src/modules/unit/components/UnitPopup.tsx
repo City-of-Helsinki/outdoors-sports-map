@@ -1,11 +1,15 @@
-import PropTypes from "prop-types";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Popup } from "react-leaflet";
 
+import { Unit } from "../constants";
 import { getAttr, getCondition, getUnitQuality } from "../helpers";
 
-function UnitPopup({ unit, offset }) {
+type Props = {
+  offset: number;
+  unit: Unit;
+};
+
+function UnitPopup({ unit, offset }: Props) {
   const {
     t,
     i18n: {
@@ -43,10 +47,5 @@ function UnitPopup({ unit, offset }) {
     </Popup>
   );
 }
-
-UnitPopup.propTypes = {
-  offset: PropTypes.number.isRequired,
-  unit: PropTypes.objectOf(PropTypes.any).isRequired,
-};
 
 export default UnitPopup;

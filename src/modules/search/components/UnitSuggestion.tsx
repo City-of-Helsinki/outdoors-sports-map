@@ -1,15 +1,14 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
-// @ts-ignore
 import { useLocation } from "react-router";
 
 import Link from "../../common/components/Link";
 import ObservationStatus from "../../unit/components/ObservationStatus";
 import UnitIcon from "../../unit/components/UnitIcon";
+import { Unit } from "../../unit/constants";
 import { getAttr } from "../../unit/helpers";
 
 type Props = {
-  unit: Record<string, any>;
+  unit: Unit;
 };
 
 function UnitSuggestion({ unit, ...rest }: Props) {

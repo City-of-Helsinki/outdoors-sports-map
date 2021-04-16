@@ -1,9 +1,10 @@
+import L from "leaflet";
 import React, { Component } from "react";
 import { Marker } from "react-leaflet";
 
 import AriaHiddenIcon from "../../map/AriaHiddenIcon";
 import { MAX_ZOOM } from "../../map/constants";
-import { UNIT_ICON_WIDTH, UnitFilters } from "../constants";
+import { UNIT_ICON_WIDTH, UnitFilters, Unit } from "../constants";
 import { getUnitIcon, getUnitPosition, getUnitSport } from "../helpers";
 import UnitPopup from "./UnitPopup";
 
@@ -12,12 +13,12 @@ const POPUP_OFFSET = 4;
 type Props = {
   isSelected: boolean;
   zoomLevel: number;
-  unit: Record<string, any>;
-  handleClick: () => void;
+  unit: Unit;
+  handleClick: (e: L.LeafletMouseEvent) => void;
 };
 
 class UnitMarker extends Component<Props> {
-  markerRef = null;
+  markerRef = React.createRef<Marker>();
 
   constructor(props: Props) {
     super(props);
@@ -41,30 +42,26 @@ class UnitMarker extends Component<Props> {
   getIconHeight = (icon: Record<string, any>, zoomLevel: number) =>
     (zoomLevel / MAX_ZOOM) * icon.height;
 
-  _getAnchorHeight = (iconHeight: number, unit: Record<string, any>) =>
+  _getAnchorHeight = (iconHeight: number, unit: Unit) =>
     getUnitSport(unit) === UnitFilters.SKIING ? iconHeight / 2 : iconHeight;
 
-  _getPopupOffset = (unit: Record<string, any>) =>
+  _getPopupOffset = (unit: Unit) =>
     -(getUnitSport(unit) === UnitFilters.SKIING
       ? POPUP_OFFSET
       : POPUP_OFFSET + 24);
 
-  setMarkerRef = (ref: Record<string, any> | null | undefined) => {
-    this.markerRef = ref;
-  };
-
-  /*:: openPopup: Function */
   openPopup() {
-    this.markerRef.leafletElement.openPopup();
+    this.markerRef.current?.leafletElement.openPopup();
   }
 
-  _createIcon(unit: Record<string, any>, isSelected: boolean) {
+  _createIcon(unit: Unit, isSelected: boolean) {
     const { zoomLevel } = this.props;
     const icon = getUnitIcon(unit, isSelected);
     const iconWidth = this.getIconWidth(zoomLevel);
     const iconHeight = this.getIconHeight(icon, zoomLevel);
     const anchorHeight = this._getAnchorHeight(iconHeight, unit);
 
+    // @ts-ignore
     return new AriaHiddenIcon({
       iconUrl: icon.url,
       iconRetinaUrl: icon.retinaUrl,
@@ -73,23 +70,27 @@ class UnitMarker extends Component<Props> {
     });
   }
 
-  /*:: closePopup: Function */
   closePopup() {
-    this.markerRef.leafletElement.closePopup();
+    this.markerRef.current?.leafletElement.closePopup();
   }
 
   render() {
     const { unit, isSelected, handleClick, ...rest } = this.props;
 
+    const position = getUnitPosition(unit);
+
+    if (!position) {
+      return null;
+    }
+
     return (
-      // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
       <Marker
-        ref={this.setMarkerRef}
-        position={getUnitPosition(unit)}
+        ref={this.markerRef}
+        position={position}
         icon={this._createIcon(unit, isSelected)}
-        onClick={handleClick}
-        onMouseOver={this.openPopup}
-        onMouseOut={this.closePopup}
+        onclick={handleClick}
+        onmouseover={this.openPopup}
+        onmouseout={this.closePopup}
         {...rest}
       >
         <UnitPopup unit={unit} offset={this._getPopupOffset(unit)} />

@@ -9,7 +9,13 @@ import {
   normalizeEntityResults,
 } from "../api/helpers";
 import { receiveServices, setFetchError } from "./actions";
-import { ServiceActions, UnitServices, serviceSchema } from "./constants";
+import {
+  ServiceActions,
+  UnitServices,
+  serviceSchema,
+  Service,
+  NormalizedService,
+} from "./constants";
 
 function* fetchServices() {
   const request = createRequest(
@@ -23,7 +29,7 @@ function* fetchServices() {
   const { response, bodyAsJson } = yield call(callApi, request);
 
   if (response.status === 200) {
-    const data = normalizeEntityResults(
+    const data = normalizeEntityResults<Service, NormalizedService, number[]>(
       bodyAsJson.results,
       new schema.Array(serviceSchema)
     );

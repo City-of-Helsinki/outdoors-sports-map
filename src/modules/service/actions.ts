@@ -1,15 +1,15 @@
 import { createAction } from "redux-actions";
 
-import type { ApiResponse } from "../api/constants";
-import type { Action } from "../common/constants";
-import { ServiceActions } from "./constants";
+import { ApiResponse } from "../api/constants";
+import { Action } from "../common/constants";
+import { ServiceActions, NormalizedServiceSchema } from "./constants";
 
 export const fetchServices = (params: Record<string, any>): Action =>
   createAction(ServiceActions.FETCH)({
     params,
   });
 
-export const receiveServices = (data: ApiResponse): Action =>
+export const receiveServices = (data: NormalizedServiceSchema): Action =>
   createAction(ServiceActions.RECEIVE)(data);
 
 export const setFetchError = (error: ApiResponse) =>

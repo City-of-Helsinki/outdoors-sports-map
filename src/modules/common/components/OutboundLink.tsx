@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 import SMIcon from "../../home/components/SMIcon";
@@ -6,6 +5,7 @@ import SMIcon from "../../home/components/SMIcon";
 type Props = {
   href: string;
   children: string;
+  className?: string;
 };
 
 function OutboundLink({ href, children, ...rest }: Props) {

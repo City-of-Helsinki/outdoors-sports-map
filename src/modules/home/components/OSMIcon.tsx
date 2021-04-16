@@ -1,8 +1,11 @@
-import React from "react";
+type Props = {
+  icon: string;
+  className?: string;
+  alt?: string;
+};
 
-// eslint-disable-next-line react/jsx-props-no-spreading, react/prop-types
-function OSMIcon({ icon, className, ...rest }) {
-  return <span className={`icon-${icon} ${className || ""}`} {...rest} />
+function OSMIcon({ icon, className, ...rest }: Props) {
+  return <span className={`icon-${icon} ${className || ""}`} {...rest} />;
 }
 
 export default OSMIcon;

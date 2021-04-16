@@ -1,4 +1,3 @@
-import keys from "lodash/keys";
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
 
@@ -24,9 +23,9 @@ const isActive = handleActions(
 const unitResults = handleActions(
   {
     [SearchActions.RECEIVE_UNITS]: (
-      state: Record<string, any>,
-      { payload: { entities } }: EntityAction
-    ) => (entities ? [...keys(entities.unit)] : []),
+      state: string[],
+      { payload: { result } }: EntityAction
+    ) => result,
     [SearchActions.CLEAR]: () => [],
   },
   []
@@ -35,9 +34,9 @@ const unitResults = handleActions(
 const unitSuggestions = handleActions(
   {
     [SearchActions.RECEIVE_UNIT_SUGGESTIONS]: (
-      state: Record<string, any>,
-      { payload: { entities } }: EntityAction
-    ) => (entities ? [...keys(entities.unit)] : []),
+      state: string[],
+      { payload: { result } }: EntityAction
+    ) => result,
     [SearchActions.RECEIVE_UNITS]: () => [],
     [SearchActions.CLEAR]: () => [],
   },
@@ -47,8 +46,8 @@ const unitSuggestions = handleActions(
 const addressSuggestions = handleActions(
   {
     [SearchActions.RECEIVE_ADDRESS_SUGGESTIONS]: (
-      state: Record<string, any>,
-      { payload: results }: EntityAction
+      state: Record<string, any>[],
+      { payload: results }
     ) => results || [],
     [SearchActions.CLEAR]: () => [],
   },

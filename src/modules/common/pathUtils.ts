@@ -1,4 +1,4 @@
-import type { BrowserLocation } from "history";
+import * as H from "history";
 import { matchPath } from "react-router";
 
 import { languageParam } from "../language/constants";
@@ -23,11 +23,11 @@ export function getPathnameWithLanguage(path: string, lang: string): string {
   return buildPathname(lang, path);
 }
 
-export function getLocationWithLanguage(
-  location: Partial<BrowserLocation>,
+export function getLocationWithLanguage<S>(
+  location: H.LocationDescriptorObject<S>,
   lang: string
-): Partial<BrowserLocation> {
-  const { pathname } = location;
+): H.LocationDescriptorObject<S> {
+  const pathname = location.pathname;
 
   return {
     ...location,
@@ -35,12 +35,15 @@ export function getLocationWithLanguage(
   };
 }
 
-export function getLocationFactoryWithLanguage(
-  locationFactory: (location: BrowserLocation) => Partial<BrowserLocation>,
+export function getLocationFactoryWithLanguage<S>(
+  locationFactory: (location: H.Location<S>) => H.LocationDescriptor<S>,
   lang: string
 ) {
-  return ({ pathname, ...rest }: BrowserLocation): Partial<BrowserLocation> =>
-    locationFactory({ ...rest, pathname: buildPathname(lang, pathname) });
+  return ({ pathname, ...rest }: H.Location<S>): H.LocationDescriptor<S> =>
+    locationFactory({
+      ...rest,
+      pathname: buildPathname(lang, pathname),
+    });
 }
 
 export function replaceLanguageInPath(pathname: string, language: string) {

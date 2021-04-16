@@ -7,13 +7,13 @@ import {
   normalizeEntityResults,
   stringifyQuery,
 } from "../api/helpers";
-import type { FetchAction } from "../common/constants";
+import { FetchAction, Action } from "../common/constants";
 import {
   receiveSearchSuggestions,
   receiveUnits,
   setFetchError,
 } from "./actions";
-import { UnitActions, unitSchema } from "./constants";
+import { NormalizedUnit, Unit, UnitActions, unitSchema } from "./constants";
 import { getFetchUnitsRequest } from "./helpers";
 
 function* fetchUnits({ payload: { params } }: FetchAction) {
@@ -21,7 +21,7 @@ function* fetchUnits({ payload: { params } }: FetchAction) {
   const { response, bodyAsJson } = yield call(callApi, request);
 
   if (response.status === 200) {
-    const data = normalizeEntityResults(
+    const data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
       bodyAsJson.results,
       new schema.Array(unitSchema)
     );
@@ -37,7 +37,7 @@ function* clearSearch() {
   yield put(receiveSearchSuggestions([]));
 }
 
-function* sendFeedback({ payload: { feedback, email } }) {
+function* sendFeedback({ payload: { feedback, email } }: Action) {
   const params = {
     description: feedback,
     service_request_type: "OTHER",

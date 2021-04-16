@@ -6,7 +6,7 @@ import { getAttr } from "../unit/helpers";
 const getServiceName = (
   unitServices: number[],
   services: Record<string, any>,
-  language: string | null | undefined = DEFAULT_LANG
+  language: string = DEFAULT_LANG
 ) => {
   if (!services || isEmpty(services)) {
     return "";

@@ -1,6 +1,4 @@
-// @ts-ignore
 import { useEffect } from "react";
-// @ts-ignore
 import { useHistory, useLocation } from "react-router";
 
 /**

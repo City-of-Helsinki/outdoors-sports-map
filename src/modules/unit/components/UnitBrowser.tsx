@@ -1,14 +1,14 @@
+import L from "leaflet";
 import values from "lodash/values";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 import { useTranslation, withTranslation } from "react-i18next";
-import { withRouter } from "react-router-dom";
-import type { ContextRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import addressBarMarker from "../../../assets/markers/location.svg";
+import { Address } from "../../common/constants";
 import SMIcon from "../../home/components/SMIcon";
 import SearchContainer from "../../search/components/SearchContainer";
-import { StatusFilters } from "../constants";
+import { StatusFilters, Unit } from "../constants";
 import {
   getAddressToDisplay,
   getDefaultSportFilter,
@@ -19,25 +19,34 @@ import {
 import ListView from "./ListView";
 import UnitFilters from "./UnitFilters";
 
-function ActionButton({ action, icon, isActive, name }) {
-  return <button
-    className="action-button"
-    aria-pressed={isActive}
-    onClick={action}
-    type="button"
-  >
-    <SMIcon className="unit-browser__action" icon={icon} aria-label={name} />
-  </button>
-}
-
-ActionButton.propTypes = {
-  action: PropTypes.func.isRequired,
-  icon: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
-  name: PropTypes.string.isRequired,
+type ActionButtonProps = {
+  action: () => void;
+  icon: string;
+  isActive: boolean;
+  name: string;
 };
 
-function Header({ expand, collapse, onViewChange, isExpanded }) {
+function ActionButton({ action, icon, isActive, name }: ActionButtonProps) {
+  return (
+    <button
+      className="action-button"
+      aria-pressed={isActive}
+      onClick={action}
+      type="button"
+    >
+      <SMIcon className="unit-browser__action" icon={icon} aria-label={name} />
+    </button>
+  );
+}
+
+type HeaderProps = {
+  collapse: () => void;
+  expand: () => void;
+  isExpanded: boolean;
+  onViewChange: (coordinates: [number, number]) => void;
+};
+
+function Header({ expand, collapse, onViewChange, isExpanded }: HeaderProps) {
   const { t } = useTranslation();
 
   return (
@@ -61,14 +70,12 @@ function Header({ expand, collapse, onViewChange, isExpanded }) {
   );
 }
 
-Header.propTypes = {
-  collapse: PropTypes.func.isRequired,
-  expand: PropTypes.func.isRequired,
-  isExpanded: PropTypes.bool.isRequired,
-  onViewChange: PropTypes.func.isRequired,
+type AddressBarProps = {
+  address: Address;
+  handleClick: (coordinates: [number, number]) => void;
 };
 
-function AddressBar({ address, handleClick }) {
+function AddressBar({ address, handleClick }: AddressBarProps) {
   const {
     i18n: {
       languages: [language],
@@ -79,9 +86,11 @@ function AddressBar({ address, handleClick }) {
     <button
       type="button"
       className="address-bar__container"
-      onClick={() =>
-        handleClick(address.location.coordinates.slice().reverse())
-      }
+      onClick={() => {
+        const [lat, long] = address.location.coordinates;
+
+        handleClick([lat, long]);
+      }}
     >
       <img
         className="address-bar__marker"
@@ -95,35 +104,31 @@ function AddressBar({ address, handleClick }) {
   );
 }
 
-AddressBar.propTypes = {
-  address: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleClick: PropTypes.func.isRequired,
-};
-type Props = ContextRouter & {
-  address: Record<string, any>;
+type Props = RouteComponentProps & {
+  address: Address | undefined | null;
   isLoading: boolean;
   isSearching: boolean;
-  leafletMap: Record<string, any> | null | undefined;
+  leafletMap: L.Map | null | undefined;
   location: Record<string, any>;
   params: Record<string, any>;
-  position: Record<string, any>;
+  position: [number, number];
   history: Record<string, any>;
-  services: Record<string, any>;
   singleUnitSelected: boolean;
   t: (arg0: string) => string;
-  units: Record<string, any>[];
-  onViewChange: (unit: Record<string, any>) => void;
+  units: Unit[];
+  onViewChange: (coordinates: [number, number]) => void;
   expandedState: [boolean, (value: boolean) => void];
 };
+
 type State = {
-  contentMaxHeight: number | null | undefined;
+  contentMaxHeight: number | undefined;
 };
 
 class UnitBrowser extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      contentMaxHeight: null,
+      contentMaxHeight: undefined,
     };
   }
 
@@ -142,10 +147,15 @@ class UnitBrowser extends Component<Props, State> {
   };
 
   calculateMaxHeight = () => {
-    const fixedPartHeight = document.getElementById("always-visible")
-      .offsetHeight;
+    const element = document.getElementById("always-visible");
 
-    return window.innerHeight - fixedPartHeight;
+    if (element) {
+      const fixedPartHeight = element.offsetHeight;
+
+      return window.innerHeight - fixedPartHeight;
+    }
+
+    return window.innerHeight;
   };
 
   updateQueryParameter = (key: string, value: string): void => {
@@ -190,7 +200,6 @@ class UnitBrowser extends Component<Props, State> {
     const {
       t,
       units,
-      services,
       isLoading,
       isSearching,
       position,
@@ -220,7 +229,7 @@ class UnitBrowser extends Component<Props, State> {
             ? {
                 display: "none",
               }
-            : null
+            : undefined
         }
       >
         <div id="always-visible" className="unit-browser__fixed">
@@ -248,7 +257,7 @@ class UnitBrowser extends Component<Props, State> {
               updateFilter={this.updateQueryParameter}
             />
           )}
-          {!isLoading && Object.keys(address).length !== 0 && (
+          {!isLoading && address && Object.keys(address).length !== 0 && (
             <AddressBar handleClick={onViewChange} address={address} />
           )}
         </div>
@@ -260,15 +269,16 @@ class UnitBrowser extends Component<Props, State> {
               : contentMaxHeight,
           }}
         >
-          <ListView
-            filter={`${currentSportFilter};${currentStatusFilter}`}
-            isVisible={isExpanded && !singleUnitSelected}
-            isLoading={isLoading || isSearching}
-            units={units}
-            services={services}
-            position={position}
-            leafletMap={leafletMap}
-          />
+          {leafletMap && (
+            <ListView
+              activeFilter={`${currentSportFilter};${currentStatusFilter}`}
+              isVisible={isExpanded && !singleUnitSelected}
+              isLoading={isLoading || isSearching}
+              units={units}
+              position={position}
+              leafletMap={leafletMap}
+            />
+          )}
         </div>
         {t("UNIT.TMP_MESSAGE").length > 0 && (
           <div

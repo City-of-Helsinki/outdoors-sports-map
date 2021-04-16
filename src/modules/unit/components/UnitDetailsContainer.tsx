@@ -1,21 +1,22 @@
-// @ts-expect-error
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
+import { AppState } from "../../common/constants";
 import getIsLoading from "../../home/selectors";
 import * as fromService from "../../service/selectors";
+import { Unit } from "../constants";
 import * as fromUnit from "../selectors";
 import SingleUnitContainer from "./SingleUnitContainer";
 
 type Props = {
   unitId: string;
-  onCenterMapToUnit: (coordinates: [Number, number]) => void;
+  onCenterMapToUnit: (unit: Unit) => void;
 };
 
 function UnitDetailsContainer({ unitId, onCenterMapToUnit }: Props) {
   const serviceData = useSelector(fromService.getServicesObject);
 
-  const selectedUnit = useSelector((state) =>
+  const selectedUnit = useSelector<AppState, Unit>((state) =>
     fromUnit.getUnitById(state, {
       id: unitId,
     })

@@ -1,21 +1,23 @@
-// @ts-ignore
 import className from "classnames";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-// @ts-ignore
+import { useCallback, useEffect, useRef, useState, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { Map as RLMap } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 
 import ApplicationHeader from "../../common/components/ApplicationHeader";
 import Page from "../../common/components/Page";
+import { AppState } from "../../common/constants";
 import useIsMobile from "../../common/hooks/useIsMobile";
 import routerPaths from "../../common/routes";
 import { languageParam } from "../../language/constants";
 import Map from "../../map/components/Map";
+import { MapRef } from "../../map/constants";
 import { fetchServices } from "../../service/actions";
 import { fetchUnits } from "../../unit/actions";
 import UnitBrowserContainer from "../../unit/components/UnitBrowserContainer";
 import UnitDetails from "../../unit/components/UnitDetailsContainer";
+import { Unit } from "../../unit/constants";
 import { getAttr, getUnitPosition } from "../../unit/helpers";
 import { getUnitById } from "../../unit/selectors";
 
@@ -28,7 +30,7 @@ function useIsUnitBrowserView() {
   return Boolean(match && match.isExact);
 }
 
-function useHomeMeta(selectedUnitId) {
+function useHomeMeta(selectedUnitId?: string | null) {
   const {
     t,
     i18n: {
@@ -36,7 +38,7 @@ function useHomeMeta(selectedUnitId) {
     },
   } = useTranslation();
 
-  const selectedUnit = useSelector((state) =>
+  const selectedUnit = useSelector<AppState, Unit>((state) =>
     getUnitById(state, {
       id: selectedUnitId,
     })
@@ -79,37 +81,21 @@ function useHomeMeta(selectedUnitId) {
   };
 }
 
-function getLatLngToContainerPoint(ref, location) {
-  const map = ref.current;
-
-  if (!map) {
-    return null;
-  }
-
-  return map.mapRef.leafletElement.latLngToContainerPoint(location);
+function getLatLngToContainerPoint(ref: MapRef, location: [number, number]) {
+  return ref.current?.leafletElement.latLngToContainerPoint(location);
 }
 
-function getContainerPointToLatLng(ref, location) {
-  const map = ref.current;
-
-  if (!map) {
-    return null;
-  }
-
-  return map.mapRef.leafletElement.containerPointToLatLng(location);
+function getContainerPointToLatLng(ref: MapRef, location: L.Point) {
+  return ref.current?.leafletElement.containerPointToLatLng(location);
 }
 
-function setView(ref, coordinates) {
-  const map = ref.current;
-
-  if (map) {
-    map.setView(coordinates);
-  }
+function setView(ref: MapRef, coordinates: L.LatLng) {
+  ref.current?.leafletElement.setView(coordinates);
 }
 
 type MapLayoutProps = {
-  content: Node;
-  map: Node;
+  content: ReactNode;
+  map: ReactNode;
   isFilled: boolean;
   title: string;
   description: string | null;
@@ -151,10 +137,10 @@ function MapLayout({
 }
 
 function HomeContainer() {
-  const mapRef = useRef(null);
+  const mapRef = useRef<RLMap>(null);
   const [isExpanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
-  const match = useRouteMatch(routerPaths.singleUnit);
+  const match = useRouteMatch<{ unitId: string }>(routerPaths.singleUnit);
   const isMobile = useIsMobile();
   const selectedUnitId = match ? match.params.unitId : null;
   const isUnitDetailsOpen = selectedUnitId !== null;
@@ -168,6 +154,11 @@ function HomeContainer() {
   const handleCenterMapToUnit = useCallback(
     (unit) => {
       const location = getUnitPosition(unit);
+
+      if (!location) {
+        return;
+      }
+
       const pixelLocation = getLatLngToContainerPoint(mapRef, location);
 
       if (!pixelLocation) {
@@ -181,7 +172,9 @@ function HomeContainer() {
 
         const adjustedCenter = getContainerPointToLatLng(mapRef, pixelLocation);
 
-        setView(mapRef, adjustedCenter);
+        if (adjustedCenter) {
+          setView(mapRef, adjustedCenter);
+        }
       } else {
         // On mobile we want to move the map 250px down from the center, so the
         // big info box does not hide the selected unit.
@@ -189,7 +182,9 @@ function HomeContainer() {
 
         const adjustedCenter = getContainerPointToLatLng(mapRef, pixelLocation);
 
-        setView(mapRef, adjustedCenter);
+        if (adjustedCenter) {
+          setView(mapRef, adjustedCenter);
+        }
       }
     },
     [isMobile]
@@ -232,7 +227,7 @@ function HomeContainer() {
       }
       map={
         <Map
-          ref={mapRef}
+          mapRef={mapRef}
           selectedUnitId={selectedUnitId}
           onCenterMapToUnit={handleCenterMapToUnit}
         />

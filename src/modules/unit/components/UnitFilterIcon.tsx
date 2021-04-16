@@ -1,9 +1,12 @@
-import React from "react";
-
 import OSMIcon from "../../home/components/OSMIcon";
 import { UnitFilters } from "../constants";
 
-function UnitFilterIcon({ filter, ...rest }: { filter: string }) {
+type Props = {
+  filter: string;
+  className?: string;
+};
+
+function UnitFilterIcon({ filter, ...rest }: Props) {
   const SKIING_ICON = "crosscountry";
   const STATUS_OK_ICON = "status-ok";
   const STATUS_ANY_ICON = "status-unknown";

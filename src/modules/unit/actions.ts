@@ -4,14 +4,14 @@ import { createAction } from "redux-actions";
 import type { ApiResponse } from "../api/constants";
 import type { Action } from "../common/constants";
 import { UnitServices } from "../service/constants";
-import { UnitActions } from "./constants";
+import { NormalizedUnitSchema, UnitActions } from "./constants";
 
 export const fetchUnits = (params: Record<string, any>): Action =>
   createAction(UnitActions.FETCH)({
     params,
   });
 
-export const receiveUnits = (data: ApiResponse): Action =>
+export const receiveUnits = (data: NormalizedUnitSchema): Action =>
   createAction(UnitActions.RECEIVE)(data);
 
 export const setFetchError = (error: ApiResponse) =>

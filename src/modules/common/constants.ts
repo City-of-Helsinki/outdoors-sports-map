@@ -1,6 +1,4 @@
-import type { SearchState } from "../search/constants";
-import type { ServiceState } from "../service/constants";
-import type { UnitState } from "../unit/constants";
+import { RootState } from "../../bootstrap/createStore";
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -36,14 +34,16 @@ export type EntityAction = {
   type: string;
   payload: {
     entities: Record<string, any>;
-    result: unknown;
+    result: string[];
   };
 };
 
-export type AppState = {
-  unit: UnitState;
-  service: ServiceState;
-  search: SearchState;
-};
+export type AppState = RootState;
 
 export type QueryValue = string | Array<string>;
+
+export type Address = {
+  location: {
+    coordinates: [number, number];
+  };
+};

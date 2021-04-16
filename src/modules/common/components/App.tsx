@@ -1,7 +1,5 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, Route, Switch } from "react-router-dom";
-import type { ContextRouter } from "react-router-dom";
+import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
 
 import { languageParam } from "../../language/constants";
 import AppMeta from "../../meta/AppMeta";
@@ -30,7 +28,7 @@ function App() {
       <Switch>
         <Route path={`/${languageParam}`} component={LanguageAwareRoutes} />
         <Route
-          render={(props: ContextRouter) => (
+          render={(props: RouteComponentProps) => (
             <Redirect to={`/${language}${props.location.pathname}`} />
           )}
         />

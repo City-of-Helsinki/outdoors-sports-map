@@ -1,8 +1,8 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 import Time from "../../home/components/Time";
 import TimeAgo from "../../home/components/TimeAgo";
+import { Unit } from "../constants";
 import {
   getAttr,
   getCondition,
@@ -17,7 +17,7 @@ type StatusBarProps = {
 };
 
 export function StatusBar({ quality, label }: StatusBarProps) {
-  return <div className={`observation-status__bar--${quality}`}>{label}</div>
+  return <div className={`observation-status__bar--${quality}`}>{label}</div>;
 }
 
 type StatusUpdatedProps = {
@@ -48,15 +48,17 @@ export function StatusUpdatedAgo({
   time,
   sensorName = "",
 }: StatusUpdatedAgoProps) {
-  return <div
-    className="obervation-status__time"
-    style={{
-      fontSize: 12,
-    }}
-  >
-    <TimeAgo time={time} />
-    {sensorName && ` (${sensorName})`}
-  </div>
+  return (
+    <div
+      className="obervation-status__time"
+      style={{
+        fontSize: 12,
+      }}
+    >
+      <TimeAgo time={time} />
+      {sensorName && ` (${sensorName})`}
+    </div>
+  );
 }
 
 type MaintenanceUpdatedProps = {
@@ -84,7 +86,7 @@ export function MaintenanceUpdated({ name, time }: MaintenanceUpdatedProps) {
 }
 
 type ObservationStatusProps = {
-  unit: Record<string, any>;
+  unit: Unit;
 };
 
 function ObservationStatus({ unit }: ObservationStatusProps) {
@@ -109,13 +111,10 @@ function ObservationStatus({ unit }: ObservationStatusProps) {
             : t("UNIT.UNKNOWN")
         }
       />
-      {condition && (
-        <StatusUpdated t={t} time={getObservationTime(condition)} />
-      )}
+      {condition && <StatusUpdated time={getObservationTime(condition)} />}
       {maintenance && (
         <MaintenanceUpdated
           name={maintenance.name}
-          activeLang={language}
           time={getObservationTime(maintenance)}
         />
       )}

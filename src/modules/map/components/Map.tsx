@@ -1,24 +1,26 @@
-// @ts-ignore
-import React, { forwardRef, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { bindActionCreators } from "redux";
-// @ts-ignore
 
+import { AppState } from "../../common/constants";
+import useSearch from "../../common/hooks/useSearch";
 import changeLanguage from "../../language/actions";
-import * as fromService from "../../service/selectors";
 import MapView from "../../unit/components/MapView";
+import { SportFilter, StatusFilter, Unit } from "../../unit/constants";
 import * as fromUnit from "../../unit/selectors";
 import { setLocation } from "../actions";
+import { MapRef } from "../constants";
 import * as fromMap from "../selectors";
 
 type Props = {
-  selectedUnitId: String;
-  onCenterMapToUnit: (unit: Record<string, any>) => void;
+  selectedUnitId?: string | null;
+  onCenterMapToUnit: (unit: Unit) => void;
+  mapRef: MapRef;
 };
 
-const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
+function Map({ selectedUnitId, onCenterMapToUnit, mapRef }: Props) {
   const dispatch = useDispatch();
 
   const {
@@ -29,20 +31,21 @@ const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
 
   const history = useHistory();
   const { search } = useLocation();
+  const { sport, status } = useSearch<{
+    sport?: SportFilter;
+    status: StatusFilter;
+  }>();
 
-  const unitData = useSelector((state) =>
-    fromUnit.getVisibleUnits(state, search)
+  const unitData = useSelector<AppState, Unit[]>((state) =>
+    fromUnit.getVisibleUnits(state, sport, status)
   );
 
-  const serviceData = useSelector(fromService.getServicesObject);
-
-  const selectedUnit = useSelector((state) =>
+  const selectedUnit = useSelector<AppState, Unit>((state) =>
     fromUnit.getUnitById(state, {
       id: selectedUnitId,
     })
   );
 
-  const mapCenter = useSelector(fromMap.getLocation);
   const position = useSelector(fromMap.getLocation);
 
   const actions = bindActionCreators(
@@ -68,19 +71,16 @@ const Map = forwardRef(({ selectedUnitId, onCenterMapToUnit }: Props, ref) => {
 
   return (
     <MapView
-      ref={ref}
+      mapRef={mapRef}
       selectedUnit={selectedUnit}
       activeLanguage={language}
       setLocation={actions.setLocation}
       position={initialPosition.current}
       units={unitData}
-      services={serviceData}
-      changeLanguage={actions.changeLanguage}
       openUnit={openUnit}
-      mapCenter={mapCenter}
       onCenterMapToUnit={onCenterMapToUnit}
     />
   );
-});
+}
 
 export default Map;

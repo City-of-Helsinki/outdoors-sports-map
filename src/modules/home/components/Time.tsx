@@ -1,12 +1,16 @@
 import moment from "moment";
-import PropTypes from "prop-types";
-import React from "react";
 import { useTranslation } from "react-i18next";
+
+type FormatTimeOptions = {
+  days?: number;
+  weeks?: number;
+  months?: number;
+};
 
 export const formatTime = (time: Date, t: (...args: Array<any>) => any) => {
   const endOfToday = moment().endOf("day");
   let lookup = "TIME.";
-  const options = {};
+  const options: FormatTimeOptions = {};
 
   if (endOfToday.diff(time, "days") === 0) {
     lookup += "TODAY";
@@ -43,9 +47,5 @@ function Time({ time }: TimeProps) {
     </time>
   );
 }
-
-Time.propTypes = {
-  time: PropTypes.instanceOf(Date).isRequired,
-};
 
 export default Time;

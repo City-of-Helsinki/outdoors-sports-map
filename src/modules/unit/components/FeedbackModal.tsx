@@ -1,21 +1,19 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, Dispatch } from "redux";
 
 import SMIcon from "../../home/components/SMIcon";
 import * as unitActions from "../actions";
 
 type Props = {
-  sendFeedback: (
-    feedback: string | null | undefined,
-    email: string | null | undefined
-  ) => void;
+  sendFeedback: (feedback: string, email?: string | null) => void;
   closeModal: () => void;
   t: (arg0: string) => string;
 };
+
 type State = {
   emailInputOpen: boolean;
   feedback: string | null | undefined;
@@ -23,7 +21,7 @@ type State = {
 };
 
 class FeedbackModal extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       emailInputOpen: false,
@@ -34,7 +32,6 @@ class FeedbackModal extends Component<Props, State> {
     this.toggleEmailInput = this.toggleEmailInput.bind(this);
   }
 
-  /*:: toggleEmailInput: Function */
   toggleEmailInput() {
     const { emailInputOpen } = this.state;
 
@@ -49,9 +46,8 @@ class FeedbackModal extends Component<Props, State> {
     }
   }
 
-  /*:: handleFeedbackSubmit: Function */
   handleFeedbackSubmit(
-    e,
+    e: React.SyntheticEvent,
     feedback: string | null | undefined,
     email: string | null | undefined
   ) {
@@ -59,8 +55,14 @@ class FeedbackModal extends Component<Props, State> {
 
     const { sendFeedback, closeModal } = this.props;
 
-    sendFeedback(feedback, email);
-    closeModal();
+    if (feedback) {
+      sendFeedback(feedback, email);
+      closeModal();
+    } else {
+      console.error(
+        `User attempted to send feedback without providing feedback`
+      );
+    }
   }
 
   render() {
@@ -129,7 +131,7 @@ class FeedbackModal extends Component<Props, State> {
   }
 }
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       sendFeedback: unitActions.sendFeedback,

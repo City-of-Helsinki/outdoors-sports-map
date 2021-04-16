@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "../../enzymeHelpers";
 import OutboundLink from "../OutboundLink";
 

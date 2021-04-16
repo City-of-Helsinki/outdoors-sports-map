@@ -1,7 +1,9 @@
-import PropTypes from "prop-types";
-import React from "react";
+type Props = {
+  message: string;
+  id?: string;
+};
 
-function UnitFilterLabel({ message, id }) {
+function UnitFilterLabel({ message, id }: Props) {
   if (!message) {
     return null;
   }
@@ -12,13 +14,5 @@ function UnitFilterLabel({ message, id }) {
     </div>
   );
 }
-
-UnitFilterLabel.defaultProps = {
-  id: undefined,
-};
-UnitFilterLabel.propTypes = {
-  message: PropTypes.string.isRequired,
-  id: PropTypes.string,
-};
 
 export default UnitFilterLabel;

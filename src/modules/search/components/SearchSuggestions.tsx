@@ -1,11 +1,11 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 
+import { Unit } from "../../unit/constants";
 import AddressSuggestion from "./AddressSuggestion";
 import UnitSuggestion from "./UnitSuggestion";
 
 type Props = {
-  units: Record<string, any>[];
+  units: Unit[];
   addresses: Record<string, any>[];
   openAllResults: (e: React.SyntheticEvent<HTMLAnchorElement>) => void;
   handleAddressClick: (coordinates: [number, number]) => void;

@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
-
 import { mount } from "../../../common/enzymeHelpers";
 import ListView, { ListViewBase } from "../ListView";
 

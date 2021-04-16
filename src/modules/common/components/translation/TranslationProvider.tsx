@@ -1,15 +1,14 @@
-import PropTypes from "prop-types";
-import React from "react";
+import { ReactNode } from "react";
 import { I18nextProvider } from "react-i18next";
 
 import i18n from "../../i18n";
 
-function TranslationProvider({ children }) {
-  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
-}
-
-TranslationProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+type Props = {
+  children: ReactNode;
 };
+
+function TranslationProvider({ children }: Props) {
+  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
+}
 
 export default TranslationProvider;

@@ -1,12 +1,13 @@
 import L from "leaflet";
-import React, { Component } from "react";
+import { Component } from "react";
 
+import { Unit } from "../constants";
 import { getUnitQuality } from "../helpers";
 import UnitGeometry from "./UnitGeometry";
 import UnitMarker from "./UnitMarker";
 
 type Props = {
-  unit: Record<string, any>;
+  unit: Unit;
   isSelected: boolean;
   zoomLevel: number;
   openUnit: (unitId: string) => void;
@@ -30,8 +31,7 @@ class SingleUnitOnMap extends Component<Props> {
     return isQualityUpdated || isSelectedUpdated || isZoomUpdated;
   }
 
-  /*:: handleClick: Function */
-  handleClick(e: React.SyntheticEvent<HTMLElement>) {
+  handleClick(e: L.LeafletMouseEvent) {
     const { unit, openUnit } = this.props;
 
     L.DomEvent.stopPropagation(e);
@@ -55,13 +55,7 @@ class SingleUnitOnMap extends Component<Props> {
           handleClick={this.handleClick}
           {...rest}
         />
-        {geometry && (
-          <UnitGeometry
-            unit={unit}
-            onClick={this.handleClick}
-            isSelected={isSelected}
-          />
-        )}
+        {geometry && <UnitGeometry unit={unit} isSelected={isSelected} />}
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import type { AppState } from "../common/constants";
+import { Unit } from "../unit/constants";
 // eslint-disable-next-line import/no-cycle
 import { getUnitById } from "../unit/selectors";
 
@@ -14,17 +15,15 @@ export const getUnitResults = (state: AppState): Array<Record<string, any>> =>
     })
   );
 
-export const getUnitSuggestions = (
-  state: AppState
-): Array<Record<string, any>> =>
+export const getUnitSuggestions = (state: AppState): Unit[] =>
   state.search.unitSuggestions.map((id) =>
     getUnitById(state, {
       id,
     })
   );
 
-export const getUnitResultIDs = (state: AppState): Array<string> =>
+export const getUnitResultIDs = (state: AppState): string[] =>
   state.search.unitResults;
 
-export const getAddresses = (state: AppState): Array<Record<string, any>> =>
+export const getAddresses = (state: AppState): Record<string, any>[] =>
   state.search.addressSuggestions;

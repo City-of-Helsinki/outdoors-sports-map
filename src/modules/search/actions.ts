@@ -3,13 +3,14 @@ import { createAction } from "redux-actions";
 
 import type { Action } from "../common/constants";
 import { UnitServices } from "../service/constants";
+import { NormalizedUnitSchema } from "../unit/constants";
 import { MAX_SUGGESTION_COUNT, SearchActions } from "./constants";
 
 export const clearSearch = () => createAction(SearchActions.CLEAR)();
 
 export const searchUnits = (
   input: string,
-  params: Record<string, any>
+  params: Record<string, any> = {}
 ): Action => {
   const init = {
     input,
@@ -24,7 +25,7 @@ export const searchUnits = (
   });
 };
 
-export const receiveUnits = (results: Array<Record<string, any>>) =>
+export const receiveUnits = (results: NormalizedUnitSchema) =>
   createAction(SearchActions.RECEIVE_UNITS)(results);
 
 export const fetchUnitSuggestions = (input: string): Action =>
@@ -36,7 +37,7 @@ export const fetchUnitSuggestions = (input: string): Action =>
     },
   });
 
-export const receiveUnitSuggestions = (results: Array<Record<string, any>>) =>
+export const receiveUnitSuggestions = (results: NormalizedUnitSchema) =>
   createAction(SearchActions.RECEIVE_UNIT_SUGGESTIONS)(results);
 
 export const receiveAddressSuggestions = (

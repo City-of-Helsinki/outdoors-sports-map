@@ -1,4 +1,3 @@
-import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +6,7 @@ import SMIcon from "../../home/components/SMIcon";
 type Props = {
   active: string;
   values: string[] | null | undefined;
-  onSelect: (value: string) => void;
+  onSelect: (value: string | null) => void;
 };
 
 function SortSelectorDropdown({ active, values, onSelect }: Props) {
