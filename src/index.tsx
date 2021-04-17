@@ -5,8 +5,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./index.scss";
-import Root from "./modules/common/components/Root";
-import history from "./modules/common/history";
+import Root from "./domain/app/AppRoot";
+import history from "./domain/app/appHistory";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
