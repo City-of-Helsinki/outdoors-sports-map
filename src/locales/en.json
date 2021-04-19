@@ -2,7 +2,7 @@
   "APP": {
     "NAME": "Outdoor Exercise Map",
     "ABOUT": "Information on the service",
-    "DESCRIPTION": ""
+    "DESCRIPTION": "The Outdoor Exercise Map (Ulkoliikuntakartta) is a digital map service. There you can find information about ski tracks, ice skating tracks and rinks, beaches and public lidos. The map service data is provided by the municipalities of Helsinki, Espoo, Vantaa and Kirkkonummi."
   },
   "GENERAL": {
     "LOADING": "Loading..."
