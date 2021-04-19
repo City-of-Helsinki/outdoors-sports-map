@@ -107,10 +107,10 @@ function UnitBrowserHeader({
   const handleOnSearch = useCallback(
     (input: string, params: Record<string, any> = {}) => {
       doSearch("s", input);
-      unitSearchActions.searchUnits(input, params);
+      dispatch(unitSearchActions.searchUnits(input, params));
       expand();
     },
-    [expand, doSearch]
+    [expand, doSearch, dispatch]
   );
 
   const handleOnClear = useCallback(() => {
