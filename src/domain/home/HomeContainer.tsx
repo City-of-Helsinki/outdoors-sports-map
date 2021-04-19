@@ -7,7 +7,8 @@ import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import Page from "../../common/a11y/Page";
 import useIsMobile from "../../common/hooks/useIsMobile";
-import ApplicationHeader from "../app/ApplicationHeader";
+import ApplicationHeader from "../app/AppHeader";
+import AppInfoDropdown from "../app/AppInfoDropdown";
 import { AppState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
 import { languageParam } from "../i18n/i18nConstants";
@@ -135,6 +136,7 @@ function MapLayout({
           {content}
         </Page>
       </div>
+      <AppInfoDropdown />
       <div className="map-container">{map}</div>
     </>
   );

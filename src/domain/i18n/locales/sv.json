@@ -9,6 +9,10 @@
   },
   "MAP": {
     "ATTRIBUTION": "OpenStreetMaps skapare",
+    "ACCESSIBILITY_NOTICE": "Karttanäkymä. Kartan tietoja voi tarkastella tällä hetkellä vain näönvaraisesti.",
+    "LOCATE_USER": "Visa din plats",
+    "ZOOM_IN": "Zooma in",
+    "ZOOM_OUT": "Zooma ut",
     "ABOUT": "<h2>Utemotionskarta</h2> <h3>Information om tjänsten</h3> <p>Utemotionskartan är en öppen kommunikationskanal om skicket på anläggningarna för utomhusidrott i Helsingfors, Esbo och Vanda. Utemotionskartan hjälper kommuninvånarna att hitta uppdaterad information om de tjänster för utomhusidrott som staden upprätthåller. I nuläget omfattar tjänsten stadens skidspår och skridskoplaner och på våren kommer den också att omfatta badstränder.</p> <p>Tjänsten har förverkligats i samverkan mellan <a target='_blank' href='http://www.hel.fi/www/kanslia/fi/osastot-ja-yksikot/tietotekniikka/'>informationstekniksenheten</a> vid IT- och kommunikationsavdelningen på Helsingfors stads stadskansli och Helsingfors stads <a target='_blank' href='https://hel.fi/liikunta/'>idrottsverk</a>. <h3>Respons</h3> <p>Vi är tacksamma för all respons, så att vi kan utveckla Utemotionskartan och göra den allt bättre.</p> <h3>© Information och upphovsrätt</h3> <p>Utemotionskartan har byggs med hjälp av så öppna data som möjligt och öppen källkod.</p> <p>Kartans källkod finns på <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> och vi uppmuntrar till utveckling av den.</p> <p>Idrottsplatsernas uppgifter är öppna data och användbara via REST-gränssnittet.</p> <p>Kartuppgifterna hämtas från öppna <a target='_blank' href='https://www.openstreetmap.org/'>OpenStreetMap</a> och kartornas upphovsrätt hör till <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMaps skapare.</a></p> <p>Adressuppgifterna hämtas med hjälp av Helsingforsregionens trafiks <a target='_blank' href='http://developer.reittiopas.fi/'>öppna gränssnitt</a>.",
     "INFO_MENU": {
       "GIVE_FEEDBACK": "Ge respons",

@@ -1,5 +1,5 @@
 import { mount } from "../../enzymeHelpers";
-import ApplicationHeader from "../ApplicationHeader";
+import ApplicationHeader from "../AppHeader";
 
 const getWrapper = () => mount(<ApplicationHeader />);
 

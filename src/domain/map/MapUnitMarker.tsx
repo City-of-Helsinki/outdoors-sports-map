@@ -95,6 +95,7 @@ class MapUnitMarker extends Component<Props> {
         onclick={handleClick}
         onmouseover={this.openPopup}
         onmouseout={this.closePopup}
+        keyboard={false}
         {...rest}
       >
         <MapUnitPopup unit={unit} offset={this._getPopupOffset(unit)} />

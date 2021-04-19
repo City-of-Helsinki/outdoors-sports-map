@@ -10,7 +10,7 @@ import * as unitActions from "../unit/state/actions";
 
 type Props = {
   sendFeedback: (feedback: string, email?: string | null) => void;
-  closeModal: () => void;
+  onClose: () => void;
   t: (arg0: string) => string;
 };
 
@@ -53,11 +53,11 @@ class AppFeedbackModal extends Component<Props, State> {
   ) {
     e.preventDefault();
 
-    const { sendFeedback, closeModal } = this.props;
+    const { sendFeedback, onClose } = this.props;
 
     if (feedback) {
       sendFeedback(feedback, email);
-      closeModal();
+      onClose();
     } else {
       console.error(
         `User attempted to send feedback without providing feedback`
@@ -66,14 +66,14 @@ class AppFeedbackModal extends Component<Props, State> {
   }
 
   render() {
-    const { closeModal, t } = this.props;
+    const { onClose, t } = this.props;
     const { emailInputOpen } = this.state;
 
     return (
       <div className="about-modal-backdrop">
         <div className="about-modal-box">
           <div className="about-modal-controls">
-            <SMIcon icon="close" onClick={() => closeModal()} />
+            <SMIcon icon="close" onClick={onClose} />
           </div>
           <div className="about-modal-content">
             <h3>{t("MAP.INFO_MENU.GIVE_FEEDBACK")}</h3>

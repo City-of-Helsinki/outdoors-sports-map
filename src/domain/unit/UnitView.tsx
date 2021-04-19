@@ -5,13 +5,21 @@ type Props = {
   isSelected?: boolean;
   className: string;
   children: ReactNode;
+  tabIndex?: number;
 };
 
-export function View({ id, isSelected = false, className, children }: Props) {
+export function View({
+  id,
+  isSelected = false,
+  className,
+  children,
+  ...rest
+}: Props) {
   return (
     <div
       id={id}
       className={`view ${isSelected ? "view--selected" : ""} ${className}`}
+      {...rest}
     >
       {children}
     </div>

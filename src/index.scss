@@ -9,8 +9,9 @@
 @import "common/a11y/page";
 @import "common/a11y/jump-link";
 @import "common/components/dropdownIndicator";
-@import "domain/app/applicationHeader";
-@import "domain/app/feedbackModal";
+@import "domain/app/appHeader";
+@import "domain/app/appInfoDropdown";
+@import "domain/app/appFeedbackModal";
 @import "domain/home/home";
 @import "domain/map/mapControl";
 @import "domain/map/mapView";

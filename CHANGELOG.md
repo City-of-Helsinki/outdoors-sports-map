@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   Use create-react-app tool chain
 -   Meta tags to be more descriptive
 -   From flow to typescript
+-   [Accessibility] Make map contents easier to skip for screen reader and keyboard users
 
 ### Fixed
 

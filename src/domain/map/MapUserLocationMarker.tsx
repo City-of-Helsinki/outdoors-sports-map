@@ -52,6 +52,7 @@ class MapUserLocationMarker extends Component<Props> {
         zIndexOffset={1000}
         draggable
         ondragend={this.handleDragEnd}
+        keyboard={false}
         {...this.props}
       />
     );
