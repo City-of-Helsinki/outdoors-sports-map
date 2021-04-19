@@ -1,9 +1,9 @@
 ---
 name: Enhancement
 about: Request a change to an existing feature or documentation.
-title: ''
-labels: 'i: enhancement'
-assignees: ''
+title: ""
+labels: "i: enhancement"
+assignees: ""
 ---
 
 ## To which feature the request relates to

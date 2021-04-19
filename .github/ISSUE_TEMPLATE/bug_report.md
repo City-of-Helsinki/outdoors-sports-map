@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Report a bug.
-title: ''
-labels: 'i: bug'
-assignees: ''
+title: ""
+labels: "i: bug"
+assignees: ""
 ---
 
 ## Describe the bug

@@ -6,3 +6,4 @@
 !package*.json
 !src/
 !*yarn*
+!tsconfig.json
