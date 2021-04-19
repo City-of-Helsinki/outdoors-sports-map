@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Map as RLMap } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
+import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import Page from "../../common/a11y/Page";
 import useIsMobile from "../../common/hooks/useIsMobile";
@@ -140,11 +140,15 @@ function MapLayout({
   );
 }
 
+type Params = {
+  unitId: string;
+};
+
 function HomeContainer() {
   const mapRef = useRef<RLMap>(null);
   const [isExpanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
-  const match = useRouteMatch<{ unitId: string }>(routerPaths.singleUnit);
+  const match = useRouteMatch<Params>(routerPaths.singleUnit);
   const isMobile = useIsMobile();
   const selectedUnitId = match ? match.params.unitId : null;
   const isUnitDetailsOpen = selectedUnitId !== null;
@@ -207,27 +211,34 @@ function HomeContainer() {
       image={image}
       isFilled={isUnitDetailsOpen || isExpanded}
       content={
-        <>
-          <div
-            className={className("map-foreground-unit-browser", {
-              // Hide unit browser when the unit details is open with styling.
-              // This is an easy way to retain the search state.
-              hidden: isUnitDetailsOpen,
-            })}
-          >
-            <UnitBrowser
-              leafletMap={getLeafletMap(mapRef)}
-              onViewChange={handleOnViewChange}
-              expandedState={[isExpanded, setExpanded]}
-            />
-          </div>
-          {isUnitDetailsOpen && typeof selectedUnitId === "string" && (
-            <UnitDetails
-              unitId={selectedUnitId}
-              onCenterMapToUnit={handleCenterMapToUnit}
-            />
-          )}
-        </>
+        <Switch>
+          <Route
+            exact
+            path={`/${languageParam}`}
+            render={() => (
+              <UnitBrowser
+                leafletMap={getLeafletMap(mapRef)}
+                onViewChange={handleOnViewChange}
+                expandedState={[isExpanded, setExpanded]}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={routerPaths.singleUnit}
+            render={({
+              match: {
+                params: { unitId },
+              },
+            }) => (
+              <UnitDetails
+                // @ts-ignore
+                unitId={unitId}
+                onCenterMapToUnit={handleCenterMapToUnit}
+              />
+            )}
+          />
+        </Switch>
       }
       map={
         <Map

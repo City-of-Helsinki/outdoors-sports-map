@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
 import SMIcon from "../../../common/components/SMIcon";
+import useDoSearch from "../../../common/hooks/useDoSearch";
+import useSearch from "../../../common/hooks/useSearch";
 import { AppState } from "../../app/appConstants";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
 import { setLocation } from "../../map/state/actions";
@@ -66,6 +68,10 @@ type Props = {
   onViewChange: (coordinates: [number, number]) => void;
 };
 
+type Search = {
+  s?: string;
+};
+
 function UnitBrowserHeader({
   expand,
   collapse,
@@ -74,9 +80,11 @@ function UnitBrowserHeader({
 }: Props) {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
-  const { search } = useLocation();
+  const { search: searchString } = useLocation();
+  const { s } = useSearch<Search>();
+  const doSearch = useDoSearch();
   const suggestions = useSelector(
-    suggestionsSelectorFactory(search, i18n.languages[0])
+    suggestionsSelectorFactory(searchString, i18n.languages[0])
   );
   const disabled = useSelector(unitSelectors.getIsLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
@@ -98,10 +106,11 @@ function UnitBrowserHeader({
 
   const handleOnSearch = useCallback(
     (input: string, params: Record<string, any> = {}) => {
+      doSearch("s", input);
       unitSearchActions.searchUnits(input, params);
       expand();
     },
-    [expand]
+    [expand, doSearch]
   );
 
   const handleOnClear = useCallback(() => {
@@ -111,6 +120,7 @@ function UnitBrowserHeader({
   return (
     <div className="header">
       <SearchContainer
+        search={s}
         disabled={disabled}
         isActive={isActive}
         suggestions={suggestions}

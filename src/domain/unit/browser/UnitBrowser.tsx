@@ -2,8 +2,9 @@ import values from "lodash/values";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
+import useDoSearch from "../../../common/hooks/useDoSearch";
 import useSearch from "../../../common/hooks/useSearch";
 import { Address, AppState } from "../../app/appConstants";
 import * as fromHome from "../../app/appSelectors";
@@ -47,25 +48,6 @@ function useOnResize(callback: () => void) {
       window.removeEventListener("resize", callback);
     };
   }, [callback]);
-}
-
-function useDoSearch() {
-  const { search } = useLocation();
-  const history = useHistory();
-
-  const doSearch = useCallback(
-    (key: string, value: string) => {
-      const searchParams = new URLSearchParams(search);
-
-      searchParams.set(key, value);
-      history.replace({
-        search: searchParams.toString(),
-      });
-    },
-    [history, search]
-  );
-
-  return doSearch;
 }
 
 type Props = {

@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import SearchSuggestions, { Suggestion } from "./SearchSuggestions";
 
 type Props = {
+  search?: string;
   disabled: boolean;
   suggestions: Suggestion[];
   isActive: boolean;
@@ -18,15 +19,17 @@ type State = {
   showSuggestions: boolean;
 };
 
-const initialState = () => ({
-  searchPhrase: "",
+const initialState = (searchPhrase = "") => ({
+  searchPhrase,
   showSuggestions: false,
 });
 
 class SearchContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = initialState();
+    const { search } = this.props;
+
+    this.state = initialState(search);
   }
 
   /**
