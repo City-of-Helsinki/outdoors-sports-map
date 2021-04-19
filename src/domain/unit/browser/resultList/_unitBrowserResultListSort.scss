@@ -28,6 +28,10 @@
       background: $ui-content;
       color: $ui-text;
     }
+
+    &::after {
+      display: none;
+    }
   }
 
   .dropdown-menu {
