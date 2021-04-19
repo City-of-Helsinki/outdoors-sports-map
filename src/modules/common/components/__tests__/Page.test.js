@@ -15,9 +15,11 @@ describe('<Page />', () => {
     );
   });
 
-  it('should set title', () => {
+  it('should set title', async () => {
     const title = 'Title';
     getWrapper({ title, children: <div /> });
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     expect(document.title).toEqual(title);
   });

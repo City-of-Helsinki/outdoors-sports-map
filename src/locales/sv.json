@@ -1,7 +1,8 @@
 {
   "APP": {
     "NAME": "Utemotionskarta",
-    "ABOUT": "Information om tjänsten"
+    "ABOUT": "Information om tjänsten",
+    "DESCRIPTION": "Utemotionskartan (Ulkoliikuntakartta) är en digital karttjänst där man hittar huvudstadsregionens skidspår och skidspårsinfo, skridskobanor och konstisbanor samt badstränder och utomhusbad. Utemotionskartans uppgifter produceras av Helsingfors, Esbo, Vanda och Kyrkslätt."
   },
   "GENERAL": {
     "LOADING": "Laddar..."

@@ -57,6 +57,7 @@
     "react": "^16.11.0",
     "react-bootstrap": "1.5.2",
     "react-dom": "^16.11.0",
+    "react-helmet": "^6.1.0",
     "react-hot-loader": "^4.12.19",
     "react-i18next": "^11.3.3",
     "react-leaflet": "2.8.0",

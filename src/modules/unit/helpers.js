@@ -35,7 +35,7 @@ export const getFetchUnitsRequest = (params: Object) =>
     createUrl('unit/', {
       service: `${values(UnitServices).join(',')}`,
       only:
-        'id,name,location,street_address,address_zip,extensions,services,municipality,phone,www',
+        'id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url',
       include: 'observations,connections',
       geometry: 'true',
       page_size: 1000,

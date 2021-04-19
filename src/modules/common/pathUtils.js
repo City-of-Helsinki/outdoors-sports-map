@@ -1,6 +1,9 @@
 // @flow
 
 import type { BrowserLocation } from 'history';
+import { matchPath } from 'react-router';
+
+import { languageParam } from '../language/constants';
 
 function shouldAddSlash(pathname?: string): boolean {
   if (!pathname) {
@@ -51,4 +54,27 @@ export function replaceLanguageInPath(pathname: string, language: string) {
   nextPathname.splice(1, 1, language);
 
   return nextPathname.join('/');
+}
+
+export function removeLanguageFromPathname(pathname: string) {
+  const nextPathname = pathname.split('/');
+  nextPathname.splice(1, 1);
+
+  return nextPathname.join('/');
+}
+
+export function removeLanguageFromUrl(href: string) {
+  const url = new URL(href);
+
+  return new URL(removeLanguageFromPathname(url.pathname), url.href).href;
+}
+
+export function hasPathLanguage(pathname: string, language?: string) {
+  const match = matchPath(pathname, `/${languageParam}`);
+
+  if (language) {
+    return Boolean(match && match.params.language);
+  }
+
+  return Boolean(match);
 }
