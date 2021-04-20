@@ -196,7 +196,7 @@ export class UnitBrowserResultList extends Component<Props, State> {
                 href=""
                 onClick={this.handleLoadMoreClick}
               >
-                {t("UNIT.SHOW_MORE")}
+                {t("UNIT_DETAILS.SHOW_MORE")}
               </a>
             )}
           </div>

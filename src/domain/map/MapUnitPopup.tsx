@@ -18,7 +18,7 @@ function MapUnitPopup({ unit, offset }: Props) {
 
   const conditionLabel = condition
     ? getAttr(condition.name, language)
-    : t("UNIT.UNKNOWN");
+    : t("UNIT_DETAILS.UNKNOWN");
 
   return (
     <Popup

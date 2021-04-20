@@ -18,7 +18,7 @@ function AppAboutModal({ onClose }: Props) {
         <div
           className="about-modal-content" // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: t("MAP.ABOUT"),
+            __html: t("APP.ABOUT_MODAL"),
           }}
         />
       </div>

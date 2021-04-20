@@ -29,7 +29,7 @@ function AppInfoDropdown() {
               className="app-info-dropdown__icon"
               aria-hidden="true"
             />
-            {t("MAP.INFO_MENU.GIVE_FEEDBACK")}
+            {t("APP.INFO_MENU.GIVE_FEEDBACK")}
           </Dropdown.Item>
           <Dropdown.Item onClick={() => setModal("about")}>
             <SMIcon
@@ -37,11 +37,11 @@ function AppInfoDropdown() {
               className="app-info-dropdown__icon"
               aria-hidden="true"
             />
-            {t("MAP.INFO_MENU.ABOUT_SERVICE")}
+            {t("APP.INFO_MENU.ABOUT_SERVICE")}
           </Dropdown.Item>
           <Dropdown.Item as={OutboundLink} href="http://osm.org/copyright">
             <span className="app-info-dropdown__icon">{"\u00a9"}</span>
-            {`${t("MAP.ATTRIBUTION")} `}
+            {`${t("APP.MAP_ATTRIBUTION")} `}
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

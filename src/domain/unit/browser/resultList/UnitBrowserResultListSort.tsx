@@ -15,7 +15,7 @@ function UnitBrowserResultListSort({ active, values, onSelect }: Props) {
   return (
     <Dropdown id="unit-sort-selector" className="unit-sort-selector">
       <Dropdown.Toggle>
-        {t(`UNIT.SORT.${active.toUpperCase()}`)}
+        {t(`UNIT_DETAILS.SORT.${active.toUpperCase()}`)}
         <span className="custom-caret">
           <SMIcon icon="expand" />
         </span>
@@ -24,7 +24,7 @@ function UnitBrowserResultListSort({ active, values, onSelect }: Props) {
         {values &&
           values.map((key) => (
             <Dropdown.Item key={key} eventKey={key} onSelect={onSelect}>
-              {t(`UNIT.SORT.${key.toUpperCase()}`)}
+              {t(`UNIT_DETAILS.SORT.${key.toUpperCase()}`)}
             </Dropdown.Item>
           ))}
       </Dropdown.Menu>

@@ -9,10 +9,10 @@ import UnitBrowserFilterLabel from "./UnitBrowserFilterLabel";
 const filterNameToLabel = (filterName: string) => {
   switch (filterName) {
     case "sport":
-      return "UNIT.FILTER_SPORT";
+      return "UNIT_DETAILS.FILTER_SPORT";
 
     case "status":
-      return "UNIT.FILTER_STATUS";
+      return "UNIT_DETAILS.FILTER_STATUS";
 
     default:
       return "";
@@ -39,7 +39,9 @@ function UnitBrowserFilterLabelButton({
 }: UnitFilterLabelButtonProps) {
   const { t } = useTranslation();
   const labelMessage = t(filterNameToLabel(filter.name));
-  const buttonMessage = t(`UNIT.FILTER.${invert(UnitFilters)[filter.active]}`);
+  const buttonMessage = t(
+    `UNIT_DETAILS.FILTER.${invert(UnitFilters)[filter.active]}`
+  );
 
   return (
     <div>

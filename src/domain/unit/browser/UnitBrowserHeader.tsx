@@ -137,13 +137,13 @@ function UnitBrowserHeader({
           action={collapse}
           icon="map-options"
           isActive={!isExpanded}
-          name={t("UNIT.MAP_BUTTON")}
+          name={t("UNIT_DETAILS.MAP_BUTTON")}
         />
         <ActionButton
           action={expand}
           icon="browse"
           isActive={isExpanded}
-          name={t("UNIT.LIST_BUTTON")}
+          name={t("UNIT_DETAILS.LIST_BUTTON")}
         />
       </div>
     </div>

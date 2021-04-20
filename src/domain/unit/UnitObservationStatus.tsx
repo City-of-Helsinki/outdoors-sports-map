@@ -35,7 +35,7 @@ export function StatusUpdated({ time }: StatusUpdatedProps) {
         fontSize: 12,
       }}
     >
-      {t("UNIT.UPDATED")} <Time time={time} />
+      {t("UNIT_DETAILS.UPDATED")} <Time time={time} />
     </div>
   );
 }
@@ -100,8 +100,8 @@ function ObservationStatus({ unit }: ObservationStatusProps) {
         quality={quality}
         label={
           condition && condition.name
-            ? getAttr(condition.name, language) || t("UNIT.UNKNOWN")
-            : t("UNIT.UNKNOWN")
+            ? getAttr(condition.name, language) || t("UNIT_DETAILS.UNKNOWN")
+            : t("UNIT_DETAILS.UNKNOWN")
         }
       />
       {condition && <StatusUpdated time={getObservationTime(condition)} />}

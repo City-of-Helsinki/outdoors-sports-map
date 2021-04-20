@@ -164,11 +164,11 @@ function UnitBrowser({
           />
         )}
       </div>
-      {t("UNIT.TMP_MESSAGE").length > 0 && (
+      {t("UNIT_DETAILS.TMP_MESSAGE").length > 0 && (
         <div
           className="unit-browser__tmp_msg" // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: t("UNIT.TMP_MESSAGE"),
+            __html: t("UNIT_DETAILS.TMP_MESSAGE"),
           }}
         />
       )}
