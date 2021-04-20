@@ -73,11 +73,6 @@
     "CLOSE": "Sulje",
     "SEE_ON_SERVICE_MAP": "Katso palvelukartalla"
   },
-  "VIEW": {
-    "POPUP": {
-      "OPENING_HOURS": "Aukioloajat ja lisätietoja"
-    }
-  },
   "SEARCH": {
     "SEARCH": "Etsi",
     "SHOW_ALL_RESULTS": "Näytä kaikki hakutulokset",

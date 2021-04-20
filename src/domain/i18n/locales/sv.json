@@ -73,11 +73,6 @@
     "CLOSE": "Stänga",
     "SEE_ON_SERVICE_MAP": "Se på Palvelukartta"
   },
-  "VIEW": {
-    "POPUP": {
-      "OPENING_HOURS": "Öppettider och ytterligare upplysningar"
-    }
-  },
   "SEARCH": {
     "SEARCH": "Sök",
     "SHOW_ALL_RESULTS": "Visa alla sökresultat",
