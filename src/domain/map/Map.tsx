@@ -1,9 +1,9 @@
 import { useCallback, useRef } from "react";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { bindActionCreators } from "redux";
 
+import useLanguage from "../../common/hooks/useLanguage";
 import useSearch from "../../common/hooks/useSearch";
 import { AppState } from "../app/appConstants";
 import * as fromUnit from "../unit/state/selectors";
@@ -21,13 +21,7 @@ type Props = {
 
 function Map({ selectedUnitId, onCenterMapToUnit, mapRef }: Props) {
   const dispatch = useDispatch();
-
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
-
+  const language = useLanguage();
   const history = useHistory();
   const { search } = useLocation();
   const { sport, status } = useSearch<{

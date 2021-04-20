@@ -12,6 +12,7 @@ import breaks from "remark-breaks";
 import OutboundLink from "../../../common/a11y/OutboundLink";
 import Link from "../../../common/components/Link";
 import SMIcon from "../../../common/components/SMIcon";
+import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
 import { getIsLoading } from "../../app/appSelectors";
 import * as fromService from "../../service/selectors";
@@ -51,12 +52,8 @@ type HeaderProps = {
 };
 
 export function Header({ unit, services, isLoading }: HeaderProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const location = useLocation<{ search: string }>();
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
@@ -135,12 +132,8 @@ type LocationInfoProps = {
 };
 
 function LocationInfo({ unit }: LocationInfoProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const unitWww = getAttr(unit.www, language);
   const unitExtensionLength = get(unit, "extensions.length");
@@ -195,12 +188,8 @@ type NoticeInfoProps = {
  * @param {Object} unit       [description]
  */
 function NoticeInfo({ unit }: NoticeInfoProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const notice = getObservation(unit, "notice");
 
@@ -253,12 +242,8 @@ type LocationOpeningHoursProps = {
 };
 
 function LocationOpeningHours({ unit }: LocationOpeningHoursProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const openingHours = getOpeningHours(unit, language);
 
@@ -348,11 +333,7 @@ export function SingleUnitBody({
   temperatureObservation,
   palvelukarttaUrl,
 }: SingleUnitBodyProps) {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   return currentUnit && !isLoading ? (
     <div className="unit-container-body">
@@ -384,11 +365,7 @@ type Props = {
 };
 
 function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   const services = useSelector(fromService.getServicesObject);
   const unit = useSelector<AppState, Unit>((state) =>

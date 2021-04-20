@@ -7,6 +7,7 @@ import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import Page from "../../common/a11y/Page";
 import useIsMobile from "../../common/hooks/useIsMobile";
+import useLanguage from "../../common/hooks/useLanguage";
 import ApplicationHeader from "../app/AppHeader";
 import AppInfoDropdown from "../app/AppInfoDropdown";
 import { AppState } from "../app/appConstants";
@@ -36,12 +37,8 @@ function useIsUnitBrowserView() {
 }
 
 function useHomeMeta(selectedUnitId?: string | null) {
-  const {
-    t,
-    i18n: {
-      languages: [activeLanguage],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const activeLanguage = useLanguage();
 
   const selectedUnit = useSelector<AppState, Unit>((state) =>
     getUnitById(state, {

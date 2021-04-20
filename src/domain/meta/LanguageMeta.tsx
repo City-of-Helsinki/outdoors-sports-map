@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import { useTranslation } from "react-i18next";
 
+import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
 import { SUPPORTED_LANGUAGES } from "../i18n/i18nConstants";
 import { getCanonicalUrl } from "./helpers";
@@ -32,11 +32,7 @@ function languageToLanguageAndLocale(language: string) {
 }
 
 function LanguageMeta() {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
   const canonicalUrl = getCanonicalUrl();
 
   return (

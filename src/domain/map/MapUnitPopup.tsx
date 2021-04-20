@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Popup } from "react-leaflet";
 
+import useLanguage from "../../common/hooks/useLanguage";
 import { Unit } from "../unit/unitConstants";
 import { getAttr, getCondition, getUnitQuality } from "../unit/unitHelpers";
 
@@ -10,12 +11,8 @@ type Props = {
 };
 
 function MapUnitPopup({ unit, offset }: Props) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const condition = getCondition(unit);
 

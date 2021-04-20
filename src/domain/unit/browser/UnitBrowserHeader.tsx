@@ -5,6 +5,7 @@ import { useLocation } from "react-router";
 
 import SMIcon from "../../../common/components/SMIcon";
 import useDoSearch from "../../../common/hooks/useDoSearch";
+import useLanguage from "../../../common/hooks/useLanguage";
 import useSearch from "../../../common/hooks/useSearch";
 import { AppState } from "../../app/appConstants";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
@@ -78,13 +79,14 @@ function UnitBrowserHeader({
   onViewChange,
   isExpanded,
 }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
   const dispatch = useDispatch();
   const { search: searchString } = useLocation();
   const { q } = useSearch<Search>();
   const doSearch = useDoSearch();
   const suggestions = useSelector(
-    suggestionsSelectorFactory(searchString, i18n.languages[0])
+    suggestionsSelectorFactory(searchString, language)
   );
   const disabled = useSelector(unitSelectors.getIsLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
