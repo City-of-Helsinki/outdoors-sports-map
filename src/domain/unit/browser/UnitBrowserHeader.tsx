@@ -114,8 +114,9 @@ function UnitBrowserHeader({
   );
 
   const handleOnClear = useCallback(() => {
+    doSearch("s");
     dispatch(unitSearchActions.clearSearch());
-  }, [dispatch]);
+  }, [dispatch, doSearch]);
 
   return (
     <div className="header">

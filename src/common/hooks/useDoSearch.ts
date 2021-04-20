@@ -6,10 +6,15 @@ function useDoSearch() {
   const history = useHistory();
 
   const doSearch = useCallback(
-    (key: string, value: string) => {
+    (key: string, value?: string) => {
       const searchParams = new URLSearchParams(search);
 
-      searchParams.set(key, value);
+      if (!value) {
+        searchParams.delete(key);
+      } else {
+        searchParams.set(key, value);
+      }
+
       history.replace({
         search: searchParams.toString(),
       });
