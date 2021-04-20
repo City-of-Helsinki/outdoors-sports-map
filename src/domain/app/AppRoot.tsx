@@ -1,4 +1,5 @@
 import { History } from "history";
+import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { PersistGate } from "redux-persist/es/integration/react";
@@ -19,7 +20,9 @@ function Root({ history }: Props) {
       <PersistGate loading={null} persistor={persistor}>
         <TranslationProvider>
           <Router history={history}>
-            <App />
+            <HelmetProvider>
+              <App />
+            </HelmetProvider>
           </Router>
         </TranslationProvider>
       </PersistGate>
