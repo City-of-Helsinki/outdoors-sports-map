@@ -69,7 +69,7 @@ type Props = {
 };
 
 type Search = {
-  s?: string;
+  q?: string;
 };
 
 function UnitBrowserHeader({
@@ -81,7 +81,7 @@ function UnitBrowserHeader({
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const { search: searchString } = useLocation();
-  const { s } = useSearch<Search>();
+  const { q } = useSearch<Search>();
   const doSearch = useDoSearch();
   const suggestions = useSelector(
     suggestionsSelectorFactory(searchString, i18n.languages[0])
@@ -106,7 +106,7 @@ function UnitBrowserHeader({
 
   const handleOnSearch = useCallback(
     (input: string, params: Record<string, any> = {}) => {
-      doSearch("s", input);
+      doSearch("q", input);
       dispatch(unitSearchActions.searchUnits(input, params));
       expand();
     },
@@ -114,14 +114,14 @@ function UnitBrowserHeader({
   );
 
   const handleOnClear = useCallback(() => {
-    doSearch("s");
+    doSearch("q");
     dispatch(unitSearchActions.clearSearch());
   }, [dispatch, doSearch]);
 
   return (
     <div className="header">
       <SearchContainer
-        search={s}
+        search={q}
         disabled={disabled}
         isActive={isActive}
         suggestions={suggestions}
