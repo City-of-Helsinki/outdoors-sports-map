@@ -55,7 +55,7 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
   const { t } = useTranslation();
   const language = useLanguage();
 
-  const location = useLocation<{ search: string }>();
+  const location = useLocation<{ previous?: string }>();
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
   const unitMunicipality = unit ? unit.municipality : null;
@@ -79,8 +79,8 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
             alignSelf: "center",
           }}
         >
-          <Link // If there was a search saved into location state, re-apply it
-            to={`/${location.state ? location.state.search : ""}`}
+          <Link // If there was a previous saved into location state, re-apply it
+            to={location.state?.previous || "/"}
             className="unit-container-close-button close-unit-container"
           >
             <SMIcon icon="close" aria-label={t("UNIT_BROWSER.CLOSE")} />

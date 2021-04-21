@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-cycle
+import { SportFilter, StatusFilter, SortKey } from "../unit/unitConstants";
 import { normalizeActionName } from "../utils";
 
 export const SearchActions = {
@@ -24,3 +24,11 @@ export type SearchState = {
 };
 
 export const MAX_SUGGESTION_COUNT = 5;
+
+export type Search = {
+  q?: string;
+  sport?: SportFilter;
+  status?: StatusFilter;
+  sortKey?: SortKey;
+  maxUnitCount?: string;
+};

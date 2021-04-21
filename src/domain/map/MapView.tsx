@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, RefObject } from "react";
 import { withTranslation } from "react-i18next";
 import { Map, TileLayer, ZoomControl } from "react-leaflet";
 
@@ -30,6 +30,7 @@ type Props = {
   position: [number, number];
   units: Unit[];
   mapRef: MapRef;
+  leafletElementRef: RefObject<L.Map | null>;
 };
 
 type State = {
@@ -56,9 +57,9 @@ class MapView extends Component<Props, State> {
   }
 
   get leafletElement() {
-    const { mapRef } = this.props;
+    const { leafletElementRef } = this.props;
 
-    return mapRef?.current?.leafletElement;
+    return leafletElementRef?.current;
   }
 
   handleZoom = () => {

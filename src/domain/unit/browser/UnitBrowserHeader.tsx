@@ -1,19 +1,21 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useHistory, useLocation, useRouteMatch } from "react-router";
 
 import SMIcon from "../../../common/components/SMIcon";
 import useDoSearch from "../../../common/hooks/useDoSearch";
 import useLanguage from "../../../common/hooks/useLanguage";
-import useSearch from "../../../common/hooks/useSearch";
 import { AppState } from "../../app/appConstants";
+import routerPaths from "../../app/appRoutes";
+import useAppSearch from "../../app/useAppSearch";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
 import { setLocation } from "../../map/state/actions";
 import SearchContainer from "../../search/SearchContainer";
 import * as unitSearchActions from "../state/search/actions";
 import * as unitSearchSelectors from "../state/search/selectors";
 import * as unitSelectors from "../state/selectors";
+import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
 
 type ActionButtonProps = {
@@ -63,27 +65,17 @@ const suggestionsSelectorFactory = (search: string, language: string) => (
 };
 
 type Props = {
-  collapse: () => void;
-  expand: () => void;
-  isExpanded: boolean;
   onViewChange: (coordinates: [number, number]) => void;
 };
 
-type Search = {
-  q?: string;
-};
-
-function UnitBrowserHeader({
-  expand,
-  collapse,
-  onViewChange,
-  isExpanded,
-}: Props) {
+function UnitBrowserHeader({ onViewChange }: Props) {
   const { t } = useTranslation();
   const language = useLanguage();
   const dispatch = useDispatch();
   const { search: searchString } = useLocation();
-  const { q } = useSearch<Search>();
+  const searchMatch = useRouteMatch(routerPaths.unitBrowserSearch);
+  const history = useHistory();
+  const { q, ...appSearch } = useAppSearch();
   const doSearch = useDoSearch();
   const suggestions = useSelector(
     suggestionsSelectorFactory(searchString, language)
@@ -107,12 +99,25 @@ function UnitBrowserHeader({
   );
 
   const handleOnSearch = useCallback(
-    (input: string, params: Record<string, any> = {}) => {
-      doSearch("q", input);
-      dispatch(unitSearchActions.searchUnits(input, params));
-      expand();
+    (input: string) => {
+      const nextSearch = {
+        ...appSearch,
+        q: input,
+        maxUnitCount: UNIT_BATCH_SIZE.toString(),
+      };
+
+      // If the search page is not yet open, take the user there.
+      if (!searchMatch) {
+        const searchParams = new URLSearchParams(nextSearch);
+
+        history.push(`/fi/search?${searchParams.toString()}`);
+      } else {
+        doSearch(nextSearch);
+      }
+
+      dispatch(unitSearchActions.searchUnits(input, nextSearch));
     },
-    [expand, doSearch, dispatch]
+    [doSearch, dispatch, history, searchMatch, appSearch]
   );
 
   const handleOnClear = useCallback(() => {
@@ -134,15 +139,19 @@ function UnitBrowserHeader({
       />
       <div className="action-buttons">
         <ActionButton
-          action={collapse}
+          action={() => {
+            history.push(`/${language}${searchString}`);
+          }}
           icon="map-options"
-          isActive={!isExpanded}
+          isActive={searchMatch === null}
           name={t("UNIT_DETAILS.MAP_BUTTON")}
         />
         <ActionButton
-          action={expand}
+          action={() => {
+            history.push(`/${language}/search${searchString}`);
+          }}
           icon="browse"
-          isActive={isExpanded}
+          isActive={searchMatch !== null}
           name={t("UNIT_DETAILS.LIST_BUTTON")}
         />
       </div>

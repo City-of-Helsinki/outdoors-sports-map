@@ -1,25 +1,17 @@
 import values from "lodash/values";
-import { useCallback, useState } from "react";
+import { RefObject, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import useDoSearch from "../../../common/hooks/useDoSearch";
-import useSearch from "../../../common/hooks/useSearch";
 import { Address, AppState } from "../../app/appConstants";
+import routerPaths from "../../app/appRoutes";
 import * as fromHome from "../../app/appSelectors";
+import useAppSearch from "../../app/useAppSearch";
 import * as fromMap from "../../map/state/selectors";
-import * as fromUnitSearch from "../state/search/selectors";
-import * as fromUnit from "../state/selectors";
+import { StatusFilters } from "../unitConstants";
 import {
-  SportFilter,
-  StatusFilter,
-  StatusFilters,
-  Unit,
-} from "../unitConstants";
-import {
-  getDefaultSportFilter,
-  getDefaultStatusFilter,
   getOffSeasonSportFilters,
   getOnSeasonSportFilters,
 } from "../unitHelpers";
@@ -51,41 +43,16 @@ function useOnResize(callback: () => void) {
 }
 
 type Props = {
-  leafletMap: L.Map | null | undefined;
+  leafletMap?: RefObject<L.Map | null>;
   onViewChange: (coordinates: [number, number]) => void;
-  expandedState: [boolean, (value: boolean) => void];
 };
 
-type Params = {
-  unitId?: string;
-};
-
-type Search = {
-  sport: SportFilter;
-  status: StatusFilter;
-};
-
-function UnitBrowser({
-  onViewChange,
-  leafletMap,
-  expandedState: [isExpanded, setIsExpanded],
-}: Props) {
+function UnitBrowser({ onViewChange, leafletMap }: Props) {
   const { t } = useTranslation();
   const [contentMaxHeight, setContentMaxHeight] = useState<number>();
-  const params = useParams<Params>();
   const doSearch = useDoSearch();
-  const {
-    sport = getDefaultSportFilter(),
-    status = getDefaultStatusFilter(),
-  } = useSearch<Search>();
-  const units = useSelector<AppState, Unit[]>((state) =>
-    fromUnit.getVisibleUnits(state, sport, status)
-  );
+  const { sport, status } = useAppSearch();
   const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
-  const isSearching = useSelector<AppState, boolean>(
-    fromUnitSearch.getIsFetching
-  );
-  const position = useSelector<AppState, [number, number]>(fromMap.getLocation);
   const address = useSelector<AppState, Address | undefined | null>(
     fromMap.getAddress
   );
@@ -96,33 +63,10 @@ function UnitBrowser({
     }, [])
   );
 
-  const handleExpand = () => {
-    setIsExpanded(true);
-  };
-  const handleCollapse = () => {
-    setIsExpanded(false);
-  };
-
-  const singleUnitSelected = !!params.unitId;
-
   return (
-    <div
-      className={`unit-browser ${isExpanded ? "expanded" : ""}`}
-      style={
-        params.unitId
-          ? {
-              display: "none",
-            }
-          : undefined
-      }
-    >
+    <div className="unit-browser">
       <div id="always-visible" className="unit-browser__fixed">
-        <UnitBrowserHeader
-          expand={handleExpand}
-          collapse={handleCollapse}
-          onViewChange={onViewChange}
-          isExpanded={isExpanded}
-        />
+        <UnitBrowserHeader onViewChange={onViewChange} />
         {!isLoading && (
           <UnitBrowserFilters
             filters={[
@@ -145,25 +89,21 @@ function UnitBrowser({
           <UnitBrowserAddressBar handleClick={onViewChange} address={address} />
         )}
       </div>
-      <div
-        className="unit-browser__content"
-        style={{
-          maxHeight: isExpanded
-            ? contentMaxHeight || calculateMaxHeight()
-            : contentMaxHeight,
+      <Route
+        path={routerPaths.unitBrowserSearch}
+        render={() => {
+          return (
+            <div
+              className="unit-browser__content"
+              style={{
+                maxHeight: contentMaxHeight || calculateMaxHeight(),
+              }}
+            >
+              <UnitBrowserResultList leafletMap={leafletMap} />
+            </div>
+          );
         }}
-      >
-        {leafletMap && (
-          <UnitBrowserResultList
-            activeFilter={`${sport};${status}`}
-            isVisible={isExpanded && !singleUnitSelected}
-            isLoading={isLoading || isSearching}
-            units={units}
-            position={position}
-            leafletMap={leafletMap}
-          />
-        )}
-      </div>
+      />
       {t("UNIT_DETAILS.TMP_MESSAGE").length > 0 && (
         <div
           className="unit-browser__tmp_msg" // eslint-disable-next-line react/no-danger

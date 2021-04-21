@@ -42,9 +42,7 @@ class MapUnit extends Component<Props> {
     const { unit, zoomLevel, isSelected, ...rest } = this.props;
 
     const geometry =
-      unit.geometry && unit.geometry.type === "MultiLineString"
-        ? unit.geometry
-        : null;
+      unit.geometry?.type === "MultiLineString" ? unit.geometry : null;
 
     return (
       <div>
