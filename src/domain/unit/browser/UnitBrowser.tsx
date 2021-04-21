@@ -26,7 +26,9 @@ function calculateMaxHeight() {
   if (element) {
     const fixedPartHeight = element.offsetHeight;
 
-    return window.innerHeight - fixedPartHeight;
+    // Plus header height
+    // This approach could likely be replaced with flexbox
+    return window.innerHeight - (fixedPartHeight + 64);
   }
 
   return window.innerHeight;
