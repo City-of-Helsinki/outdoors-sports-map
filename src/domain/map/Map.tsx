@@ -6,9 +6,9 @@ import { bindActionCreators } from "redux";
 import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
 import { AppState } from "../app/appConstants";
+import { AppSearchLocationState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
 import useAppSearch from "../app/useAppSearch";
-import { SearchLocationState } from "../search/searchConstants";
 import * as fromUnit from "../unit/state/selectors";
 import { Unit } from "../unit/unitConstants";
 import MapView from "./MapView";
@@ -30,7 +30,7 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
     search,
     pathname,
     state: locationState,
-  } = useLocation<SearchLocationState>();
+  } = useLocation<AppSearchLocationState>();
   const appSearch = useAppSearch();
   const unitDetailsMatch = useRouteMatch<{ unitId: string }>(
     routerPaths.unitDetails
@@ -55,7 +55,7 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
 
   const openUnit = useCallback(
     (unitId: string) => {
-      let state: SearchLocationState = {
+      let state: AppSearchLocationState = {
         previous: `${PathUtils.removeLanguageFromPathname(pathname)}${search}`,
         search: appSearch,
       };
