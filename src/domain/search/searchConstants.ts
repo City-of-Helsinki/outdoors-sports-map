@@ -32,3 +32,8 @@ export type Search = {
   sortKey?: SortKey;
   maxUnitCount?: string;
 };
+
+export type SearchLocationState = {
+  search?: Search;
+  previous?: string;
+};

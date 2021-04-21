@@ -8,6 +8,7 @@ import * as PathUtils from "../../common/utils/pathUtils";
 import { AppState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
 import useAppSearch from "../app/useAppSearch";
+import { SearchLocationState } from "../search/searchConstants";
 import * as fromUnit from "../unit/state/selectors";
 import { Unit } from "../unit/unitConstants";
 import MapView from "./MapView";
@@ -25,7 +26,11 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
   const dispatch = useDispatch();
   const language = useLanguage();
   const history = useHistory();
-  const { search, pathname } = useLocation();
+  const {
+    search,
+    pathname,
+    state: locationState,
+  } = useLocation<SearchLocationState>();
   const appSearch = useAppSearch();
   const unitDetailsMatch = useRouteMatch<{ unitId: string }>(
     routerPaths.unitDetails
@@ -50,14 +55,32 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
 
   const openUnit = useCallback(
     (unitId: string) => {
-      // Store current search state so it can be re-applied if the user returns
-      // from the unit details view
-      history.push(`/${language}/unit/${unitId}`, {
+      let state: SearchLocationState = {
         previous: `${PathUtils.removeLanguageFromPathname(pathname)}${search}`,
         search: appSearch,
-      });
+      };
+
+      // If the user opens an unit while an unit is already open, inherit the
+      // location state from search
+      if (unitId === selectedUnit?.id) {
+        state = {
+          previous: locationState?.previous,
+          search: locationState?.search,
+        };
+      }
+      // Store current search state so it can be re-applied if the user returns
+      // from the unit details view
+      history.push(`/${language}/unit/${unitId}`, state);
     },
-    [history, search, language, pathname, appSearch]
+    [
+      history,
+      search,
+      language,
+      pathname,
+      appSearch,
+      locationState,
+      selectedUnit?.id,
+    ]
   );
 
   return (
