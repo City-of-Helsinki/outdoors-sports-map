@@ -1,3 +1,4 @@
+import { pick } from "lodash";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -115,7 +116,12 @@ function UnitBrowserHeader({ onViewChange }: Props) {
         doSearch(nextSearch);
       }
 
-      dispatch(unitSearchActions.searchUnits(input, nextSearch));
+      dispatch(
+        unitSearchActions.searchUnits(
+          input,
+          pick(nextSearch, ["status", "sport"])
+        )
+      );
     },
     [doSearch, dispatch, history, searchMatch, appSearch]
   );
