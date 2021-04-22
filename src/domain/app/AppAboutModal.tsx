@@ -1,28 +1,30 @@
+import Modal from "react-bootstrap/modal";
 import { useTranslation } from "react-i18next";
 
-import SMIcon from "../../common/components/SMIcon";
-
 type Props = {
+  show: boolean;
   onClose: () => void;
 };
 
-function AppAboutModal({ onClose }: Props) {
+function AppAboutModal({ show = false, onClose }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="about-modal-backdrop">
-      <div className="about-modal-box">
-        <div className="about-modal-controls">
-          <SMIcon icon="close" onClick={onClose} />
-        </div>
+    <Modal show={show} onHide={onClose} size="lg" animation={false}>
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <h2>{t("APP.NAME")}</h2>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
         <div
-          className="about-modal-content" // eslint-disable-next-line react/no-danger
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: t("APP.ABOUT_MODAL"),
           }}
         />
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 }
 
