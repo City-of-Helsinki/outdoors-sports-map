@@ -37,11 +37,7 @@ function LanguageMeta() {
 
   return (
     <Helmet>
-      <meta
-        property="og:locale"
-        content={languageToLanguageAndLocale(language)}
-      />
-      <meta property="og:url" content={canonicalUrl} />
+      <link rel="canonical" href={canonicalUrl} />
       {Object.values(SUPPORTED_LANGUAGES).map((supportedLanguage: string) => (
         <link
           key={supportedLanguage}
@@ -55,6 +51,11 @@ function LanguageMeta() {
         hrefLang="x-default"
         href={PathUtils.removeLanguageFromUrl(canonicalUrl)}
       />
+      <meta
+        property="og:locale"
+        content={languageToLanguageAndLocale(language)}
+      />
+      <meta property="og:url" content={canonicalUrl} />
     </Helmet>
   );
 }
