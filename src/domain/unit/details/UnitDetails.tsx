@@ -12,6 +12,7 @@ import breaks from "remark-breaks";
 import OutboundLink from "../../../common/a11y/OutboundLink";
 import Link from "../../../common/components/Link";
 import SMIcon from "../../../common/components/SMIcon";
+import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
 import { getIsLoading } from "../../app/appSelectors";
 import * as fromService from "../../service/selectors";
@@ -51,14 +52,10 @@ type HeaderProps = {
 };
 
 export function Header({ unit, services, isLoading }: HeaderProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
-  const location = useLocation<{ search: string }>();
+  const location = useLocation<{ previous?: string }>();
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
   const unitMunicipality = unit ? unit.municipality : null;
@@ -68,12 +65,12 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
       <div className="unit-container-header-name">
         <div>
           {isLoading ? (
-            <h4>{t("UNIT_CONTAINER.LOADING")}</h4>
+            <h4>{t("UNIT_BROWSER.LOADING")}</h4>
           ) : (
             <h4>
               {unit
                 ? getAttr(unit.name, language)
-                : t("UNIT_CONTAINER.NOT_FOUND")}
+                : t("UNIT_BROWSER.NOT_FOUND")}
             </h4>
           )}
         </div>
@@ -82,11 +79,11 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
             alignSelf: "center",
           }}
         >
-          <Link // If there was a search saved into location state, re-apply it
-            to={`/${location.state ? location.state.search : ""}`}
+          <Link // If there was a previous saved into location state, re-apply it
+            to={location.state?.previous || "/"}
             className="unit-container-close-button close-unit-container"
           >
-            <SMIcon icon="close" aria-label={t("UNIT_CONTAINER.CLOSE")} />
+            <SMIcon icon="close" aria-label={t("UNIT_BROWSER.CLOSE")} />
           </Link>
         </div>
       </div>
@@ -124,7 +121,7 @@ function LocationState({ unit }: LocationStateProps) {
   const { t } = useTranslation();
 
   return (
-    <BodyBox title={t("UNIT_CONTAINER.QUALITY")}>
+    <BodyBox title={t("UNIT_BROWSER.QUALITY")}>
       <UnitObservationStatus unit={unit} />
     </BodyBox>
   );
@@ -135,12 +132,8 @@ type LocationInfoProps = {
 };
 
 function LocationInfo({ unit }: LocationInfoProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const unitWww = getAttr(unit.www, language);
   const unitExtensionLength = get(unit, "extensions.length");
@@ -150,10 +143,10 @@ function LocationInfo({ unit }: LocationInfoProps) {
   const unitExtensionSkiingTechnique = get(unit, "extensions.skiing_technique");
 
   return (
-    <BodyBox title={t("UNIT_CONTAINER.INFO")}>
+    <BodyBox title={t("UNIT_BROWSER.INFO")}>
       {unitExtensionLength && (
         <p>
-          {`${t("UNIT_CONTAINER.LENGTH")}: `}
+          {`${t("UNIT_BROWSER.LENGTH")}: `}
           <strong>
             {unitExtensionLength}
             km
@@ -162,24 +155,27 @@ function LocationInfo({ unit }: LocationInfoProps) {
       )}
       {get(unit, "extensions.lighting") && (
         <p>
-          {`${t("UNIT_CONTAINER.LIGHTING")}: `}
+          {`${t("UNIT_BROWSER.LIGHTING")}: `}
           <strong>{unitExtensionLighting}</strong>
         </p>
       )}
       {unitExtensionSkiingTechnique && (
         <p>
-          {`${t("UNIT_CONTAINER.SKIING_TECHNIQUE")}: `}
+          {`${t("UNIT_BROWSER.SKIING_TECHNIQUE")}: `}
           <strong>{unitExtensionSkiingTechnique}</strong>
         </p>
       )}
       {unit.phone && (
         <p>
-          {t("UNIT.PHONE")}: <a href={`tel:${unit.phone}`}>{unit.phone}</a>
+          {t("UNIT_DETAILS.PHONE")}:{" "}
+          <a href={`tel:${unit.phone}`}>{unit.phone}</a>
         </p>
       )}
       {unitWww && (
         <p>
-          <OutboundLink href={unitWww}>{t("UNIT.FURTHER_INFO")}</OutboundLink>
+          <OutboundLink href={unitWww}>
+            {t("UNIT_DETAILS.FURTHER_INFO")}
+          </OutboundLink>
         </p>
       )}
     </BodyBox>
@@ -195,17 +191,13 @@ type NoticeInfoProps = {
  * @param {Object} unit       [description]
  */
 function NoticeInfo({ unit }: NoticeInfoProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const notice = getObservation(unit, "notice");
 
   return notice ? (
-    <BodyBox title={t("UNIT_CONTAINER.NOTICE")}>
+    <BodyBox title={t("UNIT_BROWSER.NOTICE")}>
       <StatusUpdated time={getObservationTime(notice)} />
       <ReactMarkdown
         source={getAttr(notice.value, language)} // Insert a break for each newline character
@@ -227,19 +219,19 @@ function LocationRoute({ routeUrl, palvelukarttaUrl }: LocationRouteProps) {
   const { t } = useTranslation();
 
   return (
-    <BodyBox title={t("UNIT_CONTAINER.LINKS")}>
+    <BodyBox title={t("UNIT_BROWSER.LINKS")}>
       <ul className="unit-container-body-list">
         {routeUrl && (
           <li>
             <OutboundLink href={routeUrl}>
-              {t("UNIT_CONTAINER.GET_ROUTE")}
+              {t("UNIT_BROWSER.GET_ROUTE")}
             </OutboundLink>
           </li>
         )}
         {palvelukarttaUrl && (
           <li>
             <OutboundLink href={palvelukarttaUrl}>
-              {t("UNIT_CONTAINER.SEE_ON_SERVICE_MAP")}
+              {t("UNIT_BROWSER.SEE_ON_SERVICE_MAP")}
             </OutboundLink>
           </li>
         )}
@@ -253,12 +245,8 @@ type LocationOpeningHoursProps = {
 };
 
 function LocationOpeningHours({ unit }: LocationOpeningHoursProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const openingHours = getOpeningHours(unit, language);
 
@@ -267,7 +255,7 @@ function LocationOpeningHours({ unit }: LocationOpeningHoursProps) {
   }
 
   return (
-    <BodyBox title={t("UNIT_CONTAINER.OPENING_HOURS")}>
+    <BodyBox title={t("UNIT_BROWSER.OPENING_HOURS")}>
       {openingHours.map((openingHour: string) => (
         <div key={openingHour} className="unit-container-body-multi-line">
           {openingHour}
@@ -287,7 +275,7 @@ function LocationTemperature({ observation }: LocationTemperatureProps) {
   const observationTime = getObservationTime(observation);
 
   return (
-    <BodyBox title={t("UNIT_CONTAINER.TEMPERATURE")}>
+    <BodyBox title={t("UNIT_BROWSER.TEMPERATURE")}>
       <StatusUpdated time={observationTime} />
       {temperature}
     </BodyBox>
@@ -306,10 +294,10 @@ function LiveLocationTemperature({
   const observationTime = getObservationTime(observation);
 
   return (
-    <BodyBox title={t("UNIT_CONTAINER.WATER_TEMPERATURE")}>
+    <BodyBox title={t("UNIT_BROWSER.WATER_TEMPERATURE")}>
       <StatusUpdatedAgo
         time={observationTime}
-        sensorName={t("UNIT_CONTAINER.WATER_TEMPERATURE_SENSOR")}
+        sensorName={t("UNIT_BROWSER.WATER_TEMPERATURE_SENSOR")}
       />
       {`${temperature} °C`}
     </BodyBox>
@@ -348,11 +336,7 @@ export function SingleUnitBody({
   temperatureObservation,
   palvelukarttaUrl,
 }: SingleUnitBodyProps) {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   return currentUnit && !isLoading ? (
     <div className="unit-container-body">
@@ -384,11 +368,7 @@ type Props = {
 };
 
 function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   const services = useSelector(fromService.getServicesObject);
   const unit = useSelector<AppState, Unit>((state) =>

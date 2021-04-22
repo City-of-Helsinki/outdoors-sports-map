@@ -1,6 +1,7 @@
 .unit-browser {
   pointer-events: none;
   overflow: hidden;
+  height: 100%;
 
   & > * {
     pointer-events: auto;
@@ -8,18 +9,10 @@
   }
 
   .unit-browser__content {
-    display: none;
-  }
-
-  &.expanded {
-    height: 100%;
-
-    .unit-browser__content {
-      padding-top: 0;
-      display: block;
-      overflow-y: scroll;
-      overflow-x: hidden;
-    }
+    padding-top: 0;
+    display: block;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .unit-browser__tmp_msg {

@@ -1,50 +1,43 @@
 import className from "classnames";
-import { useCallback, useEffect, useRef, useState, ReactNode } from "react";
+import { useCallback, useRef, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Map as RLMap } from "react-leaflet";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import Page from "../../common/a11y/Page";
 import useIsMobile from "../../common/hooks/useIsMobile";
-import ApplicationHeader from "../app/ApplicationHeader";
+import useLanguage from "../../common/hooks/useLanguage";
+import ApplicationHeader from "../app/AppHeader";
+import AppInfoDropdown from "../app/AppInfoDropdown";
 import { AppState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
-import { languageParam } from "../i18n/i18nConstants";
+import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import Map from "../map/Map";
-import { MapRef } from "../map/mapConstants";
-import { fetchServices } from "../service/actions";
 import UnitBrowser from "../unit/browser/UnitBrowser";
 import UnitDetails from "../unit/details/UnitDetails";
-import { fetchUnits } from "../unit/state/actions";
 import { getUnitById } from "../unit/state/selectors";
 import { Unit } from "../unit/unitConstants";
 import { getAttr, getUnitPosition } from "../unit/unitHelpers";
+import useFetchInitialData from "./useFetchInitialData";
 
-function getLeafletMap(ref: MapRef) {
-  return ref.current?.leafletElement;
-}
-
-function useIsUnitBrowserView() {
+function useIsUnitDetailsSearchView() {
   const match = useRouteMatch({
-    path: ["/", `/${languageParam}`],
+    path: routerPaths.unitDetails,
     exact: true,
   });
 
   return Boolean(match && match.isExact);
 }
 
-function useHomeMeta(selectedUnitId?: string | null) {
-  const {
-    t,
-    i18n: {
-      languages: [activeLanguage],
-    },
-  } = useTranslation();
+function useHomeMeta() {
+  const { t } = useTranslation();
+  const activeLanguage = useLanguage();
+  const unitDetailsMatch = useRouteMatch<Params>(routerPaths.unitDetails);
 
   const selectedUnit = useSelector<AppState, Unit>((state) =>
     getUnitById(state, {
-      id: selectedUnitId,
+      id: unitDetailsMatch?.params.unitId,
     })
   );
 
@@ -85,22 +78,9 @@ function useHomeMeta(selectedUnitId?: string | null) {
   };
 }
 
-function getLatLngToContainerPoint(ref: MapRef, location: [number, number]) {
-  return ref.current?.leafletElement.latLngToContainerPoint(location);
-}
-
-function getContainerPointToLatLng(ref: MapRef, location: L.Point) {
-  return ref.current?.leafletElement.containerPointToLatLng(location);
-}
-
-function setView(ref: MapRef, coordinates: L.LatLng) {
-  ref.current?.leafletElement.setView(coordinates);
-}
-
 type MapLayoutProps = {
   content: ReactNode;
   map: ReactNode;
-  isFilled: boolean;
   title: string;
   description: string | null;
   image?: string | null;
@@ -109,20 +89,22 @@ type MapLayoutProps = {
 function MapLayout({
   content,
   map,
-  isFilled,
   title,
   description,
   image,
 }: MapLayoutProps) {
-  const isUnitBrowserView = useIsUnitBrowserView();
+  const isUnitSearchOpen = useIsUnitBrowserSearchView();
+  const isUnitDetailsOpen = useIsUnitDetailsSearchView();
+
+  const isFilled = isUnitDetailsOpen || isUnitSearchOpen;
 
   return (
     <>
       <div
         className={className("map-foreground", {
           "is-filled": isFilled,
-          "fill-color-content": !isUnitBrowserView,
-          "fill-color-background": isUnitBrowserView,
+          "fill-color-content": !isUnitSearchOpen,
+          "fill-color-background": isUnitSearchOpen,
         })}
       >
         <ApplicationHeader />
@@ -135,6 +117,7 @@ function MapLayout({
           {content}
         </Page>
       </div>
+      <AppInfoDropdown />
       <div className="map-container">{map}</div>
     </>
   );
@@ -145,29 +128,25 @@ type Params = {
 };
 
 function HomeContainer() {
-  const mapRef = useRef<RLMap>(null);
-  const [isExpanded, setExpanded] = useState(false);
-  const dispatch = useDispatch();
-  const match = useRouteMatch<Params>(routerPaths.singleUnit);
+  const mapRef = useRef<RLMap | null>(null);
+  const leafletElementRef = useRef<L.Map | null>(null);
   const isMobile = useIsMobile();
-  const selectedUnitId = match ? match.params.unitId : null;
-  const isUnitDetailsOpen = selectedUnitId !== null;
-
-  const { title, description, image } = useHomeMeta(selectedUnitId);
+  const { title, description, image } = useHomeMeta();
 
   const handleOnViewChange = useCallback((coordinates) => {
-    setView(mapRef, coordinates);
+    leafletElementRef.current?.setView(coordinates);
   }, []);
 
   const handleCenterMapToUnit = useCallback(
     (unit) => {
+      const leafletElement = leafletElementRef.current;
       const location = getUnitPosition(unit);
 
       if (!location) {
         return;
       }
 
-      const pixelLocation = getLatLngToContainerPoint(mapRef, location);
+      const pixelLocation = leafletElement?.latLngToContainerPoint(location);
 
       if (!pixelLocation) {
         return;
@@ -178,54 +157,42 @@ function HomeContainer() {
         // on the visible map
         pixelLocation.x -= 200;
 
-        const adjustedCenter = getContainerPointToLatLng(mapRef, pixelLocation);
+        const adjustedCenter = leafletElement?.containerPointToLatLng(
+          pixelLocation
+        );
 
         if (adjustedCenter) {
-          setView(mapRef, adjustedCenter);
+          leafletElement?.setView(adjustedCenter);
         }
       } else {
         // On mobile we want to move the map 250px down from the center, so the
         // big info box does not hide the selected unit.
         pixelLocation.y -= 250;
 
-        const adjustedCenter = getContainerPointToLatLng(mapRef, pixelLocation);
+        const adjustedCenter = leafletElement?.containerPointToLatLng(
+          pixelLocation
+        );
 
         if (adjustedCenter) {
-          setView(mapRef, adjustedCenter);
+          leafletElement?.setView(adjustedCenter);
         }
       }
     },
     [isMobile]
   );
 
-  useEffect(() => {
-    // Fetch initial data
-    dispatch(fetchUnits({}));
-    dispatch(fetchServices({}));
-  }, [dispatch]);
+  useFetchInitialData();
 
   return (
     <MapLayout
       title={title}
       description={description}
       image={image}
-      isFilled={isUnitDetailsOpen || isExpanded}
       content={
         <Switch>
           <Route
             exact
-            path={`/${languageParam}`}
-            render={() => (
-              <UnitBrowser
-                leafletMap={getLeafletMap(mapRef)}
-                onViewChange={handleOnViewChange}
-                expandedState={[isExpanded, setExpanded]}
-              />
-            )}
-          />
-          <Route
-            exact
-            path={routerPaths.singleUnit}
+            path={routerPaths.unitDetails}
             render={({
               match: {
                 params: { unitId },
@@ -238,12 +205,24 @@ function HomeContainer() {
               />
             )}
           />
+          <Route
+            path={routerPaths.unitBrowser}
+            render={() => (
+              <UnitBrowser
+                leafletMap={leafletElementRef}
+                onViewChange={handleOnViewChange}
+              />
+            )}
+          />
         </Switch>
       }
       map={
         <Map
-          mapRef={mapRef}
-          selectedUnitId={selectedUnitId}
+          mapRef={(ref) => {
+            mapRef.current = ref;
+            leafletElementRef.current = ref?.leafletElement || null;
+          }}
+          leafletElementRef={leafletElementRef}
           onCenterMapToUnit={handleCenterMapToUnit}
         />
       }

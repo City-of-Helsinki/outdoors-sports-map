@@ -1,8 +1,8 @@
-import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
 
 import JumpLink from "../../common/a11y/JumpLink";
 import ResetFocus from "../../common/a11y/ResetFocus";
+import useLanguage from "../../common/hooks/useLanguage";
 import useScrollToTop from "../../common/hooks/useScrollToTop";
 import { languageParam } from "../i18n/i18nConstants";
 import AppMeta from "../meta/AppMeta";
@@ -12,11 +12,7 @@ import LanguageAwareRoutes from "./AppLanguageAwareRoutes";
 function App() {
   useScrollToTop();
 
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   return (
     <div id="app-wrapper">

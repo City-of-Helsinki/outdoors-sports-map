@@ -141,7 +141,9 @@ export const SortKeys = {
   ALPHABETICAL: "alphabetical",
   DISTANCE: "distance",
   CONDITION: "condition",
-};
+} as const;
+
+export type SortKey = typeof SortKeys[keyof typeof SortKeys];
 
 export const UNIT_BATCH_SIZE = 20;
 

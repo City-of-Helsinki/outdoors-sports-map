@@ -10,7 +10,7 @@ import * as unitActions from "../unit/state/actions";
 
 type Props = {
   sendFeedback: (feedback: string, email?: string | null) => void;
-  closeModal: () => void;
+  onClose: () => void;
   t: (arg0: string) => string;
 };
 
@@ -53,11 +53,11 @@ class AppFeedbackModal extends Component<Props, State> {
   ) {
     e.preventDefault();
 
-    const { sendFeedback, closeModal } = this.props;
+    const { sendFeedback, onClose } = this.props;
 
     if (feedback) {
       sendFeedback(feedback, email);
-      closeModal();
+      onClose();
     } else {
       console.error(
         `User attempted to send feedback without providing feedback`
@@ -66,17 +66,17 @@ class AppFeedbackModal extends Component<Props, State> {
   }
 
   render() {
-    const { closeModal, t } = this.props;
+    const { onClose, t } = this.props;
     const { emailInputOpen } = this.state;
 
     return (
       <div className="about-modal-backdrop">
         <div className="about-modal-box">
           <div className="about-modal-controls">
-            <SMIcon icon="close" onClick={() => closeModal()} />
+            <SMIcon icon="close" onClick={onClose} />
           </div>
           <div className="about-modal-content">
-            <h3>{t("MAP.INFO_MENU.GIVE_FEEDBACK")}</h3>
+            <h3>{t("APP.INFO_MENU.GIVE_FEEDBACK")}</h3>
             <Form
               onSubmit={(e) => {
                 const { feedback, email } = this.state;
@@ -90,7 +90,7 @@ class AppFeedbackModal extends Component<Props, State> {
               >
                 <Form.Control
                   as="textarea"
-                  placeholder={t("MAP.FEEDBACK.FEEDBACK")}
+                  placeholder={t("APP.FEEDBACK.FEEDBACK")}
                   onChange={(e) =>
                     this.setState({
                       feedback: e.target.value,
@@ -101,7 +101,7 @@ class AppFeedbackModal extends Component<Props, State> {
               <Form.Group>
                 <Form.Check
                   type="checkbox"
-                  label={t("MAP.FEEDBACK.WANT_ANSWER")}
+                  label={t("APP.FEEDBACK.WANT_ANSWER")}
                   className="feedback-modal__checkbox"
                   onChange={() => this.toggleEmailInput()}
                 />
@@ -111,7 +111,7 @@ class AppFeedbackModal extends Component<Props, State> {
                   <Form.Control
                     className="feedback-modal__email"
                     type="email"
-                    placeholder={t("MAP.FEEDBACK.EMAIL")}
+                    placeholder={t("APP.FEEDBACK.EMAIL")}
                     onChange={(e) =>
                       this.setState({
                         email: e.target.value,
@@ -121,7 +121,7 @@ class AppFeedbackModal extends Component<Props, State> {
                 </Form.Group>
               )}
               <Button variant="primary" type="submit">
-                {t("MAP.FEEDBACK.SEND")}
+                {t("APP.FEEDBACK.SEND")}
               </Button>
             </Form>
           </div>

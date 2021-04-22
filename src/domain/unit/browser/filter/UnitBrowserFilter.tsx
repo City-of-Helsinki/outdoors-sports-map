@@ -45,7 +45,7 @@ function FilterOptionsRow({
             filterName={option}
             onKeyDown={onKeyDown}
             onClick={() => onSelect(filterName, option)}
-            message={t(`UNIT.FILTER.${invert(UnitFilters)[option]}`)}
+            message={t(`UNIT_DETAILS.FILTER.${invert(UnitFilters)[option]}`)}
           />
         </Col>
       ))}

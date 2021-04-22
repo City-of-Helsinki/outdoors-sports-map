@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Route, useRouteMatch } from "react-router-dom";
 
+import useLanguage from "../../common/hooks/useLanguage";
 import HomeContainer from "../home/HomeContainer";
 import { languageParam } from "../i18n/i18nConstants";
 
@@ -14,12 +15,8 @@ function getRouteLanguage(match: Record<string, any> | null | undefined) {
 }
 
 function LanguageAwareRoutes() {
-  const {
-    i18n,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { i18n } = useTranslation();
+  const language = useLanguage();
 
   const match = useRouteMatch();
   const routeLanguage = getRouteLanguage(match);

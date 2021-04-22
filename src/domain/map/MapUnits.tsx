@@ -17,17 +17,25 @@ function MapUnits({ units, selectedUnit, openUnit, zoomLevel }: Props) {
 
   // Draw things in condition order
   unitsInOrder = sortByCondition(unitsInOrder).reverse();
-
-  if (!isEmpty(unitsInOrder) && selectedUnit) {
-    unitsInOrder.push(selectedUnit);
-  }
+  unitsInOrder = selectedUnit
+    ? unitsInOrder.filter((unit) => unit.id !== selectedUnit.id)
+    : unitsInOrder;
 
   return (
     <div className="units-on-map">
+      {selectedUnit && (
+        <MapUnit
+          isSelected={true}
+          unit={selectedUnit}
+          zoomLevel={zoomLevel}
+          key={`${selectedUnit.id}:${getUnitQuality(selectedUnit)}`}
+          openUnit={openUnit}
+        />
+      )}
       {!isEmpty(unitsInOrder) &&
         unitsInOrder.map((unit, index) => (
           <MapUnit
-            isSelected={selectedUnit && selectedUnit.id === unit.id}
+            isSelected={false}
             unit={unit}
             zoomLevel={zoomLevel}
             key={`${unit.id}:${getUnitQuality(unit)}:${

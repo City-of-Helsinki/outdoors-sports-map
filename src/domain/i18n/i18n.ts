@@ -50,7 +50,7 @@ i18n
         escapeValue: false,
       },
       detection: {
-        order: ["path", "localStorage"],
+        order: ["path", "localStorage", "navigator"],
         checkWhitelist: true,
       },
     },

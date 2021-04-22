@@ -1,6 +1,6 @@
-import { useTranslation } from "react-i18next";
 import { Link as RRLink, LinkProps } from "react-router-dom";
 
+import useLanguage from "../hooks/useLanguage";
 import * as PathUtils from "../utils/pathUtils";
 
 export function getToWithLanguage(to: LinkProps["to"], lang: string) {
@@ -20,11 +20,7 @@ type Props = LinkProps & {
 };
 
 function Link({ to, lang: userLang, ...rest }: Props) {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   const lang = userLang !== undefined ? userLang : language;
 

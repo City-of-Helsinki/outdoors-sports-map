@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link as RRLink, useLocation } from "react-router-dom";
 
 import Link from "../../common/components/Link";
+import useLanguage from "../../common/hooks/useLanguage";
 import { replaceLanguageInPath } from "../../common/utils/pathUtils";
 import FlagFinland24pxFlat from "../assets/icons/flag-finland-24-flat.png";
 import FlagSweden24pxFlat from "../assets/icons/flag-sweden-24-flat.png";
@@ -18,12 +19,8 @@ const countryFlags: {
 };
 
 function ApplicationHeader() {
-  const {
-    t,
-    i18n: {
-      languages: [currentLanguage],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const currentLanguage = useLanguage();
 
   const { pathname } = useLocation();
 

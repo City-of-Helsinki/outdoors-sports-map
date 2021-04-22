@@ -25,4 +25,4 @@ export const mapActions = {
   RECEIVE_ADDRESS: normalizeActionName("map/RECEIVE_ADDRESS"),
 };
 
-export type MapRef = MutableRefObject<Map | null>;
+export type MapRef = MutableRefObject<Map | null> | ((ref: Map) => void);

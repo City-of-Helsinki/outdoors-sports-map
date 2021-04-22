@@ -1,4 +1,5 @@
 import { RootState } from "../bootstrap/createStore";
+import { SortKey, SportFilter, StatusFilter } from "../unit/unitConstants";
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -46,4 +47,17 @@ export type Address = {
   location: {
     coordinates: [number, number];
   };
+};
+
+export type AppSearch = {
+  q?: string;
+  sport?: SportFilter;
+  status?: StatusFilter;
+  sortKey?: SortKey;
+  maxUnitCount?: string;
+};
+
+export type AppSearchLocationState = {
+  search?: AppSearch;
+  previous?: string;
 };

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import Time from "../../common/components/Time";
 import TimeAgo from "../../common/components/TimeAgo";
+import useLanguage from "../../common/hooks/useLanguage";
 import { Unit } from "./unitConstants";
 import {
   getAttr,
@@ -34,7 +35,7 @@ export function StatusUpdated({ time }: StatusUpdatedProps) {
         fontSize: 12,
       }}
     >
-      {t("UNIT.UPDATED")} <Time time={time} />
+      {t("UNIT_DETAILS.UPDATED")} <Time time={time} />
     </div>
   );
 }
@@ -67,11 +68,7 @@ type MaintenanceUpdatedProps = {
 };
 
 export function MaintenanceUpdated({ name, time }: MaintenanceUpdatedProps) {
-  const {
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const language = useLanguage();
 
   return (
     <div
@@ -90,12 +87,8 @@ type ObservationStatusProps = {
 };
 
 function ObservationStatus({ unit }: ObservationStatusProps) {
-  const {
-    t,
-    i18n: {
-      languages: [language],
-    },
-  } = useTranslation();
+  const { t } = useTranslation();
+  const language = useLanguage();
 
   const quality = getUnitQuality(unit);
   const condition = getCondition(unit);
@@ -107,8 +100,8 @@ function ObservationStatus({ unit }: ObservationStatusProps) {
         quality={quality}
         label={
           condition && condition.name
-            ? getAttr(condition.name, language) || t("UNIT.UNKNOWN")
-            : t("UNIT.UNKNOWN")
+            ? getAttr(condition.name, language) || t("UNIT_DETAILS.UNKNOWN")
+            : t("UNIT_DETAILS.UNKNOWN")
         }
       />
       {condition && <StatusUpdated time={getObservationTime(condition)} />}

@@ -1,18 +1,22 @@
+import { pick } from "lodash";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useHistory, useLocation, useRouteMatch } from "react-router";
 
 import SMIcon from "../../../common/components/SMIcon";
 import useDoSearch from "../../../common/hooks/useDoSearch";
-import useSearch from "../../../common/hooks/useSearch";
+import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
+import routerPaths from "../../app/appRoutes";
+import useAppSearch from "../../app/useAppSearch";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
 import { setLocation } from "../../map/state/actions";
 import SearchContainer from "../../search/SearchContainer";
 import * as unitSearchActions from "../state/search/actions";
 import * as unitSearchSelectors from "../state/search/selectors";
 import * as unitSelectors from "../state/selectors";
+import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
 
 type ActionButtonProps = {
@@ -62,29 +66,20 @@ const suggestionsSelectorFactory = (search: string, language: string) => (
 };
 
 type Props = {
-  collapse: () => void;
-  expand: () => void;
-  isExpanded: boolean;
   onViewChange: (coordinates: [number, number]) => void;
 };
 
-type Search = {
-  s?: string;
-};
-
-function UnitBrowserHeader({
-  expand,
-  collapse,
-  onViewChange,
-  isExpanded,
-}: Props) {
-  const { t, i18n } = useTranslation();
+function UnitBrowserHeader({ onViewChange }: Props) {
+  const { t } = useTranslation();
+  const language = useLanguage();
   const dispatch = useDispatch();
   const { search: searchString } = useLocation();
-  const { s } = useSearch<Search>();
+  const searchMatch = useRouteMatch(routerPaths.unitBrowserSearch);
+  const history = useHistory();
+  const { q, ...appSearch } = useAppSearch();
   const doSearch = useDoSearch();
   const suggestions = useSelector(
-    suggestionsSelectorFactory(searchString, i18n.languages[0])
+    suggestionsSelectorFactory(searchString, language)
   );
   const disabled = useSelector(unitSelectors.getIsLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
@@ -105,22 +100,41 @@ function UnitBrowserHeader({
   );
 
   const handleOnSearch = useCallback(
-    (input: string, params: Record<string, any> = {}) => {
-      doSearch("s", input);
-      unitSearchActions.searchUnits(input, params);
-      expand();
+    (input: string) => {
+      const nextSearch = {
+        ...appSearch,
+        q: input,
+        maxUnitCount: UNIT_BATCH_SIZE.toString(),
+      };
+
+      // If the search page is not yet open, take the user there.
+      if (!searchMatch) {
+        const searchParams = new URLSearchParams(nextSearch);
+
+        history.push(`/fi/search?${searchParams.toString()}`);
+      } else {
+        doSearch(nextSearch);
+      }
+
+      dispatch(
+        unitSearchActions.searchUnits(
+          input,
+          pick(nextSearch, ["status", "sport"])
+        )
+      );
     },
-    [expand, doSearch]
+    [doSearch, dispatch, history, searchMatch, appSearch]
   );
 
   const handleOnClear = useCallback(() => {
+    doSearch("q");
     dispatch(unitSearchActions.clearSearch());
-  }, [dispatch]);
+  }, [dispatch, doSearch]);
 
   return (
     <div className="header">
       <SearchContainer
-        search={s}
+        search={q}
         disabled={disabled}
         isActive={isActive}
         suggestions={suggestions}
@@ -131,16 +145,20 @@ function UnitBrowserHeader({
       />
       <div className="action-buttons">
         <ActionButton
-          action={collapse}
+          action={() => {
+            history.push(`/${language}${searchString}`);
+          }}
           icon="map-options"
-          isActive={!isExpanded}
-          name={t("UNIT.MAP_BUTTON")}
+          isActive={searchMatch === null}
+          name={t("UNIT_DETAILS.MAP_BUTTON")}
         />
         <ActionButton
-          action={expand}
+          action={() => {
+            history.push(`/${language}/search${searchString}`);
+          }}
           icon="browse"
-          isActive={isExpanded}
-          name={t("UNIT.LIST_BUTTON")}
+          isActive={searchMatch !== null}
+          name={t("UNIT_DETAILS.LIST_BUTTON")}
         />
       </div>
     </div>

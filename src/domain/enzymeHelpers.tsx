@@ -2,6 +2,7 @@ import { mount as enzymeMount, MountRendererProps } from "enzyme";
 import get from "lodash/get";
 import omit from "lodash/omit";
 import { ReactNode } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 
@@ -20,7 +21,9 @@ export const mount = (element: ReactNode, options?: Options) => {
   return enzymeMount(
     <Provider store={store}>
       <TranslationProvider>
-        <MemoryRouter>{element}</MemoryRouter>
+        <MemoryRouter>
+          <HelmetProvider>{element}</HelmetProvider>
+        </MemoryRouter>
       </TranslationProvider>
     </Provider>,
     enzymeOptions
