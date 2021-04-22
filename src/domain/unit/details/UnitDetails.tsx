@@ -33,6 +33,7 @@ import {
   getObservationTime,
   getOpeningHours,
 } from "../unitHelpers";
+import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
 
 function shouldShowInfo(unit: Unit) {
   const hasExtensions =
@@ -55,8 +56,8 @@ type HeaderProps = {
 export function Header({ unit, services, isLoading }: HeaderProps) {
   const { t } = useTranslation();
   const language = useLanguage();
-
   const location = useLocation<{ previous?: string }>();
+
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
   const unitMunicipality = unit ? unit.municipality : null;
@@ -386,6 +387,7 @@ function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
       onCenterMapToUnit(unit);
     }
   }, [unit, onCenterMapToUnit]);
+  useSyncUnitNameWithLanguage(unit);
 
   const temperatureObservation = has(unit, "observations")
     ? getObservation(unit, "swimming_water_temperature")

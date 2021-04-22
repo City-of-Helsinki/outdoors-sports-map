@@ -32,7 +32,9 @@ const UnitListItem = React.memo<UnitListItemProps>(
     return (
       <Link
         to={{
-          pathname: `/unit/${unit.id}`,
+          pathname: `/unit/${unit.id}-${encodeURIComponent(
+            unitHelpers.getAttr(unit.name, language)
+          )}`,
           state: {
             previous: `${PathUtils.removeLanguageFromPathname(
               pathname
