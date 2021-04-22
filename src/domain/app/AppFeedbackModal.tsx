@@ -32,15 +32,9 @@ class AppFeedbackModal extends Component<Props, State> {
   toggleEmailInput() {
     const { emailInputOpen } = this.state;
 
-    if (emailInputOpen) {
-      this.setState({
-        emailInputOpen: false,
-      });
-    } else {
-      this.setState({
-        emailInputOpen: true,
-      });
-    }
+    this.setState({
+      emailInputOpen: !emailInputOpen,
+    });
   }
 
   handleFeedbackSubmit(
