@@ -21,7 +21,7 @@
     "LOADING": "Laddar..."
   },
   "MAP": {
-    "ACCESSIBILITY_NOTICE": "Karttanäkymä. Kartan tietoja voi tarkastella tällä hetkellä vain näönvaraisesti.",
+    "ACCESSIBILITY_NOTICE": "Kartvy. Kartans uppgifter kan i nuläget granskas endast visuellt.",
     "LOCATE_USER": "Visa din plats",
     "ZOOM_IN": "Zooma in",
     "ZOOM_OUT": "Zooma ut"
