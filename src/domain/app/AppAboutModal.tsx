@@ -1,4 +1,4 @@
-import Modal from "react-bootstrap/modal";
+import Modal from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
 
 type Props = {

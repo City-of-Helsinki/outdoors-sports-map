@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/modal";
+import Modal from "react-bootstrap/Modal";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
