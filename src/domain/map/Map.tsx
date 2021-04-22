@@ -62,7 +62,7 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
 
       // If the user opens an unit while an unit is already open, inherit the
       // location state from search
-      if (unitId === selectedUnit?.id) {
+      if (selectedUnit?.id) {
         state = {
           previous: locationState?.previous,
           search: locationState?.search,
