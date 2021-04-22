@@ -105,6 +105,7 @@ class AppFeedbackModal extends Component<Props, State> {
                 label={t("APP.FEEDBACK.WANT_ANSWER")}
                 className="feedback-modal__checkbox"
                 onChange={() => this.toggleEmailInput()}
+                checked={emailInputOpen}
               />
             </Form.Group>
             {emailInputOpen && (
