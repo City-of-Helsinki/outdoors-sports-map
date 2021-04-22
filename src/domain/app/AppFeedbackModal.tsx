@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -17,8 +17,6 @@ type Props = {
 
 type State = {
   emailInputOpen: boolean;
-  feedback: string | null | undefined;
-  email: string | null | undefined;
 };
 
 class AppFeedbackModal extends Component<Props, State> {
@@ -26,8 +24,6 @@ class AppFeedbackModal extends Component<Props, State> {
     super(props);
     this.state = {
       emailInputOpen: false,
-      feedback: null,
-      email: null,
     };
     this.handleFeedbackSubmit = this.handleFeedbackSubmit.bind(this);
     this.toggleEmailInput = this.toggleEmailInput.bind(this);
@@ -78,8 +74,15 @@ class AppFeedbackModal extends Component<Props, State> {
           </Modal.Title>
         </Modal.Header>
         <Form
-          onSubmit={(e) => {
-            const { feedback, email } = this.state;
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+
+            const form = e.target as typeof e.target & {
+              feedback: { value: string };
+              email: { value: string };
+            };
+            const feedback = form?.feedback.value;
+            const email = form?.email.value;
 
             this.handleFeedbackSubmit(e, feedback, email);
           }}
@@ -90,13 +93,9 @@ class AppFeedbackModal extends Component<Props, State> {
               className="feedback-modal__feedback"
             >
               <Form.Control
+                name="feedback"
                 as="textarea"
                 placeholder={t("APP.FEEDBACK.FEEDBACK")}
-                onChange={(e) =>
-                  this.setState({
-                    feedback: e.target.value,
-                  })
-                }
               />
             </Form.Group>
             <Form.Group>
@@ -111,14 +110,10 @@ class AppFeedbackModal extends Component<Props, State> {
             {emailInputOpen && (
               <Form.Group>
                 <Form.Control
+                  name="email"
                   className="feedback-modal__email"
                   type="email"
                   placeholder={t("APP.FEEDBACK.EMAIL")}
-                  onChange={(e) =>
-                    this.setState({
-                      email: e.target.value,
-                    })
-                  }
                 />
               </Form.Group>
             )}
