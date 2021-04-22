@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { useHistory, useParams } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 import useLanguage from "../../../common/hooks/useLanguage";
-import { UnitDetailsParams } from "../../app/appRoutes";
 import { Unit } from "../unitConstants";
-import { getAttr } from "../unitHelpers";
 
 // If a user receives a link without the language parameter, but with the slug,
 // the slug can end up being in the wrong language.
@@ -14,23 +12,29 @@ import { getAttr } from "../unitHelpers";
 // To combat the two above niche cases this hook will attempt to keep the slug
 // in sync with the application language.
 function useSyncUnitNameWithLanguage(unit?: Unit) {
-  const { unitName } = useParams<UnitDetailsParams>();
   const language = useLanguage();
   const history = useHistory();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (unit) {
-      const unitNameInLanguage = getAttr(unit.name, language);
+      let nextPathname = `/${language}/unit/${unit.id}`;
+      // @ts-ignore
+      const unitNameInLanguage = unit.name[language];
 
-      if (unitName && decodeURIComponent(unitName) !== unitNameInLanguage) {
-        history.replace(
-          `/${language}/unit/${unit.id}-${encodeURIComponent(
-            unitNameInLanguage
-          )}`
-        );
+      // If the unit has a name in the current language, add it into the slug
+      if (unitNameInLanguage) {
+        nextPathname = `${nextPathname}-${encodeURIComponent(
+          unitNameInLanguage
+        )}`;
+      }
+
+      // If the pathname we want is not applied, apply it
+      if (nextPathname !== pathname) {
+        history.replace(nextPathname);
       }
     }
-  }, [history, language, unit, unitName]);
+  }, [history, language, unit, pathname]);
 }
 
 export default useSyncUnitNameWithLanguage;
