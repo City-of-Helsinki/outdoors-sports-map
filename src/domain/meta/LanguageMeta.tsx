@@ -42,7 +42,6 @@ function LanguageMeta() {
         content={languageToLanguageAndLocale(language)}
       />
       <meta property="og:url" content={canonicalUrl} />
-      {/* $FlowIgnore */}
       {Object.values(SUPPORTED_LANGUAGES).map((supportedLanguage: string) => (
         <link
           key={supportedLanguage}

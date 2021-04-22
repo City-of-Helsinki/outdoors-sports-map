@@ -24,7 +24,7 @@ type Props = {
   selectedUnit: Unit;
   onCenterMapToUnit: (unit: Unit) => void;
   activeLanguage: string;
-  openUnit: (unitId: string, unitName: string) => void;
+  openUnit: (unitId: string, unitName?: string) => void;
   t: (arg0: string) => string;
   setLocation: (coordinates: number[]) => void;
   position: [number, number];

@@ -29,12 +29,18 @@ const UnitListItem = React.memo<UnitListItemProps>(
     const { pathname, search } = useLocation();
     const appSearch = useAppSearch();
 
+    // @ts-ignore
+    const unitNameInLanguage = unit.name[language];
+    const unitPath = unitNameInLanguage
+      ? `/unit/${unit.id}-${encodeURIComponent(
+          unitHelpers.getAttr(unit.name, language)
+        )}`
+      : `/unit/${unit.id}`;
+
     return (
       <Link
         to={{
-          pathname: `/unit/${unit.id}-${encodeURIComponent(
-            unitHelpers.getAttr(unit.name, language)
-          )}`,
+          pathname: unitPath,
           state: {
             previous: `${PathUtils.removeLanguageFromPathname(
               pathname
