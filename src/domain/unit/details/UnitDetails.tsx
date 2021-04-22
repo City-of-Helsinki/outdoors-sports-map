@@ -10,6 +10,7 @@ import { useLocation } from "react-router";
 import breaks from "remark-breaks";
 
 import OutboundLink from "../../../common/a11y/OutboundLink";
+import Page from "../../../common/a11y/Page";
 import Link from "../../../common/components/Link";
 import SMIcon from "../../../common/components/SMIcon";
 import useLanguage from "../../../common/hooks/useLanguage";
@@ -369,6 +370,7 @@ type Props = {
 
 function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
   const language = useLanguage();
+  const { t } = useTranslation();
 
   const services = useSelector(fromService.getServicesObject);
   const unit = useSelector<AppState, Unit>((state) =>
@@ -400,7 +402,12 @@ function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
   }
 
   return (
-    <div className="unit-container">
+    <Page
+      title={`${getAttr(unit.name, language) || ""} | ${t("APP.NAME")}`}
+      description={getAttr(unit.description, language)}
+      image={unit.picture_url}
+      className="unit-container"
+    >
       <Header unit={unit} services={services} isLoading={isLoading} />
       <SingleUnitBody
         currentUnit={unit}
@@ -410,7 +417,7 @@ function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
         temperatureObservation={temperatureObservation}
         palvelukarttaUrl={palvelukarttaUrl}
       />
-    </div>
+    </Page>
   );
 }
 
