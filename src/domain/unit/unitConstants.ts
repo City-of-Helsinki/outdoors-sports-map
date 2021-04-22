@@ -176,7 +176,6 @@ export const UnitActions = {
   RECEIVE_SEARCH_SUGGESTIONS: normalizeActionName(
     "unit/RECEIVE_SEARCH_SUGGESTIONS"
   ),
-  SEND_FEEDBACK: normalizeActionName("unit/SEND_FEEDBACK"),
 };
 
 export type UnitState = {

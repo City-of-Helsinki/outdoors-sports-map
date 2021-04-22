@@ -1,5 +1,6 @@
 import { RootState } from "../bootstrap/createStore";
 import { SortKey, SportFilter, StatusFilter } from "../unit/unitConstants";
+import { normalizeActionName } from "../utils";
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -60,4 +61,8 @@ export type AppSearch = {
 export type AppSearchLocationState = {
   search?: AppSearch;
   previous?: string;
+};
+
+export const AppActions = {
+  SEND_FEEDBACK: normalizeActionName("app/SEND_FEEDBACK"),
 };

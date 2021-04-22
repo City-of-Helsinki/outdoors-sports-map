@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
-import * as unitActions from "../unit/state/actions";
+import * as appActions from "../app/state/actions";
 
 type Props = {
   onClose: () => void;
@@ -33,7 +33,7 @@ function AppFeedbackModal({ onClose, show }: Props) {
       const email = form?.email.value;
 
       if (feedback) {
-        dispatch(unitActions.sendFeedback(feedback, email));
+        dispatch(appActions.sendFeedback(feedback, email));
         onClose();
       } else {
         console.error(
