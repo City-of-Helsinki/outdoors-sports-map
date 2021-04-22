@@ -1,6 +1,10 @@
 import { createAction } from "redux-actions";
 
-import { AppActions } from "../appConstants";
+import { normalizeActionName } from "../../utils";
+
+export const AppActions = {
+  SEND_FEEDBACK: normalizeActionName("app/SEND_FEEDBACK"),
+};
 
 export const sendFeedback = (
   feedback: string,

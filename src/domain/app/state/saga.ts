@@ -2,7 +2,7 @@ import { all, call, fork, takeLatest } from "redux-saga/effects";
 
 import { callApi, createRequest, stringifyQuery } from "../../api/apiHelpers";
 import { Action } from "../../app/appConstants";
-import { AppActions } from "../appConstants";
+import { AppActions } from "../state/actions";
 
 function* sendFeedback({ payload: { feedback, email } }: Action) {
   const params = {
