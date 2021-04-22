@@ -5,7 +5,7 @@ import { ReactNode, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 // @ts-ignore
 import breaks from "remark-breaks";
 
@@ -15,6 +15,7 @@ import Link from "../../../common/components/Link";
 import SMIcon from "../../../common/components/SMIcon";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
+import { UnitDetailsParams } from "../../app/appRoutes";
 import { getIsLoading } from "../../app/appSelectors";
 import * as fromService from "../../service/selectors";
 import getServiceName from "../../service/serviceHelpers";
@@ -365,14 +366,13 @@ export function SingleUnitBody({
 }
 
 type Props = {
-  unitId: string;
   onCenterMapToUnit: (unit: Unit) => void;
 };
 
-function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
+function UnitDetails({ onCenterMapToUnit }: Props) {
   const language = useLanguage();
   const { t } = useTranslation();
-
+  const { unitId } = useParams<UnitDetailsParams>();
   const services = useSelector(fromService.getServicesObject);
   const unit = useSelector<AppState, Unit>((state) =>
     fromUnit.getUnitById(state, {

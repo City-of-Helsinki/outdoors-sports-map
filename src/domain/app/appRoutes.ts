@@ -6,4 +6,9 @@ const routerPaths = {
   unitBrowserSearch: `/${languageParam}/search`,
 };
 
+export type UnitDetailsParams = {
+  unitId: string;
+  unitName?: string;
+};
+
 export default routerPaths;
