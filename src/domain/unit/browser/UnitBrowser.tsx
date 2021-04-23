@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Route } from "react-router-dom";
 
+import Page from "../../../common/a11y/Page";
 import useDoSearch from "../../../common/hooks/useDoSearch";
 import { Address, AppState } from "../../app/appConstants";
 import routerPaths from "../../app/appRoutes";
@@ -66,7 +67,11 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
   );
 
   return (
-    <div className="unit-browser">
+    <Page
+      title={t("APP.NAME")}
+      description={t("APP.DESCRIPTION")}
+      className="unit-browser"
+    >
       <div id="always-visible" className="unit-browser__fixed">
         <UnitBrowserHeader onViewChange={onViewChange} />
         {!isLoading && (
@@ -114,7 +119,7 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
           }}
         />
       )}
-    </div>
+    </Page>
   );
 }
 

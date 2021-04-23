@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 -   Meta tags to be more descriptive
 -   From flow to typescript
 -   [Accessibility] Make map contents easier to skip for screen reader and keyboard users
+-   [Accessibility] Change implementation of about and feedback modals to be inline with accessibility standards
 
 ### Fixed
 

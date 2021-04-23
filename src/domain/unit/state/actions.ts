@@ -52,12 +52,3 @@ export const receiveSearchResults = (results: Array<Record<string, any>>) =>
 
 export const receiveSearchSuggestions = (results: Array<Record<string, any>>) =>
   createAction(UnitActions.RECEIVE_SEARCH_SUGGESTIONS)(results);
-
-export const sendFeedback = (
-  feedback: string,
-  email: string | null | undefined
-) =>
-  createAction(UnitActions.SEND_FEEDBACK)({
-    feedback,
-    email,
-  });
