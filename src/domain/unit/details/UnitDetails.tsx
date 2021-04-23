@@ -2,10 +2,11 @@ import get from "lodash/get";
 import has from "lodash/has";
 import upperFirst from "lodash/upperFirst";
 import { ReactNode, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 // @ts-ignore
 import breaks from "remark-breaks";
 
@@ -15,6 +16,7 @@ import Link from "../../../common/components/Link";
 import SMIcon from "../../../common/components/SMIcon";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
+import { UnitDetailsParams } from "../../app/appRoutes";
 import { getIsLoading } from "../../app/appSelectors";
 import * as fromService from "../../service/selectors";
 import getServiceName from "../../service/serviceHelpers";
@@ -33,6 +35,7 @@ import {
   getObservationTime,
   getOpeningHours,
 } from "../unitHelpers";
+import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
 
 function shouldShowInfo(unit: Unit) {
   const hasExtensions =
@@ -47,7 +50,7 @@ function shouldShowInfo(unit: Unit) {
 }
 
 type HeaderProps = {
-  unit: Unit;
+  unit?: Unit;
   services: Record<string, any>;
   isLoading: boolean;
 };
@@ -55,8 +58,8 @@ type HeaderProps = {
 export function Header({ unit, services, isLoading }: HeaderProps) {
   const { t } = useTranslation();
   const language = useLanguage();
-
   const location = useLocation<{ previous?: string }>();
+
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
   const unitMunicipality = unit ? unit.municipality : null;
@@ -212,8 +215,8 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
 }
 
 type LocationRouteProps = {
-  routeUrl: string;
-  palvelukarttaUrl: string;
+  routeUrl?: string;
+  palvelukarttaUrl?: string;
 };
 
 function LocationRoute({ routeUrl, palvelukarttaUrl }: LocationRouteProps) {
@@ -321,12 +324,12 @@ function BodyBox({ title, children, className = "", ...rest }: BodyBoxProps) {
 }
 
 type SingleUnitBodyProps = {
-  currentUnit: Unit;
+  currentUnit?: Unit;
   isLoading: boolean;
   liveTemperatureObservation: Record<string, any> | null | undefined;
-  routeUrl: string;
+  routeUrl?: string;
   temperatureObservation: Record<string, any> | null | undefined;
-  palvelukarttaUrl: string;
+  palvelukarttaUrl?: string;
 };
 
 export function SingleUnitBody({
@@ -363,17 +366,29 @@ export function SingleUnitBody({
   ) : null;
 }
 
+function findAlternatePathname(pathname: string, unit: Unit, language: string) {
+  const base = `${window.location.origin}/${language}/unit/${unit.id}`;
+  // @ts-ignore
+  const unitName = unit.name[language];
+
+  if (unitName) {
+    return `${base}-${encodeURIComponent(unitName)}`;
+  }
+
+  return base;
+}
+
 type Props = {
-  unitId: string;
   onCenterMapToUnit: (unit: Unit) => void;
 };
 
-function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
+function UnitDetails({ onCenterMapToUnit }: Props) {
   const language = useLanguage();
   const { t } = useTranslation();
-
+  const { pathname } = useLocation();
+  const { unitId } = useParams<UnitDetailsParams>();
   const services = useSelector(fromService.getServicesObject);
-  const unit = useSelector<AppState, Unit>((state) =>
+  const unit = useSelector<AppState, Unit | undefined>((state) =>
     fromUnit.getUnitById(state, {
       id: unitId,
     })
@@ -386,13 +401,16 @@ function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
       onCenterMapToUnit(unit);
     }
   }, [unit, onCenterMapToUnit]);
+  useSyncUnitNameWithLanguage(unit);
 
-  const temperatureObservation = has(unit, "observations")
-    ? getObservation(unit, "swimming_water_temperature")
-    : null;
-  const liveTemperatureObservation = has(unit, "observations")
-    ? getObservation(unit, "live_swimming_water_temperature")
-    : null;
+  const temperatureObservation =
+    unit && has(unit, "observations")
+      ? getObservation(unit, "swimming_water_temperature")
+      : null;
+  const liveTemperatureObservation =
+    unit && has(unit, "observations")
+      ? getObservation(unit, "live_swimming_water_temperature")
+      : null;
   const routeUrl = unit && createReittiopasUrl(unit, language);
   const palvelukarttaUrl = unit && createPalvelukarttaUrl(unit, language);
   const isOpen = !!unitId;
@@ -402,22 +420,49 @@ function UnitDetails({ unitId, onCenterMapToUnit }: Props) {
   }
 
   return (
-    <Page
-      title={`${getAttr(unit.name, language) || ""} | ${t("APP.NAME")}`}
-      description={getAttr(unit.description, language)}
-      image={unit.picture_url}
-      className="unit-container"
-    >
-      <Header unit={unit} services={services} isLoading={isLoading} />
-      <SingleUnitBody
-        currentUnit={unit}
-        isLoading={isLoading}
-        liveTemperatureObservation={liveTemperatureObservation}
-        routeUrl={routeUrl}
-        temperatureObservation={temperatureObservation}
-        palvelukarttaUrl={palvelukarttaUrl}
-      />
-    </Page>
+    <>
+      {unit && (
+        <Helmet>
+          <link
+            href="alternate"
+            lang="fi"
+            hrefLang={findAlternatePathname(pathname, unit, "fi")}
+          />
+          <link
+            href="alternate"
+            lang="sv"
+            hrefLang={findAlternatePathname(pathname, unit, "sv")}
+          />
+          <link
+            href="alternate"
+            lang="en"
+            hrefLang={findAlternatePathname(pathname, unit, "en")}
+          />
+        </Helmet>
+      )}
+      <Page
+        title={
+          unit?.name
+            ? `${getAttr(unit?.name, language) || ""} | ${t("APP.NAME")}`
+            : t("APP.NAME")
+        }
+        description={
+          unit?.description ? getAttr(unit?.description, language) : undefined
+        }
+        image={unit?.picture_url}
+        className="unit-container"
+      >
+        <Header unit={unit} services={services} isLoading={isLoading} />
+        <SingleUnitBody
+          currentUnit={unit}
+          isLoading={isLoading}
+          liveTemperatureObservation={liveTemperatureObservation}
+          routeUrl={routeUrl}
+          temperatureObservation={temperatureObservation}
+          palvelukarttaUrl={palvelukarttaUrl}
+        />
+      </Page>
+    </>
   );
 }
 

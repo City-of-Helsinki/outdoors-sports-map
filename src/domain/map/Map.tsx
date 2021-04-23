@@ -54,11 +54,12 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
   );
 
   const openUnit = useCallback(
-    (unitId: string) => {
+    (unitId: string, unitName?: string) => {
       let state: AppSearchLocationState = {
         previous: `${PathUtils.removeLanguageFromPathname(pathname)}${search}`,
         search: appSearch,
       };
+      let nextPathname = `/${language}/unit/${unitId}`;
 
       // If the user opens an unit while an unit is already open, inherit the
       // location state from search
@@ -68,9 +69,16 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
           search: locationState?.search,
         };
       }
+      // If the unit has a name in the current language, use it in the url
+      if (unitName) {
+        nextPathname = `/${language}/unit/${unitId}-${encodeURIComponent(
+          unitName
+        )}`;
+      }
+
       // Store current search state so it can be re-applied if the user returns
       // from the unit details view
-      history.push(`/${language}/unit/${unitId}`, state);
+      history.push(nextPathname, state);
     },
     [
       history,

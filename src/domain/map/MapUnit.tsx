@@ -1,16 +1,17 @@
 import L from "leaflet";
 import { Component } from "react";
+import { WithTranslationProps, withTranslation } from "react-i18next";
 
 import { Unit } from "../unit/unitConstants";
 import { getUnitQuality } from "../unit/unitHelpers";
 import UnitGeometry from "./MapGeometry";
 import UnitMarker from "./MapUnitMarker";
 
-type Props = {
+type Props = WithTranslationProps & {
   unit: Unit;
   isSelected: boolean;
   zoomLevel: number;
-  openUnit: (unitId: string) => void;
+  openUnit: (unitId: string, unitName?: string) => void;
 };
 
 class MapUnit extends Component<Props> {
@@ -32,10 +33,11 @@ class MapUnit extends Component<Props> {
   }
 
   handleClick(e: L.LeafletMouseEvent) {
-    const { unit, openUnit } = this.props;
+    const { unit, openUnit, i18n } = this.props;
 
     L.DomEvent.stopPropagation(e);
-    openUnit(unit.id);
+    // @ts-ignore
+    openUnit(unit.id, unit.name[i18n?.languages[0]]);
   }
 
   render() {
@@ -66,4 +68,4 @@ class MapUnit extends Component<Props> {
   }
 }
 
-export default MapUnit;
+export default withTranslation()(MapUnit);

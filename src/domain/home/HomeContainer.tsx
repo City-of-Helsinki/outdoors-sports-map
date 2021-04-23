@@ -114,16 +114,8 @@ function HomeContainer() {
           <Route
             exact
             path={routerPaths.unitDetails}
-            render={({
-              match: {
-                params: { unitId },
-              },
-            }) => (
-              <UnitDetails
-                // @ts-ignore
-                unitId={unitId}
-                onCenterMapToUnit={handleCenterMapToUnit}
-              />
+            render={() => (
+              <UnitDetails onCenterMapToUnit={handleCenterMapToUnit} />
             )}
           />
           <Route

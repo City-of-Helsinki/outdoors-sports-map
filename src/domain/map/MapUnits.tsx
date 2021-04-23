@@ -7,7 +7,7 @@ import MapUnit from "./MapUnit";
 type Props = {
   units: Unit[];
   selectedUnit: Unit;
-  openUnit: (unitId: string) => void;
+  openUnit: (unitId: string, unitName?: string) => void;
   zoomLevel: number;
 };
 
