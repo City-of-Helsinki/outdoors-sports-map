@@ -1,4 +1,5 @@
 import moment from "moment";
+import ReactRouter from "react-router";
 
 import { mount } from "../../../enzymeHelpers";
 import UnitDetails from "../UnitDetails";
@@ -160,12 +161,15 @@ const unit = {
 };
 
 const defaultProps = {
-  unitId: "40142",
   onCenterMapToUnit: () => {},
 };
 
-const getWrapper = (props, modifiedUnit) =>
-  mount(<UnitDetails {...defaultProps} {...props} />, {
+const getWrapper = (props, modifiedUnit) => {
+  jest.spyOn(ReactRouter, "useParams").mockReturnValue({
+    unitId: "40142",
+  });
+
+  return mount(<UnitDetails {...defaultProps} {...props} />, {
     preloadedState: {
       unit: {
         byId: {
@@ -184,6 +188,7 @@ const getWrapper = (props, modifiedUnit) =>
       },
     },
   });
+};
 
 describe("<UnitDetails />", () => {
   describe("header", () => {
