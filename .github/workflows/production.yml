@@ -32,6 +32,7 @@ jobs:
           DOCKER_BUILD_ARG_REACT_APP_API_URL: "https://api.hel.fi/servicemap/v2"
           DOCKER_BUILD_ARG_REACT_APP_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
           DOCKER_BUILD_ARG_REACT_APP_APP_NAME: "outdoors-sports-map"
+          DOCKER_BUILD_ARG_GENERATE_SITEMAP: "true"
 
   production:
     runs-on: ubuntu-latest
