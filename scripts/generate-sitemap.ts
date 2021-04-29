@@ -84,7 +84,8 @@ async function renderSitemap(pages: [string, string, string][]) {
   const prettierConfig = await prettier.resolveConfig("./.prettierrc");
   const sitemap = `
     <?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xhtml="http://www.w3.org/1999/xhtml">
       ${pages
         .map((routes: [string, string, string]) => {
           const [fi, sv, en] = routes;
