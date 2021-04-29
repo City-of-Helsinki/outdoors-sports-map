@@ -4,10 +4,17 @@ import { Map } from "react-leaflet";
 
 import { normalizeActionName } from "../utils";
 
-export const MAP_URL =
-  "https://tiles.hel.ninja/styles/hel-osm-light/{z}/{x}/{y}.png";
+export const MAP_URL = {
+  fi: "https://tiles.hel.ninja/styles/hel-osm-light/{z}/{x}/{y}.png",
+  sv: "https://tiles.hel.ninja/styles/hel-osm-light/{z}/{x}/{y}@sv.png",
+  en: "https://tiles.hel.ninja/styles/hel-osm-light/{z}/{x}/{y}@en.png",
+};
 
-export const MAP_RETINA_URL = MAP_URL.replace(".png", "@3x.png");
+export const MAP_RETINA_URL = {
+  fi: MAP_URL.fi.replace(".png", "@3x.png"),
+  sv: MAP_URL.sv.replace("@sv", "@3x@sv"),
+  en: MAP_URL.en.replace("@en", "@3x@en"),
+};
 
 export const DEFAULT_ZOOM = 12;
 
