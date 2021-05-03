@@ -1,5 +1,6 @@
+import get from "lodash/get";
 import { Component, RefObject } from "react";
-import { withTranslation } from "react-i18next";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { Map, TileLayer, ZoomControl } from "react-leaflet";
 
 import OSMIcon from "../../common/components/OSMIcon";
@@ -20,12 +21,11 @@ import {
 } from "./mapConstants";
 import latLngToArray from "./mapHelpers";
 
-type Props = {
+type Props = WithTranslation & {
   selectedUnit: Unit;
   onCenterMapToUnit: (unit: Unit) => void;
   activeLanguage: string;
   openUnit: (unitId: string, unitName?: string) => void;
-  t: (arg0: string) => string;
   setLocation: (coordinates: number[]) => void;
   position: [number, number];
   units: Unit[];
@@ -93,7 +93,17 @@ class MapView extends Component<Props, State> {
   };
 
   render() {
-    const { position, selectedUnit, units, openUnit, mapRef, t } = this.props;
+    const {
+      position,
+      selectedUnit,
+      units,
+      openUnit,
+      mapRef,
+      t,
+      i18n: {
+        languages: [language],
+      },
+    } = this.props;
 
     const { zoomLevel } = this.state;
 
@@ -120,7 +130,11 @@ class MapView extends Component<Props, State> {
           onzoomend={this.handleZoom}
         >
           <TileLayer
-            url={isRetina() ? MAP_RETINA_URL : MAP_URL}
+            url={
+              isRetina()
+                ? get(MAP_RETINA_URL, language)
+                : get(MAP_URL, language)
+            }
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
           <MapUserLocationMarker />
