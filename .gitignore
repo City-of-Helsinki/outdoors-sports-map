@@ -10,3 +10,4 @@ log/capistrano.log
 yarn-error.log
 xeno
 .DS_Store
+public/sitemap.xml

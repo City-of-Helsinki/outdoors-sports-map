@@ -42,6 +42,7 @@ FROM appbase AS staticbuilder
 ARG REACT_APP_API_URL
 ARG REACT_APP_DIGITRANSIT_API_URL
 ARG REACT_APP_APP_NAME
+ARG GENERATE_SITEMAP
 
 COPY --chown=appuser:appuser . /app/.
 
