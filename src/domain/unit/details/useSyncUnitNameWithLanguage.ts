@@ -14,7 +14,7 @@ import { Unit } from "../unitConstants";
 function useSyncUnitNameWithLanguage(unit?: Unit) {
   const language = useLanguage();
   const history = useHistory();
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
 
   useEffect(() => {
     if (unit) {
@@ -29,12 +29,13 @@ function useSyncUnitNameWithLanguage(unit?: Unit) {
         )}`;
       }
 
-      // If the pathname we want is not applied, apply it
+      // If the pathname we want is not applied, apply it and don't lose current
+      // navigation state.
       if (nextPathname !== pathname) {
-        history.replace(nextPathname);
+        history.replace({ pathname: nextPathname, state });
       }
     }
-  }, [history, language, unit, pathname]);
+  }, [history, language, unit, pathname, state]);
 }
 
 export default useSyncUnitNameWithLanguage;
