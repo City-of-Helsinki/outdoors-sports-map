@@ -1,7 +1,9 @@
 .unit-browser {
   pointer-events: none;
   overflow: hidden;
-  height: 100%;
+  height: unset;
+  display: flex;
+  flex-direction: column;
 
   & > * {
     pointer-events: auto;

@@ -22,16 +22,20 @@
     }
 
     &.fill-color-background {
+      // When foreground is filled with background color, it should always fill
+      // the entire screen height, but not more, to enable proper behaviour with
+      // scrolling.
+      height: 100vh;
+
       border-bottom: solid #4d4d4d 4px;
       background-color: $ui-background;
-
       box-shadow: none;
     }
   }
 
   @media only screen and (min-width: $breakpoint) {
     width: 400px;
-    height: 100%;
+    height: 100vh;
 
     pointer-events: none;
 
@@ -43,6 +47,8 @@
   &-content {
     overflow-y: auto;
     pointer-events: none;
+    display: flex;
+    flex-direction: column;
 
     & > * {
       pointer-events: initial;
