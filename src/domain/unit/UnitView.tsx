@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 type Props = {
   id: string;
@@ -6,6 +6,7 @@ type Props = {
   className: string;
   children: ReactNode;
   tabIndex?: number;
+  style?: CSSProperties;
 };
 
 export function View({

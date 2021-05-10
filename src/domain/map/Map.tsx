@@ -72,7 +72,7 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
       // If the unit has a name in the current language, use it in the url
       if (unitName) {
         nextPathname = `/${language}/unit/${unitId}-${encodeURIComponent(
-          unitName
+          encodeURIComponent(unitName)
         )}`;
       }
 

@@ -33,7 +33,7 @@ const UnitListItem = React.memo<UnitListItemProps>(
     const unitNameInLanguage = unit.name[language];
     const unitPath = unitNameInLanguage
       ? `/unit/${unit.id}-${encodeURIComponent(
-          unitHelpers.getAttr(unit.name, language)
+          encodeURIComponent(unitHelpers.getAttr(unit.name, language))
         )}`
       : `/unit/${unit.id}`;
 

@@ -1,5 +1,5 @@
 import values from "lodash/values";
-import { RefObject, useCallback, useState } from "react";
+import { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Route } from "react-router-dom";
@@ -21,30 +21,6 @@ import UnitBrowserHeader from "./UnitBrowserHeader";
 import UnitBrowserFilters from "./filter/UnitBrowserFilter";
 import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 
-function calculateMaxHeight() {
-  const element = document.getElementById("always-visible");
-
-  if (element) {
-    const fixedPartHeight = element.offsetHeight;
-
-    // Plus header height
-    // This approach could likely be replaced with flexbox
-    return window.innerHeight - (fixedPartHeight + 64);
-  }
-
-  return window.innerHeight;
-}
-
-function useOnResize(callback: () => void) {
-  useCallback(() => {
-    window.addEventListener("resize", callback);
-
-    return () => {
-      window.removeEventListener("resize", callback);
-    };
-  }, [callback]);
-}
-
 type Props = {
   leafletMap?: RefObject<L.Map | null>;
   onViewChange: (coordinates: [number, number]) => void;
@@ -52,18 +28,11 @@ type Props = {
 
 function UnitBrowser({ onViewChange, leafletMap }: Props) {
   const { t } = useTranslation();
-  const [contentMaxHeight, setContentMaxHeight] = useState<number>();
   const doSearch = useDoSearch();
   const { sport, status } = useAppSearch();
   const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
   const address = useSelector<AppState, Address | undefined | null>(
     fromMap.getAddress
-  );
-
-  useOnResize(
-    useCallback(() => {
-      setContentMaxHeight(calculateMaxHeight());
-    }, [])
   );
 
   return (
@@ -72,7 +41,7 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
       description={t("APP.DESCRIPTION")}
       className="unit-browser"
     >
-      <div id="always-visible" className="unit-browser__fixed">
+      <div className="unit-browser__fixed">
         <UnitBrowserHeader onViewChange={onViewChange} />
         {!isLoading && (
           <UnitBrowserFilters
@@ -99,16 +68,7 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
       <Route
         path={routerPaths.unitBrowserSearch}
         render={() => {
-          return (
-            <div
-              className="unit-browser__content"
-              style={{
-                maxHeight: contentMaxHeight || calculateMaxHeight(),
-              }}
-            >
-              <UnitBrowserResultList leafletMap={leafletMap} />
-            </div>
-          );
+          return <UnitBrowserResultList leafletMap={leafletMap} />;
         }}
       />
       {t("UNIT_DETAILS.TMP_MESSAGE").length > 0 && (
