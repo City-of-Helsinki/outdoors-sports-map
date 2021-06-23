@@ -8,8 +8,8 @@ Follow the instructions to set up local development environment. Altertanively, 
 
 ### Prerequisites
 
-- Preferably use current Node.js LTS
-- Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
+-   Preferably use current Node.js LTS
+-   Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
 
 ### Setup
 
@@ -67,6 +67,7 @@ docker build \
 _(you can add `--no-cache` to the command if you don't want to use cache from previous build)_
 
 Start docker container with:
+
 ```
 docker container run -p 80:80 -d outdoors-sports-map
 ```

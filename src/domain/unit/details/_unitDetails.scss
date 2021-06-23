@@ -1,0 +1,110 @@
+.unit-container {
+  max-height: 60vh;
+  padding: 10px;
+  overflow-y: auto;
+
+  @media only screen and (min-width: 768px) {
+    max-height: unset;
+    height: 100%;
+  }
+
+  h4 {
+    margin: 10px 0;
+
+    font-size: 18px;
+    line-height: 1.1;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  .modal-body-list li {
+    margin-bottom: 10px;
+  }
+
+  &-header {
+    padding: 10px;
+    color: #fff;
+    border: none;
+
+    &-container {
+      width: 100%;
+    }
+
+    &-name {
+      display: flex;
+      justify-content: space-between;
+
+      .close-unit-container {
+        color: $ui-text;
+        font-size: 1.4em;
+      }
+    }
+
+    &-description {
+      padding-top: 5px;
+      border-top: 1px solid #fff;
+      font-size: 12px;
+      display: flex;
+
+      p {
+        margin-bottom: 5px;
+      }
+
+      .unit-icon {
+        margin-right: 10px;
+        font-size: 3em;
+        line-height: 1;
+      }
+    }
+  }
+
+  &-body {
+    padding: $gap 0;
+
+    &-box {
+      background: #fff;
+      padding: 10px;
+      align-items: center;
+
+      &:empty {
+        display: none;
+      }
+
+      & + & {
+        margin-top: $gap;
+      }
+
+      &-headline {
+        font-weight: 700;
+        margin-bottom: 3px;
+      }
+    }
+
+    &-multi-line {
+      white-space: pre-wrap;
+      margin-top: 2rem;
+
+      & > * {
+        display: inline-block;
+      }
+    }
+
+    &-list {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+
+      & > li {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  &-close-button {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

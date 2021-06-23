@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   app:
@@ -7,7 +7,7 @@ services:
       context: .
       target: ${DOCKER_TARGET:-development}
     volumes:
-      - '.:/app'
-      - '/app/node_modules'
+      - ".:/app"
+      - "/app/node_modules"
     ports:
-      - '5000:5000'
+      - "3000:3000"

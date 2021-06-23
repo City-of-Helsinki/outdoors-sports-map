@@ -1,0 +1,44 @@
+.application-header {
+  padding: $gap;
+  margin: $gap $gap 0 $gap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+  color: $ui-text;
+
+  background: $ui-content;
+
+  &__title {
+    margin: 5px 0;
+
+    font-size: 24px;
+
+    & > a {
+      color: inherit;
+    }
+  }
+
+  &__language-selector {
+    display: flex;
+
+    & > * {
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    &__link {
+      display: block;
+    }
+
+    &__flag {
+      display: block;
+
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+  }
+}

@@ -1,13 +1,10 @@
 *
 
-!.babelrc
 !.prod/
-!.eslintrc
-!assets/
-!config/
 !docker-entrypoint.sh
-!favicon/
-!locales/
+!public/
 !package*.json
 !src/
 !*yarn*
+!tsconfig.json
+!scripts/

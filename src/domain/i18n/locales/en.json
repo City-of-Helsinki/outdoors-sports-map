@@ -1,0 +1,99 @@
+{
+  "APP": {
+    "NAME": "Outdoor Exercise Map",
+    "ABOUT": "Information on the service",
+    "DESCRIPTION": "The Outdoor Exercise Map (Ulkoliikuntakartta) is a digital map service. There you can find information about ski tracks, ice skating tracks and rinks, beaches and public lidos. The map service data is provided by the municipalities of Helsinki, Espoo, Vantaa and Kirkkonummi.",
+    "ABOUT_MODAL": "<h3>Information on the service</h3> <p>The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo and Vantaa. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks and ice-skating fields maintained by the cities and in the spring it will also contain beaches.</p> <p>The service has been created in cooperation between the <a target='_blank' href='http://www.hel.fi/www/kanslia/en/divisions/information/'>ICT unit</a> of the Information and Communication Technology division at the Helsinki City Executive Office and  <a target='_blank' href='http://www.hel.fi/www/liv/en'>the City of Helsinki Sports Department</a>.</p> <h3>Feedback</h3> <p>We are grateful for all your feedback, it allows us to develop the Outdoor Exercise Map and make it even better.</p> <h3>© Information and copyright</h3> <p>The Outdoor Exercise Map has been constructed using as open data as possible and open-source code.</p> <p>The source code of the map is on <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> and we encourage development of it.</p> <p>The sports facility information is open data and usable through the REST interface.</p> <p>The map data is from <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> and the copyright of the maps belongs to <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>.</p> <p>The address information is from Helsinki Region Transport’s <a target='_blank' href='http://developer.reittiopas.fi/'>open interface</a>.</p>",
+    "INFO_MENU": {
+      "GIVE_FEEDBACK": "Give feedback",
+      "ABOUT_SERVICE": "Information on the service",
+      "CHOOSE_LANGUAGE": "Choose language"
+    },
+    "FEEDBACK": {
+      "FEEDBACK": "Feedback",
+      "WANT_ANSWER": "I want a reply to my email",
+      "SEND": "Send",
+      "EMAIL": "Email"
+    },
+    "MAP_ATTRIBUTION": "OpenStreetMap contributors"
+  },
+  "GENERAL": {
+    "LOADING": "Loading..."
+  },
+  "MAP": {
+    "ACCESSIBILITY_NOTICE": "Map. Currently map information is only accessible visually.",
+    "LOCATE_USER": "Show your location",
+    "ZOOM_IN": "Zoom in",
+    "ZOOM_OUT": "Zoom out"
+  },
+  "UNIT_DETAILS": {
+    "FURTHER_INFO": "Further information",
+    "SHOW_MORE": "Show more",
+    "STATUS": "Condition",
+    "UNKNOWN": "Unknown",
+    "UPDATED": "Updated",
+    "MAINTENANCE_DONE": "Maintained",
+    "FILTER": {
+      "STATUS_ALL": "In all conditions",
+      "ICE_SKATING": "Ice-skating",
+      "SKIING": "Skiing",
+      "STATUS_OK": "In usable condition",
+      "SWIMMING": "Swimming"
+    },
+    "FILTER_SPORT": "Choose Sport",
+    "FILTER_STATUS": "Choose Condition",
+    "SORT": {
+      "DEFAULT": "Default",
+      "ALPHABETICAL": "Alphabetic",
+      "CONDITION": "In best condition first",
+      "DISTANCE": "Closest first"
+    },
+    "PHONE": "Phone",
+    "TMP_MESSAGE": "",
+    "MAP_BUTTON": "Show results on map",
+    "LIST_BUTTON": "Show results on map and on the list"
+  },
+  "UNIT_BROWSER": {
+    "LOADING": "Loading the object",
+    "NOT_FOUND": "Sorry, the object was not found :(",
+    "QUALITY": "Condition",
+    "INFO": "Information",
+    "WEATHER": "Weather",
+    "HEIGHT_PROFILE": "Height profile",
+    "OPENING_HOURS": "Opening hours",
+    "LENGTH": "Track length",
+    "LIGHTING": "Lighting",
+    "SKIING_TECHNIQUE": "Form of skiing",
+    "TEMPERATURE": "Temperature",
+    "LINKS": "Links",
+    "GET_ROUTE": "Get route to here",
+    "NOTICE": "Notice",
+    "WATER_TEMPERATURE": "Water temperature",
+    "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
+    "CLOSE": "Close",
+    "SEE_ON_SERVICE_MAP": "See on Palvelukartta"
+  },
+  "SEARCH": {
+    "SEARCH": "Search",
+    "SHOW_ALL_RESULTS": "Show all search results",
+    "LOADING": "Loading",
+    "CLEAR": "Clear search",
+    "SUBMIT": "Search"
+  },
+  "TIME": {
+    "DAYS_AGO": "{{days}} days ago",
+    "NOT_AVAILABLE": "-",
+    "MONTH_AGO": "a month ago ",
+    "MONTHS_AGO": "{{months}} months ago",
+    "TODAY": "today",
+    "WEEK_AGO": "a week ago",
+    "WEEKS_AGO": "{{weeks}} weeks ago",
+    "YESTERDAY": "yesterday"
+  },
+  "OUTBOUND_LINK": {
+    "DESCRIPTION": "Opens a new window"
+  },
+  "JUMP_LINK": {
+    "LABEL": "Jump straight to content"
+  }
+}

@@ -1,0 +1,49 @@
+.list-view {
+  overflow: auto;
+
+  .list-view__container {
+    margin: 0;
+
+    .list-view__block {
+      border-top: 1px solid $ui-content;
+      padding: $gap 0;
+    }
+  }
+
+  .list-view-item {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    background: $content-background;
+    margin-bottom: $gap;
+    color: $content-text;
+    cursor: pointer;
+
+    &__unit-details {
+      flex: 2 1 auto;
+
+      .list-view-item__unit-name {
+        font-weight: 700;
+      }
+    }
+
+    &__unit-marker,
+    &__unit-open {
+      width: 50px;
+      text-align: center;
+      line-height: 30px;
+      font-size: 30px;
+      color: $ui-content;
+    }
+
+    &__unit-name {
+      line-height: 1;
+      padding-bottom: 3px;
+    }
+
+    &:hover {
+      background: $list-view-item-hover;
+      text-decoration: none;
+    }
+  }
+}

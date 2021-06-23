@@ -1,0 +1,99 @@
+{
+  "APP": {
+    "NAME": "Utemotionskarta",
+    "ABOUT": "Information om tjänsten",
+    "DESCRIPTION": "Utemotionskartan (Ulkoliikuntakartta) är en digital karttjänst där man hittar huvudstadsregionens skidspår och skidspårsinfo, skridskobanor och konstisbanor samt badstränder och utomhusbad. Utemotionskartans uppgifter produceras av Helsingfors, Esbo, Vanda och Kyrkslätt.",
+    "ABOUT_MODAL": "<h3>Information om tjänsten</h3> <p>Utemotionskartan är en öppen kommunikationskanal om skicket på anläggningarna för utomhusidrott i Helsingfors, Esbo och Vanda. Utemotionskartan hjälper kommuninvånarna att hitta uppdaterad information om de tjänster för utomhusidrott som staden upprätthåller. I nuläget omfattar tjänsten stadens skidspår och skridskoplaner och på våren kommer den också att omfatta badstränder.</p> <p>Tjänsten har förverkligats i samverkan mellan <a target='_blank' href='http://www.hel.fi/www/kanslia/fi/osastot-ja-yksikot/tietotekniikka/'>informationstekniksenheten</a> vid IT- och kommunikationsavdelningen på Helsingfors stads stadskansli och Helsingfors stads <a target='_blank' href='https://hel.fi/liikunta/'>idrottsverk</a>. <h3>Respons</h3> <p>Vi är tacksamma för all respons, så att vi kan utveckla Utemotionskartan och göra den allt bättre.</p> <h3>© Information och upphovsrätt</h3> <p>Utemotionskartan har byggs med hjälp av så öppna data som möjligt och öppen källkod.</p> <p>Kartans källkod finns på <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> och vi uppmuntrar till utveckling av den.</p> <p>Idrottsplatsernas uppgifter är öppna data och användbara via REST-gränssnittet.</p> <p>Kartuppgifterna hämtas från öppna <a target='_blank' href='https://www.openstreetmap.org/'>OpenStreetMap</a> och kartornas upphovsrätt hör till <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMaps skapare.</a></p> <p>Adressuppgifterna hämtas med hjälp av Helsingforsregionens trafiks <a target='_blank' href='http://developer.reittiopas.fi/'>öppna gränssnitt</a>.",
+    "INFO_MENU": {
+      "GIVE_FEEDBACK": "Ge respons",
+      "ABOUT_SERVICE": "Information om tjänsten",
+      "CHOOSE_LANGUAGE": "Välj språk"
+    },
+    "FEEDBACK": {
+      "FEEDBACK": "Respons",
+      "WANT_ANSWER": "Jag vill ha ett svar till min e–post",
+      "SEND": "Skicka",
+      "EMAIL": "E–post"
+    },
+    "MAP_ATTRIBUTION": "OpenStreetMaps skapare"
+  },
+  "GENERAL": {
+    "LOADING": "Laddar..."
+  },
+  "MAP": {
+    "ACCESSIBILITY_NOTICE": "Kartvy. Kartans uppgifter kan i nuläget granskas endast visuellt.",
+    "LOCATE_USER": "Visa din plats",
+    "ZOOM_IN": "Zooma in",
+    "ZOOM_OUT": "Zooma ut"
+  },
+  "UNIT_DETAILS": {
+    "FURTHER_INFO": "Ytterligare upplysningar",
+    "SHOW_MORE": "Visa mer",
+    "STATUS": "Skick",
+    "UNKNOWN": "Okänt",
+    "UPDATED": "Uppdaterad",
+    "MAINTENANCE_DONE": "Iståndsatt",
+    "FILTER": {
+      "STATUS_ALL": "I alla skick",
+      "ICE_SKATING": "Skridskoåkning",
+      "SKIING": "Skidåkning",
+      "STATUS_OK": "I användbart skick",
+      "SWIMMING": "Simning"
+    },
+    "FILTER_SPORT": "Välj sportgren",
+    "FILTER_STATUS": "Välj skick",
+    "SORT": {
+      "DEFAULT": "Förinställt",
+      "ALPHABETICAL": "Alfabetisk",
+      "CONDITION": "I bästa skick först",
+      "DISTANCE": "Närmast först"
+    },
+    "PHONE": "Telefon",
+    "TMP_MESSAGE": "",
+    "MAP_BUTTON": "Visa resultat på karta",
+    "LIST_BUTTON": "Visa resultat på karta och i listan"
+  },
+  "UNIT_BROWSER": {
+    "LOADING": "Laddar objekt",
+    "NOT_FOUND": "Beklagar, objektet hittades inte :(",
+    "QUALITY": "Skick",
+    "INFO": "Information",
+    "WEATHER": "Väder",
+    "HEIGHT_PROFILE": "Höjdprofil",
+    "OPENING_HOURS": "Öppettider",
+    "LENGTH": "Spårets längd",
+    "LIGHTING": "Belysning",
+    "SKIING_TECHNIQUE": "Åkstil",
+    "TEMPERATURE": "Temperatur",
+    "LINKS": "Länkar",
+    "GET_ROUTE": "Väg hit",
+    "NOTICE": "Meddelande",
+    "WATER_TEMPERATURE": "Vattnets temperatur",
+    "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor",
+    "CLOSE": "Stänga",
+    "SEE_ON_SERVICE_MAP": "Se på Palvelukartta"
+  },
+  "SEARCH": {
+    "SEARCH": "Sök",
+    "SHOW_ALL_RESULTS": "Visa alla sökresultat",
+    "LOADING": "Läser in",
+    "CLEAR": "Tydlig sökning",
+    "SUBMIT": "Sök"
+  },
+  "TIME": {
+    "DAYS_AGO": "{{days}} dagar sedan",
+    "NOT_AVAILABLE": "-",
+    "MONTH_AGO": "en månad sedan",
+    "MONTHS_AGO": "{{months}} månader sedan",
+    "TODAY": "i dag",
+    "WEEK_AGO": "en vecka sedan",
+    "WEEKS_AGO": "{{weeks}} veckor sedan",
+    "YESTERDAY": "i går"
+  },
+  "OUTBOUND_LINK": {
+    "DESCRIPTION": "Öppnar ett nytt fönster"
+  },
+  "JUMP_LINK": {
+    "LABEL": "Gå direkt till innehållet"
+  }
+}

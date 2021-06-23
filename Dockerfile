@@ -39,9 +39,10 @@ ENV DEV_SERVER=1
 FROM appbase AS staticbuilder
 # ===================================
 
-ARG API_URL
-ARG DIGITRANSIT_API_URL
-ARG APP_NAME
+ARG REACT_APP_API_URL
+ARG REACT_APP_DIGITRANSIT_API_URL
+ARG REACT_APP_APP_NAME
+ARG GENERATE_SITEMAP
 
 COPY --chown=appuser:appuser . /app/.
 
@@ -51,7 +52,7 @@ RUN yarn build
 FROM nginx:1.17 AS production
 # ===================================
 
-COPY --from=staticbuilder --chown=nginx:nginx /app/dist /usr/share/nginx/html
+COPY --from=staticbuilder --chown=nginx:nginx /app/build /usr/share/nginx/html
 COPY .prod/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

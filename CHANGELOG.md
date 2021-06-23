@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2021-06-22
+
+### Added
+
+-   [#80](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/80) Robots.txt file
+-   [#83](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/83) Language in url
+-   [#91](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/91) Unit names as slugs to unit urls
+-   [#93](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/93) Sitemap generation for production build
+
+### Changed
+
+-   Upgrade React and its related dependencies from 15.x to 16.x
+-   [#84](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/84) Use create-react-app tool chain
+-   [#87](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/87) Meta tags to be more descriptive
+-   [#88](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/88) From flow to typescript
+-   [#89](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/89) [Accessibility] Make map contents easier to skip for screen reader and keyboard users
+-   [#90](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/90) [Accessibility] Change implementation of about and feedback modals to be inline with accessibility standards
+
+### Fixed
+
+-   [#78](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/78) [Accessibility] Capturing focus to the middle of the page when opening the details of an unit
+-   [#82](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/82) [Accessibility] Language controls being hard to reach with keyboard and screen readers
+-   [#92](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/92) Base map not respecting application language
+
 ## [1.1.6] - 2021-02-16
 
 ### Changed
