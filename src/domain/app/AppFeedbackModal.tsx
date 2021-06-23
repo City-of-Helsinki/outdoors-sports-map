@@ -29,8 +29,8 @@ function AppFeedbackModal({ onClose, show }: Props) {
         feedback: { value: string };
         email: { value: string };
       };
-      const feedback = form?.feedback.value;
-      const email = form?.email.value;
+      const feedback = form?.feedback?.value;
+      const email = form?.email?.value;
 
       if (feedback) {
         dispatch(appActions.sendFeedback(feedback, email));

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2021-06-23
+
+### Fixed
+
+-   [#99](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/99) Feedback form always failing to send feedback
+
 ## [1.2.0] - 2021-06-22
 
 ### Added
