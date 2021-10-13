@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import OutboundLink from "../../common/a11y/OutboundLink";
 import SMIcon from "../../common/components/SMIcon";
 import AppAboutModal from "./AppAboutModal";
+import AppAccessibilityModal from "./AppAccessibilityModal";
 import AppFeedbackModal from "./AppFeedbackModal";
 
 // FIXME: When a modal is open, an escape key press will close the modal and
@@ -12,7 +13,9 @@ import AppFeedbackModal from "./AppFeedbackModal";
 function AppInfoDropdown() {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
-  const [modal, setModal] = useState<"about" | "feedback" | null>(null);
+  const [modal, setModal] = useState<
+    "about" | "feedback" | "accessibility" | null
+  >(null);
   // Manage dropdown state "manually" to force it to remain open when a modal
   // is opened through it, or when the user tabs onwards from the toggle element.
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -73,6 +76,14 @@ function AppInfoDropdown() {
             />
             {t("APP.INFO_MENU.ABOUT_SERVICE")}
           </Dropdown.Item>
+          <Dropdown.Item onClick={() => setModal("accessibility")}>
+            <SMIcon
+              icon="info"
+              className="app-info-dropdown__icon"
+              aria-hidden="true"
+            />
+            {t("APP.INFO_MENU.ACCESSIBILITY")}
+          </Dropdown.Item>
           <Dropdown.Item as={OutboundLink} href="http://osm.org/copyright">
             <span className="app-info-dropdown__icon">{"\u00a9"}</span>
             {`${t("APP.MAP_ATTRIBUTION")} `}
@@ -81,6 +92,10 @@ function AppInfoDropdown() {
       </Dropdown>
       <AppAboutModal show={modal === "about"} onClose={handleOnClose} />
       <AppFeedbackModal show={modal === "feedback"} onClose={handleOnClose} />
+      <AppAccessibilityModal
+        show={modal === "accessibility"}
+        onClose={handleOnClose}
+      />
     </>
   );
 }
