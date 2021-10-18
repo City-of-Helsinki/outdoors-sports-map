@@ -61,6 +61,14 @@ export default function AccessibilityStatementSv() {
         De brister som rapporterats av utvärderingsverktygen och under
         revisionen har kontrollerats och vid behov rättats till.
       </p>
+      <h3>Uppdatering av tillgänglighetsutlåtande</h3>
+      <p>
+        Webbplatsens tillgänglighet kontrolleras genom kontinuerlig tillsyn när
+        tekniken eller innehållet förändras, samt granskning med regelbundna
+        intervall, dock minst en gång om året. Detta utlåtande uppdateras i
+        samband med ändringar av webbplatsen samt granskningar av
+        tillgänglighet.
+      </p>
       <h3>Respons och kontaktuppgifter</h3>
       <p>
         Kommunikationsavdelningen inom Kultur- och fritidssektorn svarar för att

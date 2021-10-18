@@ -65,6 +65,13 @@ export default function AccessibilityStatementEn() {
         Defects reported by the evaluation tools and by the audit were reviewed
         and, if necessary, corrected.{" "}
       </p>
+      <h3>Updating the accessibility statement</h3>
+      <p>
+        When website technology or content changes, its accessibility must be
+        ensured through constant monitoring and periodic checks at least once a
+        year. This statement will be updated in conjunction with website changes
+        and accessibility evaluations.
+      </p>
       <h3>Feedback and contact information</h3>
       <p>
         The party responsible for the accessibility of the website is the
