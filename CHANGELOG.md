@@ -6,11 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2021-11-10
 ### Added
 
 -   Accessibility statements
 
-## [1.2.0] - 2021-06-23
+## [1.2.1] - 2021-06-23
 
 ### Fixed
 
