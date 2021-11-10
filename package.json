@@ -79,7 +79,7 @@
     "@types/react-leaflet": "^2.8.1",
     "@types/react-router-dom": "^5.1.7",
     "@types/redux-actions": "^2.6.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "4.6",
     "classnames": "^2.3.1",
     "date-fns": "^2.9.0",
