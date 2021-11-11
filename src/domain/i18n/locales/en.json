@@ -7,7 +7,11 @@
     "INFO_MENU": {
       "GIVE_FEEDBACK": "Give feedback",
       "ABOUT_SERVICE": "Information on the service",
-      "CHOOSE_LANGUAGE": "Choose language"
+      "CHOOSE_LANGUAGE": "Choose language",
+      "ACCESSIBILITY": "Accessibility statement"
+    },
+    "MODAL": {
+      "CLOSE": "Close"
     },
     "FEEDBACK": {
       "FEEDBACK": "Feedback",

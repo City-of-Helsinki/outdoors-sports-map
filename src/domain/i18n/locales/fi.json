@@ -7,7 +7,11 @@
     "INFO_MENU": {
       "GIVE_FEEDBACK": "Anna palautetta",
       "ABOUT_SERVICE": "Tietoa palvelusta",
-      "CHOOSE_LANGUAGE": "Valitse kieli"
+      "CHOOSE_LANGUAGE": "Valitse kieli",
+      "ACCESSIBILITY": "Saavutettavuusseloste"
+    },
+    "MODAL": {
+      "CLOSE": "Sulje"
     },
     "FEEDBACK": {
       "FEEDBACK": "Palaute",
