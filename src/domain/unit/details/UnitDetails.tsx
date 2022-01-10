@@ -1,6 +1,5 @@
 import get from "lodash/get";
 import has from "lodash/has";
-import upperFirst from "lodash/upperFirst";
 import { ReactNode, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -36,18 +35,6 @@ import {
   getOpeningHours,
 } from "../unitHelpers";
 import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
-
-function shouldShowInfo(unit: Unit) {
-  const hasExtensions =
-    unit.extensions &&
-    (unit.extensions.length ||
-      unit.extensions.lighting ||
-      unit.extensions.skiing_technique);
-
-  // Should show info if at least some interesting extension is available,
-  // or if there's a phone or a unit number
-  return hasExtensions || unit.phone || unit.url;
-}
 
 type HeaderProps = {
   unit?: Unit;
@@ -140,33 +127,68 @@ function LocationInfo({ unit }: LocationInfoProps) {
   const language = useLanguage();
 
   const unitWww = getAttr(unit.www, language);
-  const unitExtensionLength = get(unit, "extensions.length");
-  const unitExtensionLighting = unit?.extensions?.lighting
-    ? upperFirst(getAttr(unit.extensions.lighting, language))
-    : null;
-  const unitExtensionSkiingTechnique = get(unit, "extensions.skiing_technique");
+  const unitExtraLipasRouteLengthKm = get(
+    unit,
+    ["extra", "lipas.routeLengthKm"],
+    null
+  );
+  const unitExtraLipasLitRouteLengthKm = get(
+    unit,
+    ["extra", "lipas.litRouteLengthKm"],
+    null
+  );
+  const unitExtraLipasSkiTrackFreestyle = get(
+    unit,
+    ["extra", "lipas.skiTrackFreestyle"],
+    null
+  );
+  const unitExtraLipasSkiTrackTraditional = get(
+    unit,
+    ["extra", "lipas.skiTrackTraditional"],
+    null
+  );
+
+  const hasExtras =
+    // Check against null because value can be 0 which is falsy.
+    // Value of 0 will result in "0km"
+    // E.g. Route length: 5km, Lit route length: 0km
+    unitExtraLipasRouteLengthKm !== null ||
+    unitExtraLipasLitRouteLengthKm !== null ||
+    // Value is 1 when true, just check truthy
+    unitExtraLipasSkiTrackFreestyle ||
+    unitExtraLipasSkiTrackTraditional;
+
+  // Should show info if at least some data is present
+  if (!(unit.phone || unit.url || hasExtras)) {
+    return null;
+  }
 
   return (
     <BodyBox title={t("UNIT_BROWSER.INFO")}>
-      {unitExtensionLength && (
-        <p>
-          {`${t("UNIT_BROWSER.LENGTH")}: `}
-          <strong>
-            {unitExtensionLength}
-            km
-          </strong>
+      {unitExtraLipasRouteLengthKm !== null && (
+        <p className="no-margin">
+          {`${t("UNIT_BROWSER.ROUTE_LENGTH")}: `}
+          <span>{unitExtraLipasRouteLengthKm}km</span>
         </p>
       )}
-      {get(unit, "extensions.lighting") && (
-        <p>
-          {`${t("UNIT_BROWSER.LIGHTING")}: `}
-          <strong>{unitExtensionLighting}</strong>
+      {unitExtraLipasLitRouteLengthKm !== null && (
+        <p className="no-margin">
+          {`${t("UNIT_BROWSER.LIT_ROUTE_LENGTH")}: `}
+          <span>{unitExtraLipasLitRouteLengthKm}km</span>
         </p>
       )}
-      {unitExtensionSkiingTechnique && (
-        <p>
+      {(unitExtraLipasSkiTrackFreestyle ||
+        unitExtraLipasSkiTrackTraditional) && (
+        <p className="no-margin">
           {`${t("UNIT_BROWSER.SKIING_TECHNIQUE")}: `}
-          <strong>{unitExtensionSkiingTechnique}</strong>
+          {[
+            unitExtraLipasSkiTrackFreestyle &&
+              t("UNIT_BROWSER.SKIING_TECHNIQUE_FREESTYLE"),
+            unitExtraLipasSkiTrackTraditional &&
+              t("UNIT_BROWSER.SKIING_TECHNIQUE_TRADITIONAL"),
+          ]
+            .filter((item) => item)
+            .join(", ")}
         </p>
       )}
       {unit.phone && (
@@ -352,7 +374,7 @@ export function SingleUnitBody({
       {liveTemperatureObservation && (
         <LiveLocationTemperature observation={liveTemperatureObservation} />
       )}
-      {shouldShowInfo(currentUnit) && <LocationInfo unit={currentUnit} />}
+      <LocationInfo unit={currentUnit} />
       {getOpeningHours(currentUnit, language) && (
         <LocationOpeningHours unit={currentUnit} />
       )}

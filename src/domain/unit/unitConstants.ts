@@ -74,6 +74,7 @@ export type Unit = {
     name: Translatable<string>;
   }>;
   picture_url?: string;
+  extra: Record<string, string | number>;
 };
 
 export type NormalizedUnit = {

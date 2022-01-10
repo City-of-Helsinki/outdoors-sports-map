@@ -158,13 +158,19 @@ const unit = {
     },
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
+  extra: {
+    "lipas.routeLengthKm": 4,
+    "lipas.litRouteLengthKm": 0,
+    "lipas.skiTrackFreestyle": 1,
+    "lipas.skiTrackTraditional": 0,
+  },
 };
 
 const defaultProps = {
   onCenterMapToUnit: () => {},
 };
 
-const getWrapper = (props, modifiedUnit) => {
+const getWrapper = (props?: any, modifiedUnit?: any) => {
   jest.spyOn(ReactRouter, "useParams").mockReturnValue({
     unitId: "40142",
   });
@@ -208,8 +214,9 @@ describe("<UnitDetails />", () => {
       expect(closeButton.prop("href")).toEqual("/fi/");
     });
   });
+
   describe("when live temperature data is available", () => {
-    const getWrapperWithLiveTemperatureData = (props, unit) =>
+    const getWrapperWithLiveTemperatureData = (props?: any, unit?: any) =>
       getWrapper(props, unit);
 
     it("should be displayed", () => {
@@ -218,12 +225,14 @@ describe("<UnitDetails />", () => {
 
       expect(wrapper.text().includes(liveTemperature)).toEqual(true);
     });
+
     it("regular temperature should not be displayed", () => {
       const wrapper = getWrapperWithLiveTemperatureData();
       const temperature = `${temperatureDataObservation.name.fi}`;
 
       expect(wrapper.text().includes(temperature)).toEqual(false);
     });
+
     describe("temperature measurement time", () => {
       it("when less than an hour has passed it should use minutes", () => {
         const halfAnHourAgo = moment().subtract(0.5, "hours");
@@ -242,6 +251,7 @@ describe("<UnitDetails />", () => {
 
         expect(wrapper.text().includes("30 minuuttia sitten")).toEqual(true);
       });
+
       it("when at least an hour has passed it should use hours", () => {
         const anHourAgo = moment().subtract(2, "hours");
 
@@ -260,5 +270,15 @@ describe("<UnitDetails />", () => {
         expect(wrapper.text().includes("kaksi tuntia sitten")).toEqual(true);
       });
     });
+  });
+
+  it("should render extras correctly", () => {
+    const wrapper = getWrapper();
+    const wrapperText = wrapper.text();
+
+    expect(wrapperText.includes("Info")).toEqual(true);
+    expect(wrapperText.includes("Reitin pituus: 4km")).toEqual(true);
+    expect(wrapperText.includes("Valaistu reitti: 0km")).toEqual(true);
+    expect(wrapperText.includes("Hiihtotyyli: Vapaa hiihtotapa")).toEqual(true);
   });
 });
