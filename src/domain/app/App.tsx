@@ -8,6 +8,7 @@ import { languageParam } from "../i18n/i18nConstants";
 import AppMeta from "../meta/AppMeta";
 import LanguageMeta from "../meta/LanguageMeta";
 import LanguageAwareRoutes from "./AppLanguageAwareRoutes";
+import AppWideNotification from "./appWideNotification/AppWideNotification";
 
 function App() {
   useScrollToTop();
@@ -20,6 +21,7 @@ function App() {
       <LanguageMeta />
       <ResetFocus />
       <JumpLink />
+      <AppWideNotification />
       <Switch>
         <Route path={`/${languageParam}`} component={LanguageAwareRoutes} />
         <Route

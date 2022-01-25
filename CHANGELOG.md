@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 -   Ski track related additional information from new extra field
+-   Notification that can be configured with environment
 
 ## [1.3.0] - 2021-11-10
 

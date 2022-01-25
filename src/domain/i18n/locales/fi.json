@@ -19,7 +19,9 @@
       "SEND": "Lähetä",
       "EMAIL": "Sähköposti"
     },
-    "MAP_ATTRIBUTION": "OpenStreetMap tekijät"
+    "MAP_ATTRIBUTION": "OpenStreetMap tekijät",
+    "NOTIFICATION_TITLE": "Ilmoitus",
+    "NOTIFICATION_CLOSE": "Sulje"
   },
   "GENERAL": {
     "LOADING": "Ladataan..."
