@@ -27,7 +27,7 @@ export function AppWideNotification() {
     ? Boolean(JSON.parse(isNotificationEnabledEnvVariable))
     : null;
 
-  const [isOpen, setOpen] = useState(
+  const [isOpen, setOpen] = useState(() =>
     getInitialValue(sessionStorage.getItem(IS_OPEN_KEY), isNotificationEnabled)
   );
   const {
