@@ -19,7 +19,9 @@
       "SEND": "Send",
       "EMAIL": "Email"
     },
-    "MAP_ATTRIBUTION": "OpenStreetMap contributors"
+    "MAP_ATTRIBUTION": "OpenStreetMap contributors",
+    "NOTIFICATION_TITLE": "Notification",
+    "NOTIFICATION_CLOSE": "Close"
   },
   "GENERAL": {
     "LOADING": "Loading..."

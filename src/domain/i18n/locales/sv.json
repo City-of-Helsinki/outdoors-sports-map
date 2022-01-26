@@ -19,7 +19,9 @@
       "SEND": "Skicka",
       "EMAIL": "E–post"
     },
-    "MAP_ATTRIBUTION": "OpenStreetMaps skapare"
+    "MAP_ATTRIBUTION": "OpenStreetMaps skapare",
+    "NOTIFICATION_TITLE": "Annons",
+    "NOTIFICATION_CLOSE": "Stänga"
   },
   "GENERAL": {
     "LOADING": "Laddar..."

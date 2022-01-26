@@ -33,6 +33,10 @@ jobs:
           DOCKER_BUILD_ARG_REACT_APP_API_URL: "https://api.hel.fi/servicemap/v2"
           DOCKER_BUILD_ARG_REACT_APP_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
           DOCKER_BUILD_ARG_REACT_APP_APP_NAME: "outdoors-sports-map"
+          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_ENABLED: 1
+          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_FI: "Lorem ipsum dolor sit amet, consectetur adipsicing elit."
+          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_SV: "SV: Lorem ipsum dolor sit amet, consectetur adipsicing elit."
+          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_EN: "EN: Lorem ipsum dolor sit amet, consectetur adipsicing elit."
 
   staging:
     runs-on: ubuntu-latest
