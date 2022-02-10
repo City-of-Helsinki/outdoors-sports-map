@@ -3,7 +3,7 @@
     "NAME": "Utemotionskarta",
     "ABOUT": "Information om tjänsten",
     "DESCRIPTION": "Utemotionskartan (Ulkoliikuntakartta) är en digital karttjänst där man hittar huvudstadsregionens skidspår och skidspårsinfo, skridskobanor och konstisbanor samt badstränder och utomhusbad. Utemotionskartans uppgifter produceras av Helsingfors, Esbo, Vanda och Kyrkslätt.",
-    "ABOUT_MODAL": "<h3>Information om tjänsten</h3> <p>Utemotionskartan är en öppen kommunikationskanal om skicket på anläggningarna för utomhusidrott i Helsingfors, Esbo och Vanda. Utemotionskartan hjälper kommuninvånarna att hitta uppdaterad information om de tjänster för utomhusidrott som staden upprätthåller. I nuläget omfattar tjänsten stadens skidspår och skridskoplaner och på våren kommer den också att omfatta badstränder.</p> <p>Tjänsten har förverkligats i samverkan mellan <a target='_blank' href='http://www.hel.fi/www/kanslia/fi/osastot-ja-yksikot/tietotekniikka/'>informationstekniksenheten</a> vid IT- och kommunikationsavdelningen på Helsingfors stads stadskansli och Helsingfors stads <a target='_blank' href='https://hel.fi/liikunta/'>idrottsverk</a>. <h3>Respons</h3> <p>Vi är tacksamma för all respons, så att vi kan utveckla Utemotionskartan och göra den allt bättre.</p> <h3>© Information och upphovsrätt</h3> <p>Utemotionskartan har byggs med hjälp av så öppna data som möjligt och öppen källkod.</p> <p>Kartans källkod finns på <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> och vi uppmuntrar till utveckling av den.</p> <p>Idrottsplatsernas uppgifter är öppna data och användbara via REST-gränssnittet.</p> <p>Kartuppgifterna hämtas från öppna <a target='_blank' href='https://www.openstreetmap.org/'>OpenStreetMap</a> och kartornas upphovsrätt hör till <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMaps skapare.</a></p> <p>Adressuppgifterna hämtas med hjälp av Helsingforsregionens trafiks <a target='_blank' href='http://developer.reittiopas.fi/'>öppna gränssnitt</a>.",
+    "ABOUT_MODAL": "<h3>Information om tjänsten</h3> <p>Utemotionskartan är en öppen kommunikationskanal om skicket på anläggningarna för utomhusidrott i Helsingfors, Esbo och Vanda. Utemotionskartan hjälper kommuninvånarna att hitta uppdaterad information om de tjänster för utomhusidrott som staden upprätthåller. I nuläget omfattar tjänsten stadens skidspår och skridskoplaner och på våren kommer den också att omfatta badstränder.</p> <p>Ulkoliikunta.fi är en tjänst som Helsingfors stad erbjuder i samarbete med Esbo, Vanda och Kyrkslätt.</p> <h3>Respons</h3> <p>Vi är tacksamma för all respons, så att vi kan utveckla Utemotionskartan och göra den allt bättre.</p> <h3>© Information och upphovsrätt</h3> <p>Utemotionskartan har byggs med hjälp av så öppna data som möjligt och öppen källkod.</p> <p>Kartans källkod finns på <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> och vi uppmuntrar till utveckling av den.</p> <p>Idrottsplatsernas uppgifter är öppna data och användbara via REST-gränssnittet.</p> <p>Kartuppgifterna hämtas från öppna <a target='_blank' href='https://www.openstreetmap.org/'>OpenStreetMap</a> och kartornas upphovsrätt hör till <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMaps skapare.</a></p> <p>Adressuppgifterna hämtas med hjälp av Helsingforsregionens trafiks <a target='_blank' href='http://developer.reittiopas.fi/'>öppna gränssnitt</a>.",
     "INFO_MENU": {
       "GIVE_FEEDBACK": "Ge respons",
       "ABOUT_SERVICE": "Information om tjänsten",
@@ -19,7 +19,9 @@
       "SEND": "Skicka",
       "EMAIL": "E–post"
     },
-    "MAP_ATTRIBUTION": "OpenStreetMaps skapare"
+    "MAP_ATTRIBUTION": "OpenStreetMaps skapare",
+    "NOTIFICATION_TITLE": "Annons",
+    "NOTIFICATION_CLOSE": "Stänga"
   },
   "GENERAL": {
     "LOADING": "Laddar..."
@@ -65,9 +67,11 @@
     "WEATHER": "Väder",
     "HEIGHT_PROFILE": "Höjdprofil",
     "OPENING_HOURS": "Öppettider",
-    "LENGTH": "Spårets längd",
-    "LIGHTING": "Belysning",
+    "ROUTE_LENGTH": "Spårets längd",
+    "LIT_ROUTE_LENGTH": "Upplyst spårets längd",
     "SKIING_TECHNIQUE": "Åkstil",
+    "SKIING_TECHNIQUE_FREESTYLE": "Fristil",
+    "SKIING_TECHNIQUE_TRADITIONAL": "Klassisk",
     "TEMPERATURE": "Temperatur",
     "LINKS": "Länkar",
     "GET_ROUTE": "Väg hit",

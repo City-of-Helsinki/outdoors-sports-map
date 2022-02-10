@@ -17,6 +17,10 @@
 
   p {
     margin-bottom: 10px;
+
+    &.no-margin {
+      margin-bottom: 0;
+    }
   }
 
   .modal-body-list li {
