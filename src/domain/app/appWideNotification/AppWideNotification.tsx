@@ -21,6 +21,11 @@ export function AppWideNotification() {
     sv: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_SV,
     en: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_EN,
   };
+  const notificationContentTitleTranslations: Record<string, string | undefined> = {
+    fi: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_FI,
+    sv: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_SV,
+    en: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_EN,
+  };
   const isNotificationEnabledEnvVariable =
     process.env.REACT_APP_SITE_WIDE_NOTIFICATION_ENABLED;
   const isNotificationEnabled = isNotificationEnabledEnvVariable
@@ -36,6 +41,7 @@ export function AppWideNotification() {
   } = useTranslation();
 
   const notificationContent = notificationContentTranslations[language];
+  const notificationTitle = notificationContentTitleTranslations[language];
 
   if (!isNotificationEnabled && notificationContent) {
     return null;
@@ -48,9 +54,9 @@ export function AppWideNotification() {
 
   return isOpen ? (
     <Notification
-      label={t("APP.NOTIFICATION_TITLE")}
-      type="alert"
-      size="small"
+      label={notificationTitle}
+      type="info"
+      size="default"
       dismissible
       closeButtonLabelText={t("APP.NOTIFICATION_CLOSE") as string}
       className="app-wide-notification"
