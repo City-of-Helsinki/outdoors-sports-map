@@ -75,6 +75,7 @@
     "TEMPERATURE": "Lämpötila",
     "LINKS": "Linkit",
     "GET_ROUTE": "Hae reitti tänne",
+    "EXTRA_INFO": "Katso tietoa uimaveden laadusta",
     "NOTICE": "Tiedote",
     "WATER_TEMPERATURE": "Veden lämpötila",
     "WATER_TEMPERATURE_SENSOR": "Uimarantasensori",

@@ -72,6 +72,7 @@ export type Unit = {
   connections: Array<{
     section_type: string;
     name: Translatable<string>;
+    www: Translatable<string>;
   }>;
   picture_url?: string;
   extra: Record<string, string | number>;

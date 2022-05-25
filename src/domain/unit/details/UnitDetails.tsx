@@ -239,9 +239,10 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
 type LocationRouteProps = {
   routeUrl?: string;
   palvelukarttaUrl?: string;
+  extraUrl?: string;
 };
 
-function LocationRoute({ routeUrl, palvelukarttaUrl }: LocationRouteProps) {
+function LocationRoute({ routeUrl, palvelukarttaUrl, extraUrl }: LocationRouteProps) {
   const { t } = useTranslation();
 
   return (
@@ -251,6 +252,13 @@ function LocationRoute({ routeUrl, palvelukarttaUrl }: LocationRouteProps) {
           <li>
             <OutboundLink href={routeUrl}>
               {t("UNIT_BROWSER.GET_ROUTE")}
+            </OutboundLink>
+          </li>
+        )}
+        {extraUrl && (
+          <li>
+            <OutboundLink href={extraUrl}>
+              {t("UNIT_BROWSER.EXTRA_INFO")}
             </OutboundLink>
           </li>
         )}
@@ -364,6 +372,15 @@ export function SingleUnitBody({
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
+  let extraUrl:string = '';
+  const unitConnections = currentUnit?.connections;
+  if (unitConnections) {
+    let otherInfo = unitConnections.find(connection => {
+      return connection.section_type === "OTHER_INFO"
+    });
+    extraUrl = otherInfo?.www.fi!;
+  }
+
   return currentUnit && !isLoading ? (
     <div className="unit-container-body">
       <LocationState unit={currentUnit} />
@@ -382,6 +399,7 @@ export function SingleUnitBody({
         <LocationRoute
           routeUrl={routeUrl}
           palvelukarttaUrl={palvelukarttaUrl}
+          extraUrl={extraUrl}
         />
       )}
     </div>

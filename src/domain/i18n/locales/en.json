@@ -75,6 +75,7 @@
     "TEMPERATURE": "Temperature",
     "LINKS": "Links",
     "GET_ROUTE": "Get route to here",
+    "EXTRA_INFO": "See information on swimming water quality",
     "NOTICE": "Notice",
     "WATER_TEMPERATURE": "Water temperature",
     "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
