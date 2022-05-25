@@ -1,3 +1,5 @@
 .app-wide-notification {
   --notification-z-index-inline: 2000 !important;
+  --notification-background-color: var(--color-alert-light) !important;
+  --notification-border-color: var(--color-alert-dark) !important;
 }
