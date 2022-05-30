@@ -26,6 +26,7 @@ afterAll(() => {
 function setupVisibleNotification() {
   const content = "App notification content";
   process.env.REACT_APP_SITE_WIDE_NOTIFICATION_ENABLED = "1";
+  process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_FI = "Ilmoitus";
   process.env.REACT_APP_SITE_WIDE_NOTIFICATION_FI = content;
 
   return { content };
