@@ -75,12 +75,12 @@
     "TEMPERATURE": "Temperatur",
     "LINKS": "Länkar",
     "GET_ROUTE": "Väg hit",
-    "EXTRA_INFO": "Se information om badvattenkvalitet",
+    "EXTRA_INFO": "Se information om badvattnets kvalitet",
     "NOTICE": "Meddelande",
     "WATER_TEMPERATURE": "Vattnets temperatur",
     "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor",
     "CLOSE": "Stänga",
-    "SEE_ON_SERVICE_MAP": "Mer information om servicekarta"
+    "SEE_ON_SERVICE_MAP": "Mer information på servicekartan"
   },
   "SEARCH": {
     "SEARCH": "Sök",
