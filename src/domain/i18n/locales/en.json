@@ -75,12 +75,12 @@
     "TEMPERATURE": "Temperature",
     "LINKS": "Links",
     "GET_ROUTE": "Get route to here",
-    "EXTRA_INFO": "See information on swimming water quality",
+    "EXTRA_INFO": "Information on swimming water quality",
     "NOTICE": "Notice",
     "WATER_TEMPERATURE": "Water temperature",
     "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
     "CLOSE": "Close",
-    "SEE_ON_SERVICE_MAP": "More info on servicemap"
+    "SEE_ON_SERVICE_MAP": "More information on the Service Map"
   },
   "SEARCH": {
     "SEARCH": "Search",
