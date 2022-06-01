@@ -91,7 +91,7 @@
     "leaflet": "1.7.0",
     "leaflet-geometryutil": "^0.8.0",
     "lodash": "^4.17.19",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "node-sass": "^5.0.0",
     "normalize.css": "^8.0.1",
     "normalizr": "^3.5.0",
