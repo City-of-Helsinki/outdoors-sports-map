@@ -41,7 +41,7 @@ export function AppWideNotification() {
     i18n: { language },
   } = useTranslation();
 
-  const lang = language.slice(0, 2);
+  const lang = language.split("-")[0];
   const notificationContent = notificationContentTranslations[lang];
   const notificationTitle = notificationContentTitleTranslations[lang];
 
