@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+-   Notification language support for Microsoft Edge- and Safari-browsers
+
 ## [1.5.0] - 2022-05-30
 
 ### Added
