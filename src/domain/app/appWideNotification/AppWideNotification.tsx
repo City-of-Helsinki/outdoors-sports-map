@@ -1,5 +1,5 @@
 import { Notification } from "hds-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
@@ -35,13 +35,15 @@ export function AppWideNotification() {
   const [isOpen, setOpen] = useState(() =>
     getInitialValue(sessionStorage.getItem(IS_OPEN_KEY), isNotificationEnabled)
   );
+
   const {
     t,
     i18n: { language },
   } = useTranslation();
 
-  const notificationContent = notificationContentTranslations[language];
-  const notificationTitle = notificationContentTitleTranslations[language];
+  const lang = language.slice(0, 2);
+  const notificationContent = notificationContentTranslations[lang];
+  const notificationTitle = notificationContentTitleTranslations[lang];
 
   if (!isNotificationEnabled && notificationContent) {
     return null;
