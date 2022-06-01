@@ -83,7 +83,7 @@
     "bootstrap": "4.6",
     "classnames": "^2.3.1",
     "date-fns": "^2.9.0",
-    "hds-react": "^1.9.0",
+    "hds-react": "^1.15.0",
     "history": "4.10.1",
     "husky": "^4.0.10",
     "i18next": "^19.1.0",
