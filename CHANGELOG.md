@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.5.2] - 2022-06-03
+
+### Changed
+
+-   Increase Kubernetes CPU limit
+-   Replace node-sass with sass
+-   Minor-package updates
+
 ## [1.5.1] - 2022-06-01
 
 ### Fixed
