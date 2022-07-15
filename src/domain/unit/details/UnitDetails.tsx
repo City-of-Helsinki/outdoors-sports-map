@@ -25,11 +25,12 @@ import UnitObservationStatus, {
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
 import * as fromUnit from "../state/selectors";
-import { Unit } from "../unitConstants";
+import { Unit, UnitConnectionTags } from "../unitConstants";
 import {
   createPalvelukarttaUrl,
   createReittiopasUrl,
   getAttr,
+  getConnectionByTag,
   getObservation,
   getObservationTime,
   getOpeningHours,
@@ -158,8 +159,10 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unitExtraLipasSkiTrackFreestyle ||
     unitExtraLipasSkiTrackTraditional;
 
+  const unitControlConnection = getConnectionByTag(unit, UnitConnectionTags.CONTROL)
+
   // Should show info if at least some data is present
-  if (!(unit.phone || unit.url || hasExtras)) {
+  if (!(unit.phone || unit.url || hasExtras || unitControlConnection)) {
     return null;
   }
 
@@ -189,6 +192,12 @@ function LocationInfo({ unit }: LocationInfoProps) {
           ]
             .filter((item) => item)
             .join(", ")}
+        </p>
+      )}
+      {unitControlConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.CONTROL")}`}:{" "}
+          {getAttr(unitControlConnection.name, language)}
         </p>
       )}
       {unit.phone && (
