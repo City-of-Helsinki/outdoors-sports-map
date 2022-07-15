@@ -57,7 +57,8 @@
     "PHONE": "Puhelinnumero",
     "TMP_MESSAGE": "",
     "MAP_BUTTON": "Näytä tulokset kartalla",
-    "LIST_BUTTON": "Näytä tulokset kartalla ja listana"
+    "LIST_BUTTON": "Näytä tulokset kartalla ja listana",
+    "CONTROL": "Valvonta"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",

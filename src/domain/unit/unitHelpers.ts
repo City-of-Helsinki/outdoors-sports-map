@@ -31,6 +31,7 @@ import {
   StatusFilter,
   SportFilters,
   SeasonDelimiter,
+  UnitConnection,
 } from "./unitConstants";
 
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
@@ -168,6 +169,15 @@ export const getObservationTime = (observation: Record<string, any>) =>
 
 export const enumerableQuality = (quality: string): number =>
   QualityEnum[quality] ? QualityEnum[quality] : Number.MAX_VALUE;
+
+export const getConnectionByTag = (
+  unit: Unit,
+  tag: string
+): UnitConnection | undefined => {
+  return unit.connections.find(
+    (connection) => connection.tags && connection.tags.includes(tag)
+  );
+};
 
 /**
  * ICONS

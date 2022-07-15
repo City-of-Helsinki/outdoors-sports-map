@@ -156,6 +156,22 @@ const unit = {
       contact_person: null,
       unit: 40142,
     },
+    {
+      id: 12513,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Valvottu",
+        sv: "Kontrollerade",
+        en: "Controlled"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#valvonta"
+      ]
+    }
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
   extra: {
@@ -271,6 +287,22 @@ describe("<UnitDetails />", () => {
       });
     });
   });
+
+  describe("when control data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(true);
+    });   
+  });
+
+  describe("when control data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper({}, {
+        connections: unit.connections.filter((con) => con.name.fi !== "Valvottu")
+      });
+      expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(false);
+    });   
+  })
 
   it("should render extras correctly", () => {
     const wrapper = getWrapper();

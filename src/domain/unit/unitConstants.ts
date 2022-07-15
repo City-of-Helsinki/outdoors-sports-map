@@ -40,6 +40,10 @@ type Translatable<T = string> = {
   en: T;
 };
 
+export const UnitConnectionTags = {
+  CONTROL: "#valvonta",
+} as const;
+
 export type UnitConnection = {
   section_type: string;
   name: Translatable<string>;
