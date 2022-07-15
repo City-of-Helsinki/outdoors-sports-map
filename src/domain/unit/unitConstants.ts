@@ -42,6 +42,7 @@ type Translatable<T = string> = {
 
 export const UnitConnectionTags = {
   CONTROL: "#valvonta",
+  HEATING: "#lämmitys",
 } as const;
 
 export type UnitConnection = {

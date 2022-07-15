@@ -171,6 +171,22 @@ const unit = {
       tags: [
         "#valvonta"
       ]
+    },
+    {
+      id: 12514,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Lämmitetty",
+        sv: "Uppvärmd",
+        en: "Heated"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#lämmitys"
+      ]
     }
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
@@ -298,9 +314,25 @@ describe("<UnitDetails />", () => {
   describe("when control data is not available", () => {
     it("should not be displayed", () => {
       const wrapper = getWrapper({}, {
-        connections: unit.connections.filter((con) => con.name.fi !== "Valvottu")
+        connections: unit.connections.filter((con) => con.tags === undefined)
       });
       expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(false);
+    });   
+  })
+
+  describe("when heating data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(true);
+    });   
+  });
+
+  describe("when heating data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper({}, {
+        connections: unit.connections.filter((con) => con.tags === undefined)
+      });
+      expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(false);
     });   
   })
 

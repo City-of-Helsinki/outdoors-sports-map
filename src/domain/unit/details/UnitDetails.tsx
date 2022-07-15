@@ -159,10 +159,25 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unitExtraLipasSkiTrackFreestyle ||
     unitExtraLipasSkiTrackTraditional;
 
-  const unitControlConnection = getConnectionByTag(unit, UnitConnectionTags.CONTROL)
+  const unitControlConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.CONTROL
+  );
+  const unitHeatedConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.HEATING
+  );
 
   // Should show info if at least some data is present
-  if (!(unit.phone || unit.url || hasExtras || unitControlConnection)) {
+  if (
+    !(
+      unit.phone ||
+      unit.url ||
+      hasExtras ||
+      unitControlConnection ||
+      unitHeatedConnection
+    )
+  ) {
     return null;
   }
 
@@ -198,6 +213,12 @@ function LocationInfo({ unit }: LocationInfoProps) {
         <p className="no-margin">
           {`${t("UNIT_DETAILS.CONTROL")}`}:{" "}
           {getAttr(unitControlConnection.name, language)}
+        </p>
+      )}
+      {unitHeatedConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.HEATING")}`}:{" "}
+          {getAttr(unitHeatedConnection.name, language)}
         </p>
       )}
       {unit.phone && (
@@ -251,7 +272,11 @@ type LocationRouteProps = {
   extraUrl?: string;
 };
 
-function LocationRoute({ routeUrl, palvelukarttaUrl, extraUrl }: LocationRouteProps) {
+function LocationRoute({
+  routeUrl,
+  palvelukarttaUrl,
+  extraUrl,
+}: LocationRouteProps) {
   const { t } = useTranslation();
 
   return (
@@ -381,11 +406,11 @@ export function SingleUnitBody({
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
-  let extraUrl:string = '';
+  let extraUrl: string = "";
   const unitConnections = currentUnit?.connections;
   if (unitConnections) {
-    let otherInfo = unitConnections.find(connection => {
-      return connection.section_type === "OTHER_INFO"
+    let otherInfo = unitConnections.find((connection) => {
+      return connection.section_type === "OTHER_INFO";
     });
     extraUrl = otherInfo?.www.fi!;
   }

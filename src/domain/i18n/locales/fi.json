@@ -58,7 +58,8 @@
     "TMP_MESSAGE": "",
     "MAP_BUTTON": "Näytä tulokset kartalla",
     "LIST_BUTTON": "Näytä tulokset kartalla ja listana",
-    "CONTROL": "Valvonta"
+    "CONTROL": "Valvonta",
+    "HEATING": "Lämmitys"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",
