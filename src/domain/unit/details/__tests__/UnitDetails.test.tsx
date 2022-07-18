@@ -203,6 +203,22 @@ const unit = {
       tags: [
         "#valaisu"
       ]
+    },
+    {
+      id: 12516,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Pukukopit 2kpl, avoinna 24h",
+        sv: "Omklädningsrum 2st, öppet 24h",
+        en: "Dressing rooms 2pcs, open 24h"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#pukukoppi"
+      ]
     }
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
@@ -368,6 +384,25 @@ describe("<UnitDetails />", () => {
         }
       );
       expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(false);
+    });
+  });
+
+  describe("when dressing room data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toEqual(true);
+    });
+  });
+
+  describe("when dressing room data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        }
+      );
+      expect(wrapper.text().includes("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toEqual(false);
     });
   });
 

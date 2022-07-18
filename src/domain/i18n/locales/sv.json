@@ -60,7 +60,8 @@
     "LIST_BUTTON": "Visa resultat på karta och i listan",
     "CONTROL": "Kontrollera",
     "HEATING": "Uppvärmning",
-    "LIGHTED": "Upplysning"
+    "LIGHTED": "Upplysning",
+    "DRESSING_ROOM": "Omklädningsrum"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",
