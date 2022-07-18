@@ -59,7 +59,8 @@
     "MAP_BUTTON": "Näytä tulokset kartalla",
     "LIST_BUTTON": "Näytä tulokset kartalla ja listana",
     "CONTROL": "Valvonta",
-    "HEATING": "Lämmitys"
+    "HEATING": "Lämmitys",
+    "LIGHTED": "Valaistus"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",
