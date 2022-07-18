@@ -59,7 +59,8 @@
     "MAP_BUTTON": "Show results on map",
     "LIST_BUTTON": "Show results on map and on the list",
     "CONTROL": "Control",
-    "HEATING": "Heating"
+    "HEATING": "Heating",
+    "LIGHTED": "Lighting"
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",

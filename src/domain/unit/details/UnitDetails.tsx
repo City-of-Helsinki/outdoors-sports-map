@@ -167,6 +167,10 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unit,
     UnitConnectionTags.HEATING
   );
+  const unitLightedConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.LIGHTED
+  )
 
   // Should show info if at least some data is present
   if (
@@ -175,7 +179,8 @@ function LocationInfo({ unit }: LocationInfoProps) {
       unit.url ||
       hasExtras ||
       unitControlConnection ||
-      unitHeatedConnection
+      unitHeatedConnection ||
+      unitLightedConnection
     )
   ) {
     return null;
@@ -219,6 +224,12 @@ function LocationInfo({ unit }: LocationInfoProps) {
         <p className="no-margin">
           {`${t("UNIT_DETAILS.HEATING")}`}:{" "}
           {getAttr(unitHeatedConnection.name, language)}
+        </p>
+      )}
+      {unitLightedConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.LIGHTED")}`}:{" "}
+          {getAttr(unitLightedConnection.name, language)}
         </p>
       )}
       {unit.phone && (

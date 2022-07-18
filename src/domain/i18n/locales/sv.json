@@ -59,7 +59,8 @@
     "MAP_BUTTON": "Visa resultat på karta",
     "LIST_BUTTON": "Visa resultat på karta och i listan",
     "CONTROL": "Kontrollera",
-    "HEATING": "Uppvärmning"
+    "HEATING": "Uppvärmning",
+    "LIGHTED": "Upplysning"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

@@ -187,6 +187,22 @@ const unit = {
       tags: [
         "#lämmitys"
       ]
+    },
+    {
+      id: 12515,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Valaistu",
+        sv: "Upplyst",
+        en: "Lighted"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#valaisu"
+      ]
     }
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
@@ -335,6 +351,25 @@ describe("<UnitDetails />", () => {
       expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(false);
     });   
   })
+
+  describe("when lighting data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(true);
+    });
+  });
+
+  describe("when lighting data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        }
+      );
+      expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(false);
+    });
+  });
 
   it("should render extras correctly", () => {
     const wrapper = getWrapper();
