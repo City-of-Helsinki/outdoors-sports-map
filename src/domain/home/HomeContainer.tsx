@@ -1,5 +1,5 @@
 import className from "classnames";
-import { useCallback, useRef, ReactNode } from "react";
+import { useCallback, useRef, ReactNode, useState } from "react";
 import { Map as RLMap } from "react-leaflet";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
@@ -56,6 +56,11 @@ function HomeContainer() {
   const mapRef = useRef<RLMap | null>(null);
   const leafletElementRef = useRef<L.Map | null>(null);
   const isMobile = useIsMobile();
+  const [isUnitDetailsExpanded, setIsUnitDetailsExpanded] = useState(false)
+
+  const toggleIsUnitDetailsExpanded = () => {
+    setIsUnitDetailsExpanded(!isUnitDetailsExpanded)
+  }
 
   const handleOnViewChange = useCallback((coordinates) => {
     leafletElementRef.current?.setView(coordinates);
@@ -115,7 +120,7 @@ function HomeContainer() {
             exact
             path={routerPaths.unitDetails}
             render={() => (
-              <UnitDetails onCenterMapToUnit={handleCenterMapToUnit} />
+              <UnitDetails onCenterMapToUnit={handleCenterMapToUnit} isExpanded={isUnitDetailsExpanded} toggleIsExpanded={toggleIsUnitDetailsExpanded} />
             )}
           />
           <Route
