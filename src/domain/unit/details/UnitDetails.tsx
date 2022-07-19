@@ -1,3 +1,4 @@
+import { IconAngleDown } from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
 import { ReactNode, useEffect } from "react";
@@ -103,6 +104,22 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
       ) : null}
     </div>
   );
+}
+
+type MobileFooterProps = {
+  toggleExpand: () => void;
+  isExpanded: boolean;
+}
+export function MobileFooter({ toggleExpand, isExpanded }: MobileFooterProps) {
+  const { t } = useTranslation();
+  const footerText = isExpanded ? t("UNIT_DETAILS.SHOW_LESS") : t("UNIT_DETAILS.SHOW_MORE");
+  return (
+  <div className="unit-details-mobile-footer">
+    <div className="unit-details-mobile-footer-expander" onClick={toggleExpand}>
+        {footerText}
+        <IconAngleDown className={ isExpanded ? "unit-details-mobile-footer-icon-expanded" : "unit-details-mobile-footer-icon"} />
+      </div>
+  </div>)
 }
 
 type LocationStateProps = {
@@ -475,9 +492,11 @@ function findAlternatePathname(pathname: string, unit: Unit, language: string) {
 
 type Props = {
   onCenterMapToUnit: (unit: Unit) => void;
+  isExpanded: boolean;
+  toggleIsExpanded: () => void;
 };
 
-function UnitDetails({ onCenterMapToUnit }: Props) {
+function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props) {
   const language = useLanguage();
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -545,7 +564,7 @@ function UnitDetails({ onCenterMapToUnit }: Props) {
           unit?.description ? getAttr(unit?.description, language) : undefined
         }
         image={unit?.picture_url}
-        className="unit-container"
+        className={isExpanded ? "unit-container expanded" : "unit-container"}
       >
         <Header unit={unit} services={services} isLoading={isLoading} />
         <SingleUnitBody
@@ -557,6 +576,7 @@ function UnitDetails({ onCenterMapToUnit }: Props) {
           palvelukarttaUrl={palvelukarttaUrl}
         />
       </Page>
+      <MobileFooter toggleExpand={toggleIsExpanded} isExpanded={isExpanded} />
     </>
   );
 }

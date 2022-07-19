@@ -1,7 +1,13 @@
 .unit-container {
-  max-height: 60vh;
+  max-height: 30vh;
   padding: 10px;
   overflow-y: auto;
+  transition: max-height 0.5s ease-in-out;
+
+  &.expanded {
+    max-height: 80vh;
+    transition: max-height 0.5s ease-in-out;
+  }
 
   @media only screen and (min-width: 768px) {
     max-height: unset;
@@ -109,6 +115,26 @@
   &-close-button {
     &:hover {
       cursor: pointer;
+    }
+  }
+}
+
+.unit-details-mobile-footer {
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+
+  padding: 10px;
+  color: var(--color-info-light);
+  text-align: right;
+  
+  &-icon {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease-in-out;
+
+    &-expanded {
+      transform: rotate(-180deg);
+      transition: transform 0.5s ease-in-out
     }
   }
 }
