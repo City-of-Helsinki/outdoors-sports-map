@@ -58,7 +58,8 @@
     "TMP_MESSAGE": "",
     "MAP_BUTTON": "Show results on map",
     "LIST_BUTTON": "Show results on map and on the list",
-    "CONTROL": "Control"
+    "CONTROL": "Control",
+    "HEATING": "Heating"
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",
