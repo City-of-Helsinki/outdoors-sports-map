@@ -44,6 +44,7 @@ export const UnitConnectionTags = {
   CONTROL: "#valvonta",
   HEATING: "#lämmitys",
   LIGHTED: "#valaisu",
+  DRESSING_ROOM: "#pukukoppi",
 } as const;
 
 export type UnitConnection = {

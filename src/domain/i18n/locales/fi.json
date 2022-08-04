@@ -60,7 +60,8 @@
     "LIST_BUTTON": "Näytä tulokset kartalla ja listana",
     "CONTROL": "Valvonta",
     "HEATING": "Lämmitys",
-    "LIGHTED": "Valaistus"
+    "LIGHTED": "Valaistus",
+    "DRESSING_ROOM": "Pukukoppi"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",
