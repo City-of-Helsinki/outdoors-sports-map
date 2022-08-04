@@ -386,7 +386,7 @@ describe("<UnitDetails />", () => {
       expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(false);
     });
   });
-
+  
   describe("when dressing room data is available", () => {
     it("should be displayed", () => {
       const wrapper = getWrapper();

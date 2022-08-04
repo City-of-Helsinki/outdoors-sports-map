@@ -175,6 +175,7 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unit,
     UnitConnectionTags.DRESSING_ROOM
   )
+
   // Should show info if at least some data is present
   if (
     !(
