@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 
+import appWideNotificationReducer from "../app/appWideNotification/reducer";
 import languageReducer from "../i18n/state/reducer";
 import mapReducer from "../map/state/reducer";
 import serviceReducer from "../service/reducer";
@@ -13,6 +14,7 @@ const createRootReducer = () =>
     map: mapReducer,
     search: searchReducer,
     service: serviceReducer,
+    appWideNotification: appWideNotificationReducer,
   });
 
 export default createRootReducer;

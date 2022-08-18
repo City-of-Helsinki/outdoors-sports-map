@@ -1,5 +1,6 @@
 import { all, fork } from "redux-saga/effects";
 
+import appWideNotificationSaga from "../app/appWideNotification/saga";
 import appSaga from "../app/state/saga";
 import mapSaga from "../map/state/saga";
 import serviceSaga from "../service/saga";
@@ -13,5 +14,6 @@ export default function* rootSaga() {
     fork(searchSaga),
     fork(mapSaga),
     fork(serviceSaga),
+    fork(appWideNotificationSaga),
   ]);
 }
