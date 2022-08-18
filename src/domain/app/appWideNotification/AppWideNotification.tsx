@@ -1,6 +1,12 @@
 import { Notification } from "hds-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch,
+//  useSelector
+} from "react-redux";
+
+import { fetchAppWideNotifications } from "./actions";
+//import { getAll } from "./selectors";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
 
@@ -16,6 +22,12 @@ function getInitialValue(
 }
 
 export function AppWideNotification() {
+  const dispatch = useDispatch();
+
+  dispatch(fetchAppWideNotifications({}));
+  //const notification = useSelector(getAll);
+  //console.log(notification);
+
   const notificationContentTranslations: Record<string, string | undefined> = {
     fi: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_FI,
     sv: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_SV,
