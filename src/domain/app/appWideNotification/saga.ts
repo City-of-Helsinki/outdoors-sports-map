@@ -10,9 +10,9 @@ import {
 import { receiveAppWideNotifications, setFetchError } from "./actions";
 import {
   AppWideNotificationActions,
-  appWideNotificationSchema,
-  AppWideNotification,
-  NormalizedAppWideNotification,
+  // appWideNotificationSchema,
+  // AppWideNotification,
+  // NormalizedAppWideNotification,
 } from "./appWideNotificationConstants";
 
 function* fetchAppWideNotifications() {
@@ -25,15 +25,13 @@ function* fetchAppWideNotifications() {
 
   const { response, bodyAsJson } = yield call(callApi, request);
 
-  //console.log(bodyAsJson);
-
   if (response.status === 200) {
-    const data = normalizeEntityResults<AppWideNotification, NormalizedAppWideNotification, number[]>(
-      bodyAsJson.results,
-      new schema.Array(appWideNotificationSchema)
-    );
+    // const data = normalizeEntityResults<AppWideNotification, NormalizedAppWideNotification, number[]>(
+    //   bodyAsJson.results,
+    //   new schema.Array(appWideNotificationSchema)
+    // );
 
-    yield put(receiveAppWideNotifications(data));
+    yield put(receiveAppWideNotifications(bodyAsJson.results));
   } else {
     yield put(setFetchError(bodyAsJson.results));
   }

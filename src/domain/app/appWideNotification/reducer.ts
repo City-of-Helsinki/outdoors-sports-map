@@ -24,31 +24,20 @@ const fetchErrorReducer = handleActions(
   null
 );
 
-const byIdReducer = handleActions(
+const data = handleActions(
   {
     [AppWideNotificationActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
-    ) => ({ ...entities.appWideNotification }),
+      { payload },
+    ) => payload,
   },
   {}
-);
-
-const all = handleActions(
-  {
-    [AppWideNotificationActions.RECEIVE]: (
-      state: Record<string, any>,
-      { payload: { entities } }: EntityAction
-    ) => [...keys(entities.appWideNotification)],
-  },
-  []
 );
 
 const reducer = combineReducers({
   isFetching: isFetchingReducer,
   fetchError: fetchErrorReducer,
-  byId: byIdReducer,
-  all,
+  data,
 });
 
 export default reducer;

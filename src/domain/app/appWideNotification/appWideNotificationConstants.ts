@@ -10,26 +10,40 @@ export const AppWideNotificationActions = {
 
 export type AppWideNotificationState = {
   isFetching: boolean;
-  byId: Record<string, any>;
+  data: Array<object>;
   fetchError: any;
-  all: Array<string>;
 };
 
-export const appWideNotificationSchema = new schema.Entity<AppWideNotification>("AppWideNotification", undefined, {
-  idAttribute: (value) => value.id.toString(),
-});
+type TranslatedNotificationText = {
+  fi: String;
+  en?: String;
+  sv?: String;
+}
 
-export type AppWideNotification = {
-  id: string;
-};
+export type AppWideNotificationObject = {
+  content: TranslatedNotificationText,
+  external: TranslatedNotificationText,
+  external_url_title: TranslatedNotificationText,
+  lead_paragraph: TranslatedNotificationText,
+  picture_url: String,
+  title: TranslatedNotificationText,
+}
 
-export type NormalizedAppWideNotification = {
-  unit: {
-    [id: number]: NormalizedSchema<AppWideNotification, number>;
-  };
-};
+// export const appWideNotificationSchema = new schema.Entity<AppWideNotification>("AppWideNotification", undefined, {
+//   idAttribute: (value) => value.id.toString(),
+// });
 
-export type NormalizedAppWideNotificationSchema = NormalizedSchema<
-  NormalizedAppWideNotification,
-  number[]
->;
+// export type AppWideNotification = {
+//   id: string;
+// };
+
+// export type NormalizedAppWideNotification = {
+//   unit: {
+//     [id: number]: NormalizedSchema<AppWideNotification, number>;
+//   };
+// };
+
+// export type NormalizedAppWideNotificationSchema = NormalizedSchema<
+//   NormalizedAppWideNotification,
+//   number[]
+// >;

@@ -1,11 +1,12 @@
 import { Notification } from "hds-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch,
+import { useDispatch, useSelector,
 //  useSelector
 } from "react-redux";
 
 import { fetchAppWideNotifications } from "./actions";
+import { getData } from "./selectors";
 //import { getAll } from "./selectors";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
@@ -24,9 +25,12 @@ function getInitialValue(
 export function AppWideNotification() {
   const dispatch = useDispatch();
 
-  dispatch(fetchAppWideNotifications({}));
-  //const notification = useSelector(getAll);
-  //console.log(notification);
+  useEffect(() => {
+    dispatch(fetchAppWideNotifications({}));
+  }, [])
+
+  const notification = useSelector(getData);
+  console.log('AppWideNotification', notification);
 
   const notificationContentTranslations: Record<string, string | undefined> = {
     fi: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_FI,
@@ -65,6 +69,8 @@ export function AppWideNotification() {
     setOpen(false);
     sessionStorage.setItem(IS_OPEN_KEY, false.toString());
   };
+
+  // return <button onClick={() => console.log(useSelector(getData))}></button>
 
   return isOpen ? (
     <Notification
