@@ -1,56 +1,43 @@
 import { Notification } from "hds-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector,
-//  useSelector
-} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { fetchAppWideNotifications } from "./actions";
 import { getData } from "./selectors";
-//import { getAll } from "./selectors";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
-
-function getInitialValue(
-  sessionStorageValue: string | null,
-  isNotificationEnabled: boolean | null
-) {
-  if (sessionStorageValue) {
-    return sessionStorage.getItem(IS_OPEN_KEY) === "true";
-  }
-
-  return isNotificationEnabled === true;
-}
 
 export function AppWideNotification() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAppWideNotifications({}));
-  }, [])
+  }, [dispatch])
 
-  const notification = useSelector(getData);
-  console.log('AppWideNotification', notification);
-
+  const data = useSelector(getData);
+  const notification = data && data[0];
+  
   const notificationContentTranslations: Record<string, string | undefined> = {
-    fi: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_FI,
-    sv: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_SV,
-    en: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_EN,
+    fi: notification ? notification.content.fi : '',
+    sv: notification ? notification.content.sv : '',
+    en: notification ? notification.content.en : '',
   };
   const notificationContentTitleTranslations: Record<string, string | undefined> = {
-    fi: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_FI,
-    sv: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_SV,
-    en: process.env.REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_EN,
+    fi: notification ? notification.title.fi : '',
+    sv: notification ? notification.title.sv : '',
+    en: notification ? notification.title.en : '',
   };
-  const isNotificationEnabledEnvVariable =
-    process.env.REACT_APP_SITE_WIDE_NOTIFICATION_ENABLED;
-  const isNotificationEnabled = isNotificationEnabledEnvVariable
-    ? Boolean(JSON.parse(isNotificationEnabledEnvVariable))
-    : null;
 
-  const [isOpen, setOpen] = useState(() =>
-    getInitialValue(sessionStorage.getItem(IS_OPEN_KEY), isNotificationEnabled)
-  );
+  const isNotificationEnabled = notification ? true : false;
+
+  const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (isNotificationEnabled&& sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString()) {
+      setOpen(true); 
+    }
+  }, [isNotificationEnabled, notification])
 
   const {
     t,
@@ -67,10 +54,8 @@ export function AppWideNotification() {
 
   const handleClose = () => {
     setOpen(false);
-    sessionStorage.setItem(IS_OPEN_KEY, false.toString());
+    sessionStorage.setItem(IS_OPEN_KEY, notification.id.toString());
   };
-
-  // return <button onClick={() => console.log(useSelector(getData))}></button>
 
   return isOpen ? (
     <Notification

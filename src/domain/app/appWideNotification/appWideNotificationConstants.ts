@@ -1,5 +1,3 @@
-import { schema, NormalizedSchema } from "normalizr";
-
 import { normalizeActionName } from "../../utils";
 
 export const AppWideNotificationActions = {
@@ -27,23 +25,5 @@ export type AppWideNotificationObject = {
   lead_paragraph: TranslatedNotificationText,
   picture_url: String,
   title: TranslatedNotificationText,
+  id: Number
 }
-
-// export const appWideNotificationSchema = new schema.Entity<AppWideNotification>("AppWideNotification", undefined, {
-//   idAttribute: (value) => value.id.toString(),
-// });
-
-// export type AppWideNotification = {
-//   id: string;
-// };
-
-// export type NormalizedAppWideNotification = {
-//   unit: {
-//     [id: number]: NormalizedSchema<AppWideNotification, number>;
-//   };
-// };
-
-// export type NormalizedAppWideNotificationSchema = NormalizedSchema<
-//   NormalizedAppWideNotification,
-//   number[]
-// >;
