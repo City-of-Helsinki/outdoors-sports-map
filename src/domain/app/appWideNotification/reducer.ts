@@ -1,8 +1,6 @@
-import keys from "lodash/keys";
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
 
-import { EntityAction } from "../../../domain/app/appConstants";
 import { AppWideNotificationActions } from "./appWideNotificationConstants";
 
 const isFetchingReducer = handleActions(
