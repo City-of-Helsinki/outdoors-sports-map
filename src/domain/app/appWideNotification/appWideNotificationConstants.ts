@@ -8,7 +8,7 @@ export const AppWideNotificationActions = {
 
 export type AppWideNotificationState = {
   isFetching: boolean;
-  data: Array<object>;
+  data: Array<AppWideNotificationObject>;
   fetchError: any;
 };
 
