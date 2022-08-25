@@ -16,8 +16,10 @@ const fetchErrorReducer = handleActions(
   {
     [AppWideNotificationActions.FETCH]: () => null,
     [AppWideNotificationActions.RECEIVE]: () => null,
-    [AppWideNotificationActions.FETCH_ERROR]: (state: Record<string, any> | null, action) =>
-      action?.payload?.error,
+    [AppWideNotificationActions.FETCH_ERROR]: (
+      state: Record<string, any> | null,
+      action
+    ) => action?.payload?.error,
   },
   null
 );
@@ -26,7 +28,7 @@ const data = handleActions(
   {
     [AppWideNotificationActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload },
+      { payload }
     ) => payload,
   },
   {}

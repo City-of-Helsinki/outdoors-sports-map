@@ -16,14 +16,14 @@ type TranslatedNotificationText = {
   fi: String;
   en?: String;
   sv?: String;
-}
+};
 
 export type AppWideNotificationObject = {
-  content: TranslatedNotificationText,
-  external: TranslatedNotificationText,
-  external_url_title: TranslatedNotificationText,
-  lead_paragraph: TranslatedNotificationText,
-  picture_url: String,
-  title: TranslatedNotificationText,
-  id: Number
-}
+  content: TranslatedNotificationText;
+  external: TranslatedNotificationText;
+  external_url_title: TranslatedNotificationText;
+  lead_paragraph: TranslatedNotificationText;
+  picture_url: String;
+  title: TranslatedNotificationText;
+  id: Number;
+};
