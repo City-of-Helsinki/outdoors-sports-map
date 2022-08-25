@@ -1,19 +1,13 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
-import {
-  callApi,
-  createRequest,
-  createUrl,
-} from "../../api/apiHelpers";
+import { callApi, createRequest, createUrl } from "../../api/apiHelpers";
 import { receiveAppWideNotifications, setFetchError } from "./actions";
-import {
-  AppWideNotificationActions,
-} from "./appWideNotificationConstants";
+import { AppWideNotificationActions } from "./appWideNotificationConstants";
 
 function* fetchAppWideNotifications() {
   const request = createRequest(
     createUrl("announcement/", {
-      outdoor_sports_map_usage: 1
+      outdoor_sports_map_usage: 1,
     })
   );
 
