@@ -8,7 +8,11 @@ import { getData } from "./selectors";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
 
-export function AppWideNotification() {
+type NotificationProps = {
+  initialState?: boolean;
+};
+
+export function AppWideNotification({initialState}: NotificationProps) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,10 +35,10 @@ export function AppWideNotification() {
 
   const isNotificationEnabled = notification ? true : false;
 
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(initialState);
 
   useEffect(() => {
-    if (isNotificationEnabled&& sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString()) {
+    if (isNotificationEnabled && sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString()) {
       setOpen(true); 
     }
   }, [isNotificationEnabled, notification])
