@@ -13,7 +13,7 @@ describe("<AppWideNotification />", () => {
     const {container} = render(<AppWideNotification initialState={false} />);
     expect(container.firstChild).not.toBeTruthy();
   });
-  it("dialog exist and have a close button", () => {
+  it("dialog should exist and have a close button", () => {
     const {container} = render(<AppWideNotification initialState={true} />);
     expect(container.firstChild).toBeTruthy();
     const closeButton = screen.getByRole("button");
