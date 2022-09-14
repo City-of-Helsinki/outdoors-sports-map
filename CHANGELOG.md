@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2022-09-14
+
+### Added
+
+-   [#140](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/140) Show controlled information for beaches/swimming places
+-   [#141](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/141) Show heating information
+-   [#142](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/142) Show lighting information
+-   [#143](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/143) Show dressing room information
+-   [#145](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/145) Accessible colors for unusable units
+-   [#146](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/146) Expandable unit details on mobile devices
+-   [#147](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/147) Dynamic App wide notifications
+
+
+### Changed
+
+-   Bump terser to 4.8.1
+-   Bump moment to 2.29.4
+-   Bump shell-quote to 1.7.3
+
+### Fixed
+
+-   Filter out empty unit suggestions
+
 ## [1.5.2] - 2022-06-03
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "outdoors-sports-map",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development react-scripts start",
