@@ -40,6 +40,20 @@ type Translatable<T = string> = {
   en: T;
 };
 
+export const UnitConnectionTags = {
+  CONTROL: "#valvonta",
+  HEATING: "#lämmitys",
+  LIGHTED: "#valaisu",
+  DRESSING_ROOM: "#pukukoppi",
+} as const;
+
+export type UnitConnection = {
+  section_type: string;
+  name: Translatable<string>;
+  www: Translatable<string>;
+  tags: Array<string>;
+};
+
 export type Unit = {
   id: string;
   name: Translatable<string>;
@@ -69,11 +83,7 @@ export type Unit = {
     time: string;
   }>;
   www: Translatable<string>;
-  connections: Array<{
-    section_type: string;
-    name: Translatable<string>;
-    www: Translatable<string>;
-  }>;
+  connections: Array<UnitConnection>;
   picture_url?: string;
   extra: Record<string, string | number>;
 };

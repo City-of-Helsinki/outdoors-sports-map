@@ -35,6 +35,7 @@
   "UNIT_DETAILS": {
     "FURTHER_INFO": "Ytterligare upplysningar",
     "SHOW_MORE": "Visa mer",
+    "SHOW_LESS": "Visa mindre",
     "STATUS": "Skick",
     "UNKNOWN": "Okänt",
     "UPDATED": "Uppdaterad",
@@ -57,7 +58,11 @@
     "PHONE": "Telefon",
     "TMP_MESSAGE": "",
     "MAP_BUTTON": "Visa resultat på karta",
-    "LIST_BUTTON": "Visa resultat på karta och i listan"
+    "LIST_BUTTON": "Visa resultat på karta och i listan",
+    "CONTROL": "Kontrollera",
+    "HEATING": "Uppvärmning",
+    "LIGHTED": "Upplysning",
+    "DRESSING_ROOM": "Omklädningsrum"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

@@ -42,7 +42,9 @@ function ActionButton({ action, icon, isActive, name }: ActionButtonProps) {
 const suggestionsSelectorFactory = (search: string, language: string) => (
   state: AppState
 ) => {
-  const unitResults = unitSearchSelectors.getUnitSuggestions(state);
+  const unitResults = unitSearchSelectors.getUnitSuggestions(state).filter(function(unit) {
+    return unit !== undefined;
+  });
   const addressesResults = unitSearchSelectors.getAddresses(state);
   const unitSuggestions = unitResults.map((unit) => ({
     type: "searchable" as const,

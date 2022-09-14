@@ -1,3 +1,4 @@
+import { IconAngleDown } from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
 import { ReactNode, useEffect } from "react";
@@ -25,11 +26,12 @@ import UnitObservationStatus, {
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
 import * as fromUnit from "../state/selectors";
-import { Unit } from "../unitConstants";
+import { Unit, UnitConnectionTags } from "../unitConstants";
 import {
   createPalvelukarttaUrl,
   createReittiopasUrl,
   getAttr,
+  getConnectionByTag,
   getObservation,
   getObservationTime,
   getOpeningHours,
@@ -104,6 +106,22 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
   );
 }
 
+type MobileFooterProps = {
+  toggleExpand: () => void;
+  isExpanded: boolean;
+}
+export function MobileFooter({ toggleExpand, isExpanded }: MobileFooterProps) {
+  const { t } = useTranslation();
+  const footerText = isExpanded ? t("UNIT_DETAILS.SHOW_LESS") : t("UNIT_DETAILS.SHOW_MORE");
+  return (
+  <div className="unit-details-mobile-footer">
+    <div className="unit-details-mobile-footer-expander" onClick={toggleExpand}>
+        {footerText}
+        <IconAngleDown className={ isExpanded ? "unit-details-mobile-footer-icon-expanded" : "unit-details-mobile-footer-icon"} />
+      </div>
+  </div>)
+}
+
 type LocationStateProps = {
   unit: Unit;
 };
@@ -158,8 +176,35 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unitExtraLipasSkiTrackFreestyle ||
     unitExtraLipasSkiTrackTraditional;
 
+  const unitControlConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.CONTROL
+  );
+  const unitHeatedConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.HEATING
+  );
+  const unitLightedConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.LIGHTED
+  )
+  const unitDressingRoomConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.DRESSING_ROOM
+  )
+
   // Should show info if at least some data is present
-  if (!(unit.phone || unit.url || hasExtras)) {
+  if (
+    !(
+      unit.phone ||
+      unit.url ||
+      hasExtras ||
+      unitControlConnection ||
+      unitHeatedConnection ||
+      unitLightedConnection ||
+      unitDressingRoomConnection
+    )
+  ) {
     return null;
   }
 
@@ -189,6 +234,30 @@ function LocationInfo({ unit }: LocationInfoProps) {
           ]
             .filter((item) => item)
             .join(", ")}
+        </p>
+      )}
+      {unitControlConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.CONTROL")}`}:{" "}
+          {getAttr(unitControlConnection.name, language)}
+        </p>
+      )}
+      {unitHeatedConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.HEATING")}`}:{" "}
+          {getAttr(unitHeatedConnection.name, language)}
+        </p>
+      )}
+      {unitLightedConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.LIGHTED")}`}:{" "}
+          {getAttr(unitLightedConnection.name, language)}
+        </p>
+      )}
+      {unitDressingRoomConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.DRESSING_ROOM")}`}:{" "}
+          {getAttr(unitDressingRoomConnection.name, language)}
         </p>
       )}
       {unit.phone && (
@@ -242,7 +311,11 @@ type LocationRouteProps = {
   extraUrl?: string;
 };
 
-function LocationRoute({ routeUrl, palvelukarttaUrl, extraUrl }: LocationRouteProps) {
+function LocationRoute({
+  routeUrl,
+  palvelukarttaUrl,
+  extraUrl,
+}: LocationRouteProps) {
   const { t } = useTranslation();
 
   return (
@@ -372,11 +445,11 @@ export function SingleUnitBody({
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
-  let extraUrl:string = '';
+  let extraUrl: string = "";
   const unitConnections = currentUnit?.connections;
   if (unitConnections) {
-    let otherInfo = unitConnections.find(connection => {
-      return connection.section_type === "OTHER_INFO"
+    let otherInfo = unitConnections.find((connection) => {
+      return connection.section_type === "OTHER_INFO";
     });
     extraUrl = otherInfo?.www.fi!;
   }
@@ -420,9 +493,11 @@ function findAlternatePathname(pathname: string, unit: Unit, language: string) {
 
 type Props = {
   onCenterMapToUnit: (unit: Unit) => void;
+  isExpanded: boolean;
+  toggleIsExpanded: () => void;
 };
 
-function UnitDetails({ onCenterMapToUnit }: Props) {
+function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props) {
   const language = useLanguage();
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -490,7 +565,7 @@ function UnitDetails({ onCenterMapToUnit }: Props) {
           unit?.description ? getAttr(unit?.description, language) : undefined
         }
         image={unit?.picture_url}
-        className="unit-container"
+        className={isExpanded ? "unit-container expanded" : "unit-container"}
       >
         <Header unit={unit} services={services} isLoading={isLoading} />
         <SingleUnitBody
@@ -502,6 +577,7 @@ function UnitDetails({ onCenterMapToUnit }: Props) {
           palvelukarttaUrl={palvelukarttaUrl}
         />
       </Page>
+      <MobileFooter toggleExpand={toggleIsExpanded} isExpanded={isExpanded} />
     </>
   );
 }

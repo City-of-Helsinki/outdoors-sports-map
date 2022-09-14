@@ -1,6 +1,6 @@
 {
   "name": "outdoors-sports-map",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development react-scripts start",
@@ -91,7 +91,7 @@
     "leaflet": "1.8.0",
     "leaflet-geometryutil": "^0.10.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "normalize.css": "^8.0.1",
     "normalizr": "^3.6.2",
     "react": "16.14.0",
@@ -114,6 +114,8 @@
     "regenerator-runtime": "^0.13.9",
     "remark-breaks": "2.0.2",
     "sass": "^1.52.2",
+    "shell-quote": "^1.7.3",
+    "terser": "^4.8.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.7.2",
     "web-vitals": "^1.1.1",

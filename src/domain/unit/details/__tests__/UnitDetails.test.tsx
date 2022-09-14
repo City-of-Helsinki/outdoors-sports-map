@@ -156,6 +156,70 @@ const unit = {
       contact_person: null,
       unit: 40142,
     },
+    {
+      id: 12513,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Valvottu",
+        sv: "Kontrollerade",
+        en: "Controlled"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#valvonta"
+      ]
+    },
+    {
+      id: 12514,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Lämmitetty",
+        sv: "Uppvärmd",
+        en: "Heated"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#lämmitys"
+      ]
+    },
+    {
+      id: 12515,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Valaistu",
+        sv: "Upplyst",
+        en: "Lighted"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#valaisu"
+      ]
+    },
+    {
+      id: 12516,
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Pukukopit 2kpl, avoinna 24h",
+        sv: "Omklädningsrum 2st, öppet 24h",
+        en: "Dressing rooms 2pcs, open 24h"
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        "#pukukoppi"
+      ]
+    }
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
   extra: {
@@ -269,6 +333,76 @@ describe("<UnitDetails />", () => {
 
         expect(wrapper.text().includes("kaksi tuntia sitten")).toEqual(true);
       });
+    });
+  });
+
+  describe("when control data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(true);
+    });   
+  });
+
+  describe("when control data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper({}, {
+        connections: unit.connections.filter((con) => con.tags === undefined)
+      });
+      expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(false);
+    });   
+  })
+
+  describe("when heating data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(true);
+    });   
+  });
+
+  describe("when heating data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper({}, {
+        connections: unit.connections.filter((con) => con.tags === undefined)
+      });
+      expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(false);
+    });   
+  })
+
+  describe("when lighting data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(true);
+    });
+  });
+
+  describe("when lighting data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        }
+      );
+      expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(false);
+    });
+  });
+  
+  describe("when dressing room data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toEqual(true);
+    });
+  });
+
+  describe("when dressing room data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        }
+      );
+      expect(wrapper.text().includes("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toEqual(false);
     });
   });
 
