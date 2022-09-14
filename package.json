@@ -114,6 +114,7 @@
     "regenerator-runtime": "^0.13.9",
     "remark-breaks": "2.0.2",
     "sass": "^1.52.2",
+    "terser": "^4.8.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.7.2",
     "web-vitals": "^1.1.1",
