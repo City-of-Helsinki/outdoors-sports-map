@@ -56,7 +56,7 @@ COPY --chown=appuser:appuser . /app/.
 RUN yarn build
 
 # ===================================
-FROM nginx:1.17 AS production
+FROM nginx:1.22.1 AS production
 # ===================================
 
 COPY --from=staticbuilder --chown=nginx:nginx /app/build /usr/share/nginx/html
