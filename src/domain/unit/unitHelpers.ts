@@ -6,7 +6,6 @@ import head from "lodash/head";
 import keys from "lodash/keys";
 import sortBy from "lodash/sortBy";
 import upperFirst from "lodash/upperFirst";
-import values from "lodash/values";
 import moment from "moment";
 
 import { createRequest, createUrl } from "../api/apiHelpers";
@@ -34,10 +33,10 @@ import {
   UnitConnection,
 } from "./unitConstants";
 
-export const getFetchUnitsRequest = (params: Record<string, any>) =>
+export const getFetchUnitsRequest = (params: Record<string, any>) => 
   createRequest(
     createUrl("unit/", {
-      service: `${values(UnitServices).join(",")}`,
+      service: getOnSeasonSportServices(),
       only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
       include: "observations,connections",
       geometry: "true",
@@ -321,3 +320,12 @@ export const getAddressToDisplay = (
         address.number
       }, ${upperFirst(address.street.municipality)}`
     : null;
+
+export const getOnSeasonSportServices => {
+  const sportFilters = getOnSeasonSportFilters();
+  if(sportFilters && sportFilters[0] && sportFilters[0] === UnitFilters.SWIMMING) {
+    return SwimmingServices.join(",");
+  } else {
+    return SkiingServices.concat(IceSkatingServices).join(",");
+  }
+}
