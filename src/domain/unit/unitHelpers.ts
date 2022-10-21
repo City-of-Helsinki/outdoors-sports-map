@@ -321,11 +321,11 @@ export const getAddressToDisplay = (
       }, ${upperFirst(address.street.municipality)}`
     : null;
 
-export const getOnSeasonSportServices => {
+export const getOnSeasonSportServices = () => {
   const sportFilters = getOnSeasonSportFilters();
   if(sportFilters && sportFilters[0] && sportFilters[0] === UnitFilters.SWIMMING) {
     return SwimmingServices.join(",");
   } else {
     return SkiingServices.concat(IceSkatingServices).join(",");
   }
-}
+};
