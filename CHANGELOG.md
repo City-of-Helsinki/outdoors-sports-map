@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.6.1] - 2022-10-21
+
+### Changed
+
+-   Use only season specific sport services to improve service performance
+
 ## [1.6.0] - 2022-09-14
 
 ### Added
