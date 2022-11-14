@@ -74,8 +74,8 @@
     "@types/leaflet": "^1.7.0",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.37",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
+    "@types/react": "^17.0.18",
+    "@types/react-dom": "^17.0.18",
     "@types/react-leaflet": "^2.8.1",
     "@types/react-router-dom": "^5.1.7",
     "@types/redux-actions": "^2.6.1",
@@ -127,5 +127,11 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "prettier": "^2.6.2"
+  },
+  "overrides": {
+    "@types/react": "17.0.18"
+  },
+  "resolutions": {
+    "@types/react": "17.0.18"
   }
 }
