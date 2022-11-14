@@ -33,14 +33,7 @@ jobs:
           DOCKER_BUILD_ARG_REACT_APP_API_URL: "https://api.hel.fi/servicemap/v2"
           DOCKER_BUILD_ARG_REACT_APP_DIGITRANSIT_API_URL: "https://api.digitransit.fi/geocoding/v1"
           DOCKER_BUILD_ARG_REACT_APP_APP_NAME: "outdoors-sports-map"
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_ENABLED: 1
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_FI: "Uimarantakausi 2022"
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_SV: "Badsäsongen 2022"
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_EN: "Beach season 2022"
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_FI: "Pääkaupunkiseudun uimarantakausi on kesäkuusta elokuuhun (koululaisten kesäloman ajan). Tänä aikana uimaveden laatua seurataan säännöllisesti. Rantavalvottujen uimarantojen uimaveden lämpötilat sekä rantavalvojien silmämääräisesti tekemät sinilevähavainnot näkee suoraan kunkin uimarannan kohdalta. Rantojen tiedoista löytyvät myös linkit, joista pääsee siirtymään kyseisen kaupungin uimaveden laadunvalvonnan sivuille."
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_SV: "Badsäsongen i huvudstadsregionen är från juni till augusti (under skolornas sommarlov). Under denna tid övervakas badvattnets kvalitet regelbundet. Badvattnets temperatur vid badstränder med badvakter och badvakternas visuella bedömningar av mängden av blågröna alger kan ses direkt vid respektive badstrand. I uppgifterna om badstränderna finns också länkar till webbsidan för kvalitetskontroll av badvattnet för staden i fråga."
-          DOCKER_BUILD_ARG_REACT_APP_SITE_WIDE_NOTIFICATION_EN: "The beach season in the Helsinki Metropolitan Area is from June to August (during schoolchildren’s summer holiday). During this period, swimming water quality will be monitored regularly. The swimming water temperature at the monitored beaches and any blue-green algae sightings by the beach guards can be seen directly for each public beach. Beach details also contain links to the website of the swimming water quality monitoring by the respective city."
-
+          
   staging:
     runs-on: ubuntu-latest
     needs: build
