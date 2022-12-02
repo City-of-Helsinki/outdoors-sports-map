@@ -1,7 +1,7 @@
 .unit-popup {
   .leaflet-popup-content-wrapper {
     border-radius: 0;
-    padding: 0 0 $gap/2 0;
+    padding: 0 0 calc($gap/2) 0;
 
     .leaflet-popup-content {
       padding: 0;
@@ -11,7 +11,7 @@
 
   &__content {
     div {
-      padding: $gap/2 $gap;
+      padding: calc($gap/2) $gap;
     }
 
     &__status {

@@ -33,7 +33,7 @@ import {
   UnitConnection,
 } from "./unitConstants";
 
-export const getFetchUnitsRequest = (params: Record<string, any>) => 
+export const getFetchUnitsRequest = (params: Record<string, any>) =>
   createRequest(
     createUrl("unit/", {
       service: getOnSeasonSportServices(),
@@ -323,7 +323,11 @@ export const getAddressToDisplay = (
 
 export const getOnSeasonSportServices = () => {
   const sportFilters = getOnSeasonSportFilters();
-  if(sportFilters && sportFilters[0] && sportFilters[0] === UnitFilters.SWIMMING) {
+  if (
+    sportFilters &&
+    sportFilters[0] &&
+    sportFilters[0] === UnitFilters.SWIMMING
+  ) {
     return SwimmingServices.join(",");
   } else {
     return SkiingServices.concat(IceSkatingServices).join(",");
