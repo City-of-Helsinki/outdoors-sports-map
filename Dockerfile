@@ -1,8 +1,10 @@
 # ===============================================
-FROM helsinkitest/node:12-slim AS appbase
+FROM node:18.12.1-bullseye-slim AS appbase
 # ===============================================
 
-# This image sets working directory to /app
+RUN mkdir /app && chown -R node:node /app
+
+WORKDIR /app
 
 # Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
 ENV NPM_CONFIG_LOGLEVEL warn
@@ -11,23 +13,17 @@ ENV NPM_CONFIG_LOGLEVEL warn
 ENV NPM_CONFIG_PREFIX=/app/.npm-global
 ENV PATH=$PATH:/app/.npm-global/bin
 
-COPY --chown=appuser:appuser docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
+COPY --chown=node:node docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
 
 # Copy package.json and package-lock.json/yarn.lock files
-COPY --chown=appuser:appuser package*.json *yarn* ./
+COPY --chown=node:node package*.json *yarn* ./
 
-USER root
-RUN apt-install.sh build-essential
+USER node
 
-USER appuser
-RUN yarn && yarn cache clean --force
-
-USER root
-RUN apt-cleanup.sh build-essential
+RUN yarn && yarn cache clean --force && chown -R node:node node_modules
 
 # Use non-root user
-USER appuser
 
 # =============================
 FROM appbase AS development
@@ -51,7 +47,7 @@ ARG REACT_APP_SITE_WIDE_NOTIFICATION_SV
 ARG REACT_APP_SITE_WIDE_NOTIFICATION_EN
 ARG GENERATE_SITEMAP
 
-COPY --chown=appuser:appuser . /app/.
+COPY --chown=node:node . /app/.
 
 RUN yarn build
 

@@ -295,11 +295,10 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
     <BodyBox title={t("UNIT_BROWSER.NOTICE")}>
       <StatusUpdated time={getObservationTime(notice)} />
       <ReactMarkdown
-        source={getAttr(notice.value, language)} // Insert a break for each newline character
+        children={getAttr(notice.value, language)} // Insert a break for each newline character
         // https://github.com/rexxars/react-markdown/issues/105#issuecomment-346103734
-        plugins={[breaks]}
-        escapeHtml
-        allowedTypes={["text", "paragraph", "break"]}
+        remarkPlugins={[breaks]}
+        allowedElements={["text", "paragraph", "break"]}
       />
     </BodyBox>
   ) : null;
