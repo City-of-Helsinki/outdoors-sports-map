@@ -450,7 +450,7 @@ export function SingleUnitBody({
     let otherInfo = unitConnections.find((connection) => {
       return connection.section_type === "OTHER_INFO";
     });
-    extraUrl = otherInfo?.www.fi!;
+    extraUrl = otherInfo?.www?.fi!;
   }
 
   return currentUnit && !isLoading ? (
