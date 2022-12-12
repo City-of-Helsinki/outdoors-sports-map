@@ -77,7 +77,7 @@ class MapView extends Component<Props, State> {
   handleClick = (event: Record<string, any>) => {
     // Click events from info menu and language changer hit this. Don't
     // do anything for those events.
-    if (event.originalEvent.target.className.includes("leaflet")) {
+    if (event.originalEvent.target.localName !== "path" && event.originalEvent.target.className.includes("leaflet")) {
       this.setLocation(event);
     }
   };
