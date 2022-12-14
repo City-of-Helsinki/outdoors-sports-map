@@ -15,6 +15,7 @@ export const searchUnits = (
   const init = {
     input,
     service: `${values(UnitServices).join(",")}`,
+    type: "unit",
   };
 
   // eslint-disable-next-line no-param-reassign
