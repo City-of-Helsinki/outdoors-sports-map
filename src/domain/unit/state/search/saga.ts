@@ -51,7 +51,7 @@ function* searchUnits({
 
 function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
   let data: NormalizedUnitSchema = { entities: { unit: {} }, result: [] };
-  let addressData = [];
+  let addressData: Array<Record<string, any>> = [];
 
   const digitransitParams = {
     text: params.input,
@@ -85,6 +85,12 @@ function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
           (feature: any) => feature.properties.layer !== "stop"
         )
       : [];
+
+    addressData = [
+      ...new Map(
+        addressData.map((feature: any) => [feature.properties.label, feature])
+      ).values(),
+    ];
 
     if (bodyAsJson.results) {
       data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
