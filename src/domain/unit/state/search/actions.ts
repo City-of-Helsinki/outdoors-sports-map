@@ -35,6 +35,7 @@ export const fetchUnitSuggestions = (input: string): Action =>
       input,
       service: `${values(UnitServices).join(",")}`,
       page_size: MAX_SUGGESTION_COUNT,
+      type: "unit",
     },
   });
 
