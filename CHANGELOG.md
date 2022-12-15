@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.0.0] - 2022-12-15
+
+### Changed
+
+-   [#170](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/170) Upgrade React to 17.x with related application packages and move to using Node 18 LTS
+
+### Fixed
+
+-   [#172](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/172) Missing www value in connections causes the frontend to fail
+-   [#173](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/173) Application throws error to browsers console when ski map route is clicked
+-   [#176](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/176) Freetext-search gives JS-error occasionally
+-   [#178](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/178) Search suggestions give JS-error occasionally
+-   [#179](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/179) Duplicate keys in search suggestions
+
 ## [1.6.1] - 2022-10-21
 
 ### Changed
