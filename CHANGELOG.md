@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.0.1] - 2022-12-20
+
+### Fixed
+
+-   Fix missing notice text
+
 ## [2.0.0] - 2022-12-15
 
 ### Changed
