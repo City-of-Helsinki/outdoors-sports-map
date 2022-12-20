@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
-// @ts-ignore
 import breaks from "remark-breaks";
 
 import OutboundLink from "../../../common/a11y/OutboundLink";
@@ -295,10 +294,11 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
     <BodyBox title={t("UNIT_BROWSER.NOTICE")}>
       <StatusUpdated time={getObservationTime(notice)} />
       <ReactMarkdown
-        children={getAttr(notice.value, language)} // Insert a break for each newline character
+        children={getAttr(notice.value, language)}
+        // Insert a break for each newline character
         // https://github.com/rexxars/react-markdown/issues/105#issuecomment-346103734
         remarkPlugins={[breaks]}
-        allowedElements={["text", "paragraph", "break"]}
+        allowedElements={["text", "p", "br"]}
       />
     </BodyBox>
   ) : null;
