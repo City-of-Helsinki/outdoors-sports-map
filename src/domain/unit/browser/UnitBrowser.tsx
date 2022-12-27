@@ -11,14 +11,16 @@ import routerPaths from "../../app/appRoutes";
 import * as fromHome from "../../app/appSelectors";
 import useAppSearch from "../../app/useAppSearch";
 import * as fromMap from "../../map/state/selectors";
-import { StatusFilters } from "../unitConstants";
+import { StatusFilters, UnitFilters } from "../unitConstants";
 import {
   getOffSeasonSportFilters,
   getOnSeasonSportFilters,
+  getSportSpecificationFilters,
 } from "../unitHelpers";
 import UnitBrowserAddressBar from "./UnitBrowserAddressBar";
 import UnitBrowserHeader from "./UnitBrowserHeader";
 import UnitBrowserFilters from "./filter/UnitBrowserFilter";
+import UnitBrowserToggleFilters from "./filter/UnitBrowserToggleFilters";
 import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 
 type Props = {
@@ -29,11 +31,12 @@ type Props = {
 function UnitBrowser({ onViewChange, leafletMap }: Props) {
   const { t } = useTranslation();
   const doSearch = useDoSearch();
-  const { sport, status } = useAppSearch();
+  const { sport, status, sportSpecification } = useAppSearch();
   const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
   const address = useSelector<AppState, Address | undefined | null>(
     fromMap.getAddress
   );
+  const hasSubFilters = sport === UnitFilters.SKIING;
 
   return (
     <Page
@@ -43,7 +46,7 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
     >
       <div className="unit-browser__fixed">
         <UnitBrowserHeader onViewChange={onViewChange} />
-        {!isLoading && (
+        {!isLoading && (<>
           <UnitBrowserFilters
             filters={[
               {
@@ -60,7 +63,15 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
             ]}
             updateFilter={doSearch}
           />
-        )}
+          {hasSubFilters && (
+            <UnitBrowserToggleFilters
+              name="sportSpecification"
+              filters={getSportSpecificationFilters(sport)}
+              updateFilter={doSearch}
+              activeFilters={sportSpecification}
+            />
+          )}
+        </>)}
         {!isLoading && address && Object.keys(address).length !== 0 && (
           <UnitBrowserAddressBar handleClick={onViewChange} address={address} />
         )}
