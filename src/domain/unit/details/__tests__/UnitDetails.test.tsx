@@ -219,6 +219,20 @@ const unit = {
       tags: [
         "#pukukoppi"
       ]
+    },
+    {
+      id: 1166808,
+      section_type: 'OTHER_INFO',
+      name: {
+        fi: 'Koiralatu'
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+        '#koiralatu'
+      ]
     }
   ],
   observations: [temperatureDataObservation, liveTemperatureDataObservation],
@@ -340,7 +354,7 @@ describe("<UnitDetails />", () => {
     it("should be displayed", () => {
       const wrapper = getWrapper();
       expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(true);
-    });   
+    });
   });
 
   describe("when control data is not available", () => {
@@ -349,14 +363,14 @@ describe("<UnitDetails />", () => {
         connections: unit.connections.filter((con) => con.tags === undefined)
       });
       expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(false);
-    });   
+    });
   })
 
   describe("when heating data is available", () => {
     it("should be displayed", () => {
       const wrapper = getWrapper();
       expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(true);
-    });   
+    });
   });
 
   describe("when heating data is not available", () => {
@@ -365,7 +379,7 @@ describe("<UnitDetails />", () => {
         connections: unit.connections.filter((con) => con.tags === undefined)
       });
       expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(false);
-    });   
+    });
   })
 
   describe("when lighting data is available", () => {
@@ -386,7 +400,7 @@ describe("<UnitDetails />", () => {
       expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(false);
     });
   });
-  
+
   describe("when dressing room data is available", () => {
     it("should be displayed", () => {
       const wrapper = getWrapper();
@@ -413,6 +427,6 @@ describe("<UnitDetails />", () => {
     expect(wrapperText.includes("Info")).toEqual(true);
     expect(wrapperText.includes("Reitin pituus: 4km")).toEqual(true);
     expect(wrapperText.includes("Valaistu reitti: 0km")).toEqual(true);
-    expect(wrapperText.includes("Hiihtotyyli: Vapaa hiihtotapa")).toEqual(true);
+    expect(wrapperText.includes("Hiihtotyyli: Vapaa Koiralatu")).toEqual(true);
   });
 });
