@@ -45,7 +45,10 @@
       "ICE_SKATING": "Skridskoåkning",
       "SKIING": "Skidåkning",
       "STATUS_OK": "I användbart skick",
-      "SWIMMING": "Simning"
+      "SWIMMING": "Simning",
+      "SKIING_FREESTYLE": "Fristil",
+      "SKIING_TRADITIONAL": "Klassisk",
+      "SKIING_DOG_SKIJORING_TRACK": "Hundskidåkning"
     },
     "FILTER_SPORT": "Välj sportgren",
     "FILTER_STATUS": "Välj skick",
@@ -62,7 +65,8 @@
     "CONTROL": "Kontrollera",
     "HEATING": "Uppvärmning",
     "LIGHTED": "Upplysning",
-    "DRESSING_ROOM": "Omklädningsrum"
+    "DRESSING_ROOM": "Omklädningsrum",
+    "DOG_SKIJORING_TRACK": "Hundskidspår"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",
