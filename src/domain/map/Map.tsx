@@ -36,7 +36,7 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
     routerPaths.unitDetails
   );
   const unitData = useSelector<AppState, Unit[]>((state) =>
-    fromUnit.getVisibleUnits(state, appSearch.sport, appSearch.status)
+    fromUnit.getVisibleUnits(state, appSearch.sport, appSearch.status, appSearch.sportSpecification)
   );
   const selectedUnit = useSelector<AppState, Unit>((state) =>
     fromUnit.getUnitById(state, {

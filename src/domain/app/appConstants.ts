@@ -53,6 +53,7 @@ export type AppSearch = {
   q?: string;
   sport?: SportFilter;
   status?: StatusFilter;
+  sportSpecification?: string;
   sortKey?: SortKey;
   maxUnitCount?: string;
 };

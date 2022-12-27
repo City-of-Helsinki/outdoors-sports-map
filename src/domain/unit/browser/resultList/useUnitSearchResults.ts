@@ -49,10 +49,11 @@ type Options = {
 };
 
 function useUnitSearchResults({ leafletMap }: Options) {
-  const { sport, status, sortKey, maxUnitCount } = useAppSearch();
+  const { sport, status, sortKey, maxUnitCount, sportSpecification } =
+    useAppSearch();
 
   const units = useSelector<AppState, Unit[]>((state) =>
-    fromUnit.getVisibleUnits(state, sport, status)
+    fromUnit.getVisibleUnits(state, sport, status, sportSpecification)
   );
   const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
   const isSearching = useSelector<AppState, boolean>(

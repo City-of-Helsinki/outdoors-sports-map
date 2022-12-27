@@ -18,11 +18,12 @@ function useAppSearch() {
     q,
     sport = state?.search?.sport || getDefaultSportFilter(),
     status = state?.search?.status || getDefaultStatusFilter(),
+    sportSpecification = state?.search?.sportSpecification || "",
     sortKey = state?.search?.sortKey || SortKeys.DISTANCE,
     maxUnitCount = state?.search?.maxUnitCount || UNIT_BATCH_SIZE.toString(),
   } = useSearch<AppSearch>();
 
-  return { q, sport, status, sortKey, maxUnitCount };
+  return { q, sport, status, sportSpecification, sortKey, maxUnitCount };
 }
 
 export default useAppSearch;

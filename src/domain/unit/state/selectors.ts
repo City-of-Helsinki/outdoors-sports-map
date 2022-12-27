@@ -9,7 +9,11 @@ import {
   UnitFilters,
   UnitFilterValues,
 } from "../unitConstants";
-import { getDefaultSportFilter, getDefaultStatusFilter } from "../unitHelpers";
+import {
+  getFilteredUnitsBySportSpecification,
+  getDefaultSportFilter,
+  getDefaultStatusFilter,
+} from "../unitHelpers";
 import {
   getIsActive as getSearchActive,
   getUnitResultIDs,
@@ -28,7 +32,8 @@ export const getAllUnits = (state: AppState) =>
 const _getVisibleUnits = (
   state: AppState,
   sport: SportFilter = getDefaultSportFilter(),
-  status: UnitFilterValues = getDefaultStatusFilter()
+  status: UnitFilterValues = getDefaultStatusFilter(),
+  sportSpecification: string
 ): Unit[] => {
   let visibleUnits = state.unit[sport];
 
@@ -36,6 +41,17 @@ const _getVisibleUnits = (
     visibleUnits = intersection(
       visibleUnits,
       state.unit[UnitFilters.STATUS_OK]
+    );
+  }
+
+  if (!!sportSpecification) {
+    visibleUnits = intersection(
+      visibleUnits,
+      getFilteredUnitsBySportSpecification(
+        visibleUnits,
+        state.unit,
+        sportSpecification
+      )
     );
   }
 
@@ -52,10 +68,12 @@ const _getVisibleUnits = (
 
 export const getVisibleUnits = memoize(
   _getVisibleUnits,
-  (state, sport, status) =>
+  (state, sport, status, sportSpecification) =>
     `${JSON.stringify(state.unit)}${String(
       getSearchActive(state)
-    )}${JSON.stringify(getUnitResultIDs(state))}${sport},${status}`
+    )}${JSON.stringify(
+      getUnitResultIDs(state)
+    )}${sport},${status},${sportSpecification}`
 );
 
 export const getIsFetchingUnits = (state: AppState) => state.unit.isFetching;
