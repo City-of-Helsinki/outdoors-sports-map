@@ -11,6 +11,9 @@ export const UNIT_ICON_WIDTH = 32;
 
 export const UnitFilters = {
   SKIING: "ski",
+  SKIING_FREESTYLE: "freestyle",
+  SKIING_TRADITIONAL: "traditional",
+  SKIING_DOG_SKIJORING_TRACK: "dog_skijoring_track",
   ICE_SKATING: "iceskate",
   SWIMMING: "swim",
   STATUS_OK: "status_ok",
@@ -34,6 +37,14 @@ export const SportFilters = [
 
 export type SportFilter = typeof SportFilters[number];
 
+export const SkiingFilters = [
+  UnitFilters.SKIING_FREESTYLE,
+  UnitFilters.SKIING_TRADITIONAL,
+  UnitFilters.SKIING_DOG_SKIJORING_TRACK,
+] as const;
+
+export type SkiingFilter = typeof SkiingFilters[number];
+
 type Translatable<T = string> = {
   fi: T;
   sv: T;
@@ -45,6 +56,7 @@ export const UnitConnectionTags = {
   HEATING: "#lämmitys",
   LIGHTED: "#valaisu",
   DRESSING_ROOM: "#pukukoppi",
+  DOG_SKIJORING_TRACK: "#koiralatu",
 } as const;
 
 export type UnitConnection = {
