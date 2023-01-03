@@ -7,7 +7,11 @@
 
   & > * {
     pointer-events: auto;
-    padding: $gap;
+    padding: calc($gap / 2) $gap;
+
+    @media only screen and (min-width: $breakpoint) {
+      padding: $gap;
+    }
   }
 
   .unit-browser__content {
@@ -50,7 +54,11 @@
   .header {
     width: 100%;
     display: flex;
-    margin-bottom: $gap;
+    margin-bottom: calc($gap / 2);
+
+    @media only screen and (min-width: $breakpoint) {
+      margin-bottom: $gap;
+    }
 
     .search-container {
       flex: 1;
@@ -59,6 +67,7 @@
 
     .action-buttons {
       margin-left: 4px;
+      flex-shrink: 0;
     }
 
     .action-button {

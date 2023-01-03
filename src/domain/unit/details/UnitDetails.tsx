@@ -11,6 +11,7 @@ import breaks from "remark-breaks";
 
 import OutboundLink from "../../../common/a11y/OutboundLink";
 import Page from "../../../common/a11y/Page";
+import { IconSkiingDogSkijoring, IconSkiingFreestyle, IconSkiingTraditional } from "../../../common/components/CustomIcons";
 import Link from "../../../common/components/Link";
 import SMIcon from "../../../common/components/SMIcon";
 import useLanguage from "../../../common/hooks/useLanguage";
@@ -36,6 +37,7 @@ import {
   getOpeningHours,
 } from "../unitHelpers";
 import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
+
 
 type HeaderProps = {
   unit?: Unit;
@@ -191,6 +193,10 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unit,
     UnitConnectionTags.DRESSING_ROOM
   )
+  const dogSkijoringTrackConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.DOG_SKIJORING_TRACK
+  )
 
   // Should show info if at least some data is present
   if (
@@ -201,7 +207,8 @@ function LocationInfo({ unit }: LocationInfoProps) {
       unitControlConnection ||
       unitHeatedConnection ||
       unitLightedConnection ||
-      unitDressingRoomConnection
+      unitDressingRoomConnection ||
+      dogSkijoringTrackConnection
     )
   ) {
     return null;
@@ -209,6 +216,26 @@ function LocationInfo({ unit }: LocationInfoProps) {
 
   return (
     <BodyBox title={t("UNIT_BROWSER.INFO")}>
+      {(!!unitExtraLipasSkiTrackFreestyle ||
+        !!unitExtraLipasSkiTrackTraditional ||
+        dogSkijoringTrackConnection !== undefined) && (
+        <>
+          <p className="no-margin">
+            {t("UNIT_BROWSER.SKIING_TECHNIQUE")}:
+          </p>
+          <div className="unit-container-body-box-icon-and-value-wrapper">
+            {!!unitExtraLipasSkiTrackFreestyle && <span className="unit-container-body-box-icon-and-value">
+              <IconSkiingFreestyle /> {t("UNIT_BROWSER.SKIING_TECHNIQUE_FREESTYLE")}
+            </span>}
+            {!!unitExtraLipasSkiTrackTraditional && <span className="unit-container-body-box-icon-and-value">
+              <IconSkiingTraditional /> {t("UNIT_BROWSER.SKIING_TECHNIQUE_TRADITIONAL")}
+            </span>}
+            {dogSkijoringTrackConnection !== undefined && <span className="unit-container-body-box-icon-and-value">
+              <IconSkiingDogSkijoring /> {getAttr(dogSkijoringTrackConnection.name, language) || t("UNIT_DETAILS.DOG_SKIJORING_TRACK")}
+            </span>}
+          </div>
+        </>
+      )}
       {unitExtraLipasRouteLengthKm !== null && (
         <p className="no-margin">
           {`${t("UNIT_BROWSER.ROUTE_LENGTH")}: `}
@@ -219,20 +246,6 @@ function LocationInfo({ unit }: LocationInfoProps) {
         <p className="no-margin">
           {`${t("UNIT_BROWSER.LIT_ROUTE_LENGTH")}: `}
           <span>{unitExtraLipasLitRouteLengthKm}km</span>
-        </p>
-      )}
-      {(unitExtraLipasSkiTrackFreestyle ||
-        unitExtraLipasSkiTrackTraditional) && (
-        <p className="no-margin">
-          {`${t("UNIT_BROWSER.SKIING_TECHNIQUE")}: `}
-          {[
-            unitExtraLipasSkiTrackFreestyle &&
-              t("UNIT_BROWSER.SKIING_TECHNIQUE_FREESTYLE"),
-            unitExtraLipasSkiTrackTraditional &&
-              t("UNIT_BROWSER.SKIING_TECHNIQUE_TRADITIONAL"),
-          ]
-            .filter((item) => item)
-            .join(", ")}
         </p>
       )}
       {unitControlConnection !== undefined && (

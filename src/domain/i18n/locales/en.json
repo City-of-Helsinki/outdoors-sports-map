@@ -45,7 +45,10 @@
       "ICE_SKATING": "Ice-skating",
       "SKIING": "Skiing",
       "STATUS_OK": "In usable condition",
-      "SWIMMING": "Swimming"
+      "SWIMMING": "Swimming",
+      "SKIING_FREESTYLE": "Freestyle",
+      "SKIING_TRADITIONAL": "Classic",
+      "SKIING_DOG_SKIJORING_TRACK": "Dog skijoring"
     },
     "FILTER_SPORT": "Choose Sport",
     "FILTER_STATUS": "Choose Condition",
@@ -62,7 +65,8 @@
     "CONTROL": "Control",
     "HEATING": "Heating",
     "LIGHTED": "Lighting",
-    "DRESSING_ROOM": "Dressing room"
+    "DRESSING_ROOM": "Dressing room",
+    "DOG_SKIJORING_TRACK": "Dog skijoring track"
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",
@@ -86,7 +90,7 @@
     "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
     "CLOSE": "Close",
     "SEE_ON_SERVICE_MAP": "More information on the Service Map"
-    
+
   },
   "SEARCH": {
     "SEARCH": "Search",

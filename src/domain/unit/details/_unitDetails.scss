@@ -90,6 +90,25 @@
         font-weight: 700;
         margin-bottom: 3px;
       }
+
+      &-icon-and-value-wrapper {
+        margin: calc($gap / 2) 0 0 0;
+      }
+
+      &-icon-and-value {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 calc($gap * 2) $gap 0;
+
+        svg {
+          background-color: rgba($ui-content, .1);
+          color: $ui-content;
+          padding: 2px;
+          font-size: 2em;
+          flex-grow: 0;
+          margin-right: calc($gap / 1.5);
+        }
+      }
     }
 
     &-multi-line {
@@ -127,7 +146,7 @@
   padding: 10px;
   color: var(--color-info-light);
   text-align: right;
-  
+
   &-icon {
     transform: rotate(0deg);
     transition: transform 0.5s ease-in-out;

@@ -1,5 +1,6 @@
 import L from "leaflet";
 import * as GeometryUtil from "leaflet-geometryutil";
+import { union } from "lodash";
 import get from "lodash/get";
 import has from "lodash/has";
 import head from "lodash/head";
@@ -9,7 +10,7 @@ import upperFirst from "lodash/upperFirst";
 import moment from "moment";
 
 import { createRequest, createUrl } from "../api/apiHelpers";
-import { DEFAULT_LANG } from "../app/appConstants";
+import { AppState, DEFAULT_LANG } from "../app/appConstants";
 import {
   IceSkatingServices,
   SkiingServices,
@@ -31,6 +32,9 @@ import {
   SportFilters,
   SeasonDelimiter,
   UnitConnection,
+  SkiingFilter,
+  SkiingFilters,
+  UnitConnectionTags,
 } from "./unitConstants";
 
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
@@ -247,6 +251,15 @@ export const getDefaultFilters = () => ({
   sport: getDefaultSportFilter(),
 });
 
+export const getSportSpecificationFilters = (
+  sport: SportFilter
+): SkiingFilter[] => {
+  if (sport === UnitFilters.SKIING) {
+    return [...SkiingFilters];
+  }
+  return [];
+};
+
 /**
  * SORT UNIT LIST
  */
@@ -332,4 +345,77 @@ export const getOnSeasonSportServices = () => {
   } else {
     return SkiingServices.concat(IceSkatingServices).join(",");
   }
+};
+
+export const getFilteredUnitsBySportSpecification = (
+  visibleUnits: string[],
+  stateUnits: AppState["unit"],
+  sportSpecification: string
+): string[] => {
+  // If nothing to filter
+  if (!sportSpecification) return visibleUnits;
+
+  // Create array from all the unit objects.
+  // Only show the ones that have already been filtered
+  const visibleUnitObjects: Unit[] = Object.assign(
+    [],
+    Object.values(stateUnits.byId).filter((u) =>
+      visibleUnits.includes(u.id.toString())
+    )
+  );
+
+  const hasFreestyleFilter: boolean = sportSpecification.includes(
+    UnitFilters.SKIING_FREESTYLE
+  );
+  const hasTraditionalFilter: boolean = sportSpecification.includes(
+    UnitFilters.SKIING_TRADITIONAL
+  );
+  const hasDogSkijoringFilter: boolean = sportSpecification.includes(
+    UnitFilters.SKIING_DOG_SKIJORING_TRACK
+  );
+
+  const skiTrackFreestyleUnits = (): string[] => {
+    if (!hasFreestyleFilter) return [];
+
+    // Get list of unit IDs where lipas.skiTrackFreestyle is set to 1
+    return visibleUnitObjects
+      .filter((u) => {
+        return get(u, ["extra", "lipas.skiTrackFreestyle"], null) ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  const skiTrackTraditionalUnits = (): string[] => {
+    if (!hasTraditionalFilter) return [];
+
+    // Get list of unit IDs where lipas.skiTrackTraditional is set to 1
+    return visibleUnitObjects
+      .filter((u) => {
+        return get(u, ["extra", "lipas.skiTrackTraditional"], null) ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  const skiTrackDogSkijoring = (): string[] => {
+    if (!hasDogSkijoringFilter) return [];
+
+    // Get list of unit IDs where DOG_SKIJORING_TRACK connection tag is present
+    return visibleUnitObjects
+      .filter((u) => {
+        const connectionsWithDogSkijoring = u.connections.filter((c) =>
+          c.tags.includes(UnitConnectionTags.DOG_SKIJORING_TRACK)
+        );
+        return !!connectionsWithDogSkijoring.length ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  // merge arrays into one and remove duplicate items from it
+  const filteredUnits: string[] = union(
+    skiTrackFreestyleUnits(),
+    skiTrackTraditionalUnits(),
+    skiTrackDogSkijoring()
+  );
+
+  return filteredUnits;
 };

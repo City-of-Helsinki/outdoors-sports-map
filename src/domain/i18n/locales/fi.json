@@ -45,7 +45,10 @@
       "ICE_SKATING": "Luistelu",
       "SKIING": "Hiihto",
       "STATUS_OK": "Käyttökuntoiset",
-      "SWIMMING": "Uinti"
+      "SWIMMING": "Uinti",
+      "SKIING_FREESTYLE": "Vapaa",
+      "SKIING_TRADITIONAL": "Perinteinen",
+      "SKIING_DOG_SKIJORING_TRACK": "Koirahiihto"
     },
     "FILTER_SPORT": "Valitse laji",
     "FILTER_STATUS": "Valitse kunto",
@@ -62,7 +65,8 @@
     "CONTROL": "Valvonta",
     "HEATING": "Lämmitys",
     "LIGHTED": "Valaistus",
-    "DRESSING_ROOM": "Pukukoppi"
+    "DRESSING_ROOM": "Pukukoppi",
+    "DOG_SKIJORING_TRACK": "Koirahiihtolatu"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",
@@ -75,7 +79,7 @@
     "ROUTE_LENGTH": "Reitin pituus",
     "LIT_ROUTE_LENGTH": "Valaistu reitti",
     "SKIING_TECHNIQUE": "Hiihtotyyli",
-    "SKIING_TECHNIQUE_FREESTYLE": "Vapaa hiihtotapa",
+    "SKIING_TECHNIQUE_FREESTYLE": "Vapaa",
     "SKIING_TECHNIQUE_TRADITIONAL": "Perinteinen",
     "TEMPERATURE": "Lämpötila",
     "LINKS": "Linkit",
