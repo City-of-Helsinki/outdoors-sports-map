@@ -45,7 +45,7 @@ export const SkiingFilters = [
 
 export type SkiingFilter = typeof SkiingFilters[number];
 
-type Translatable<T = string> = {
+export type Translatable<T = string> = {
   fi: T;
   sv: T;
   en: T;
@@ -91,7 +91,7 @@ export type Unit = {
     primary: boolean;
     quality: string;
     name: Translatable<string>;
-    value: Translatable<string>;
+    value: string | Translatable<string>;
     time: string;
   }>;
   www: Translatable<string>;
