@@ -9,7 +9,11 @@ import {
   SwimmingServices,
 } from "../../service/serviceConstants";
 import { QualityEnum, UnitActions } from "../unitConstants";
-import { enumerableQuality, getUnitQuality } from "../unitHelpers";
+import {
+  enumerableQuality,
+  getUnitQuality,
+  handleUnitConditionUpdates,
+} from "../unitHelpers";
 
 const isFetchingReducer = handleActions(
   {
@@ -37,7 +41,7 @@ const byIdReducer = handleActions(
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
       { payload: { entities } }: EntityAction
-    ) => entities.unit,
+    ) => handleUnitConditionUpdates(entities.unit),
   },
   {}
 );

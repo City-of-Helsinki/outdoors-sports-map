@@ -5,12 +5,14 @@ import get from "lodash/get";
 import has from "lodash/has";
 import head from "lodash/head";
 import keys from "lodash/keys";
+import mapValues from "lodash/mapValues";
 import sortBy from "lodash/sortBy";
 import upperFirst from "lodash/upperFirst";
 import moment from "moment";
 
 import { createRequest, createUrl } from "../api/apiHelpers";
 import { AppState, DEFAULT_LANG } from "../app/appConstants";
+import i18n from "../i18n/i18n";
 import {
   IceSkatingServices,
   SkiingServices,
@@ -34,7 +36,9 @@ import {
   UnitConnection,
   SkiingFilter,
   SkiingFilters,
+  UnitAutomaticConditionChangeDays,
   UnitConnectionTags,
+  UnitQualityConst,
 } from "./unitConstants";
 
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
@@ -418,4 +422,89 @@ export const getFilteredUnitsBySportSpecification = (
   );
 
   return filteredUnits;
+};
+
+const handleSingleUnitConditionUpdate = (unit: Unit) => {
+  const { observations } = unit;
+  const sport = getUnitSport(unit);
+
+  // Get latest primary observation
+  const primaryObservation = observations.find((obs) => obs.primary) || null;
+
+  const today = moment();
+  const lastObservation = moment(primaryObservation?.time);
+  const daysFromLastUpdate = today.diff(lastObservation, "d");
+
+  const getMinimumDaysToHandleConditionUpdates = (): number => {
+    if (sport === "unknown") return 0;
+
+    // Get satisfactory and unknown days based on sport
+    const satisfactoryDays =
+      UnitAutomaticConditionChangeDays[sport].satisfactory;
+    const unknownDays = UnitAutomaticConditionChangeDays[sport].unknown;
+
+    // Use satisfactory days if it exists
+    if (satisfactoryDays !== undefined) {
+      return satisfactoryDays;
+    }
+
+    return unknownDays;
+  };
+
+  // Don't do anything if:
+  // Unit has been recently updated, OR
+  // Unit is marked as "closed" OR
+  // There's no primary observation available
+  if (
+    daysFromLastUpdate < getMinimumDaysToHandleConditionUpdates() ||
+    primaryObservation?.value === "closed" ||
+    !primaryObservation
+  ) {
+    return unit;
+  }
+
+  // Unknown
+  // A copy of last primary observation,
+  // where name and quality values are altered
+  const unknownObservation = {
+    ...primaryObservation,
+    name: {
+      fi: i18n.t("UNIT_DETAILS.UNKNOWN", { lng: "fi" }),
+      sv: i18n.t("UNIT_DETAILS.UNKNOWN", { lng: "sv" }),
+      en: i18n.t("UNIT_DETAILS.UNKNOWN", { lng: "en" }),
+    },
+    quality: UnitQualityConst.UNKNOWN,
+  };
+
+  // Satisfactory
+  // A copy of last primary observation,
+  // where name and quality values are altered
+  const satisfactoryObservation = {
+    ...primaryObservation,
+    name: {
+      fi: i18n.t("UNIT_DETAILS.SATISFACTORY", { lng: "fi" }),
+      sv: i18n.t("UNIT_DETAILS.SATISFACTORY", { lng: "sv" }),
+      en: i18n.t("UNIT_DETAILS.SATISFACTORY", { lng: "en" }),
+    },
+    quality: UnitQualityConst.SATISFACTORY,
+  };
+
+  // If a sport has satisfactory and unknown conditions, check if we need to use
+  // satisfactory value for it (which should be a smaller number than unknown)
+  const isSatisfactory: boolean =
+    sport !== "unknown" &&
+    daysFromLastUpdate < UnitAutomaticConditionChangeDays[sport].unknown;
+
+  // Set new observation copy as the first observation in unit's observations list
+  if (isSatisfactory) {
+    unit.observations = [satisfactoryObservation, ...observations];
+  } else {
+    unit.observations = [unknownObservation, ...observations];
+  }
+
+  return unit;
+};
+
+export const handleUnitConditionUpdates = (units: Record<number, Unit>) => {
+  return mapValues(units, (unit) => handleSingleUnitConditionUpdate(unit));
 };
