@@ -45,7 +45,7 @@ export const SkiingFilters = [
 
 export type SkiingFilter = typeof SkiingFilters[number];
 
-type Translatable<T = string> = {
+export type Translatable<T = string> = {
   fi: T;
   sv: T;
   en: T;
@@ -91,7 +91,7 @@ export type Unit = {
     primary: boolean;
     quality: string;
     name: Translatable<string>;
-    value: Translatable<string>;
+    value: string | Translatable<string>;
     time: string;
   }>;
   www: Translatable<string>;
@@ -180,11 +180,34 @@ export const UnitQuality = {
   UNKNOWN: "unknown",
 };
 
+export const UnitQualityConst = {
+  GOOD: "good",
+  SATISFACTORY: "satisfactory",
+  UNUSABLE: "unusable",
+  UNKNOWN: "unknown",
+} as const;
+
 export const QualityEnum = {
   [UnitQuality.GOOD]: 1,
   [UnitQuality.SATISFACTORY]: 2,
   [UnitQuality.UNUSABLE]: 3,
   [UnitQuality.UNKNOWN]: 4,
+};
+
+// Number of days from the latest observation to automatically change condition
+export const UnitAutomaticConditionChangeDays = {
+  [UnitFilters.SKIING]: {
+    [UnitQualityConst.SATISFACTORY]: 7,
+    [UnitQualityConst.UNKNOWN]: 10,
+  },
+  [UnitFilters.SWIMMING]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.ICE_SKATING]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 10,
+  },
 };
 
 export const UnitActions = {

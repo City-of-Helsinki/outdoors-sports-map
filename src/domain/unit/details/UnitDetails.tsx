@@ -26,7 +26,7 @@ import UnitObservationStatus, {
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
 import * as fromUnit from "../state/selectors";
-import { Unit, UnitConnectionTags } from "../unitConstants";
+import { Translatable, Unit, UnitConnectionTags } from "../unitConstants";
 import {
   createPalvelukarttaUrl,
   createReittiopasUrl,
@@ -307,7 +307,7 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
     <BodyBox title={t("UNIT_BROWSER.NOTICE")}>
       <StatusUpdated time={getObservationTime(notice)} />
       <ReactMarkdown
-        children={getAttr(notice.value, language)}
+        children={getAttr(notice.value as Translatable<string>, language)}
         // Insert a break for each newline character
         // https://github.com/rexxars/react-markdown/issues/105#issuecomment-346103734
         remarkPlugins={[breaks]}
