@@ -6,11 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2023-01-10
+
+### Changed
+
+-   [#185](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/185) Add sport specification filtering and visualize different skiing styles in detail view
+-   [#186](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/186) Automatic satisfactory/unknown observation status
+
 ## [2.0.1] - 2022-12-20
 
 ### Fixed
 
--   Fix missing notice text
+-   [#181](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/181) Fix missing notice text by updating allowedElements in ReactMarkdown
 
 ## [2.0.0] - 2022-12-15
 
