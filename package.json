@@ -113,7 +113,7 @@
     "redux-saga": "^1.2.1",
     "regenerator-runtime": "^0.13.11",
     "remark-breaks": "3.0.2",
-    "sass": "^1.56.1",
+    "sass": "^1.57.1",
     "shell-quote": "^1.7.4",
     "terser": "^5.16.0",
     "ts-node": "^10.9.1",
