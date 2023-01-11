@@ -8,6 +8,7 @@ import keys from "lodash/keys";
 import mapValues from "lodash/mapValues";
 import sortBy from "lodash/sortBy";
 import upperFirst from "lodash/upperFirst";
+import values from "lodash/values";
 import moment from "moment";
 
 import { createRequest, createUrl } from "../api/apiHelpers";
@@ -44,7 +45,7 @@ import {
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
   createRequest(
     createUrl("unit/", {
-      service: getOnSeasonSportServices(),
+      service: getAllSportServices(),
       only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
       include: "observations,connections",
       geometry: "true",
@@ -337,6 +338,10 @@ export const getAddressToDisplay = (
         address.number
       }, ${upperFirst(address.street.municipality)}`
     : null;
+
+export const getAllSportServices = () => {
+  return values(UnitServices).join(",");
+};
 
 export const getOnSeasonSportServices = () => {
   const sportFilters = getOnSeasonSportFilters();
