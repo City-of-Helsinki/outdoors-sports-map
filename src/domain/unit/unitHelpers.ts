@@ -19,6 +19,7 @@ import {
   SkiingServices,
   SwimmingServices,
   UnitServices,
+  IceSwimmingServices,
 } from "../service/serviceConstants";
 import { getToday, isOnSeason } from "./seasons";
 import {
@@ -128,6 +129,10 @@ export const getUnitSport = (unit: Unit) => {
 
       if (SwimmingServices.includes(service)) {
         return UnitFilters.SWIMMING;
+      }
+
+      if (IceSwimmingServices.includes(service)) {
+        return UnitFilters.ICE_SWIMMING;
       }
     }
   }
@@ -351,6 +356,12 @@ export const getOnSeasonSportServices = () => {
     sportFilters[0] === UnitFilters.SWIMMING
   ) {
     return SwimmingServices.join(",");
+  } else if (
+    sportFilters &&
+    sportFilters[0] &&
+    sportFilters[0] === UnitFilters.ICE_SWIMMING
+  ) {
+    return IceSwimmingServices.join(",");
   } else {
     return SkiingServices.concat(IceSkatingServices).join(",");
   }

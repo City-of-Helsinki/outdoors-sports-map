@@ -16,6 +16,7 @@ export const UnitFilters = {
   SKIING_DOG_SKIJORING_TRACK: "dog_skijoring_track",
   ICE_SKATING: "iceskate",
   SWIMMING: "swim",
+  ICE_SWIMMING: "iceswim",
   STATUS_OK: "status_ok",
   STATUS_ALL: "status_all",
 } as const;
@@ -33,6 +34,7 @@ export const SportFilters = [
   UnitFilters.SKIING,
   UnitFilters.ICE_SKATING,
   UnitFilters.SWIMMING,
+  UnitFilters.ICE_SWIMMING,
 ] as const;
 
 export type SportFilter = typeof SportFilters[number];
@@ -140,7 +142,11 @@ export const WinterSeason: Season = {
     day: 31,
     month: 3,
   },
-  filters: [UnitFilters.SKIING, UnitFilters.ICE_SKATING],
+  filters: [
+    UnitFilters.SKIING,
+    UnitFilters.ICE_SKATING,
+    UnitFilters.ICE_SWIMMING,
+  ],
 };
 
 export const YearRoundSeason: Season = {
@@ -207,6 +213,10 @@ export const UnitAutomaticConditionChangeDays = {
   [UnitFilters.ICE_SKATING]: {
     [UnitQualityConst.SATISFACTORY]: undefined,
     [UnitQualityConst.UNKNOWN]: 10,
+  },
+  [UnitFilters.ICE_SWIMMING]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
   },
 };
 

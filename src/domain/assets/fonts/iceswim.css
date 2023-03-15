@@ -1,0 +1,42 @@
+/*
+  Icon Font: fontcustom
+*/
+
+@font-face {
+  font-family: "fontcustom";
+  src: url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.eot");
+  src: url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.eot?#iefix") format("embedded-opentype"),
+       url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.woff2") format("woff2"),
+       url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.woff") format("woff"),
+       url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.ttf") format("truetype"),
+       url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.svg#iceswim") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "fontcustom";
+    src: url("./iceswim_c3f4e574365021d04b1e73a3d6b8f997.svg#iceswim") format("svg");
+  }
+}
+
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
+.icon-iceswim:before {
+  display: inline-block;
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.icon-iceswim:before { content: "\f101"; }
