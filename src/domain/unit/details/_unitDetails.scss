@@ -157,3 +157,17 @@
     }
   }
 }
+.water-quality{
+  &-normal {
+    background-color: #008450;
+  }
+  &-possibly_impaired {
+    background-color: #EFB700;
+  }
+  &-probably_impaired {
+    background-color: #EFB700;
+  }
+  &-error {
+    background-color: #a8b5c2;
+  }
+}

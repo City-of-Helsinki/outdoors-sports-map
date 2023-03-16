@@ -26,6 +26,16 @@ const liveTemperatureDataObservation = {
   },
 };
 
+const liveWaterQualityObservation = {
+  unit: 40386,
+  id: 1406465,
+  property: "live_swimming_water_quality",
+  time: "2023-03-16T13:00:04.499827+0200",
+  expiration_time: null,
+  value: {
+      fi: "possibly_impaired"
+  }
+}
 const unit = {
   id: 40142,
   name: {
@@ -235,7 +245,7 @@ const unit = {
       ]
     }
   ],
-  observations: [temperatureDataObservation, liveTemperatureDataObservation],
+  observations: [temperatureDataObservation, liveTemperatureDataObservation, liveWaterQualityObservation],
   extra: {
     "lipas.routeLengthKm": 4,
     "lipas.litRouteLengthKm": 0,
@@ -347,6 +357,23 @@ describe("<UnitDetails />", () => {
 
         expect(wrapper.text().includes("kaksi tuntia sitten")).toEqual(true);
       });
+    });
+  });
+
+  describe("when live water quality data is available", () => {
+    const getWrapperWithLiveWaterQualityData = (props?: any, unit?: any) =>
+      getWrapper(props, unit);
+    const waterQuality= {
+      normal: "Tavanomainen (veden hygieeninen laatu)",
+      possibly_impaired: "Mahdollisesti heikentynyt (veden hygieeninen laatu)",
+      probably_impaired: "Mahdollisesti heikentynyt (veden hygieeninen laatu)",
+      error: "Ei arviota"
+    }
+    it("should be displayed", () => {
+      const wrapper = getWrapperWithLiveWaterQualityData();
+      const liveWaterQuality = waterQuality.possibly_impaired;
+
+      expect(wrapper.text().includes(liveWaterQuality)).toEqual(true);
     });
   });
 
