@@ -23,9 +23,12 @@ function UnitIcon({ unit, alt }: Props) {
       icon = "swim";
       break;
 
+    case UnitFilters.ICE_SWIMMING:
+      icon = "iceswim";
+      break;
+
     default: // Use default value
   }
-
   return <OSMIcon className="unit-icon" icon={icon} alt={alt} />;
 }
 

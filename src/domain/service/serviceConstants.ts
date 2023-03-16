@@ -13,6 +13,7 @@ export const UnitServices = {
   SWIMMING_BEACH: 731,
   SWIMMING_PLACE: 730,
   OUTDOOR_POOL: 426,
+  ICE_SWIMMING_PLACE: 684,
 };
 
 export const IceSkatingServices = [
@@ -33,6 +34,8 @@ export const SwimmingServices = [
   UnitServices.SWIMMING_PLACE,
   UnitServices.OUTDOOR_POOL,
 ];
+
+export const IceSwimmingServices = [UnitServices.ICE_SWIMMING_PLACE];
 
 export const ServiceActions = {
   FETCH: normalizeActionName("service/FETCH"),

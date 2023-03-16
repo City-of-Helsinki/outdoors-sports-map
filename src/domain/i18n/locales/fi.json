@@ -49,7 +49,8 @@
       "SWIMMING": "Uinti",
       "SKIING_FREESTYLE": "Vapaa",
       "SKIING_TRADITIONAL": "Perinteinen",
-      "SKIING_DOG_SKIJORING_TRACK": "Koirahiihto"
+      "SKIING_DOG_SKIJORING_TRACK": "Koirahiihto",
+      "ICE_SWIMMING": "Avantouinti"
     },
     "FILTER_SPORT": "Valitse laji",
     "FILTER_STATUS": "Valitse kunto",

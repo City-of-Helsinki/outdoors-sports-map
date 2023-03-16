@@ -49,7 +49,8 @@
       "SWIMMING": "Swimming",
       "SKIING_FREESTYLE": "Freestyle",
       "SKIING_TRADITIONAL": "Classic",
-      "SKIING_DOG_SKIJORING_TRACK": "Dog skijoring"
+      "SKIING_DOG_SKIJORING_TRACK": "Dog skijoring",
+      "ICE_SWIMMING": "Ice swimming"
     },
     "FILTER_SPORT": "Choose Sport",
     "FILTER_STATUS": "Choose Condition",
