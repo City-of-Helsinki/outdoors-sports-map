@@ -59,6 +59,7 @@ export const UnitConnectionTags = {
   LIGHTED: "#valaisu",
   DRESSING_ROOM: "#pukukoppi",
   DOG_SKIJORING_TRACK: "#koiralatu",
+  PARKING: "#pysäköinti",
 } as const;
 
 export type UnitConnection = {

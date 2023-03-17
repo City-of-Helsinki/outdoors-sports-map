@@ -68,7 +68,8 @@
     "HEATING": "Heating",
     "LIGHTED": "Lighting",
     "DRESSING_ROOM": "Dressing room",
-    "DOG_SKIJORING_TRACK": "Dog skijoring track"
+    "DOG_SKIJORING_TRACK": "Dog skijoring track",
+    "PARKING": "Parking"
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",
