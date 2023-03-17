@@ -91,7 +91,9 @@
     "WATER_TEMPERATURE": "Water temperature",
     "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
     "CLOSE": "Close",
-    "SEE_ON_SERVICE_MAP": "More information on the Service Map"
+    "SEE_ON_SERVICE_MAP": "More information on the Service Map",
+    "WATER_QUALITY": "Water quality",
+    "WATER_QUALITY_SENSOR": "Water quality sensor"
 
   },
   "SEARCH": {
@@ -116,5 +118,11 @@
   },
   "JUMP_LINK": {
     "LABEL": "Jump straight to content"
+  },
+  "WATER_QUALITY": {
+    "normal": "Normal (hygienic water quality)",
+    "possibly_impaired": "Possibly impaired (hygienic water quality)",
+    "probably_impaired": "Possibly impaired (hygienic water quality)",
+    "error": "No estimate"
   }
 }

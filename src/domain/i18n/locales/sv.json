@@ -91,7 +91,9 @@
     "WATER_TEMPERATURE": "Vattnets temperatur",
     "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor",
     "CLOSE": "Stänga",
-    "SEE_ON_SERVICE_MAP": "Mer information på servicekartan"
+    "SEE_ON_SERVICE_MAP": "Mer information på servicekartan",
+    "WATER_QUALITY": "Vattenkvalitet",
+    "WATER_QUALITY_SENSOR": "Vattenkvalitetssensor"
   },
   "SEARCH": {
     "SEARCH": "Sök",
@@ -115,5 +117,11 @@
   },
   "JUMP_LINK": {
     "LABEL": "Gå direkt till innehållet"
+  },
+  "WATER_QUALITY": {
+    "normal": "Normal (hygienisk vattenkvalitet)",
+    "possibly_impaired": "Möjligen försämrad (hygienisk vattenkvalitet)",
+    "probably_impaired": "Möjligen försämrad (hygienisk vattenkvalitet)",
+    "error": "Inget estimat"
   }
 }

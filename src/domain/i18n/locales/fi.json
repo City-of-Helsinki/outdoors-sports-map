@@ -91,7 +91,9 @@
     "WATER_TEMPERATURE": "Veden lämpötila",
     "WATER_TEMPERATURE_SENSOR": "Uimarantasensori",
     "CLOSE": "Sulje",
-    "SEE_ON_SERVICE_MAP": "Lisää tietoa palvelukartalla"
+    "SEE_ON_SERVICE_MAP": "Lisää tietoa palvelukartalla",
+    "WATER_QUALITY": "Vedenlaatu",
+    "WATER_QUALITY_SENSOR": "Vedenlaatusensori"
   },
   "SEARCH": {
     "SEARCH": "Etsi",
@@ -115,5 +117,11 @@
   },
   "JUMP_LINK": {
     "LABEL": "Siirry suoraan sisältöön"
+  },
+  "WATER_QUALITY": {
+    "normal": "Tavanomainen (veden hygieeninen laatu)",
+    "possibly_impaired": "Mahdollisesti heikentynyt (veden hygieeninen laatu)",
+    "probably_impaired": "Mahdollisesti heikentynyt (veden hygieeninen laatu)",
+    "error": "Ei arviota"
   }
 }

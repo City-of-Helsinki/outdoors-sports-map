@@ -423,6 +423,27 @@ function LiveLocationTemperature({
   );
 }
 
+type LiveWaterQualityProps = {
+  observation: Record<string, any>;
+};
+
+function LiveWaterQuality({
+  observation,
+}: LiveWaterQualityProps) {
+  const { t } = useTranslation();
+  const waterQuality = get(observation, "value.fi");
+  const observationTime = getObservationTime(observation);
+  
+  return (
+    <BodyBox title={t("UNIT_BROWSER.WATER_QUALITY")}>
+      <StatusUpdatedAgo
+        time={observationTime}
+        sensorName={t("UNIT_BROWSER.WATER_QUALITY_SENSOR")}
+      />
+      <p className={`water-quality-${waterQuality}`}>{t(`WATER_QUALITY.${waterQuality}`)}</p>
+    </BodyBox>
+  );
+}
 type BodyBoxProps = {
   title: string;
   children: ReactNode;
@@ -445,6 +466,7 @@ type SingleUnitBodyProps = {
   routeUrl?: string;
   temperatureObservation: Record<string, any> | null | undefined;
   palvelukarttaUrl?: string;
+  liveWaterQualityObservation: Record<string, any> | null | undefined;
 };
 
 export function SingleUnitBody({
@@ -454,6 +476,7 @@ export function SingleUnitBody({
   routeUrl,
   temperatureObservation,
   palvelukarttaUrl,
+  liveWaterQualityObservation
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
@@ -476,6 +499,11 @@ export function SingleUnitBody({
       {liveTemperatureObservation && (
         <LiveLocationTemperature observation={liveTemperatureObservation} />
       )}
+      {
+        liveWaterQualityObservation && (
+          <LiveWaterQuality observation={liveWaterQualityObservation} />
+        )
+      }
       <LocationInfo unit={currentUnit} />
       {getOpeningHours(currentUnit, language) && (
         <LocationOpeningHours unit={currentUnit} />
@@ -538,6 +566,10 @@ function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props)
     unit && has(unit, "observations")
       ? getObservation(unit, "live_swimming_water_temperature")
       : null;
+  const liveWaterQualityObservation =
+    unit && has(unit, "observations")
+      ? getObservation(unit, "live_swimming_water_quality")
+      : null;
   const routeUrl = unit && createReittiopasUrl(unit, language);
   const palvelukarttaUrl = unit && createPalvelukarttaUrl(unit, language);
   const isOpen = !!unitId;
@@ -586,6 +618,7 @@ function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props)
           liveTemperatureObservation={liveTemperatureObservation}
           routeUrl={routeUrl}
           temperatureObservation={temperatureObservation}
+          liveWaterQualityObservation={liveWaterQualityObservation}
           palvelukarttaUrl={palvelukarttaUrl}
         />
       </Page>
