@@ -364,9 +364,9 @@ describe("<UnitDetails />", () => {
     const getWrapperWithLiveWaterQualityData = (props?: any, unit?: any) =>
       getWrapper(props, unit);
     const waterQuality= {
-      normal: "Tavanomainen (veden hygieeninen laatu)",
-      possibly_impaired: "Mahdollisesti heikentynyt (veden hygieeninen laatu)",
-      probably_impaired: "Mahdollisesti heikentynyt (veden hygieeninen laatu)",
+      normal: "Tavanomainen",
+      possibly_impaired: "Mahdollisesti heikentynyt",
+      probably_impaired: "Mahdollisesti heikentynyt",
       error: "Ei arviota"
     }
     it("should be displayed", () => {

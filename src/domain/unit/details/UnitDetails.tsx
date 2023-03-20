@@ -438,7 +438,7 @@ function LiveWaterQuality({
     <BodyBox title={t("UNIT_BROWSER.WATER_QUALITY")}>
       <StatusUpdatedAgo
         time={observationTime}
-        sensorName={t("UNIT_BROWSER.WATER_QUALITY_SENSOR")}
+        sensorName={""}
       />
       <p className={`water-quality-${waterQuality}`}>{t(`WATER_QUALITY.${waterQuality}`)}</p>
     </BodyBox>
