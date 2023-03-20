@@ -68,7 +68,9 @@
     "HEATING": "Lämmitys",
     "LIGHTED": "Valaistus",
     "DRESSING_ROOM": "Pukukoppi",
-    "DOG_SKIJORING_TRACK": "Koirahiihtolatu"
+    "DOG_SKIJORING_TRACK": "Koirahiihtolatu",
+    "PARKING": "Pysäköinti",
+    "OTHER_SERVICES": "Muut palvelut"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",

@@ -183,6 +183,34 @@ const unit = {
       ]
     },
     {
+      section_type: "OTHER_INFO",
+      name: {
+          "fi": "Pysäköintipaikkoja 20 kpl, 2h pysäköinti.",
+          "sv": "20 parkeringsplatser, 2 timmars parkering.",
+          "en": "20 parking spaces, 2-hour parking."
+      },
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: [
+          "#pysäköinti"
+      ]
+    },
+    {
+      "section_type": "OTHER_INFO",
+      "name": {
+          "fi": "Luistelukentän muut palvelut"
+      },
+      "www": null,
+      "email": null,
+      "phone": null,
+      "contact_person": null,
+      "tags": [
+        "#muut_palvelut"
+      ]
+    },
+    {
       id: 12514,
       section_type: "OTHER_INFO",
       name: {
@@ -390,6 +418,38 @@ describe("<UnitDetails />", () => {
         connections: unit.connections.filter((con) => con.tags === undefined)
       });
       expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(false);
+    });
+  })
+
+  describe("when parking data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toEqual(true);
+    });
+  });
+
+  describe("when parking data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper({}, {
+        connections: unit.connections.filter((con) => con.tags === undefined)
+      });
+      expect(wrapper.text().includes("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toEqual(false);
+    });
+  })
+  
+  describe("when other services data is available", () => {
+    it("should be displayed", () => {
+      const wrapper = getWrapper();
+      expect(wrapper.text().includes("Muut palvelut: Luistelukentän muut palvelut")).toEqual(true);
+    });
+  });
+
+  describe("when other services data is not available", () => {
+    it("should not be displayed", () => {
+      const wrapper = getWrapper({}, {
+        connections: unit.connections.filter((con) => con.tags === undefined)
+      });
+      expect(wrapper.text().includes("Muut palvelut: Luistelukentän muut palvelut")).toEqual(false);
     });
   })
 
