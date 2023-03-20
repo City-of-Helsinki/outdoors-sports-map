@@ -69,7 +69,8 @@
     "LIGHTED": "Upplysning",
     "DRESSING_ROOM": "Omklädningsrum",
     "DOG_SKIJORING_TRACK": "Hundskidspår",
-    "PARKING": "Parkering"
+    "PARKING": "Parkering",
+    "OTHER_SERVICES": "Andra tjänster"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

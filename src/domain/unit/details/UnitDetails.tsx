@@ -201,6 +201,10 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unit,
     UnitConnectionTags.PARKING
   )
+  const unitOtherServicesConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.OTHER_SERVICES
+  )
   // Should show info if at least some data is present
   if (
     !(
@@ -279,6 +283,12 @@ function LocationInfo({ unit }: LocationInfoProps) {
         <p className="no-margin">
           {`${t("UNIT_DETAILS.PARKING")}`}:{" "}
           {getAttr(unitParkingConnection.name, language)}
+        </p>
+      )}
+      {unitOtherServicesConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.OTHER_SERVICES")}`}:{" "}
+          {getAttr(unitOtherServicesConnection.name, language)}
         </p>
       )}
       {unit.phone && (
