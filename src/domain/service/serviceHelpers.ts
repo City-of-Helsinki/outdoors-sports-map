@@ -1,6 +1,7 @@
 import isEmpty from "lodash/isEmpty";
 
 import { DEFAULT_LANG } from "../app/appConstants";
+import { CompactUnitServices } from "../service/serviceConstants";
 import { getAttr } from "../unit/unitHelpers";
 
 const getServiceName = (
@@ -22,6 +23,13 @@ const getServiceName = (
   }
 
   return "";
+};
+
+export const getSelectedSportServiceIds = (sportName: string) => {
+  const sportNameUpper = sportName.toUpperCase();
+  const selectedSevicesIds =
+    CompactUnitServices[sportNameUpper as keyof typeof CompactUnitServices];
+  return !!selectedSevicesIds ? selectedSevicesIds : "";
 };
 
 export default getServiceName;

@@ -3,7 +3,8 @@ import { createAction } from "redux-actions";
 
 import { Action } from "../../../app/appConstants";
 import { UnitServices } from "../../../service/serviceConstants";
-import { NormalizedUnitSchema } from "../../../unit/unitConstants";
+import { getSelectedSportServiceIds } from "../../../service/serviceHelpers";
+import { NormalizedUnitSchema, SportFilter } from "../../../unit/unitConstants";
 import { MAX_SUGGESTION_COUNT, UnitSearchActions } from "../../unitConstants";
 
 export const clearSearch = () => createAction(UnitSearchActions.CLEAR)();
@@ -29,11 +30,18 @@ export const searchUnits = (
 export const receiveUnits = (results: NormalizedUnitSchema) =>
   createAction(UnitSearchActions.RECEIVE_UNITS)(results);
 
-export const fetchUnitSuggestions = (input: string): Action =>
+export const fetchUnitSuggestions = (
+  input: string,
+  selectedSport: SportFilter
+): Action =>
   createAction(UnitSearchActions.FETCH_UNIT_SUGGESTIONS)({
     params: {
       input,
-      service: `${values(UnitServices).join(",")}`,
+      service: `${
+        !!getSelectedSportServiceIds(selectedSport)
+          ? getSelectedSportServiceIds(selectedSport)
+          : values(UnitServices).join(",")
+      }`,
       page_size: MAX_SUGGESTION_COUNT,
       type: "unit",
     },

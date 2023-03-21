@@ -9,13 +9,13 @@ describe("<SearchBar />", () => {
     const onInput = jest.fn();
     const wrapper = getWrapper({ onInput });
     const input = wrapper.find('input[aria-label="Etsi"]').at(0);
-
+    const selectedSport = "ski"
     expect(input).toBeTruthy();
 
     input.simulate("change", { target: { value } });
 
     expect(onInput).toHaveBeenCalledTimes(1);
-    expect(onInput).toHaveBeenCalledWith(value);
+    expect(onInput).toHaveBeenCalledWith(value, selectedSport);
   });
 
   it("should have a submit button", () => {

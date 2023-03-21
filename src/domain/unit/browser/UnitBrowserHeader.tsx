@@ -16,7 +16,7 @@ import SearchContainer from "../../search/SearchContainer";
 import * as unitSearchActions from "../state/search/actions";
 import * as unitSearchSelectors from "../state/search/selectors";
 import * as unitSelectors from "../state/selectors";
-import { UNIT_BATCH_SIZE } from "../unitConstants";
+import { SportFilter, UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
 
 type ActionButtonProps = {
@@ -95,8 +95,8 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   );
 
   const handleOnFindSuggestions = useCallback(
-    (input: string) => {
-      dispatch(unitSearchActions.fetchUnitSuggestions(input));
+    (input: string, selectedSport:SportFilter) => {
+      dispatch(unitSearchActions.fetchUnitSuggestions(input, selectedSport));
     },
     [dispatch]
   );
