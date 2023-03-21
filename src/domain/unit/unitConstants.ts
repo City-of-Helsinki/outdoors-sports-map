@@ -1,6 +1,12 @@
 import { Geometry } from "geojson";
 import { NormalizedSchema, schema } from "normalizr";
 
+import {
+  IceSkatingServices,
+  SkiingServices,
+  SwimmingServices,
+  IceSwimmingServices,
+} from "../service/serviceConstants";
 import { normalizeActionName } from "../utils";
 
 export const UNIT_PIN_HEIGHT = 40;
@@ -121,6 +127,7 @@ export type Season = {
   start: SeasonDelimiter;
   end: SeasonDelimiter;
   filters: SportFilter[];
+  services: Number[];
 };
 
 export const SummerSeason: Season = {
@@ -133,6 +140,7 @@ export const SummerSeason: Season = {
     month: 9,
   },
   filters: [UnitFilters.SWIMMING],
+  services: [...SwimmingServices],
 };
 
 export const WinterSeason: Season = {
@@ -149,6 +157,7 @@ export const WinterSeason: Season = {
     UnitFilters.ICE_SKATING,
     UnitFilters.ICE_SWIMMING,
   ],
+  services: [...IceSkatingServices, ...IceSwimmingServices, ...SkiingServices],
 };
 
 export const YearRoundSeason: Season = {
@@ -161,6 +170,7 @@ export const YearRoundSeason: Season = {
     month: 11,
   },
   filters: [],
+  services: [],
 };
 
 export const Seasons: Array<Season> = [

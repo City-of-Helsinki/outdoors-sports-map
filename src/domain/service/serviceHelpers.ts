@@ -1,6 +1,8 @@
 import isEmpty from "lodash/isEmpty";
 
 import { DEFAULT_LANG } from "../app/appConstants";
+import { getToday, isOnSeason } from "../unit/seasons";
+import { SeasonDelimiter, Seasons } from "../unit/unitConstants";
 import { getAttr } from "../unit/unitHelpers";
 
 const getServiceName = (
@@ -22,6 +24,14 @@ const getServiceName = (
   }
 
   return "";
+};
+
+export const getOnSeasonServices = (
+  date: SeasonDelimiter = getToday()
+): Number[] => {
+  return Seasons.filter((season) => isOnSeason(date, season))
+    .map(({ services }) => services)
+    .reduce((flattened, services) => [...flattened, ...services], []);
 };
 
 export default getServiceName;

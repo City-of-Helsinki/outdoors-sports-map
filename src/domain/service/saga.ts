@@ -1,4 +1,3 @@
-import values from "lodash/values";
 import { schema } from "normalizr";
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
@@ -11,16 +10,16 @@ import {
 import { receiveServices, setFetchError } from "./actions";
 import {
   ServiceActions,
-  UnitServices,
   serviceSchema,
   Service,
   NormalizedService,
 } from "./serviceConstants";
+import { getOnSeasonServices } from "./serviceHelpers";
 
 function* fetchServices() {
   const request = createRequest(
     createUrl("service/", {
-      id: values(UnitServices),
+      id: getOnSeasonServices(),
       only: "id,name",
       page_size: 1000,
     })

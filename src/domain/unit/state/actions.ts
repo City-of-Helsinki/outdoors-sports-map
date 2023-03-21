@@ -1,9 +1,8 @@
-import values from "lodash/values";
 import { createAction } from "redux-actions";
 
 import { ApiResponse } from "../../api/apiConstants";
 import { Action } from "../../app/appConstants";
-import { UnitServices } from "../../service/serviceConstants";
+import { getOnSeasonServices } from "../../service/serviceHelpers";
 import { NormalizedUnitSchema, UnitActions } from "../unitConstants";
 
 export const fetchUnits = (params: Record<string, any>): Action =>
@@ -27,7 +26,7 @@ export const searchUnits = (
 ): Action => {
   const init = {
     input,
-    service: `${values(UnitServices).join(",")}`,
+    service: `${getOnSeasonServices().join(",")}`,
   };
 
   // eslint-disable-next-line no-param-reassign
@@ -42,7 +41,7 @@ export const fetchSearchSuggestions = (input: string): Action =>
   createAction(UnitActions.FETCH_SEARCH_SUGGESTIONS)({
     params: {
       input,
-      service: `${values(UnitServices).join(",")}`,
+      service: `${getOnSeasonServices().join(",")}`,
       page_size: 5,
     },
   });

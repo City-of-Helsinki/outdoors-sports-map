@@ -21,6 +21,7 @@ import {
   UnitServices,
   IceSwimmingServices,
 } from "../service/serviceConstants";
+import { getOnSeasonServices } from "../service/serviceHelpers";
 import { getToday, isOnSeason } from "./seasons";
 import {
   DEFAULT_STATUS_FILTER,
@@ -46,7 +47,7 @@ import {
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
   createRequest(
     createUrl("unit/", {
-      service: getAllSportServices(),
+      service: getOnSeasonServices().join(","),
       only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
       include: "observations,connections",
       geometry: "true",

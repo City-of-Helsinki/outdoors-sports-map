@@ -13,7 +13,6 @@ import useAppSearch from "../../app/useAppSearch";
 import * as fromMap from "../../map/state/selectors";
 import { StatusFilters, UnitFilters } from "../unitConstants";
 import {
-  getOffSeasonSportFilters,
   getOnSeasonSportFilters,
   getSportSpecificationFilters,
 } from "../unitHelpers";
@@ -53,7 +52,6 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
                 name: "sport",
                 active: sport,
                 options: getOnSeasonSportFilters(),
-                secondaryOptions: getOffSeasonSportFilters(),
               },
               {
                 name: "status",
