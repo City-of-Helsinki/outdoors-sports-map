@@ -1,14 +1,17 @@
 import { Component } from "react";
 
+import { SportFilter } from "../unit/unitConstants";
+import { getDefaultSportFilter } from "../unit/unitHelpers";
 import SearchBar from "./SearchBar";
 import SearchSuggestions, { Suggestion } from "./SearchSuggestions";
+
 
 type Props = {
   search?: string;
   disabled: boolean;
   suggestions: Suggestion[];
   isActive: boolean;
-  onFindSuggestions: (value: string) => void;
+  onFindSuggestions: (value: string, selectedSport: SportFilter) => void;
   onSearch: (value: string) => void;
   onClear: () => void;
   onAddressClick: (coordinates: [number, number]) => void;
@@ -17,11 +20,13 @@ type Props = {
 type State = {
   searchPhrase: string;
   showSuggestions: boolean;
+  selectedSport: SportFilter;
 };
 
-const initialState = (searchPhrase = "") => ({
+const initialState = (searchPhrase = "", selectedSport = getDefaultSportFilter()) => ({
   searchPhrase,
   showSuggestions: false,
+  selectedSport
 });
 
 class SearchContainer extends Component<Props, State> {
@@ -37,12 +42,13 @@ class SearchContainer extends Component<Props, State> {
    * @param  {string} value [description]
    * @return {void}       [description]
    */
-  onInputChange = (value: string): void => {
+  onInputChange = (value: string, selectedSport: SportFilter): void => {
     this.setState({
       searchPhrase: value,
       showSuggestions: true,
+      selectedSport
     });
-    this.getSuggestions(value);
+    this.getSuggestions(value, selectedSport);
   };
 
   search = () => {
@@ -59,10 +65,10 @@ class SearchContainer extends Component<Props, State> {
    * @param  {string} searchPhrase [description]
    * @return {void}              [description]
    */
-  getSuggestions = (searchPhrase: string): void => {
+  getSuggestions = (searchPhrase: string, selectedSport: SportFilter): void => {
     const { onFindSuggestions } = this.props;
 
-    onFindSuggestions(searchPhrase);
+    onFindSuggestions(searchPhrase, selectedSport);
   };
 
   clear = () => {

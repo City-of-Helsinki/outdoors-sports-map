@@ -1,10 +1,12 @@
 import { useTranslation } from "react-i18next";
 
 import SMIcon from "../../common/components/SMIcon";
+import useAppSearch from "../app/useAppSearch";
+import { SportFilter } from "../unit/unitConstants";
 
 type Props = {
   input: string;
-  onInput: (value: string) => void;
+  onInput: (value: string, selectedSport: SportFilter) => void;
   onSubmit: () => void;
   onClear: () => void;
   searchActive: boolean;
@@ -20,6 +22,7 @@ function SearchBar({
   disabled,
 }: Props) {
   const { t } = useTranslation();
+  const {sport}=useAppSearch();
 
   return (
     <div className="search-bar">
@@ -42,7 +45,7 @@ function SearchBar({
           id="search"
           aria-label={t("SEARCH.SEARCH")}
           type="text"
-          onChange={(e) => onInput(e.target.value)}
+          onChange={(e) => onInput(e.target.value, sport)}
           placeholder={
             disabled
               ? `      ${t("GENERAL.LOADING")}`

@@ -16,6 +16,13 @@ export const UnitServices = {
   ICE_SWIMMING_PLACE: 684,
 };
 
+export const CompactUnitServices = {
+  SKI: "191,318",
+  ICESKATE: "695,406,235,514,407",
+  SWIM: "731,730,426",
+  ICESWIM: "684",
+};
+
 export const IceSkatingServices = [
   UnitServices.MECHANICALLY_FROZEN_ICE,
   UnitServices.ICE_SKATING_FIELD,
