@@ -1,8 +1,7 @@
-import values from "lodash/values";
 import { createAction } from "redux-actions";
 
 import { Action } from "../../../app/appConstants";
-import { UnitServices } from "../../../service/serviceConstants";
+import { getOnSeasonServices } from "../../../service/serviceHelpers";
 import { NormalizedUnitSchema } from "../../../unit/unitConstants";
 import { MAX_SUGGESTION_COUNT, UnitSearchActions } from "../../unitConstants";
 
@@ -14,7 +13,7 @@ export const searchUnits = (
 ): Action => {
   const init = {
     input,
-    service: `${values(UnitServices).join(",")}`,
+    service: `${getOnSeasonServices().join(",")}`,
     type: "unit",
   };
 
@@ -33,7 +32,7 @@ export const fetchUnitSuggestions = (input: string): Action =>
   createAction(UnitSearchActions.FETCH_UNIT_SUGGESTIONS)({
     params: {
       input,
-      service: `${values(UnitServices).join(",")}`,
+      service: `${getOnSeasonServices().join(",")}`,
       page_size: MAX_SUGGESTION_COUNT,
       type: "unit",
     },
