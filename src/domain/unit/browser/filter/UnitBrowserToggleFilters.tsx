@@ -4,6 +4,7 @@ import { useTranslation, withTranslation } from "react-i18next";
 
 import { UnitFilters } from "../../unitConstants";
 
+
 const filterNameToLabel = (filterName: string) => {
   switch (filterName) {
     case UnitFilters.SKIING_FREESTYLE:
@@ -14,6 +15,21 @@ const filterNameToLabel = (filterName: string) => {
 
     case UnitFilters.SKIING_DOG_SKIJORING_TRACK:
       return "UNIT_DETAILS.FILTER.SKIING_DOG_SKIJORING_TRACK";
+
+    case UnitFilters.LEAN_TO:
+      return "UNIT_DETAILS.FILTER.LEAN_TO";
+
+    case UnitFilters.COOKING_FACILITY:
+      return "UNIT_DETAILS.FILTER.COOKING_FACILITY";
+
+    case UnitFilters.INFORMATION_POINT:
+      return "UNIT_DETAILS.FILTER.INFORMATION_POINT";
+
+    case UnitFilters.CAMPING:
+      return "UNIT_DETAILS.FILTER.CAMPING";
+
+    case UnitFilters.SKI_LODGE:
+      return "UNIT_DETAILS.FILTER.SKI_LODGE";
 
     default:
       return "";
@@ -31,7 +47,6 @@ function UnitBrowserToggleFilters(props: UnitFiltersProps): JSX.Element {
   const { activeFilters, filters, name, updateFilter } = props;
   const { t } = useTranslation();
   const active = !!activeFilters.length ? activeFilters.split(',') : [];
-
   const onToggle = (filterName: string, wasChecked: boolean): void => {
     let newFilters = [...active].filter((f) => f !== filterName);
     if (!wasChecked) {

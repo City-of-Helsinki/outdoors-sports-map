@@ -6,6 +6,8 @@ import {
   SkiingServices,
   SwimmingServices,
   IceSwimmingServices,
+  SummerSupportingServices,
+  YearRoundSupportingServices,
 } from "../service/serviceConstants";
 import { normalizeActionName } from "../utils";
 
@@ -25,6 +27,12 @@ export const UnitFilters = {
   ICE_SWIMMING: "iceswim",
   STATUS_OK: "status_ok",
   STATUS_ALL: "status_all",
+  HIKING: "hike",
+  LEAN_TO: "leanto",
+  INFORMATION_POINT: "infopoint",
+  COOKING_FACILITY: "cooking",
+  CAMPING: "camping",
+  SKI_LODGE: "skilodge",
 } as const;
 
 export type UnitFilterValues = typeof UnitFilters[keyof typeof UnitFilters];
@@ -41,6 +49,7 @@ export const SportFilters = [
   UnitFilters.ICE_SKATING,
   UnitFilters.SWIMMING,
   UnitFilters.ICE_SWIMMING,
+  UnitFilters.HIKING,
 ] as const;
 
 export type SportFilter = typeof SportFilters[number];
@@ -52,6 +61,16 @@ export const SkiingFilters = [
 ] as const;
 
 export type SkiingFilter = typeof SkiingFilters[number];
+
+export const HikingFilters = [
+  UnitFilters.CAMPING,
+  UnitFilters.COOKING_FACILITY,
+  UnitFilters.LEAN_TO,
+  UnitFilters.INFORMATION_POINT,
+  UnitFilters.SKI_LODGE,
+] as const;
+
+export type HikingFilter = typeof HikingFilters[number];
 
 export type Translatable<T = string> = {
   fi: T;
@@ -128,6 +147,7 @@ export type Season = {
   end: SeasonDelimiter;
   filters: SportFilter[];
   services: Number[];
+  hikeFilters: HikingFilter[];
 };
 
 export const SummerSeason: Season = {
@@ -140,7 +160,8 @@ export const SummerSeason: Season = {
     month: 9,
   },
   filters: [UnitFilters.SWIMMING],
-  services: [...SwimmingServices],
+  services: [...SwimmingServices, ...SummerSupportingServices],
+  hikeFilters: [UnitFilters.LEAN_TO, UnitFilters.CAMPING],
 };
 
 export const WinterSeason: Season = {
@@ -158,6 +179,7 @@ export const WinterSeason: Season = {
     UnitFilters.ICE_SWIMMING,
   ],
   services: [...IceSkatingServices, ...IceSwimmingServices, ...SkiingServices],
+  hikeFilters: [],
 };
 
 export const YearRoundSeason: Season = {
@@ -170,7 +192,12 @@ export const YearRoundSeason: Season = {
     month: 11,
   },
   filters: [],
-  services: [],
+  services: [...YearRoundSupportingServices],
+  hikeFilters: [
+    UnitFilters.COOKING_FACILITY,
+    UnitFilters.INFORMATION_POINT,
+    UnitFilters.SKI_LODGE,
+  ],
 };
 
 export const Seasons: Array<Season> = [
@@ -227,6 +254,26 @@ export const UnitAutomaticConditionChangeDays = {
     [UnitQualityConst.UNKNOWN]: 10,
   },
   [UnitFilters.ICE_SWIMMING]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.COOKING_FACILITY]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.INFORMATION_POINT]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.CAMPING]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.SKI_LODGE]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.LEAN_TO]: {
     [UnitQualityConst.SATISFACTORY]: undefined,
     [UnitQualityConst.UNKNOWN]: 5,
   },

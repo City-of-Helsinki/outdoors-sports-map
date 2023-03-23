@@ -1,5 +1,5 @@
 import values from "lodash/values";
-import { RefObject } from "react";
+import { RefObject, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Route } from "react-router-dom";
@@ -20,6 +20,7 @@ import UnitBrowserAddressBar from "./UnitBrowserAddressBar";
 import UnitBrowserHeader from "./UnitBrowserHeader";
 import UnitBrowserFilters from "./filter/UnitBrowserFilter";
 import UnitBrowserToggleFilters from "./filter/UnitBrowserToggleFilters";
+import HikingFilter from './filter/supportingServices/HikingFilter';
 import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 
 type Props = {
@@ -36,6 +37,12 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
     fromMap.getAddress
   );
   const hasSubFilters = sport === UnitFilters.SKIING;
+  const [ishikingSelected, setIsHikingSelected] = useState<boolean>(false);
+
+  const handleHikingSelect = useCallback(
+    (isSelected: boolean)=>{
+      setIsHikingSelected(isSelected);
+    },[])
 
   return (
     <Page
@@ -65,6 +72,31 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
             <UnitBrowserToggleFilters
               name="sportSpecification"
               filters={getSportSpecificationFilters(sport)}
+              updateFilter={doSearch}
+              activeFilters={sportSpecification}
+            />
+          )}
+        </>)}
+      </div>
+      <div className="unit-browser__fixed">
+      {!isLoading && (<>
+          <HikingFilter
+            filters={[
+              {
+                name: "sport",
+                active: UnitFilters.HIKING,
+                options: [UnitFilters.HIKING],
+                isHiking: true,
+              }
+            ]}
+            updateFilter={doSearch}
+            handleHikingSelect={handleHikingSelect}
+            isSelected={ishikingSelected}
+          />
+          {ishikingSelected && (
+            <UnitBrowserToggleFilters
+              name="sportSpecification"
+              filters={getSportSpecificationFilters(UnitFilters.HIKING)}
               updateFilter={doSearch}
               activeFilters={sportSpecification}
             />

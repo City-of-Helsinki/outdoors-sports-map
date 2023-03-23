@@ -50,7 +50,13 @@
       "SKIING_FREESTYLE": "Freestyle",
       "SKIING_TRADITIONAL": "Classic",
       "SKIING_DOG_SKIJORING_TRACK": "Dog skijoring",
-      "ICE_SWIMMING": "Ice swimming"
+      "ICE_SWIMMING": "Ice swimming",
+      "LEAN_TO": "Lapp tent shelter / earth lodge",
+      "INFORMATION_POINT": "Information point",
+      "COOKING_FACILITY": "Cooking facility",
+      "CAMPING": "Camping",
+      "SKI_LODGE": "Outdoor / ski lodge",
+      "HIKING": "Hiking"
     },
     "FILTER_SPORT": "Choose Sport",
     "FILTER_STATUS": "Choose Condition",
@@ -70,7 +76,8 @@
     "DRESSING_ROOM": "Dressing room",
     "DOG_SKIJORING_TRACK": "Dog skijoring track",
     "PARKING": "Parking",
-    "OTHER_SERVICES": "Other services"
+    "OTHER_SERVICES": "Other services",
+    "SUPPORTING_SERVICES": "Outdoor services"
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",

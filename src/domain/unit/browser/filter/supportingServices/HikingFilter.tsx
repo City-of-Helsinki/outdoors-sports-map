@@ -4,10 +4,10 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { withTranslation } from "react-i18next";
 
-import { UnitFilters } from "../../unitConstants";
-import UnitFilterButton from "./UnitBrowserFilterButton";
-import UnitFilterLabelButton from "./UnitBrowserFilterLabelButton";
-import UnitFilterOptionsWrapper from "./UnitBrowserFilterOptionsWrapper";
+import { UnitFilters } from "../../../unitConstants";
+import UnitFilterButton from "../UnitBrowserFilterButton";
+import UnitFilterLabelButton from "../UnitBrowserFilterLabelButton";
+import UnitFilterOptionsWrapper from "../UnitBrowserFilterOptionsWrapper";
 
 type UnitFilterProps = {
   name: string;
@@ -20,6 +20,8 @@ type UnitFiltersProps = {
   filters: Array<UnitFilterProps>;
   t: () => string;
   updateFilter: (filter: string, value: string) => void;
+  handleHikingSelect: (isSelected: boolean) => void;
+  isSelected: boolean;
 };
 type FilterOptionsRowProps = {
   t: (arg0: string) => string;
@@ -110,19 +112,6 @@ function FilterOption({
             onSelect={handleSelect}
             t={t}
           />
-          {filter.secondaryOptions && (
-            <Row as="hr" className="unit-filters__options-separator" />
-          )}
-          {filter.secondaryOptions && (
-            <FilterOptionsRow
-              className="unit-filters__options secondary"
-              filterName={filter.name}
-              options={filter.secondaryOptions}
-              onKeyDown={handleKeyDown}
-              onSelect={handleSelect}
-              t={t}
-            />
-          )}
         </UnitFilterOptionsWrapper>
       )}
     </div>
@@ -142,7 +131,7 @@ type State = {
   expandedFilter: {} | null;
 };
 
-export class UnitBrowserFilter extends React.Component<
+export class HikingFilter extends React.Component<
   UnitFiltersProps,
   State
 > {
@@ -154,12 +143,11 @@ export class UnitBrowserFilter extends React.Component<
   }
 
   onMenuSelect = (key: string, value: string): void => {
-    const { updateFilter } = this.props;
-
+    const {handleHikingSelect, isSelected } = this.props;
     this.setState({
       expandedFilter: null,
     });
-    updateFilter(key, value);
+    handleHikingSelect(!isSelected);
   };
 
   toggleExpandedFilter = (filter: Record<string, any>) => {
@@ -173,8 +161,7 @@ export class UnitBrowserFilter extends React.Component<
 
   render() {
     const { filters, t } = this.props;
-    const { expandedFilter } = this.state;
-
+    const { expandedFilter } = this.state;  
     return (
       <div className="unit-filters">
         <Container className="unit-filters__filters">
@@ -197,4 +184,4 @@ export class UnitBrowserFilter extends React.Component<
   }
 }
 
-export default withTranslation()(UnitBrowserFilter);
+export default withTranslation()(HikingFilter);

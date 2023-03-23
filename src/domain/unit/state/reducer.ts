@@ -8,6 +8,7 @@ import {
   SkiingServices,
   SwimmingServices,
   IceSwimmingServices,
+  SupportingServices,
 } from "../../service/serviceConstants";
 import { QualityEnum, UnitActions } from "../unitConstants";
 import {
@@ -123,6 +124,23 @@ const iceswim = handleActions(
   []
 );
 
+const supportingService = handleActions(
+  {
+    [UnitActions.RECEIVE]: (
+      state: Record<string, any>,
+      { payload: { entities } }: EntityAction
+    ) => [
+      ...keys(entities.unit).filter((id) =>
+        entities.unit[id].services.some(
+          (unitService: number) =>
+            SupportingServices.indexOf(unitService) !== -1
+        )
+      ),
+    ],
+  },
+  []
+);
+
 const statusOk = handleActions(
   {
     [UnitActions.RECEIVE]: (
@@ -149,6 +167,7 @@ const reducer = combineReducers({
   swim,
   iceswim,
   status_ok: statusOk,
+  hike: supportingService,
 });
 
 export default reducer;

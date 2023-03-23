@@ -50,7 +50,13 @@
       "SKIING_FREESTYLE": "Fristil",
       "SKIING_TRADITIONAL": "Klassisk",
       "SKIING_DOG_SKIJORING_TRACK": "Hundskidåkning",
-      "ICE_SWIMMING": "Vinterbad"
+      "ICE_SWIMMING": "Vinterbad",
+      "LEAN_TO": "Vindskydd eller kåta",
+      "INFORMATION_POINT": "Information punkt",
+      "COOKING_FACILITY": "Matlagningsplats",
+      "CAMPING": "Tältning och läger",
+      "SKI_LODGE": "Friluftsstuga / skidstuga",
+      "HIKING": "Vandring"
     },
     "FILTER_SPORT": "Välj sportgren",
     "FILTER_STATUS": "Välj skick",
@@ -70,7 +76,8 @@
     "DRESSING_ROOM": "Omklädningsrum",
     "DOG_SKIJORING_TRACK": "Hundskidspår",
     "PARKING": "Parkering",
-    "OTHER_SERVICES": "Andra tjänster"
+    "OTHER_SERVICES": "Andra tjänster",
+    "SUPPORTING_SERVICES": "Utomhustjänster"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

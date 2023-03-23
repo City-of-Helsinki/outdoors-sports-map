@@ -27,6 +27,7 @@
   &__filters.toggle-filters {
     display: flex;
     width: 100%;
+    flex-wrap: wrap
   }
 
   &__options-wrapper {

@@ -1,9 +1,14 @@
+import { union } from "lodash";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import memoize from "lodash/memoize";
 
 import { AppState } from "../../app/appConstants";
 import {
+  HikingFilter,
+  HikingFilters,
+  SkiingFilter,
+  SkiingFilters,
   SportFilter,
   Unit,
   UnitFilters,
@@ -13,6 +18,7 @@ import {
   getFilteredUnitsBySportSpecification,
   getDefaultSportFilter,
   getDefaultStatusFilter,
+  getNoneHikingUnit,
 } from "../unitHelpers";
 import {
   getIsActive as getSearchActive,
@@ -35,7 +41,22 @@ const _getVisibleUnits = (
   status: UnitFilterValues = getDefaultStatusFilter(),
   sportSpecification: string
 ): Unit[] => {
-  let visibleUnits = state.unit[sport];
+  const hasHikingSportSpecification = sportSpecification
+    .split(",")
+    .some((elm: string) => HikingFilters.includes(elm as HikingFilter));
+  const hasSkiSportSpecification = sportSpecification
+    .split(",")
+    .some((elm: string) => SkiingFilters.includes(elm as SkiingFilter));
+
+  let visibleUnits;
+  if (hasHikingSportSpecification) {
+    const selectedUnit = state.unit[sport],
+      hikeUnit = state.unit[UnitFilters.HIKING],
+      combinedUnit = selectedUnit.concat(hikeUnit);
+    visibleUnits = combinedUnit;
+  } else {
+    visibleUnits = state.unit[sport];
+  }
 
   if (status === UnitFilters.STATUS_OK) {
     visibleUnits = intersection(
@@ -45,14 +66,31 @@ const _getVisibleUnits = (
   }
 
   if (!!sportSpecification) {
-    visibleUnits = intersection(
-      visibleUnits,
-      getFilteredUnitsBySportSpecification(
+    if (hasHikingSportSpecification) {
+      visibleUnits = union(
+        hasSkiSportSpecification
+          ? getFilteredUnitsBySportSpecification(
+              getNoneHikingUnit(visibleUnits, state.unit),
+              state.unit,
+              sportSpecification
+            )
+          : getNoneHikingUnit(visibleUnits, state.unit),
+        getFilteredUnitsBySportSpecification(
+          visibleUnits,
+          state.unit,
+          sportSpecification
+        )
+      );
+    } else {
+      visibleUnits = intersection(
         visibleUnits,
-        state.unit,
-        sportSpecification
-      )
-    );
+        getFilteredUnitsBySportSpecification(
+          visibleUnits,
+          state.unit,
+          sportSpecification
+        )
+      );
+    }
   }
 
   if (getSearchActive(state)) {

@@ -6,22 +6,28 @@ import { UnitFilters } from "../../unitConstants";
 import UnitBrowserFilterButton from "./UnitBrowserFilterButton";
 import UnitBrowserFilterLabel from "./UnitBrowserFilterLabel";
 
-const filterNameToLabel = (filterName: string) => {
-  switch (filterName) {
-    case "sport":
-      return "UNIT_DETAILS.FILTER_SPORT";
+const filterNameToLabel = (filterName: string, isHiking: boolean) => {
+  if( isHiking && filterName==='sport'){
+    return "UNIT_DETAILS.SUPPORTING_SERVICES";
+  }else{
+    switch (filterName) {
+      case "sport":
+        return "UNIT_DETAILS.FILTER_SPORT";
 
-    case "status":
-      return "UNIT_DETAILS.FILTER_STATUS";
+      case "status":
+        return "UNIT_DETAILS.FILTER_STATUS";
 
-    default:
-      return "";
+      default:
+        return "";
+    }
   }
+  
 };
 
 type Filter = {
   name: string;
   active: string;
+  isHiking?: boolean;
 };
 
 type UnitFilterLabelButtonProps = {
@@ -38,7 +44,7 @@ function UnitBrowserFilterLabelButton({
   ...rest
 }: UnitFilterLabelButtonProps) {
   const { t } = useTranslation();
-  const labelMessage = t(filterNameToLabel(filter.name));
+  const labelMessage = t(filterNameToLabel(filter.name, (filter?.isHiking ?? false)));
   const buttonMessage = t(
     `UNIT_DETAILS.FILTER.${invert(UnitFilters)[filter.active]}`
   );

@@ -26,7 +26,27 @@ function UnitIcon({ unit, alt }: Props) {
     case UnitFilters.ICE_SWIMMING:
       icon = "iceswim";
       break;
+    
+    case UnitFilters.COOKING_FACILITY:
+      icon = UnitFilters.COOKING_FACILITY;
+      break;
+    
+    case UnitFilters.CAMPING:
+      icon = UnitFilters.CAMPING;
+      break;
 
+    case UnitFilters.SKI_LODGE:
+      icon = UnitFilters.SKI_LODGE;
+      break;
+
+    case UnitFilters.LEAN_TO:
+      icon = UnitFilters.LEAN_TO;
+      break;
+
+    case UnitFilters.INFORMATION_POINT:
+      icon = UnitFilters.INFORMATION_POINT;
+      break;
+    
     default: // Use default value
   }
   return <OSMIcon className="unit-icon" icon={icon} alt={alt} />;
