@@ -77,7 +77,8 @@
     "DOG_SKIJORING_TRACK": "Dog skijoring track",
     "PARKING": "Parking",
     "OTHER_SERVICES": "Other services",
-    "SUPPORTING_SERVICES": "Outdoor services"
+    "SUPPORTING_SERVICES": "Outdoor services",
+    "MORE_INFO": "More information"
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",

@@ -205,6 +205,10 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unit,
     UnitConnectionTags.OTHER_SERVICES
   )
+  const unitMoreInfoConnection = getConnectionByTag(
+    unit,
+    UnitConnectionTags.MORE_INFO
+  )
   // Should show info if at least some data is present
   if (
     !(
@@ -289,6 +293,12 @@ function LocationInfo({ unit }: LocationInfoProps) {
         <p className="no-margin">
           {`${t("UNIT_DETAILS.OTHER_SERVICES")}`}:{" "}
           {getAttr(unitOtherServicesConnection.name, language)}
+        </p>
+      )}
+      {unitMoreInfoConnection !== undefined && (
+        <p className="no-margin">
+          {`${t("UNIT_DETAILS.MORE_INFO")}`}:{" "}
+          {getAttr(unitMoreInfoConnection.name, language)}
         </p>
       )}
       {unit.phone && (
