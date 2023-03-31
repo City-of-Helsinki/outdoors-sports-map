@@ -92,6 +92,23 @@ function HomeContainer() {
 
         if (adjustedCenter) {
           leafletElement?.setView(adjustedCenter);
+          //if the geometry is a MultiLineString, then zoom in to the bounds of the geometry
+          if(unit.geometry.type === 'MultiLineString') {
+            //get a flat array of coordinates
+            const coordinates = unit.geometry.coordinates.flat();
+            //get the maximum latitude and longitude
+            const maxLat = Math.max(...coordinates.map((coord:number[]) => coord[0])),
+            minLat = Math.min(...coordinates.map((coord:number[]) => coord[0])),
+            maxLng = Math.max(...coordinates.map((coord:number[]) => coord[1])),
+            minLng = Math.min(...coordinates.map((coord:number[]) => coord[1]));
+            //set the zoom to 14 and fit the bounds of the coordinates
+            leafletElement?.setZoom(14);
+            leafletElement?.fitBounds([[minLat, minLng], [maxLat, maxLng]]) 
+            //if the geometry is a point, then zoom in to that point
+          }else{
+            const coordinates = unit.location.coordinates;
+            leafletElement?.flyTo([coordinates[1], coordinates[0]], 14)
+          }
         }
       } else {
         // On mobile we want to move the map 250px down from the center, so the
