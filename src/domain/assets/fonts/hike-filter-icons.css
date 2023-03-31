@@ -1,0 +1,52 @@
+/*
+  Icon Font: fontcustom
+*/
+
+@font-face {
+  font-family: "hike-filter-icons";
+  src: url("./hike-filter-icons.eot");
+  src: url("./hike-filter-icons.eot?#iefix") format("embedded-opentype"),
+       url("./hike-filter-icons.woff2") format("woff2"),
+       url("./hike-filter-icons.woff") format("woff"),
+       url("./hike-filter-icons.ttf") format("truetype"),
+       url("./hike-filter-icons.svg#hike-filter-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "hike-filter-icons";
+    src: url("./hike-filter-icons.svg#hike-filter-icons") format("svg");
+  }
+}
+
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
+.icon-camping:before,
+.icon-cooking:before,
+.icon-hiking:before,
+.icon-infopoint:before,
+.icon-leanto:before,
+.icon-skilodge:before {
+  display: inline-block;
+  font-family: "hike-filter-icons";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.icon-camping:before { content: "\f106"; }
+.icon-cooking:before { content: "\f107"; }
+.icon-hiking:before { content: "\f108"; }
+.icon-infopoint:before { content: "\f109"; }
+.icon-leanto:before { content: "\f10a"; }
+.icon-skilodge:before { content: "\f10b"; }

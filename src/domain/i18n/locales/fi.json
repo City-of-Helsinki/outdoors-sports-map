@@ -50,7 +50,13 @@
       "SKIING_FREESTYLE": "Vapaa",
       "SKIING_TRADITIONAL": "Perinteinen",
       "SKIING_DOG_SKIJORING_TRACK": "Koirahiihto",
-      "ICE_SWIMMING": "Avantouinti"
+      "ICE_SWIMMING": "Avantouinti",
+      "LEAN_TO": "Laavu, kota tai kammi",
+      "INFORMATION_POINT": "Opastuspiste",
+      "COOKING_FACILITY": "Ruoanlaittopaikka",
+      "CAMPING": "Telttailu ja leiriytyminen",
+      "SKI_LODGE": "Ulkoilumaja / hiihtomaja",
+      "HIKING": "Retkeily"
     },
     "FILTER_SPORT": "Valitse laji",
     "FILTER_STATUS": "Valitse kunto",
@@ -70,7 +76,8 @@
     "DRESSING_ROOM": "Pukukoppi",
     "DOG_SKIJORING_TRACK": "Koirahiihtolatu",
     "PARKING": "Pysäköinti",
-    "OTHER_SERVICES": "Muut palvelut"
+    "OTHER_SERVICES": "Muut palvelut",
+    "SUPPORTING_SERVICES": "Ulkoilun palvelut"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",

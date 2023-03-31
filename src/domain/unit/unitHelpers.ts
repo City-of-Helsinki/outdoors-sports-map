@@ -20,6 +20,7 @@ import {
   SwimmingServices,
   UnitServices,
   IceSwimmingServices,
+  SupportingServices,
 } from "../service/serviceConstants";
 import { getOnSeasonServices } from "../service/serviceHelpers";
 import { getToday, isOnSeason } from "./seasons";
@@ -42,6 +43,7 @@ import {
   UnitAutomaticConditionChangeDays,
   UnitConnectionTags,
   UnitQualityConst,
+  HikingFilter,
 } from "./unitConstants";
 
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
@@ -134,6 +136,27 @@ export const getUnitSport = (unit: Unit) => {
 
       if (IceSwimmingServices.includes(service)) {
         return UnitFilters.ICE_SWIMMING;
+      }
+      if (SupportingServices.includes(service)) {
+        switch (service) {
+          case UnitServices.COOKING_FACILITY:
+            return UnitFilters.COOKING_FACILITY;
+
+          case UnitServices.CAMPING:
+            return UnitFilters.CAMPING;
+
+          case UnitServices.SKI_LODGE:
+            return UnitFilters.SKI_LODGE;
+
+          case UnitServices.INFORMATION_POINT:
+            return UnitFilters.INFORMATION_POINT;
+
+          case UnitServices.LEAN_TO:
+            return UnitFilters.LEAN_TO;
+
+          default:
+            return "unknown";
+        }
       }
     }
   }
@@ -262,11 +285,23 @@ export const getDefaultFilters = () => ({
   sport: getDefaultSportFilter(),
 });
 
+export const getOnSeasonHikeFilters = (
+  date: SeasonDelimiter = getToday()
+): HikingFilter[] =>
+  Seasons.filter((season) => isOnSeason(date, season))
+    .map(({ hikeFilters }) => hikeFilters)
+    .reduce((flattened, filters) => [...flattened, ...filters], []);
+
 export const getSportSpecificationFilters = (
   sport: SportFilter
-): SkiingFilter[] => {
+): SkiingFilter[] | HikingFilter[] => {
   if (sport === UnitFilters.SKIING) {
     return [...SkiingFilters];
+  }
+
+  if (sport === UnitFilters.HIKING) {
+    const seasonHikeFilters = getOnSeasonHikeFilters();
+    return seasonHikeFilters;
   }
   return [];
 };
@@ -368,6 +403,28 @@ export const getOnSeasonSportServices = () => {
   }
 };
 
+export const getNoneHikingUnit = (
+  visibleUnits: string[],
+  stateUnits: AppState["unit"]
+): string[] => {
+  // Create array from all the unit objects.
+  const visibleUnitObjects: Unit[] = Object.assign(
+    [],
+    Object.values(stateUnits.byId).filter((u) =>
+      visibleUnits.includes(u.id.toString())
+    )
+  );
+
+  return visibleUnitObjects
+    .filter((u) => {
+      const containsService = u.services.some((item) =>
+        SupportingServices.includes(item)
+      );
+      return !containsService ? u : null;
+    })
+    .map((u) => u.id.toString());
+};
+
 export const getFilteredUnitsBySportSpecification = (
   visibleUnits: string[],
   stateUnits: AppState["unit"],
@@ -394,7 +451,21 @@ export const getFilteredUnitsBySportSpecification = (
   const hasDogSkijoringFilter: boolean = sportSpecification.includes(
     UnitFilters.SKIING_DOG_SKIJORING_TRACK
   );
-
+  const hasLeanToFilter: boolean = sportSpecification.includes(
+    UnitFilters.LEAN_TO
+  );
+  const hasCookingFilter: boolean = sportSpecification.includes(
+    UnitFilters.COOKING_FACILITY
+  );
+  const hasCampingFilter: boolean = sportSpecification.includes(
+    UnitFilters.CAMPING
+  );
+  const hasInfoPointFilter: boolean = sportSpecification.includes(
+    UnitFilters.INFORMATION_POINT
+  );
+  const hasSkiLodgeFilter: boolean = sportSpecification.includes(
+    UnitFilters.SKI_LODGE
+  );
   const skiTrackFreestyleUnits = (): string[] => {
     if (!hasFreestyleFilter) return [];
 
@@ -431,11 +502,79 @@ export const getFilteredUnitsBySportSpecification = (
       .map((u) => u.id.toString());
   };
 
+  const leanToUnits = (): string[] => {
+    if (!hasLeanToFilter) return [];
+
+    // Get list of unit IDs where services includes LeanTo service ids
+    return visibleUnitObjects
+      .filter((u) => {
+        const containsService = u.services.includes(UnitServices.LEAN_TO);
+        return containsService ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  const CookingFacilityUnits = (): string[] => {
+    if (!hasCookingFilter) return [];
+
+    // Get list of unit IDs where services includes cooking facility service ids
+    return visibleUnitObjects
+      .filter((u) => {
+        const containsService = u.services.includes(
+          UnitServices.COOKING_FACILITY
+        );
+        return containsService ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  const CampingUnits = (): string[] => {
+    if (!hasCampingFilter) return [];
+
+    // Get list of unit IDs where services includes camping service ids
+    return visibleUnitObjects
+      .filter((u) => {
+        const containsService = u.services.includes(UnitServices.CAMPING);
+        return containsService ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  const InformationPointUnits = (): string[] => {
+    if (!hasInfoPointFilter) return [];
+
+    // Get list of unit IDs where services includes information point service ids
+    return visibleUnitObjects
+      .filter((u) => {
+        const containsService = u.services.includes(
+          UnitServices.INFORMATION_POINT
+        );
+        return containsService ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
+
+  const SkiLodgeUnits = (): string[] => {
+    if (!hasSkiLodgeFilter) return [];
+
+    // Get list of unit IDs where services includes ski lodge service ids
+    return visibleUnitObjects
+      .filter((u) => {
+        const containsService = u.services.includes(UnitServices.SKI_LODGE);
+        return containsService ? u : null;
+      })
+      .map((u) => u.id.toString());
+  };
   // merge arrays into one and remove duplicate items from it
   const filteredUnits: string[] = union(
     skiTrackFreestyleUnits(),
     skiTrackTraditionalUnits(),
-    skiTrackDogSkijoring()
+    skiTrackDogSkijoring(),
+    leanToUnits(),
+    CookingFacilityUnits(),
+    CampingUnits(),
+    InformationPointUnits(),
+    SkiLodgeUnits()
   );
 
   return filteredUnits;

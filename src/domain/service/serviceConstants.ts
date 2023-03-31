@@ -14,6 +14,11 @@ export const UnitServices = {
   SWIMMING_PLACE: 730,
   OUTDOOR_POOL: 426,
   ICE_SWIMMING_PLACE: 684,
+  LEAN_TO: 365,
+  INFORMATION_POINT: 482,
+  COOKING_FACILITY: 586,
+  CAMPING: 698,
+  SKI_LODGE: 734,
 };
 
 export const IceSkatingServices = [
@@ -36,6 +41,25 @@ export const SwimmingServices = [
 ];
 
 export const IceSwimmingServices = [UnitServices.ICE_SWIMMING_PLACE];
+
+export const SupportingServices = [
+  UnitServices.LEAN_TO,
+  UnitServices.INFORMATION_POINT,
+  UnitServices.COOKING_FACILITY,
+  UnitServices.CAMPING,
+  UnitServices.SKI_LODGE,
+];
+
+export const SummerSupportingServices = [
+  UnitServices.LEAN_TO,
+  UnitServices.CAMPING,
+];
+
+export const YearRoundSupportingServices = [
+  UnitServices.COOKING_FACILITY,
+  UnitServices.INFORMATION_POINT,
+  UnitServices.SKI_LODGE,
+];
 
 export const ServiceActions = {
   FETCH: normalizeActionName("service/FETCH"),
