@@ -89,6 +89,7 @@ class MapView extends Component<Props, State> {
   };
 
   setView = (coordinates: [number, number]) => {
+    console.log('coordinates from MapView setView are ====>', coordinates)
     this.leafletElement?.setView(coordinates);
   };
 
@@ -106,7 +107,7 @@ class MapView extends Component<Props, State> {
     } = this.props;
 
     const { zoomLevel } = this.state;
-
+    console.log('selectedUnit from MapView is ====>', selectedUnit)
     return (
       <View
         id="map-view"

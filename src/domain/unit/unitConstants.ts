@@ -108,7 +108,7 @@ export type Unit = {
   };
   phone?: string;
   url?: string;
-  geometry: Geometry;
+  geometry: Geometry & { coordinates: Array<Array<number>> };
   location: {
     coordinates: [number, number];
   };
