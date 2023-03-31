@@ -77,7 +77,8 @@
     "DOG_SKIJORING_TRACK": "Hundskidspår",
     "PARKING": "Parkering",
     "OTHER_SERVICES": "Andra tjänster",
-    "SUPPORTING_SERVICES": "Utomhustjänster"
+    "SUPPORTING_SERVICES": "Utomhustjänster",
+    "MORE_INFO": "Mer information"
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

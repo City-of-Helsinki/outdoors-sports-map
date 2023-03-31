@@ -77,7 +77,8 @@
     "DOG_SKIJORING_TRACK": "Koirahiihtolatu",
     "PARKING": "Pysäköinti",
     "OTHER_SERVICES": "Muut palvelut",
-    "SUPPORTING_SERVICES": "Ulkoilun palvelut"
+    "SUPPORTING_SERVICES": "Ulkoilun palvelut",
+    "MORE_INFO": "Lisätietoja"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",

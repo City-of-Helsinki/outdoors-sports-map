@@ -86,6 +86,7 @@ export const UnitConnectionTags = {
   DOG_SKIJORING_TRACK: "#koiralatu",
   PARKING: "#pysäköinti",
   OTHER_SERVICES: "#muut_palvelut",
+  MORE_INFO: "#lisätietoja",
 } as const;
 
 export type UnitConnection = {
