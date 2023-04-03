@@ -6,6 +6,9 @@ export const API_BASE_URL = process.env.REACT_APP_API_URL;
 export const DIGITRANSIT_API_BASE_URL =
   process.env.REACT_APP_DIGITRANSIT_API_URL;
 
+export const DIGITRANSIT_API_KEY =
+  process.env.REACT_APP_DIGITRANSIT_API_KEY;
+
 export const APP_NAME = process.env.REACT_APP_APP_NAME;
 
 export const DEFAULT_LANG = "fi";

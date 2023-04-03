@@ -4,6 +4,7 @@ import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import {
   callApi,
   createDigitransitUrl,
+  createDigitransitRequest,
   createRequest,
   createUrl,
   normalizeEntityResults,
@@ -69,7 +70,7 @@ function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
   if (params.input && params.input.length) {
     const request = createRequest(createUrl("search/", params));
 
-    const addressRequest = createRequest(
+    const addressRequest = createDigitransitRequest(
       createDigitransitUrl("search", digitransitParams)
     );
 
