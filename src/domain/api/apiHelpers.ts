@@ -1,7 +1,11 @@
 import { normalize, Schema } from "normalizr";
 import { call } from "redux-saga/effects";
 
-import { API_BASE_URL, DIGITRANSIT_API_BASE_URL, DIGITRANSIT_API_KEY } from "../app/appConstants";
+import {
+  API_BASE_URL,
+  DIGITRANSIT_API_BASE_URL,
+  DIGITRANSIT_API_KEY,
+} from "../app/appConstants";
 import type { ApiResponse } from "./apiConstants";
 
 export const normalizeEntityResults = <
@@ -47,8 +51,8 @@ export const createUrl = (url: string, params: Record<string, any>): string =>
   `${API_BASE_URL || ""}/${url}${params ? `?${stringifyQuery(params)}` : ""}`;
 
 export const digitransitApiHeaders = () => ({
-  'Cache-Control': 'no-cache',
-  'digitransit-subscription-key': `${DIGITRANSIT_API_KEY}`,
+  "Cache-Control": "no-cache",
+  "digitransit-subscription-key": `${DIGITRANSIT_API_KEY}`,
 });
 
 export const createDigitransitUrl = (
@@ -59,5 +63,7 @@ export const createDigitransitUrl = (
     params ? `?${stringifyQuery(params)}` : ""
   }`;
 
-export const createDigitransitRequest = (url: string, init?: RequestInit): Request =>
-  new Request(url, { headers: digitransitApiHeaders(), ...init });
+export const createDigitransitRequest = (
+  url: string,
+  init?: RequestInit
+): Request => new Request(url, { headers: digitransitApiHeaders(), ...init });
