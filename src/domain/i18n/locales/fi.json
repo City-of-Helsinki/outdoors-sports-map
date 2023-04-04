@@ -78,7 +78,10 @@
     "PARKING": "Pysäköinti",
     "OTHER_SERVICES": "Muut palvelut",
     "SUPPORTING_SERVICES": "Ulkoilun palvelut",
-    "MORE_INFO": "Lisätietoja"
+    "MORE_INFO": "Lisätietoja",
+    "SERVICE_CONDITION": {
+      "DEFAULT": "Käytössä kauden aikana"
+    }
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta...",

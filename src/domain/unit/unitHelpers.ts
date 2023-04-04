@@ -581,8 +581,22 @@ export const getFilteredUnitsBySportSpecification = (
 };
 
 const handleSingleUnitConditionUpdate = (unit: Unit) => {
-  const { observations } = unit;
   const sport = getUnitSport(unit);
+  const filters = [
+    UnitFilters.COOKING_FACILITY,
+    UnitFilters.CAMPING,
+    UnitFilters.LEAN_TO,
+    UnitFilters.INFORMATION_POINT,
+    UnitFilters.SKI_LODGE,
+    UnitFilters.ICE_SWIMMING,
+  ] as string[];
+
+  if (filters.includes(sport)) {
+    const defaultObservations = [getDefaultUnitObservation(unit)];
+    unit.observations = defaultObservations;
+  }
+
+  const { observations } = unit;
 
   // Get latest primary observation
   const primaryObservation = observations.find((obs) => obs.primary) || null;
@@ -663,4 +677,24 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
 
 export const handleUnitConditionUpdates = (units: Record<number, Unit>) => {
   return mapValues(units, (unit) => handleSingleUnitConditionUpdate(unit));
+};
+
+export const getDefaultUnitObservation = (unit: Unit) => {
+  const sport = getUnitSport(unit);
+  const observation = {
+    primary: true,
+    unit: unit.id,
+    time: new Date().toISOString(),
+    expiration_time: null,
+    quality: UnitQualityConst.GOOD,
+    value: UnitQualityConst.GOOD,
+    id: 1400000 + Math.floor(Math.random() * 100000),
+    property: [`${sport}_condition`],
+    name: {
+      fi: i18n.t("UNIT_DETAILS.SERVICE_CONDITION.DEFAULT", { lng: "fi" }),
+      sv: i18n.t("UNIT_DETAILS.SERVICE_CONDITION.DEFAULT", { lng: "sv" }),
+      en: i18n.t("UNIT_DETAILS.SERVICE_CONDITION.DEFAULT", { lng: "en" }),
+    },
+  };
+  return observation;
 };

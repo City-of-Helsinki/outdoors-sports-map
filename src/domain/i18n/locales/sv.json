@@ -78,7 +78,10 @@
     "PARKING": "Parkering",
     "OTHER_SERVICES": "Andra tjänster",
     "SUPPORTING_SERVICES": "Utomhustjänster",
-    "MORE_INFO": "Mer information"
+    "MORE_INFO": "Mer information",
+    "SERVICE_CONDITION": {
+      "DEFAULT": "Används under säsong"
+    }
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

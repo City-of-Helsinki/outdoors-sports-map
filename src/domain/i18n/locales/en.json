@@ -78,7 +78,10 @@
     "PARKING": "Parking",
     "OTHER_SERVICES": "Other services",
     "SUPPORTING_SERVICES": "Outdoor services",
-    "MORE_INFO": "More information"
+    "MORE_INFO": "More information",
+    "SERVICE_CONDITION": {
+      "DEFAULT": "In use during season"
+    }
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",
