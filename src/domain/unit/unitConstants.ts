@@ -194,11 +194,7 @@ export const YearRoundSeason: Season = {
   },
   filters: [],
   services: [...YearRoundSupportingServices],
-  hikeFilters: [
-    UnitFilters.COOKING_FACILITY,
-    UnitFilters.INFORMATION_POINT,
-    UnitFilters.SKI_LODGE,
-  ],
+  hikeFilters: [UnitFilters.COOKING_FACILITY, UnitFilters.SKI_LODGE],
 };
 
 export const Seasons: Array<Season> = [

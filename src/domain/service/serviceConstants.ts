@@ -44,7 +44,6 @@ export const IceSwimmingServices = [UnitServices.ICE_SWIMMING_PLACE];
 
 export const SupportingServices = [
   UnitServices.LEAN_TO,
-  UnitServices.INFORMATION_POINT,
   UnitServices.COOKING_FACILITY,
   UnitServices.CAMPING,
   UnitServices.SKI_LODGE,
@@ -57,7 +56,6 @@ export const SummerSupportingServices = [
 
 export const YearRoundSupportingServices = [
   UnitServices.COOKING_FACILITY,
-  UnitServices.INFORMATION_POINT,
   UnitServices.SKI_LODGE,
 ];
 
