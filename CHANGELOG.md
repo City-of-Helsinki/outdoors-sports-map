@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.2.0] - 2023-04-13
+
+### Added
+
+-   [#193](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/193) Add ice swimming places to map
+-   [#194](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/194) Add water quality information to swimming places
+-   [#197](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/197) Add parking information
+-   [#201](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/201) Add outdoor services to map
+-   [#202](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/202) Add unit additional information
+-   [#205](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/205) Add default observation for ice swimming places and outdoor services
+-   [#207](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/207) Zoom to unit when it is selected
+
+### Changed
+
+-   [#195](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/195) Update service info text
+-   [#200](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/200) Display only season sports
+-   [#204](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/204) Utilize Digitransit API Key
+
 ## [2.1.0] - 2023-01-10
 
 ### Changed
