@@ -1,9 +1,9 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
+import { receiveAddress } from "./actions";
 import { callApi, createRequest, createUrl } from "../../api/apiHelpers";
 import type { PositionAction } from "../../domain/../app/appConstants";
 import { mapActions } from "../mapConstants";
-import { receiveAddress } from "./actions";
 
 function* onSetLocation({
   payload: { position },

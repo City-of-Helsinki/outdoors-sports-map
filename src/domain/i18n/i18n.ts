@@ -3,10 +3,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import moment from "moment";
 import { initReactI18next } from "react-i18next";
 
+import { SUPPORTED_LANGUAGES } from "./i18nConstants";
 import { replaceLanguageInPath } from "../../common/utils/pathUtils";
 import { DEFAULT_LANG } from "../app/appConstants";
 import history from "../app/appHistory";
-import { SUPPORTED_LANGUAGES } from "./i18nConstants";
 
 const getTranslations = () => ({
   fi: {

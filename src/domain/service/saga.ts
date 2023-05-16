@@ -1,12 +1,6 @@
 import { schema } from "normalizr";
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
-import {
-  callApi,
-  createRequest,
-  createUrl,
-  normalizeEntityResults,
-} from "../api/apiHelpers";
 import { receiveServices, setFetchError } from "./actions";
 import {
   ServiceActions,
@@ -15,6 +9,12 @@ import {
   NormalizedService,
 } from "./serviceConstants";
 import { getOnSeasonServices } from "./serviceHelpers";
+import {
+  callApi,
+  createRequest,
+  createUrl,
+  normalizeEntityResults,
+} from "../api/apiHelpers";
 
 function* fetchServices() {
   const request = createRequest(

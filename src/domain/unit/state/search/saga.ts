@@ -2,6 +2,11 @@ import { schema } from "normalizr";
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
 import {
+  receiveAddressSuggestions,
+  receiveUnitSuggestions,
+  receiveUnits,
+} from "./actions";
+import {
   callApi,
   createDigitransitUrl,
   createDigitransitRequest,
@@ -18,11 +23,6 @@ import {
   UnitSearchActions,
 } from "../../unitConstants";
 import { getFetchUnitsRequest } from "../../unitHelpers";
-import {
-  receiveAddressSuggestions,
-  receiveUnitSuggestions,
-  receiveUnits,
-} from "./actions";
 
 function* searchUnits({
   payload: { params },

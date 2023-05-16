@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async";
 
+import { getCanonicalUrl } from "./helpers";
 import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
 import { SUPPORTED_LANGUAGES } from "../i18n/i18nConstants";
-import { getCanonicalUrl } from "./helpers";
 
 function addLanguageInUrl(urlString: string, language: string) {
   const url = new URL(urlString);

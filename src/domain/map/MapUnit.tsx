@@ -2,10 +2,10 @@ import L from "leaflet";
 import { Component } from "react";
 import { WithTranslationProps, withTranslation } from "react-i18next";
 
-import { Unit } from "../unit/unitConstants";
-import { getUnitQuality } from "../unit/unitHelpers";
 import UnitGeometry from "./MapGeometry";
 import UnitMarker from "./MapUnitMarker";
+import { Unit } from "../unit/unitConstants";
+import { getUnitQuality } from "../unit/unitHelpers";
 
 type Props = WithTranslationProps & {
   unit: Unit;

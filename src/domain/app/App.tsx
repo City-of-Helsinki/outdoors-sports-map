@@ -1,5 +1,7 @@
 import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
 
+import LanguageAwareRoutes from "./AppLanguageAwareRoutes";
+import AppWideNotification from "./appWideNotification/AppWideNotification";
 import JumpLink from "../../common/a11y/JumpLink";
 import ResetFocus from "../../common/a11y/ResetFocus";
 import useLanguage from "../../common/hooks/useLanguage";
@@ -7,8 +9,6 @@ import useScrollToTop from "../../common/hooks/useScrollToTop";
 import { languageParam } from "../i18n/i18nConstants";
 import AppMeta from "../meta/AppMeta";
 import LanguageMeta from "../meta/LanguageMeta";
-import LanguageAwareRoutes from "./AppLanguageAwareRoutes";
-import AppWideNotification from "./appWideNotification/AppWideNotification";
 
 function App() {
   useScrollToTop();

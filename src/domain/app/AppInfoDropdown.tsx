@@ -2,11 +2,11 @@ import { useCallback, useRef, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-import OutboundLink from "../../common/a11y/OutboundLink";
-import SMIcon from "../../common/components/SMIcon";
 import AppAboutModal from "./AppAboutModal";
 import AppAccessibilityModal from "./AppAccessibilityModal";
 import AppFeedbackModal from "./AppFeedbackModal";
+import OutboundLink from "../../common/a11y/OutboundLink";
+import SMIcon from "../../common/components/SMIcon";
 
 // FIXME: When a modal is open, an escape key press will close the modal and
 //        the dropdown.

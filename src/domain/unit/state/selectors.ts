@@ -3,6 +3,10 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import memoize from "lodash/memoize";
 
+import {
+  getIsActive as getSearchActive,
+  getUnitResultIDs,
+} from "./search/selectors";
 import { AppState } from "../../app/appConstants";
 import {
   HikingFilter,
@@ -20,10 +24,6 @@ import {
   getDefaultStatusFilter,
   getNoneHikingUnit,
 } from "../unitHelpers";
-import {
-  getIsActive as getSearchActive,
-  getUnitResultIDs,
-} from "./search/selectors";
 
 export const getUnitById = (state: AppState, props: Record<string, any>) =>
   state.unit.byId[props.id];

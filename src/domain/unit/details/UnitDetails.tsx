@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import breaks from "remark-breaks";
 
+import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
 import OutboundLink from "../../../common/a11y/OutboundLink";
 import Page from "../../../common/a11y/Page";
 import { IconSkiingDogSkijoring, IconSkiingFreestyle, IconSkiingTraditional } from "../../../common/components/CustomIcons";
@@ -36,7 +37,6 @@ import {
   getObservationTime,
   getOpeningHours,
 } from "../unitHelpers";
-import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
 
 
 type HeaderProps = {

@@ -3,6 +3,7 @@ import { useCallback, useRef, ReactNode, useState } from "react";
 import { Map as RLMap } from "react-leaflet";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
+import useFetchInitialData from "./useFetchInitialData";
 import useIsMobile from "../../common/hooks/useIsMobile";
 import ApplicationHeader from "../app/AppHeader";
 import AppInfoDropdown from "../app/AppInfoDropdown";
@@ -13,7 +14,6 @@ import { DETAIL_ZOOM_IN } from "../map/mapConstants";
 import UnitBrowser from "../unit/browser/UnitBrowser";
 import UnitDetails from "../unit/details/UnitDetails";
 import { getUnitPosition } from "../unit/unitHelpers";
-import useFetchInitialData from "./useFetchInitialData";
 
 function useIsUnitDetailsSearchView() {
   const match = useRouteMatch({

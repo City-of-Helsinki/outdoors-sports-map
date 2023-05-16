@@ -1,8 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import Time from "../../common/components/Time";
-import TimeAgo from "../../common/components/TimeAgo";
-import useLanguage from "../../common/hooks/useLanguage";
 import { Unit } from "./unitConstants";
 import {
   getAttr,
@@ -11,6 +8,9 @@ import {
   getObservationTime,
   getUnitQuality,
 } from "./unitHelpers";
+import Time from "../../common/components/Time";
+import TimeAgo from "../../common/components/TimeAgo";
+import useLanguage from "../../common/hooks/useLanguage";
 
 type StatusBarProps = {
   quality: string;

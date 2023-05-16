@@ -3,13 +3,13 @@ import { Marker } from "react-leaflet";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
 
-import { AppState } from "../app/appConstants";
-import iconUrl from "../assets/markers/location.png";
-import iconRetinaUrl from "../assets/markers/location@2x.png";
 import AriaHiddenIcon from "./MapAriaHiddenIcon";
 import latLngToArray from "./mapHelpers";
 import { setLocation as setLocationActionFactory } from "./state/actions";
 import { getLocation } from "./state/selectors";
+import { AppState } from "../app/appConstants";
+import iconUrl from "../assets/markers/location.png";
+import iconRetinaUrl from "../assets/markers/location@2x.png";
 
 type Props = {
   setLocation: (coordinates: number[]) => void;

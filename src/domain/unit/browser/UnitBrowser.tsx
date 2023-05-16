@@ -4,6 +4,12 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Route } from "react-router-dom";
 
+import UnitBrowserAddressBar from "./UnitBrowserAddressBar";
+import UnitBrowserHeader from "./UnitBrowserHeader";
+import UnitBrowserFilters from "./filter/UnitBrowserFilter";
+import UnitBrowserToggleFilters from "./filter/UnitBrowserToggleFilters";
+import HikingFilter from './filter/supportingServices/HikingFilter';
+import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 import Page from "../../../common/a11y/Page";
 import useDoSearch from "../../../common/hooks/useDoSearch";
 import { Address, AppState } from "../../app/appConstants";
@@ -16,12 +22,6 @@ import {
   getOnSeasonSportFilters,
   getSportSpecificationFilters,
 } from "../unitHelpers";
-import UnitBrowserAddressBar from "./UnitBrowserAddressBar";
-import UnitBrowserHeader from "./UnitBrowserHeader";
-import UnitBrowserFilters from "./filter/UnitBrowserFilter";
-import UnitBrowserToggleFilters from "./filter/UnitBrowserToggleFilters";
-import HikingFilter from './filter/supportingServices/HikingFilter';
-import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 
 type Props = {
   leafletMap?: RefObject<L.Map | null>;

@@ -1,12 +1,12 @@
 import { normalize, Schema } from "normalizr";
 import { call } from "redux-saga/effects";
 
+import type { ApiResponse } from "./apiConstants";
 import {
   API_BASE_URL,
   DIGITRANSIT_API_BASE_URL,
   DIGITRANSIT_API_KEY,
 } from "../app/appConstants";
-import type { ApiResponse } from "./apiConstants";
 
 export const normalizeEntityResults = <
   T,

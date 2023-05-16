@@ -2,9 +2,9 @@ import invert from "lodash/invert";
 import pick from "lodash/pick";
 import { useTranslation } from "react-i18next";
 
-import { UnitFilters } from "../../unitConstants";
 import UnitBrowserFilterButton from "./UnitBrowserFilterButton";
 import UnitBrowserFilterLabel from "./UnitBrowserFilterLabel";
+import { UnitFilters } from "../../unitConstants";
 
 const filterNameToLabel = (filterName: string, isHiking: boolean) => {
   if( isHiking && filterName==='sport'){

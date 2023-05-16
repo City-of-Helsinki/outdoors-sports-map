@@ -1,8 +1,8 @@
 import isEmpty from "lodash/isEmpty";
 
+import MapUnit from "./MapUnit";
 import { Unit } from "../unit/unitConstants";
 import { getUnitQuality, sortByCondition } from "../unit/unitHelpers";
-import MapUnit from "./MapUnit";
 
 type Props = {
   units: Unit[];
