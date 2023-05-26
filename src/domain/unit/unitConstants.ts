@@ -35,14 +35,14 @@ export const UnitFilters = {
   SKI_LODGE: "skilodge",
 } as const;
 
-export type UnitFilterValues = typeof UnitFilters[keyof typeof UnitFilters];
+export type UnitFilterValues = (typeof UnitFilters)[keyof typeof UnitFilters];
 
 export const StatusFilters = [
   UnitFilters.STATUS_ALL,
   UnitFilters.STATUS_OK,
 ] as const;
 
-export type StatusFilter = typeof StatusFilters[number];
+export type StatusFilter = (typeof StatusFilters)[number];
 
 export const SportFilters = [
   UnitFilters.SKIING,
@@ -52,7 +52,7 @@ export const SportFilters = [
   UnitFilters.HIKING,
 ] as const;
 
-export type SportFilter = typeof SportFilters[number];
+export type SportFilter = (typeof SportFilters)[number];
 
 export const SkiingFilters = [
   UnitFilters.SKIING_FREESTYLE,
@@ -60,7 +60,7 @@ export const SkiingFilters = [
   UnitFilters.SKIING_DOG_SKIJORING_TRACK,
 ] as const;
 
-export type SkiingFilter = typeof SkiingFilters[number];
+export type SkiingFilter = (typeof SkiingFilters)[number];
 
 export const HikingFilters = [
   UnitFilters.CAMPING,
@@ -70,7 +70,7 @@ export const HikingFilters = [
   UnitFilters.SKI_LODGE,
 ] as const;
 
-export type HikingFilter = typeof HikingFilters[number];
+export type HikingFilter = (typeof HikingFilters)[number];
 
 export type Translatable<T = string> = {
   fi: T;
@@ -209,7 +209,7 @@ export const SortKeys = {
   CONDITION: "condition",
 } as const;
 
-export type SortKey = typeof SortKeys[keyof typeof SortKeys];
+export type SortKey = (typeof SortKeys)[keyof typeof SortKeys];
 
 export const UNIT_BATCH_SIZE = 20;
 

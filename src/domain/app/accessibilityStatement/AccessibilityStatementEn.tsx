@@ -82,20 +82,19 @@ export default function AccessibilityStatementEn() {
       <h3>Reporting non-accessible content</h3>
       <p>
         If a user feels that accessibility requirements have not been met, they
-        can report the issue by e-mail to <Email>helsinki.palaute@hel.fi</Email>{" "}
-        or through the feedback form at{" "}
+        can report the issue through the feedback form at{" "}
         <LinkWithoutLabel>
-          www.hel.fi/helsinki/en/administration/participate/feedback
+          palautteet.hel.fi
         </LinkWithoutLabel>
         .
       </p>
       <h3>Requesting information in an accessible format</h3>
       <p>
         If a user feels that content on a website is not available in an
-        accessible format, they can request for this information by e-mail at 
-        <Email>helsinki.palaute@hel.fi</Email> or through the feedback form at{" "}
+        accessible format, they can request for this information through the 
+        feedback form at{" "}
         <LinkWithoutLabel>
-          www.hel.fi/helsinki/en/administration/participate/feedback
+          palautteet.hel.fi
         </LinkWithoutLabel>
         . The aim is to reply to the enquiry within a reasonable time frame.
       </p>

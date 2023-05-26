@@ -14,7 +14,8 @@ const localStorageMock = {
 };
 
 // eslint-disable-next-line no-undef
-global.localStorage = localStorageMock;
+global.localStorage ??= Object.create(localStorageMock);
+
 jest.spyOn(window.navigator, "languages", "get").mockReturnValue(["fi"]);
 configure({
   adapter: new Adapter(),
