@@ -10,7 +10,7 @@ function* sendFeedback({ payload: { feedback, email } }: Action) {
     service_request_type: "OTHER",
     can_be_published: false,
     internal_feedback: true,
-    service_code: 2815,
+    service_code: 2807,
     email: undefined,
   };
 
