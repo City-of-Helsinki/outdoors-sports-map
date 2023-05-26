@@ -77,9 +77,8 @@ export default function AccessibilityStatementFi() {
       <h3>Ilmoittaminen ei-saavutettavasta sisällöstä</h3>
       <p>
         Jos käyttäjä kokee, etteivät saavutettavuuden vaatimukset kuitenkaan
-        täyty, voi tästä tehdä ilmoituksen sähköpostilla{" "}
-        <Email>helsinki.palaute@hel.fi</Email> tai palautelomakkeella{" "}
-        <LinkWithoutLabel>www.hel.fi/palaute</LinkWithoutLabel>.
+        täyty, voi tästä tehdä ilmoituksen palautelomakkeella{" "}
+        <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>.
       </p>
       <p>
         <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute">
@@ -89,10 +88,9 @@ export default function AccessibilityStatementFi() {
       <h3>Tietojen pyytäminen saavutettavassa muodossa</h3>
       <p>
         Jos käyttäjä ei koe saavansa sivuston sisältöä saavutettavassa
-        muodossa, voi käyttäjä pyytää näitä tietoja sähköpostilla 
-        <Email>helsinki.palaute@hel.fi</Email>  tai palautelomakkeella 
-        <LinkWithoutLabel>www.hel.fi/palaute</LinkWithoutLabel>
-        . Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
+        muodossa, voi käyttäjä pyytää näitä tietoja palautelomakkeella{" "}
+        <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>
+        . Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
       </p>
       <p>
         <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute">
