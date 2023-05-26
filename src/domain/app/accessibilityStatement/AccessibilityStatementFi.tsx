@@ -88,9 +88,9 @@ export default function AccessibilityStatementFi() {
       <h3>Tietojen pyytäminen saavutettavassa muodossa</h3>
       <p>
         Jos käyttäjä ei koe saavansa sivuston sisältöä saavutettavassa
-        muodossa, voi käyttäjä pyytää näitä tietoja palautelomakkeella{" "}
+        muodossa,&nbsp;voi käyttäjä pyytää näitä tietoja palautelomakkeella&nbsp;
         <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>
-        . Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
+        .&nbsp;Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
       </p>
       <p>
         <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute">
