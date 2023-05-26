@@ -78,25 +78,23 @@ export default function AccessibilityStatementSv() {
       <h3>Anmäl icke-tillgängligt innehåll</h3>
       <p>
         Om användaren upplever att tillgänglighetskraven trots allt inte
-        uppfylls kan hen göra en anmälan per e-post{" "}
-        <Email>helsinki.palaute@hel.fi</Email> eller med responsformuläret{" "}
-        <LinkWithoutLabel>www.hel.fi/respons</LinkWithoutLabel>.
+        uppfylls kan hen göra en anmälan med responsformuläret{" "}
+        <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>.
       </p>
       <p>
-        <Link href="https://www.hel.fi/helsinki/sv/stad-och-forvaltning/delta/feedback">
+        <Link href="https://palautteet.hel.fi">
           Till responsformuläret
         </Link>
       </p>
       <h3>Begäran om uppgifter i tillgänglig form</h3>
       <p>
         Om användaren upplever att hen inte får webbplatsens innehåll i
-        tillgängligt format, kan informationen begäras per e-post 
-        <Email>helsinki.palaute@hel.fi</Email> eller med responsformuläret 
-        <LinkWithoutLabel>www.hel.fi/respons</LinkWithoutLabel>
+        tillgängligt format, kan informationen begäras med responsformuläret 
+        <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>
         . Staden strävar efter att besvara förfrågningar inom rimlig tid.
       </p>
       <p>
-        <Link href="https://www.hel.fi/helsinki/sv/stad-och-forvaltning/delta/feedback">
+        <Link href="https://palautteet.hel.fi">
           Till responsformuläret
         </Link>
       </p>
