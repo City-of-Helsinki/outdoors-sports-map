@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 
-import UnitBrowserFilterIcon from "./UnitBrowserFilterIcon";
 import DropdownIndicator from "../../../../common/components/DropdownIndicator";
+import UnitBrowserFilterIcon from "./UnitBrowserFilterIcon";
 
 type Props = {
   filterName: string;

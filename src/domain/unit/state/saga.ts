@@ -1,11 +1,6 @@
 import { schema } from "normalizr";
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
-import {
-  receiveSearchSuggestions,
-  receiveUnits,
-  setFetchError,
-} from "./actions";
 import { callApi, normalizeEntityResults } from "../../api/apiHelpers";
 import { FetchAction } from "../../app/appConstants";
 import {
@@ -15,6 +10,11 @@ import {
   unitSchema,
 } from "../unitConstants";
 import { getFetchUnitsRequest } from "../unitHelpers";
+import {
+  receiveSearchSuggestions,
+  receiveUnits,
+  setFetchError,
+} from "./actions";
 
 function* fetchUnits({ payload: { params } }: FetchAction) {
   const request = getFetchUnitsRequest(params);

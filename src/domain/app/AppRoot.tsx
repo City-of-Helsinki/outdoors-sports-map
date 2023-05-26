@@ -4,9 +4,9 @@ import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { PersistGate } from "redux-persist/es/integration/react";
 
-import App from "./App";
 import createStore from "../bootstrap/createStore";
 import TranslationProvider from "../i18n/I18nTranslationProvider";
+import App from "./App";
 
 const { persistor, store } = createStore();
 

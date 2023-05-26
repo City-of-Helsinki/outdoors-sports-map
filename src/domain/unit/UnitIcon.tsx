@@ -1,6 +1,6 @@
+import OSMIcon from "../../common/components/OSMIcon";
 import { Unit, UnitFilters } from "./unitConstants";
 import { getUnitSport } from "./unitHelpers";
-import OSMIcon from "../../common/components/OSMIcon";
 
 type Props = {
   unit: Unit;

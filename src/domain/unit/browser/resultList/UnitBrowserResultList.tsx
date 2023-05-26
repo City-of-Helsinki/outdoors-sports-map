@@ -4,8 +4,6 @@ import React, { RefObject, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-import UnitBrowserResultListSort from "./UnitBrowserResultListSort";
-import useUnitSearchResults from "./useUnitSearchResults";
 import Link from "../../../../common/components/Link";
 import Loading from "../../../../common/components/Loading";
 import SMIcon from "../../../../common/components/SMIcon";
@@ -18,6 +16,8 @@ import ObservationStatus from "../../UnitObservationStatus";
 import { View } from "../../UnitView";
 import { SortKeys, Unit, UNIT_BATCH_SIZE } from "../../unitConstants";
 import * as unitHelpers from "../../unitHelpers";
+import UnitBrowserResultListSort from "./UnitBrowserResultListSort";
+import useUnitSearchResults from "./useUnitSearchResults";
 
 type UnitListItemProps = {
   unit: Unit;

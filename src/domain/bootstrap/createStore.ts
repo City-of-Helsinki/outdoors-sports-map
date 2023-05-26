@@ -4,9 +4,9 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 
+import { APP_NAME } from "../app/appConstants";
 import createRootReducer from "./createRootReducer";
 import rootSaga from "./rootSaga";
-import { APP_NAME } from "../app/appConstants";
 
 export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;
 export type RootAction = Parameters<ReturnType<typeof createRootReducer>>[1];

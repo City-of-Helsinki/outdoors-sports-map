@@ -4,10 +4,10 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { withTranslation } from "react-i18next";
 
+import { UnitFilters } from "../../unitConstants";
 import UnitFilterButton from "./UnitBrowserFilterButton";
 import UnitFilterLabelButton from "./UnitBrowserFilterLabelButton";
 import UnitFilterOptionsWrapper from "./UnitBrowserFilterOptionsWrapper";
-import { UnitFilters } from "../../unitConstants";
 
 type UnitFilterProps = {
   name: string;

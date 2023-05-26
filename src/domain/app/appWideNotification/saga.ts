@@ -1,8 +1,8 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 
+import { callApi, createRequest, createUrl } from "../../api/apiHelpers";
 import { receiveAppWideNotifications, setFetchError } from "./actions";
 import { AppWideNotificationActions } from "./appWideNotificationConstants";
-import { callApi, createRequest, createUrl } from "../../api/apiHelpers";
 
 function* fetchAppWideNotifications() {
   const request = createRequest(

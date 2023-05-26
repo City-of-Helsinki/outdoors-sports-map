@@ -11,6 +11,18 @@ import upperFirst from "lodash/upperFirst";
 import values from "lodash/values";
 import moment from "moment";
 
+import { createRequest, createUrl } from "../api/apiHelpers";
+import { AppState, DEFAULT_LANG } from "../app/appConstants";
+import i18n from "../i18n/i18n";
+import {
+  IceSkatingServices,
+  SkiingServices,
+  SwimmingServices,
+  UnitServices,
+  IceSwimmingServices,
+  SupportingServices,
+} from "../service/serviceConstants";
+import { getOnSeasonServices } from "../service/serviceHelpers";
 import { getToday, isOnSeason } from "./seasons";
 import {
   DEFAULT_STATUS_FILTER,
@@ -33,18 +45,6 @@ import {
   UnitQualityConst,
   HikingFilter,
 } from "./unitConstants";
-import { createRequest, createUrl } from "../api/apiHelpers";
-import { AppState, DEFAULT_LANG } from "../app/appConstants";
-import i18n from "../i18n/i18n";
-import {
-  IceSkatingServices,
-  SkiingServices,
-  SwimmingServices,
-  UnitServices,
-  IceSwimmingServices,
-  SupportingServices,
-} from "../service/serviceConstants";
-import { getOnSeasonServices } from "../service/serviceHelpers";
 
 export const getFetchUnitsRequest = (params: Record<string, any>) =>
   createRequest(

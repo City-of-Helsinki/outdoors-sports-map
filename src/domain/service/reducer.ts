@@ -2,8 +2,8 @@ import keys from "lodash/keys";
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
 
-import { ServiceActions } from "./serviceConstants";
 import { EntityAction } from "../../domain/app/appConstants";
+import { ServiceActions } from "./serviceConstants";
 
 const isFetchingReducer = handleActions(
   {

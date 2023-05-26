@@ -1,8 +1,8 @@
 import { createAction } from "redux-actions";
 
-import { ServiceActions, NormalizedServiceSchema } from "./serviceConstants";
 import { Action } from "../../domain/app/appConstants";
 import { ApiResponse } from "../api/apiConstants";
+import { ServiceActions, NormalizedServiceSchema } from "./serviceConstants";
 
 export const fetchServices = (params: Record<string, any>): Action =>
   createAction(ServiceActions.FETCH)({

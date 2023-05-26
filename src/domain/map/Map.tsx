@@ -3,10 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { bindActionCreators } from "redux";
 
-import MapView from "./MapView";
-import { MapRef } from "./mapConstants";
-import { setLocation } from "./state/actions";
-import * as fromMap from "./state/selectors";
 import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
 import { AppState } from "../app/appConstants";
@@ -15,6 +11,10 @@ import routerPaths from "../app/appRoutes";
 import useAppSearch from "../app/useAppSearch";
 import * as fromUnit from "../unit/state/selectors";
 import { Unit } from "../unit/unitConstants";
+import MapView from "./MapView";
+import { MapRef } from "./mapConstants";
+import { setLocation } from "./state/actions";
+import * as fromMap from "./state/selectors";
 
 type Props = {
   onCenterMapToUnit: (unit: Unit) => void;

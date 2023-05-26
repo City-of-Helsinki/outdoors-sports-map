@@ -3,6 +3,10 @@ import { Component, RefObject } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Map, TileLayer, ZoomControl } from "react-leaflet";
 
+import OSMIcon from "../../common/components/OSMIcon";
+import { View } from "../unit/UnitView";
+import { Unit } from "../unit/unitConstants";
+import { isRetina } from "../utils";
 import Control from "./MapControl";
 import MapUnitsOnMap from "./MapUnits";
 import MapUserLocationMarker from "./MapUserLocationMarker";
@@ -16,10 +20,6 @@ import {
   MIN_ZOOM,
 } from "./mapConstants";
 import latLngToArray from "./mapHelpers";
-import OSMIcon from "../../common/components/OSMIcon";
-import { View } from "../unit/UnitView";
-import { Unit } from "../unit/unitConstants";
-import { isRetina } from "../utils";
 
 type Props = WithTranslation & {
   selectedUnit: Unit;

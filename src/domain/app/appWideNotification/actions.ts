@@ -1,11 +1,11 @@
 import { createAction } from "redux-actions";
 
+import { Action } from "../../../domain/app/appConstants";
+import { ApiResponse } from "../../api/apiConstants";
 import {
   AppWideNotificationActions,
   AppWideNotificationObject,
 } from "./appWideNotificationConstants";
-import { Action } from "../../../domain/app/appConstants";
-import { ApiResponse } from "../../api/apiConstants";
 
 export const fetchAppWideNotifications = (
   params: Record<string, any>
