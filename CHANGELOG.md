@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.2.1] - 2023-05-29
+
+### Changed
+
+-   [#214](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/214) Update accessibility statements
+-   Update feedback service code value
+-   Update to use GitHub actions checkout V3
+
+### Fixed
+
+-   [#216](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/216) Fix info icon styles
+
 ## [2.2.0] - 2023-04-13
 
 ### Added
