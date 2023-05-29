@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         uses: andersinno/kolga-build-action@v2
         env:
@@ -40,7 +40,7 @@ jobs:
     needs: build
     name: Staging
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: andersinno/kolga-setup-action@v2
 
       - name: Deploy
