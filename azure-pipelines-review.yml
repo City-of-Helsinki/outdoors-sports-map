@@ -20,7 +20,7 @@ pr:
   # PR target branch
   branches:
     include:
-    - master
+    - develop
 
 # By default, use self-hosted agents
 pool: Default
@@ -37,6 +37,6 @@ extends:
   # Filename in Azure DevOps Repository (note possible -ui or -api)
   # Django example: azure-pipelines-PROJECTNAME-api-release.yml
   # Drupal example: azure-pipelines-drupal-release.yml
-  template: azure-pipelines-ulkoliikuntakartta-review.yml@ulkoliikuntakartta-pipelines
+  template: azure-pipelines-ulkoliikuntakartta-ui-review.yml@ulkoliikuntakartta-pipelines
   #parameters:
     #imagetag: ${{ parameters.imagetag }}
