@@ -52,7 +52,7 @@ The application is now available at [http://localhost:5000](http://localhost:500
 
 ### Starting dockerized production environment
 
-Make sure port `80` is free.
+Make sure port `8080` is free.
 
 Pass build-time variables (replace `<VAR_X>` with actual variable name from `.env` file) to docker image and build with:
 
@@ -69,7 +69,7 @@ _(you can add `--no-cache` to the command if you don't want to use cache from pr
 Start docker container with:
 
 ```
-docker container run -p 80:80 -d outdoors-sports-map
+docker container run -p 8080:8080 -d outdoors-sports-map
 ```
 
 _(you can add `--name outdoors-sports-map` to the command for easier referencing)_
