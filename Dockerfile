@@ -59,4 +59,8 @@ FROM nginx:1.24 AS production
 COPY --from=staticbuilder --chown=nginx:nginx /app/build /usr/share/nginx/html
 COPY .prod/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+# OpenShift write accesses, runtime is created "/var/cache/nginx/client_temp" 
+RUN chgrp -R 0 /var/cache/nginx && chmod g+w -R /var/cache/nginx
+RUN chgrp -R 0 /run && chmod g+w -R /run
+
+EXPOSE 8080
