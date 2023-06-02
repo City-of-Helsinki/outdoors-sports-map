@@ -85,7 +85,7 @@
     "date-fns": "^2.29.3",
     "hds-react": "^2.9.0",
     "history": "4.10.1",
-    "husky": "^4.0.10",
+    "husky": "^5.0.0",
     "i18next": "^19.1.0",
     "i18next-browser-languagedetector": "^4.0.1",
     "leaflet": "1.9.3",
