@@ -20,7 +20,7 @@ pr:
   # PR target branch
   branches:
     include:
-    - develop
+    - master
 
 # By default, use self-hosted agents
 pool: Default
