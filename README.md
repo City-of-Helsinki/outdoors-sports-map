@@ -78,4 +78,22 @@ The application is now available at [http://localhost](http://localhost/).
 
 ## Environments
 
-Test environment: [https://ulkoliikunta.test.kuva.hel.ninja](https://ulkoliikunta.test.kuva.hel.ninja/).
+### Test
+
+Test environment is done from master branch. The pipeline is triggered with a commit to master branch. Normally the commit is pull request merge. 
+
+Test url: [https://ulkoliikunta.test.hel.ninja](https://ulkoliikunta.test.hel.ninja/).
+
+### Review
+
+Review environment is done from pr to master branch. The review environment url is posted to pull request when it is completed.
+
+### Release (staging&production)
+
+Release pipeline is triggered by tag. Tag should be named like 'release-<version>'. The release pipeline builds and deploys the staging environment by default. The production environment requires manual approval in the pipeline [ulkoliikuntakartta-ui-release](https://dev.azure.com/City-of-Helsinki/ulkoliikuntakartta/_build?definitionId=3123&_a=summary)
+
+> Note! Approval requires 2 manual approval, one for build and one for deploy
+
+Staging url: [https://ulkoliikunta.stage.hel.ninja](https://ulkoliikunta.stage.hel.ninja)
+
+Production url: [https://ulkoliikunta.fi](https://ulkoliikunta.fi)
