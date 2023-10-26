@@ -53,7 +53,7 @@ COPY --chown=node:node . /app/.
 RUN yarn build
 
 # ===================================
-FROM nginx:1.24 AS production
+FROM nginx:1.25.3 AS production
 # ===================================
 
 COPY --from=staticbuilder --chown=nginx:nginx /app/build /usr/share/nginx/html
