@@ -15,12 +15,20 @@ function CookieConsent() {
     siteName: t("APP.NAME"),
     currentLanguage:  i18n.language as 'fi' | 'sv' | 'en',
     optionalCookies: {
-      cookies: [
+      groups: [
         {
           commonGroup: 'statistics',
-          commonCookie: 'matomo',
-        },
-      ],
+          cookies: [
+            {
+              id: 'matomo',
+              name: '_pk*',
+              hostName: 'digia.fi',
+              description: t('COOKIES.MATOMO'),
+              expiration: t('COOKIES.EXPIRATION_DAYS', { days: 393 })
+            }
+          ]
+        }
+      ]
     },
     language: {
       onLanguageChange: (code: string) => i18n.changeLanguage(code),
