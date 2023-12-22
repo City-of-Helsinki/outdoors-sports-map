@@ -22,6 +22,9 @@ function CookieConsent() {
         },
       ],
     },
+    language: {
+      onLanguageChange: (code: string) => i18n.changeLanguage(code),
+    },
     focusTargetSelector: '#main-content',
     onAllConsentsGiven: function (consents) {
       if (consents.matomo) {
