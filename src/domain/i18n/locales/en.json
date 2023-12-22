@@ -137,5 +137,9 @@
     "possibly_impaired": "Possibly impaired",
     "probably_impaired": "Possibly impaired",
     "error": "No estimate"
+  },
+  "COOKIES": {
+    "MATOMO": "A cookie of the Matomo statistics system",
+    "EXPIRATION_DAYS": "{{ days }} days"
   }
 }

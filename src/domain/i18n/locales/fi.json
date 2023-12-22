@@ -136,5 +136,9 @@
     "possibly_impaired": "Mahdollisesti heikentynyt",
     "probably_impaired": "Mahdollisesti heikentynyt",
     "error": "Ei arviota"
+  },
+  "COOKIES": {
+    "MATOMO": "Matomo-tilastointijärjestelmän eväste",
+    "EXPIRATION_DAYS": "{{ days }} päivää"
   }
 }

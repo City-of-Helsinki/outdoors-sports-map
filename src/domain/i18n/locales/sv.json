@@ -136,5 +136,9 @@
     "possibly_impaired": "Möjligen försämrad",
     "probably_impaired": "Möjligen försämrad",
     "error": "Inget estimat"
+  },
+  "COOKIES": {
+    "MATOMO": "Kaka för statistiksystemet Matomo",
+    "EXPIRATION_DAYS": "{{ days }} dagar"
   }
 }
