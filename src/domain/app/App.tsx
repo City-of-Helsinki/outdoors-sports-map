@@ -1,7 +1,6 @@
 import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
 
 import LanguageAwareRoutes from "./AppLanguageAwareRoutes";
-import CookieConsent from "./CookieConsent";
 import AppWideNotification from "./appWideNotification/AppWideNotification";
 import JumpLink from "../../common/a11y/JumpLink";
 import ResetFocus from "../../common/a11y/ResetFocus";
@@ -23,7 +22,6 @@ function App() {
       <ResetFocus />
       <JumpLink />
       <AppWideNotification />
-      <CookieConsent />
       <Switch>
         <Route path={`/${languageParam}`} component={LanguageAwareRoutes} />
         <Route

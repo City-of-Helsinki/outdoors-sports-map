@@ -7,6 +7,7 @@ import useFetchInitialData from "./useFetchInitialData";
 import useIsMobile from "../../common/hooks/useIsMobile";
 import ApplicationHeader from "../app/AppHeader";
 import AppInfoDropdown from "../app/AppInfoDropdown";
+import CookieConsent from "../app/CookieConsent";
 import routerPaths from "../app/appRoutes";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import Map from "../map/Map";
@@ -131,38 +132,41 @@ function HomeContainer() {
   useFetchInitialData();
 
   return (
-    <MapLayout
-      content={
-        <Switch>
-          <Route
-            exact
-            path={routerPaths.unitDetails}
-            render={() => (
-              <UnitDetails onCenterMapToUnit={handleCenterMapToUnit} isExpanded={isUnitDetailsExpanded} toggleIsExpanded={toggleIsUnitDetailsExpanded} />
-            )}
+    <>
+      <MapLayout
+        content={
+          <Switch>
+            <Route
+              exact
+              path={routerPaths.unitDetails}
+              render={() => (
+                <UnitDetails onCenterMapToUnit={handleCenterMapToUnit} isExpanded={isUnitDetailsExpanded} toggleIsExpanded={toggleIsUnitDetailsExpanded} />
+              )}
+            />
+            <Route
+              path={routerPaths.unitBrowser}
+              render={() => (
+                <UnitBrowser
+                  leafletMap={leafletElementRef}
+                  onViewChange={handleOnViewChange}
+                />
+              )}
+            />
+          </Switch>
+        }
+        map={
+          <Map
+            mapRef={(ref) => {
+              mapRef.current = ref;
+              leafletElementRef.current = ref?.leafletElement || null;
+            }}
+            leafletElementRef={leafletElementRef}
+            onCenterMapToUnit={handleCenterMapToUnit}
           />
-          <Route
-            path={routerPaths.unitBrowser}
-            render={() => (
-              <UnitBrowser
-                leafletMap={leafletElementRef}
-                onViewChange={handleOnViewChange}
-              />
-            )}
-          />
-        </Switch>
-      }
-      map={
-        <Map
-          mapRef={(ref) => {
-            mapRef.current = ref;
-            leafletElementRef.current = ref?.leafletElement || null;
-          }}
-          leafletElementRef={leafletElementRef}
-          onCenterMapToUnit={handleCenterMapToUnit}
-        />
-      }
-    />
+        }
+      />
+      <CookieConsent />
+    </>
   );
 }
 
