@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.2.2] - 2024-01-09
+
+### Added
+
+-   [#238](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/238) Add HDS CookieConsent modal
+
+### Changed
+
+-   [#221](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/221) Use Platta / OpenShift and Azure DevOps pipelines
+-   [#232](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/232) Use master as default Git-branch with builds
+
 ## [2.2.1] - 2023-05-29
 
 ### Changed
