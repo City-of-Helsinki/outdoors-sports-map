@@ -16,7 +16,7 @@ function UnitBrowserAddressBarProps({ address, handleClick }: Props) {
       type="button"
       className="address-bar__container"
       onClick={() => {
-        const [lat, long] = address.location.coordinates;
+        const [long, lat] = address.location.coordinates;
 
         handleClick([lat, long]);
       }}
