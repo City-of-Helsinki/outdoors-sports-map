@@ -58,25 +58,22 @@
     -->
     <title>Ulkoliikuntakartta</title>
 
-    <!-- Piwik -->
-    <script type="text/javascript">
-      var _paq = window._paq || [];
+    <!-- Matomo -->
+    <script>
+      var _paq = window._paq = window._paq || [];
       _paq.push(['requireCookieConsent']);
-      (function () {
-        var u = "//analytics.hel.ninja/piwik/";
-        _paq.push(["setTrackerUrl", u + "piwik.php"]);
-        _paq.push(["setSiteId", "12"]);
-        var d = document,
-          g = d.createElement("script"),
-          s = d.getElementsByTagName("script")[0];
-        g.type = "text/javascript";
-        g.async = true;
-        g.defer = true;
-        g.src = u + "piwik.js";
-        s.parentNode.insertBefore(g, s);
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//webanalytics.digiaiiris.com/js/";
+        _paq.push(['setTrackerUrl', u+'tracker.php']);
+        _paq.push(['setSiteId', '711']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'piwik.min.js'; s.parentNode.insertBefore(g,s);
       })();
     </script>
-    <!-- End Piwik Code -->
+  <!-- End Matomo Code -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
