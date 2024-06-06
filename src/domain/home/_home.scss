@@ -53,6 +53,10 @@
     & > * {
       pointer-events: initial;
     }
+
+    &.hidden {
+      display: none;
+    }
   }
 
   &-unit-browser {
@@ -65,6 +69,26 @@
 
     &.hidden {
       display: none;
+    }
+  }
+}
+
+.home-container {
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+
+  padding: 10px;
+  color: var(--color-info-light);
+  text-align: right;
+
+  &-icon {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease-in-out;
+
+    &-expanded {
+      transform: rotate(-180deg);
+      transition: transform 0.5s ease-in-out
     }
   }
 }
