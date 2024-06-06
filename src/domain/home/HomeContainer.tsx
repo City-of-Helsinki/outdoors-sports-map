@@ -28,9 +28,11 @@ function useIsUnitDetailsSearchView() {
 type MapLayoutProps = {
   content: ReactNode;
   map: ReactNode;
+  isExpanded: boolean;
+  toggleIsExpanded: () => void;
 };
 
-function MapLayout({ content, map }: MapLayoutProps) {
+function MapLayout({ content, map, isExpanded, toggleIsExpanded }: MapLayoutProps) {
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
   const isUnitDetailsOpen = useIsUnitDetailsSearchView();
 
@@ -45,8 +47,8 @@ function MapLayout({ content, map }: MapLayoutProps) {
           "fill-color-background": isUnitSearchOpen,
         })}
       >
-        <ApplicationHeader />
-        <div className="map-foreground-content">{content}</div>
+        <ApplicationHeader toggleExpand={toggleIsExpanded} isExpanded={isExpanded} />
+        <div className={ isExpanded ? "map-foreground-content" : "map-foreground-content hidden"}>{content}</div>
       </div>
       <AppInfoDropdown />
       <div className="map-container">{map}</div>
@@ -58,10 +60,16 @@ function HomeContainer() {
   const mapRef = useRef<RLMap | null>(null);
   const leafletElementRef = useRef<L.Map | null>(null);
   const isMobile = useIsMobile();
-  const [isUnitDetailsExpanded, setIsUnitDetailsExpanded] = useState(false)
+  const [isUnitDetailsExpanded, setIsUnitDetailsExpanded] = useState(false);
 
   const toggleIsUnitDetailsExpanded = () => {
     setIsUnitDetailsExpanded(!isUnitDetailsExpanded)
+  }
+
+  const [isHomeContainerExpanded, setIsHomeContainerExpanded] = useState(true);
+
+  const toggleIsHomeContainerExpanded = () => {
+    setIsHomeContainerExpanded(!isHomeContainerExpanded)
   }
 
   const handleOnViewChange = useCallback((coordinates) => {
@@ -164,6 +172,8 @@ function HomeContainer() {
             onCenterMapToUnit={handleCenterMapToUnit}
           />
         }
+        isExpanded={isHomeContainerExpanded}
+        toggleIsExpanded={toggleIsHomeContainerExpanded}
       />
       <CookieConsent />
     </>

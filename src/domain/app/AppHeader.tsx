@@ -1,3 +1,4 @@
+import { IconAngleDown } from "hds-react";
 import { useTranslation } from "react-i18next";
 import { Link as RRLink, useLocation } from "react-router-dom";
 
@@ -18,7 +19,12 @@ const countryFlags: {
   en: FlagUnitedKingdom24pxFlat,
 };
 
-function ApplicationHeader() {
+type ApplicationHeaderProps = {
+  toggleExpand: () => void;
+  isExpanded: boolean;
+};
+
+function ApplicationHeader({toggleExpand, isExpanded}: ApplicationHeaderProps) {
   const { t } = useTranslation();
   const currentLanguage = useLanguage();
 
@@ -48,6 +54,7 @@ function ApplicationHeader() {
               />
             </RRLink>
           ))}
+          <IconAngleDown onClick={toggleExpand} className={ isExpanded ? "home-container-icon-expanded" : "home-container-icon"} />
       </div>
     </header>
   );
