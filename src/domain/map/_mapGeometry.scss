@@ -20,8 +20,9 @@
   }
 
   &__hilight {
-    stroke-width: 7px;
-    stroke: $content-text;
+    stroke-width: 8px;
+    stroke-dasharray: 1cap;
+    stroke: $status-selected;
   }
 
   &__click-area {
