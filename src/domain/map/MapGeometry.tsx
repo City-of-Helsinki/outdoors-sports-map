@@ -5,9 +5,10 @@ type Props = {
   geometry: GeoJSON.GeoJsonObject | GeoJSON.GeoJsonObject[];
   isSelected: boolean;
   quality: string;
+  handleClick: (e: L.LeafletMouseEvent) => void;
 };
 
-function MapGeometry({ id, geometry, isSelected, quality, ...rest }: Props) {
+function MapGeometry({ id, geometry, isSelected, quality, handleClick, ...rest }: Props) {
   return (
     <div className="unit-geometry">
       {
@@ -28,6 +29,7 @@ function MapGeometry({ id, geometry, isSelected, quality, ...rest }: Props) {
         className="unit-geometry__click-area"
         key={`${id}_click-area`}
         data={geometry}
+        onClick={handleClick}
         {...rest}
       />
       <GeoJSON // actual track

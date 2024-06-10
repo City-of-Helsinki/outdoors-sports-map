@@ -61,6 +61,7 @@ class MapUnit extends Component<Props> {
             geometry={unit.geometry}
             quality={getUnitQuality(unit)}
             isSelected={isSelected}
+            handleClick={this.handleClick}
           />
         )}
       </div>
