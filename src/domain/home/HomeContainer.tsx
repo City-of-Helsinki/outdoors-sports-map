@@ -102,20 +102,20 @@ function HomeContainer() {
 
         if (adjustedCenter) {
           leafletElement?.setView(adjustedCenter);
-          //if the geometry is a MultiLineString, then zoom in to the bounds of the geometry
-          if(unit.geometry.type === 'MultiLineString') {
-            //get a flat array of coordinates
+          if (unit.geometry.type === 'MultiLineString') {
+            // if the geometry is a MultiLineString, then zoom in to the bounds of the geometry
+            // get a flat array of coordinates
             const coordinates = unit.geometry.coordinates.flat();
-            //get the maximum latitude and longitude
+            // get the maximum latitude and longitude
             const maxLat = Math.max(...coordinates.map((coord:number[]) => coord[0])),
             minLat = Math.min(...coordinates.map((coord:number[]) => coord[0])),
             maxLng = Math.max(...coordinates.map((coord:number[]) => coord[1])),
             minLng = Math.min(...coordinates.map((coord:number[]) => coord[1]));
-            //set the zoom and fit the bounds of the coordinates
+            // set the zoom and fit the bounds of the coordinates
             leafletElement?.setZoom(DETAIL_ZOOM_IN);
             leafletElement?.fitBounds([[minLat, minLng], [maxLat, maxLng]]);
-            //if the geometry is a point, then zoom in to that point
-          }else{
+          } else {
+            // if the geometry is a point, then zoom in to that point
             const coordinates = unit.location.coordinates;
             leafletElement?.flyTo([coordinates[1], coordinates[0]], DETAIL_ZOOM_IN);
           }
