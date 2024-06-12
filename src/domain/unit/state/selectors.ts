@@ -32,14 +32,14 @@ export const getAllUnits = (state: AppState) =>
   state.unit.all.map((id) =>
     getUnitById(state, {
       id,
-    })
+    }),
   );
 
 const _getVisibleUnits = (
   state: AppState,
   sport: SportFilter = getDefaultSportFilter(),
   status: UnitFilterValues = getDefaultStatusFilter(),
-  sportSpecification: string
+  sportSpecification: string,
 ): Unit[] => {
   const hasHikingSportSpecification = sportSpecification
     .split(",")
@@ -61,7 +61,7 @@ const _getVisibleUnits = (
   if (status === UnitFilters.STATUS_OK) {
     visibleUnits = intersection(
       visibleUnits,
-      state.unit[UnitFilters.STATUS_OK]
+      state.unit[UnitFilters.STATUS_OK],
     );
   }
 
@@ -72,14 +72,14 @@ const _getVisibleUnits = (
           ? getFilteredUnitsBySportSpecification(
               getNoneHikingUnit(visibleUnits, state.unit),
               state.unit,
-              sportSpecification
+              sportSpecification,
             )
           : getNoneHikingUnit(visibleUnits, state.unit),
         getFilteredUnitsBySportSpecification(
           visibleUnits,
           state.unit,
-          sportSpecification
-        )
+          sportSpecification,
+        ),
       );
     } else {
       visibleUnits = intersection(
@@ -87,8 +87,8 @@ const _getVisibleUnits = (
         getFilteredUnitsBySportSpecification(
           visibleUnits,
           state.unit,
-          sportSpecification
-        )
+          sportSpecification,
+        ),
       );
     }
   }
@@ -100,7 +100,7 @@ const _getVisibleUnits = (
   return visibleUnits.map((id: string) =>
     getUnitById(state, {
       id,
-    })
+    }),
   );
 };
 
@@ -108,10 +108,10 @@ export const getVisibleUnits = memoize(
   _getVisibleUnits,
   (state, sport, status, sportSpecification) =>
     `${JSON.stringify(state.unit)}${String(
-      getSearchActive(state)
+      getSearchActive(state),
     )}${JSON.stringify(
-      getUnitResultIDs(state)
-    )}${sport},${status},${sportSpecification}`
+      getUnitResultIDs(state),
+    )}${sport},${status},${sportSpecification}`,
 );
 
 export const getIsFetchingUnits = (state: AppState) => state.unit.isFetching;

@@ -9,7 +9,7 @@ export const clearSearch = () => createAction(UnitSearchActions.CLEAR)();
 
 export const searchUnits = (
   input: string,
-  params: Record<string, any> = {}
+  params: Record<string, any> = {},
 ): Action => {
   const init = {
     input,
@@ -42,5 +42,5 @@ export const receiveUnitSuggestions = (results: NormalizedUnitSchema) =>
   createAction(UnitSearchActions.RECEIVE_UNIT_SUGGESTIONS)(results);
 
 export const receiveAddressSuggestions = (
-  results: Array<Record<string, any>>
+  results: Array<Record<string, any>>,
 ) => createAction(UnitSearchActions.RECEIVE_ADDRESS_SUGGESTIONS)(results);

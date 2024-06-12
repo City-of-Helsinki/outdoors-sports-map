@@ -124,7 +124,7 @@ class MapDropdownControl extends MapControl<Props> {
         Object.entries(wrapperAttrs).forEach(
           ([attributeName, attributeValue]) => {
             div.setAttribute(attributeName, attributeValue);
-          }
+          },
         );
       }
 
@@ -138,7 +138,7 @@ class MapDropdownControl extends MapControl<Props> {
       L.DomEvent.on(
         button,
         "mousedown dblclick doubletap touchstart",
-        L.DomEvent.stopPropagation
+        L.DomEvent.stopPropagation,
       )
         .on(button, "click", L.DomEvent.stop)
         .on(button, "click", this.handleClick, control);

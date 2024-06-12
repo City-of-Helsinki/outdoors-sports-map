@@ -22,7 +22,7 @@ export const clearSearch = () => createAction(UnitActions.SEARCH_CLEAR)();
 
 export const searchUnits = (
   input: string,
-  params: Record<string, any>
+  params: Record<string, any>,
 ): Action => {
   const init = {
     input,

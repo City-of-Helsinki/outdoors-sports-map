@@ -11,14 +11,14 @@ export const getUnitResults = (state: AppState): Array<Record<string, any>> =>
   state.search.unitResults.map((id) =>
     getUnitById(state, {
       id,
-    })
+    }),
   );
 
 export const getUnitSuggestions = (state: AppState): Unit[] =>
   state.search.unitSuggestions.map((id) =>
     getUnitById(state, {
       id,
-    })
+    }),
   );
 
 export const getUnitResultIDs = (state: AppState): string[] =>

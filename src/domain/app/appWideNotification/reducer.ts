@@ -9,7 +9,7 @@ const isFetchingReducer = handleActions(
     [AppWideNotificationActions.RECEIVE]: () => false,
     [AppWideNotificationActions.FETCH_ERROR]: () => false,
   },
-  false
+  false,
 );
 
 const fetchErrorReducer = handleActions(
@@ -18,20 +18,20 @@ const fetchErrorReducer = handleActions(
     [AppWideNotificationActions.RECEIVE]: () => null,
     [AppWideNotificationActions.FETCH_ERROR]: (
       state: Record<string, any> | null,
-      action
+      action,
     ) => action?.payload?.error,
   },
-  null
+  null,
 );
 
 const data = handleActions(
   {
     [AppWideNotificationActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload }
+      { payload },
     ) => payload,
   },
-  {}
+  {},
 );
 
 const reducer = combineReducers({

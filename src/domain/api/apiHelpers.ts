@@ -11,10 +11,10 @@ import {
 export const normalizeEntityResults = <
   T,
   E = { [key: string]: { [key: string]: T } | undefined },
-  R = any
+  R = any,
 >(
   results: any,
-  schema: Schema<T>
+  schema: Schema<T>,
 ) => normalize<T, E, R>(results, schema);
 
 export function* callApi(request: Request): Generator<any, ApiResponse, any> {
@@ -57,7 +57,7 @@ export const digitransitApiHeaders = () => ({
 
 export const createDigitransitUrl = (
   url: string,
-  params: Record<string, any>
+  params: Record<string, any>,
 ): string =>
   `${DIGITRANSIT_API_BASE_URL || ""}/${url}${
     params ? `?${stringifyQuery(params)}` : ""
@@ -65,5 +65,5 @@ export const createDigitransitUrl = (
 
 export const createDigitransitRequest = (
   url: string,
-  init?: RequestInit
+  init?: RequestInit,
 ): Request => new Request(url, { headers: digitransitApiHeaders(), ...init });

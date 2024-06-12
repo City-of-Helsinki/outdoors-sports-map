@@ -25,7 +25,7 @@ function useSyncUnitNameWithLanguage(unit?: Unit) {
       // If the unit has a name in the current language, add it into the slug
       if (unitNameInLanguage) {
         nextPathname = `${nextPathname}-${encodeURIComponent(
-          unitNameInLanguage
+          unitNameInLanguage,
         )}`;
       }
 

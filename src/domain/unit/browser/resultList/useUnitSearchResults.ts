@@ -53,11 +53,11 @@ function useUnitSearchResults({ leafletMap }: Options) {
     useAppSearch();
 
   const units = useSelector<AppState, Unit[]>((state) =>
-    fromUnit.getVisibleUnits(state, sport, status, sportSpecification)
+    fromUnit.getVisibleUnits(state, sport, status, sportSpecification),
   );
   const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
   const isSearching = useSelector<AppState, boolean>(
-    fromUnitSearch.getIsFetching
+    fromUnitSearch.getIsFetching,
   );
   const position = useSelector<AppState, [number, number]>(fromMap.getLocation);
 

@@ -9,7 +9,7 @@ export const setLocation = (position: number[]): Action =>
   });
 
 export const receiveAddress = (
-  address: Record<string, any> | null | undefined
+  address: Record<string, any> | null | undefined,
 ): Action =>
   createAction(mapActions.RECEIVE_ADDRESS)({
     address,

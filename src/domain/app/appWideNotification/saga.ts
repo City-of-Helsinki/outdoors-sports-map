@@ -8,7 +8,7 @@ function* fetchAppWideNotifications() {
   const request = createRequest(
     createUrl("announcement/", {
       outdoor_sports_map_usage: 1,
-    })
+    }),
   );
 
   const { response, bodyAsJson } = yield call(callApi, request);

@@ -45,7 +45,7 @@ function useDoSearch() {
         search: searchParams.toString(),
       });
     },
-    [history, search]
+    [history, search],
   );
 
   return doSearch;

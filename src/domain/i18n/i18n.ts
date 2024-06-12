@@ -59,7 +59,7 @@ i18n
         // eslint-disable-next-line no-console
         console.log(err, t);
       }
-    }
+    },
   );
 
 // replace language in url so that the pathname will reflect the current
@@ -71,7 +71,7 @@ i18n.on("languageChanged", (nextLanguage) => {
 
   const containsLanguage = supportedLanguages.reduce(
     (contains, language) => contains || pathname.includes(`/${language}/`),
-    false
+    false,
   );
 
   if (containsLanguage) {

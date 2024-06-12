@@ -12,11 +12,11 @@ declare module "redux-persist/es/persistStore" {
   // tslint:disable-next-line: strict-export-declare-modifiers
   export default function persistStore<
     S = any,
-    A extends Action<any> = AnyAction
+    A extends Action<any> = AnyAction,
   >(
     store: Store<S, A>,
     persistorOptions?: PersistorOptions | null,
-    callback?: () => any
+    callback?: () => any,
   ): Persistor;
 }
 

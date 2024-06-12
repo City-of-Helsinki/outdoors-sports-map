@@ -28,13 +28,13 @@ const createStore = (preloadedState?: RootState) => {
   middlewares.push(sagaMiddleware);
 
   const composedEnhancers = composeWithDevTools(
-    applyMiddleware(...middlewares)
+    applyMiddleware(...middlewares),
   );
 
   const store = rawCreateStore(
     persistedReducer,
     preloadedState,
-    composedEnhancers
+    composedEnhancers,
   );
   const persistor = persistStore(store);
 

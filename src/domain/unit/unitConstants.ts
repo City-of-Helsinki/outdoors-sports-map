@@ -284,10 +284,10 @@ export const UnitActions = {
   SEARCH_REQUEST: normalizeActionName("unit/SEARCH_REQUEST"),
   SEARCH_RECEIVE: normalizeActionName("unit/SEARCH_RECEIVE"),
   FETCH_SEARCH_SUGGESTIONS: normalizeActionName(
-    "unit/FETCH_SEARCH_SUGGESTIONS"
+    "unit/FETCH_SEARCH_SUGGESTIONS",
   ),
   RECEIVE_SEARCH_SUGGESTIONS: normalizeActionName(
-    "unit/RECEIVE_SEARCH_SUGGESTIONS"
+    "unit/RECEIVE_SEARCH_SUGGESTIONS",
   ),
 };
 
@@ -310,13 +310,13 @@ export const UnitSearchActions = {
   FETCH_UNITS: normalizeActionName("unit/search/FETCH_UNITS"),
   RECEIVE_UNITS: normalizeActionName("unit/search/RECEIVE_UNITS"),
   FETCH_UNIT_SUGGESTIONS: normalizeActionName(
-    "unit/search/FETCH_UNIT_SUGGESTIONS"
+    "unit/search/FETCH_UNIT_SUGGESTIONS",
   ),
   RECEIVE_UNIT_SUGGESTIONS: normalizeActionName(
-    "unit/search/RECEIVE_UNIT_SUGGESTIONS"
+    "unit/search/RECEIVE_UNIT_SUGGESTIONS",
   ),
   RECEIVE_ADDRESS_SUGGESTIONS: normalizeActionName(
-    "unit/search/RECEIVE_ADDRESS_SUGGESTIONS"
+    "unit/search/RECEIVE_ADDRESS_SUGGESTIONS",
   ),
 };
 

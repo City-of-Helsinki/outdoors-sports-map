@@ -25,7 +25,7 @@ export function getPathnameWithLanguage(path: string, lang: string): string {
 
 export function getLocationWithLanguage<S>(
   location: H.LocationDescriptorObject<S>,
-  lang: string
+  lang: string,
 ): H.LocationDescriptorObject<S> {
   const pathname = location.pathname;
 
@@ -37,7 +37,7 @@ export function getLocationWithLanguage<S>(
 
 export function getLocationFactoryWithLanguage<S>(
   locationFactory: (location: H.Location<S>) => H.LocationDescriptor<S>,
-  lang: string
+  lang: string,
 ) {
   return ({ pathname, ...rest }: H.Location<S>): H.LocationDescriptor<S> =>
     locationFactory({
