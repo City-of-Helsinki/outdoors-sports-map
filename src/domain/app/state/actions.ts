@@ -8,7 +8,7 @@ export const AppActions = {
 
 export const sendFeedback = (
   feedback: string,
-  email: string | null | undefined
+  email: string | null | undefined,
 ) =>
   createAction(AppActions.SEND_FEEDBACK)({
     feedback,

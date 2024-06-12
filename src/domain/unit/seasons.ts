@@ -5,14 +5,14 @@ import { Season, SeasonDelimiter } from "./unitConstants";
 
 export const isBefore = (
   date: SeasonDelimiter,
-  compare: SeasonDelimiter
+  compare: SeasonDelimiter,
 ): boolean =>
   date.month < compare.month ||
   (date.month === compare.month && date.day < compare.day);
 
 export const isAfter = (
   date: SeasonDelimiter,
-  compare: SeasonDelimiter
+  compare: SeasonDelimiter,
 ): boolean =>
   date.month > compare.month ||
   (date.month === compare.month && date.day > compare.day);
@@ -20,7 +20,7 @@ export const isAfter = (
 export const isBetweenDelimiters = (
   date: SeasonDelimiter,
   start: SeasonDelimiter,
-  end: SeasonDelimiter
+  end: SeasonDelimiter,
 ): boolean => {
   const endBeforeStart = isBefore(end, start);
   const dateBeforeStart = isBefore(date, start);

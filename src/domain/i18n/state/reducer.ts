@@ -7,7 +7,7 @@ const languageReducer = handleActions(
     [languageActions.CHANGE_LANGUAGE]: (state, { payload: language }) =>
       language,
   },
-  null
+  null,
 );
 
 export default languageReducer;

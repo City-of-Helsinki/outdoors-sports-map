@@ -23,7 +23,7 @@ function* fetchUnits({ payload: { params } }: FetchAction) {
   if (response.status === 200) {
     const data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
       bodyAsJson.results,
-      new schema.Array(unitSchema)
+      new schema.Array(unitSchema),
     );
 
     yield put(receiveUnits(data));

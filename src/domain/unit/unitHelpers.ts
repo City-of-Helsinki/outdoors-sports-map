@@ -55,12 +55,12 @@ export const getFetchUnitsRequest = (params: Record<string, any>) =>
       geometry: "true",
       page_size: 1000,
       ...params,
-    })
+    }),
   );
 
 export const getAttr = (
   attr: Record<string, any>,
-  lang: string = DEFAULT_LANG
+  lang: string = DEFAULT_LANG,
 ) => {
   let translated = has(attr, lang) && attr[lang];
 
@@ -106,7 +106,7 @@ export const createReittiopasUrl = (unit: Unit, lang: string) => {
   const coordinates = lat && lon ? encodeURIComponent(`::${lat},${lon}`) : "";
 
   const to = encodeURIComponent(
-    `${upperFirst(street)}, ${upperFirst(municipality)}${coordinates}`
+    `${upperFirst(street)}, ${upperFirst(municipality)}${coordinates}`,
   );
 
   const from = encodeURIComponent(origin);
@@ -186,7 +186,7 @@ export const getUnitQuality = (unit: Unit): string => {
 
 export const getOpeningHours = (unit: Unit, activeLang: string): string[] => {
   const isMechanicallyFrozenIce = unit.services.includes(
-    UnitServices.MECHANICALLY_FROZEN_ICE
+    UnitServices.MECHANICALLY_FROZEN_ICE,
   );
 
   if (!isMechanicallyFrozenIce) {
@@ -209,10 +209,10 @@ export const enumerableQuality = (quality: string): number =>
 
 export const getConnectionByTag = (
   unit: Unit,
-  tag: string
+  tag: string,
 ): UnitConnection | undefined => {
   return unit.connections.find(
-    (connection) => connection.tags && connection.tags.includes(tag)
+    (connection) => connection.tags && connection.tags.includes(tag),
   );
 };
 
@@ -222,7 +222,7 @@ export const getConnectionByTag = (
 export const getUnitIconURL = (
   unit: Unit,
   selected: boolean | null | undefined = false,
-  retina: boolean | null | undefined = true
+  retina: boolean | null | undefined = true,
 ) => {
   const quality = getUnitQuality(unit);
   const sport = getUnitSport(unit);
@@ -230,8 +230,9 @@ export const getUnitIconURL = (
   const resolution = retina ? "@2x" : "";
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  return require(`../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`)
-    .default;
+  return require(
+    `../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`,
+  ).default;
 };
 
 export const getUnitIconHeight = (unit: Unit) =>
@@ -241,7 +242,7 @@ export const getUnitIconHeight = (unit: Unit) =>
 
 export const getUnitIcon = (
   unit: Unit,
-  selected: boolean | null | undefined = false
+  selected: boolean | null | undefined = false,
 ) => ({
   url: getUnitIconURL(unit, selected, false),
   retinaUrl: getUnitIconURL(unit, selected, true),
@@ -249,7 +250,7 @@ export const getUnitIcon = (
 });
 
 export const getFilterIconURL = (
-  filter: string // eslint-disable-next-line global-require, import/no-dynamic-require
+  filter: string, // eslint-disable-next-line global-require, import/no-dynamic-require
 ) =>
   filter ? require(`../assets/icons/icon-white-${filter}@2x.png`).default : "";
 
@@ -257,14 +258,14 @@ export const getFilterIconURL = (
  * FILTERZ
  */
 export const getOnSeasonSportFilters = (
-  date: SeasonDelimiter = getToday()
+  date: SeasonDelimiter = getToday(),
 ): SportFilter[] =>
   Seasons.filter((season) => isOnSeason(date, season))
     .map(({ filters }) => filters)
     .reduce((flattened, filters) => [...flattened, ...filters], []);
 
 export const getOffSeasonSportFilters = (
-  date: SeasonDelimiter = getToday()
+  date: SeasonDelimiter = getToday(),
 ): Array<string> =>
   Seasons.filter((season) => !isOnSeason(date, season))
     .map(({ filters }) => filters)
@@ -286,14 +287,14 @@ export const getDefaultFilters = () => ({
 });
 
 export const getOnSeasonHikeFilters = (
-  date: SeasonDelimiter = getToday()
+  date: SeasonDelimiter = getToday(),
 ): HikingFilter[] =>
   Seasons.filter((season) => isOnSeason(date, season))
     .map(({ hikeFilters }) => hikeFilters)
     .reduce((flattened, filters) => [...flattened, ...filters], []);
 
 export const getSportSpecificationFilters = (
-  sport: SportFilter
+  sport: SportFilter,
 ): SkiingFilter[] | HikingFilter[] => {
   if (sport === UnitFilters.SKIING) {
     return [...SkiingFilters];
@@ -312,7 +313,7 @@ export const getSportSpecificationFilters = (
 const _sortByDistance = (
   units: Unit[],
   position: [number, number],
-  leafletMap: L.Map
+  leafletMap: L.Map,
 ) => {
   if (leafletMap === null) {
     return units;
@@ -331,7 +332,7 @@ const _sortByDistance = (
       }
 
       return positionLatLng.distanceTo(
-        L.GeoJSON.coordsToLatLng(unit.location.coordinates)
+        L.GeoJSON.coordsToLatLng(unit.location.coordinates),
       );
     }
 
@@ -341,7 +342,7 @@ const _sortByDistance = (
       const closestLatLng = GeometryUtil.closest(
         leafletMap,
         latLngs,
-        positionLatLng
+        positionLatLng,
       );
 
       return positionLatLng.distanceTo(closestLatLng);
@@ -372,7 +373,7 @@ export const sortByCondition = (units: Unit[]) =>
 
 export const getAddressToDisplay = (
   address: Record<string, any>,
-  activeLang: string
+  activeLang: string,
 ) =>
   Object.keys(address).length !== 0
     ? `${String(getAttr(address.street.name, activeLang))} ${
@@ -405,20 +406,20 @@ export const getOnSeasonSportServices = () => {
 
 export const getNoneHikingUnit = (
   visibleUnits: string[],
-  stateUnits: AppState["unit"]
+  stateUnits: AppState["unit"],
 ): string[] => {
   // Create array from all the unit objects.
   const visibleUnitObjects: Unit[] = Object.assign(
     [],
     Object.values(stateUnits.byId).filter((u) =>
-      visibleUnits.includes(u.id.toString())
-    )
+      visibleUnits.includes(u.id.toString()),
+    ),
   );
 
   return visibleUnitObjects
     .filter((u) => {
       const containsService = u.services.some((item) =>
-        SupportingServices.includes(item)
+        SupportingServices.includes(item),
       );
       return !containsService ? u : null;
     })
@@ -428,7 +429,7 @@ export const getNoneHikingUnit = (
 export const getFilteredUnitsBySportSpecification = (
   visibleUnits: string[],
   stateUnits: AppState["unit"],
-  sportSpecification: string
+  sportSpecification: string,
 ): string[] => {
   // If nothing to filter
   if (!sportSpecification) return visibleUnits;
@@ -438,33 +439,33 @@ export const getFilteredUnitsBySportSpecification = (
   const visibleUnitObjects: Unit[] = Object.assign(
     [],
     Object.values(stateUnits.byId).filter((u) =>
-      visibleUnits.includes(u.id.toString())
-    )
+      visibleUnits.includes(u.id.toString()),
+    ),
   );
 
   const hasFreestyleFilter: boolean = sportSpecification.includes(
-    UnitFilters.SKIING_FREESTYLE
+    UnitFilters.SKIING_FREESTYLE,
   );
   const hasTraditionalFilter: boolean = sportSpecification.includes(
-    UnitFilters.SKIING_TRADITIONAL
+    UnitFilters.SKIING_TRADITIONAL,
   );
   const hasDogSkijoringFilter: boolean = sportSpecification.includes(
-    UnitFilters.SKIING_DOG_SKIJORING_TRACK
+    UnitFilters.SKIING_DOG_SKIJORING_TRACK,
   );
   const hasLeanToFilter: boolean = sportSpecification.includes(
-    UnitFilters.LEAN_TO
+    UnitFilters.LEAN_TO,
   );
   const hasCookingFilter: boolean = sportSpecification.includes(
-    UnitFilters.COOKING_FACILITY
+    UnitFilters.COOKING_FACILITY,
   );
   const hasCampingFilter: boolean = sportSpecification.includes(
-    UnitFilters.CAMPING
+    UnitFilters.CAMPING,
   );
   const hasInfoPointFilter: boolean = sportSpecification.includes(
-    UnitFilters.INFORMATION_POINT
+    UnitFilters.INFORMATION_POINT,
   );
   const hasSkiLodgeFilter: boolean = sportSpecification.includes(
-    UnitFilters.SKI_LODGE
+    UnitFilters.SKI_LODGE,
   );
   const skiTrackFreestyleUnits = (): string[] => {
     if (!hasFreestyleFilter) return [];
@@ -495,7 +496,7 @@ export const getFilteredUnitsBySportSpecification = (
     return visibleUnitObjects
       .filter((u) => {
         const connectionsWithDogSkijoring = u.connections.filter((c) =>
-          c.tags.includes(UnitConnectionTags.DOG_SKIJORING_TRACK)
+          c.tags.includes(UnitConnectionTags.DOG_SKIJORING_TRACK),
         );
         return !!connectionsWithDogSkijoring.length ? u : null;
       })
@@ -521,7 +522,7 @@ export const getFilteredUnitsBySportSpecification = (
     return visibleUnitObjects
       .filter((u) => {
         const containsService = u.services.includes(
-          UnitServices.COOKING_FACILITY
+          UnitServices.COOKING_FACILITY,
         );
         return containsService ? u : null;
       })
@@ -547,7 +548,7 @@ export const getFilteredUnitsBySportSpecification = (
     return visibleUnitObjects
       .filter((u) => {
         const containsService = u.services.includes(
-          UnitServices.INFORMATION_POINT
+          UnitServices.INFORMATION_POINT,
         );
         return containsService ? u : null;
       })
@@ -574,7 +575,7 @@ export const getFilteredUnitsBySportSpecification = (
     CookingFacilityUnits(),
     CampingUnits(),
     InformationPointUnits(),
-    SkiLodgeUnits()
+    SkiLodgeUnits(),
   );
 
   return filteredUnits;

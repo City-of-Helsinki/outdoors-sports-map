@@ -23,7 +23,7 @@ const isFetchingReducer = handleActions(
     [UnitActions.RECEIVE]: () => false,
     [UnitActions.FETCH_ERROR]: () => false,
   },
-  false
+  false,
 );
 
 const fetchErrorReducer = handleActions(
@@ -32,129 +32,129 @@ const fetchErrorReducer = handleActions(
     [UnitActions.RECEIVE]: () => null,
     [UnitActions.FETCH_ERROR]: (
       state: Record<string, any> | null,
-      { payload: { error } }: Action
+      { payload: { error } }: Action,
     ) => error,
   },
-  null
+  null,
 );
 
 const byIdReducer = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => handleUnitConditionUpdates(entities.unit),
   },
-  {}
+  {},
 );
 
 const all = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { result } }: EntityAction
+      { payload: { result } }: EntityAction,
     ) => result,
   },
-  []
+  [],
 );
 
 const iceskate = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
           (unitService: number) =>
-            IceSkatingServices.indexOf(unitService) !== -1
-        )
+            IceSkatingServices.indexOf(unitService) !== -1,
+        ),
       ),
     ],
   },
-  []
+  [],
 );
 
 const ski = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
-          (unitService: number) => SkiingServices.indexOf(unitService) !== -1
-        )
+          (unitService: number) => SkiingServices.indexOf(unitService) !== -1,
+        ),
       ),
     ],
   },
-  []
+  [],
 );
 
 const swim = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
-          (unitService: number) => SwimmingServices.indexOf(unitService) !== -1
-        )
+          (unitService: number) => SwimmingServices.indexOf(unitService) !== -1,
+        ),
       ),
     ],
   },
-  []
+  [],
 );
 
 const iceswim = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
           (unitService: number) =>
-            IceSwimmingServices.indexOf(unitService) !== -1
-        )
+            IceSwimmingServices.indexOf(unitService) !== -1,
+        ),
       ),
     ],
   },
-  []
+  [],
 );
 
 const supportingService = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [
       ...keys(entities.unit).filter((id) =>
         entities.unit[id].services.some(
           (unitService: number) =>
-            SupportingServices.indexOf(unitService) !== -1
-        )
+            SupportingServices.indexOf(unitService) !== -1,
+        ),
       ),
     ],
   },
-  []
+  [],
 );
 
 const statusOk = handleActions(
   {
     [UnitActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [
       ...keys(entities.unit).filter(
         (id) =>
           enumerableQuality(getUnitQuality(entities.unit[id])) <=
-          QualityEnum.satisfactory
+          QualityEnum.satisfactory,
       ),
     ],
   },
-  []
+  [],
 );
 
 const reducer = combineReducers({

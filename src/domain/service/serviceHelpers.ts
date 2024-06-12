@@ -8,7 +8,7 @@ import { getAttr } from "../unit/unitHelpers";
 const getServiceName = (
   unitServices: number[],
   services: Record<string, any>,
-  language: string = DEFAULT_LANG
+  language: string = DEFAULT_LANG,
 ) => {
   if (!services || isEmpty(services)) {
     return "";
@@ -27,7 +27,7 @@ const getServiceName = (
 };
 
 export const getOnSeasonServices = (
-  date: SeasonDelimiter = getToday()
+  date: SeasonDelimiter = getToday(),
 ): Number[] => {
   return Seasons.filter((season) => isOnSeason(date, season))
     .map(({ services }) => services)

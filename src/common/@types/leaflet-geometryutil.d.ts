@@ -4,6 +4,6 @@ declare module "leaflet-geometryutil" {
     map: L.Map,
     layer: L.LatLng[] | L.LatLng[][] | L.PolyLine | L.Polygon,
     latlng: L.LatLng,
-    vertices?: boolean
+    vertices?: boolean,
   ): L.LatLng;
 }

@@ -43,7 +43,7 @@ function* searchUnits({
   if (bodyAsJson.results) {
     data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
       bodyAsJson.results,
-      new schema.Array(unitSchema)
+      new schema.Array(unitSchema),
     );
   }
 
@@ -71,32 +71,32 @@ function* fetchUnitSuggestions({ payload: { params } }: FetchAction) {
     const request = createRequest(createUrl("search/", params));
 
     const addressRequest = createDigitransitRequest(
-      createDigitransitUrl("search", digitransitParams)
+      createDigitransitUrl("search", digitransitParams),
     );
 
     const { bodyAsJson } = yield call(callApi, request);
 
     const { bodyAsJson: addressBodyAsJson } = yield call(
       callApi,
-      addressRequest
+      addressRequest,
     );
 
     addressData = addressBodyAsJson
       ? addressBodyAsJson.features.filter(
-          (feature: any) => feature.properties.layer !== "stop"
+          (feature: any) => feature.properties.layer !== "stop",
         )
       : [];
 
     addressData = [
       ...new Map(
-        addressData.map((feature: any) => [feature.properties.label, feature])
+        addressData.map((feature: any) => [feature.properties.label, feature]),
       ).values(),
     ];
 
     if (bodyAsJson.results) {
       data = normalizeEntityResults<Unit, NormalizedUnit, number[]>(
         bodyAsJson.results,
-        new schema.Array(unitSchema)
+        new schema.Array(unitSchema),
       );
     }
   }
@@ -117,7 +117,7 @@ function* watchSearchUnits() {
 function* watchFetchUnitSuggestions() {
   yield takeLatest(
     UnitSearchActions.FETCH_UNIT_SUGGESTIONS,
-    fetchUnitSuggestions
+    fetchUnitSuggestions,
   );
 }
 

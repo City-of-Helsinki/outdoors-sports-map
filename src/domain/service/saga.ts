@@ -22,7 +22,7 @@ function* fetchServices() {
       id: getOnSeasonServices(),
       only: "id,name",
       page_size: 1000,
-    })
+    }),
   );
 
   const { response, bodyAsJson } = yield call(callApi, request);
@@ -30,7 +30,7 @@ function* fetchServices() {
   if (response.status === 200) {
     const data = normalizeEntityResults<Service, NormalizedService, number[]>(
       bodyAsJson.results,
-      new schema.Array(serviceSchema)
+      new schema.Array(serviceSchema),
     );
 
     yield put(receiveServices(data));

@@ -11,7 +11,7 @@ const isFetchingReducer = handleActions(
     [ServiceActions.RECEIVE]: () => false,
     [ServiceActions.FETCH_ERROR]: () => false,
   },
-  false
+  false,
 );
 
 const fetchErrorReducer = handleActions(
@@ -21,27 +21,27 @@ const fetchErrorReducer = handleActions(
     [ServiceActions.FETCH_ERROR]: (state: Record<string, any> | null, action) =>
       action?.payload?.error,
   },
-  null
+  null,
 );
 
 const byIdReducer = handleActions(
   {
     [ServiceActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => ({ ...entities.service }),
   },
-  {}
+  {},
 );
 
 const all = handleActions(
   {
     [ServiceActions.RECEIVE]: (
       state: Record<string, any>,
-      { payload: { entities } }: EntityAction
+      { payload: { entities } }: EntityAction,
     ) => [...keys(entities.service)],
   },
-  []
+  [],
 );
 
 const reducer = combineReducers({

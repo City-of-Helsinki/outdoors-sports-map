@@ -9,20 +9,20 @@ const centerReducer = handleActions(
   {
     [mapActions.SET_LOCATION]: (
       state: [number, number],
-      { payload: { position } }: Action
+      { payload: { position } }: Action,
     ) => position,
   },
-  locations.HELSINKI
+  locations.HELSINKI,
 );
 
 const addressReducer = handleActions(
   {
     [mapActions.RECEIVE_ADDRESS]: (
       state: Address | null | undefined,
-      { payload: { address } }: Action
+      { payload: { address } }: Action,
     ) => address || {},
   },
-  null
+  null,
 );
 
 const reducer = combineReducers({
