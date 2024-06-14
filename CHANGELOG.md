@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.3.0] - 2024-06-14
+
+### Added
+
+-   [#252](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/252) Add possibility to hide/show home-container
+-   [#253](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/253) Select route on map line geometry click
+
+### Changed
+
+-   [#251](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/251) Update Matomo-tracking to use DigiaIiris-service
+-   [#254](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/254) Update map zooming
+-   [#255](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/255) Update packages, use NodeJS v22 and Nginx v1.2.6
+
+### Fixed
+
+-   [#250](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/250) Fix address location
+
 ## [2.2.2] - 2024-01-09
 
 ### Added
