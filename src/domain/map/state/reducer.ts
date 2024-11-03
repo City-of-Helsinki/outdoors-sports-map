@@ -12,7 +12,7 @@ const centerReducer = handleActions(
       { payload: { position } }: Action,
     ) => position,
   },
-  locations.HELSINKI,
+  [50, 25],
 );
 
 const addressReducer = handleActions(

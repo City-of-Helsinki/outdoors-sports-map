@@ -26,7 +26,7 @@ const createIcon = () =>
   });
 
 class MapUserLocationMarker extends Component<Props> {
-  locationRef = React.createRef<Marker>();
+  //locationRef = React.createRef<Marker>();
 
   constructor(props: Props) {
     super(props);
@@ -35,11 +35,11 @@ class MapUserLocationMarker extends Component<Props> {
 
   handleDragEnd() {
     const { setLocation } = this.props;
-    const latLng = this.locationRef.current?.leafletElement.getLatLng();
+    const latLng = null; //this.locationRef.current?.getLatLng();
+    console.log("handleDragEnd -> latLng", latLng);
 
     if (latLng) {
       const latLngArray = latLngToArray(latLng);
-
       setLocation(latLngArray);
     }
   }
@@ -47,11 +47,13 @@ class MapUserLocationMarker extends Component<Props> {
   render() {
     return (
       <Marker
-        ref={this.locationRef}
+        //(ref={this.locationRef}
         icon={createIcon()}
         zIndexOffset={1000}
         draggable
-        ondragend={this.handleDragEnd}
+        eventHandlers={{
+          dragend: this.handleDragEnd,
+        }}
         keyboard={false}
         {...this.props}
       />

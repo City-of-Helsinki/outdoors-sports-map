@@ -1,4 +1,4 @@
-import { Geometry } from "geojson";
+import { Geometry, MultiLineString } from "geojson";
 import { NormalizedSchema, schema } from "normalizr";
 
 import {
@@ -109,6 +109,7 @@ export type Unit = {
   phone?: string;
   url?: string;
   geometry: Geometry;
+  geometry_3d?: MultiLineString;
   location: {
     coordinates: [number, number];
   };

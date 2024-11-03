@@ -30,7 +30,15 @@
     "ACCESSIBILITY_NOTICE": "Karttanäkymä. Kartan tietoja voi tarkastella tällä hetkellä vain näönvaraisesti.",
     "LOCATE_USER": "Näytä sijaintisi",
     "ZOOM_IN": "Lähennä",
-    "ZOOM_OUT": "Loitonna"
+    "ZOOM_OUT": "Loitonna",
+    "HEIGHT_PROFILE": {
+      "TITLE": "Korkeusprofiili",
+      "ELEVATION": "Korkeus",
+      "DISTANCE": "Etäisyys",
+      "SEGMENT_LENGTH": "Kokonaispituus",
+      "TYPE": "Tyyppi",
+      "LEGEND": "Selite"
+    }
   },
   "UNIT_DETAILS": {
     "FURTHER_INFO": "Lisää tietoa",

@@ -1,6 +1,6 @@
 import { LatLngBoundsLiteral } from "leaflet";
 import { MutableRefObject } from "react";
-import { Map } from "react-leaflet";
+import { MapContainer } from "react-leaflet";
 
 import { normalizeActionName } from "../utils";
 
@@ -33,5 +33,3 @@ export const mapActions = {
   SET_LOCATION: normalizeActionName("map/SET_LOCATION"),
   RECEIVE_ADDRESS: normalizeActionName("map/RECEIVE_ADDRESS"),
 };
-
-export type MapRef = MutableRefObject<Map | null> | ((ref: Map) => void);

@@ -1,6 +1,6 @@
 import className from "classnames";
 import { useCallback, useRef, ReactNode, useState } from "react";
-import { Map as RLMap } from "react-leaflet";
+import { MapContainer as RLMap } from "react-leaflet";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import useFetchInitialData from "./useFetchInitialData";
@@ -57,7 +57,6 @@ function MapLayout({ content, map, isExpanded, toggleIsExpanded }: MapLayoutProp
 }
 
 function HomeContainer() {
-  const mapRef = useRef<RLMap | null>(null);
   const leafletElementRef = useRef<L.Map | null>(null);
   const isMobile = useIsMobile();
   const [isUnitDetailsExpanded, setIsUnitDetailsExpanded] = useState(false);
@@ -77,8 +76,8 @@ function HomeContainer() {
   }, []);
 
   const handleCenterMapToUnit = useCallback(
-    (unit) => {
-      const leafletElement = leafletElementRef.current;
+    (unit, map) => {
+      const leafletElement = leafletElementRef.current || map;
       const location = getUnitPosition(unit);
 
       if (!location) {
@@ -107,13 +106,12 @@ function HomeContainer() {
             // get a flat array of coordinates
             const coordinates = unit.geometry.coordinates.flat();
             // get the maximum latitude and longitude
-            const maxLat = Math.max(...coordinates.map((coord:number[]) => coord[0])),
-            minLat = Math.min(...coordinates.map((coord:number[]) => coord[0])),
-            maxLng = Math.max(...coordinates.map((coord:number[]) => coord[1])),
-            minLng = Math.min(...coordinates.map((coord:number[]) => coord[1]));
-            // set the zoom and fit the bounds of the coordinates
-            leafletElement?.setZoom(DETAIL_ZOOM_IN);
-            leafletElement?.fitBounds([[minLat, minLng], [maxLat, maxLng]]);
+            const maxLon = Math.max(...coordinates.map((coord:number[]) => coord[0])),
+            minLon = Math.min(...coordinates.map((coord:number[]) => coord[0])),
+            maxLat = Math.max(...coordinates.map((coord:number[]) => coord[1])),
+            minLat = Math.min(...coordinates.map((coord:number[]) => coord[1]));
+            // zoom to the bounds of the geometry
+            leafletElement?.fitBounds([[minLat, minLon], [maxLat, maxLon]]);
           } else {
             // if the geometry is a point, then zoom in to that point
             const coordinates = unit.location.coordinates;
@@ -164,10 +162,6 @@ function HomeContainer() {
         }
         map={
           <Map
-            mapRef={(ref) => {
-              mapRef.current = ref;
-              leafletElementRef.current = ref?.leafletElement || null;
-            }}
             leafletElementRef={leafletElementRef}
             onCenterMapToUnit={handleCenterMapToUnit}
           />
