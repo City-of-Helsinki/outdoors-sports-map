@@ -15,27 +15,32 @@ function MapGeometry({ id, geometry, isSelected, quality, handleClick, ...rest }
         // highlight background for selected unit
         isSelected && (
           <GeoJSON
-            className={`unit-geometry__hilight ${
-              isSelected ? "unit-geometry__hilight--show" : ""
-            }`}
             key={`${id}_hilight`}
-            opacity={isSelected ? 1 : 0}
-            data={geometry}
+            style={{
+              "className": `unit-geometry__hilight`,
+            }}
+            data={geometry as GeoJSON.GeoJsonObject}
             {...rest}
           />
         )
       }
       <GeoJSON // Click area
-        className="unit-geometry__click-area"
         key={`${id}_click-area`}
-        data={geometry}
-        onClick={handleClick}
+        style={{
+          "className": `unit-geometry__click-area`,
+        }}
+        data={geometry as GeoJSON.GeoJsonObject}
+        eventHandlers={{
+          click: handleClick,
+        }}
         {...rest}
       />
       <GeoJSON // actual track
-        className={`unit-geometry__track unit-geometry__track--${quality}`}
         key={id}
-        data={geometry}
+        style={{
+          "className": `unit-geometry__track--${quality}`,
+        }}
+        data={geometry as GeoJSON.GeoJsonObject}
         {...rest}
       />
     </div>

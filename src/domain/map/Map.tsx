@@ -4,7 +4,6 @@ import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { bindActionCreators } from "redux";
 
 import MapView from "./MapView";
-import { MapRef } from "./mapConstants";
 import { setLocation } from "./state/actions";
 import * as fromMap from "./state/selectors";
 import useLanguage from "../../common/hooks/useLanguage";
@@ -17,12 +16,11 @@ import * as fromUnit from "../unit/state/selectors";
 import { Unit } from "../unit/unitConstants";
 
 type Props = {
-  onCenterMapToUnit: (unit: Unit) => void;
-  mapRef: MapRef;
+  onCenterMapToUnit: (unit: Unit, map: L.Map) => void;
   leafletElementRef: RefObject<L.Map | null>;
 };
 
-function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
+function Map({ onCenterMapToUnit, leafletElementRef }: Props) {
   const dispatch = useDispatch();
   const language = useLanguage();
   const history = useHistory();
@@ -93,11 +91,10 @@ function Map({ onCenterMapToUnit, mapRef, leafletElementRef }: Props) {
 
   return (
     <MapView
-      mapRef={mapRef}
-      leafletElementRef={leafletElementRef}
       selectedUnit={selectedUnit}
       activeLanguage={language}
       setLocation={actions.setLocation}
+      leafletElementRef={leafletElementRef}
       position={initialPosition.current}
       units={unitData}
       openUnit={openUnit}

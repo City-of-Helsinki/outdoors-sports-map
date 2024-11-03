@@ -561,7 +561,7 @@ function findAlternatePathname(pathname: string, unit: Unit, language: string) {
 }
 
 type Props = {
-  onCenterMapToUnit: (unit: Unit) => void;
+  onCenterMapToUnit: (unit: Unit, map: L.Map | null) => void;
   isExpanded: boolean;
   toggleIsExpanded: () => void;
 };
@@ -582,7 +582,7 @@ function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props)
   useEffect(() => {
     if (unit) {
       // Center map on the unit
-      onCenterMapToUnit(unit);
+      onCenterMapToUnit(unit, null);
     }
   }, [unit, onCenterMapToUnit]);
   useSyncUnitNameWithLanguage(unit);

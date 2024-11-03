@@ -1,6 +1,7 @@
 @import "normalize.min.css";
 @import "~normalize.css/normalize.css";
 @import "~leaflet/dist/leaflet.css";
+@import "~leaflet.heightgraph/dist/L.Control.Heightgraph.min.css";
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "domain/assets/fonts/service-map-icons.css";
 @import "domain/assets/fonts/outdoor-sports-icons.css";
@@ -18,7 +19,6 @@
 @import "domain/app/appFeedbackModal";
 @import "domain/app/appWideNotification/appWideNotification";
 @import "domain/home/home";
-@import "domain/map/mapControl";
 @import "domain/map/mapView";
 @import "domain/map/mapUnitPopup";
 @import "domain/map/mapGeometry";

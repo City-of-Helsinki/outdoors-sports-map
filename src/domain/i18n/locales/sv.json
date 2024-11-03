@@ -30,7 +30,15 @@
     "ACCESSIBILITY_NOTICE": "Kartvy. Kartans uppgifter kan i nuläget granskas endast visuellt.",
     "LOCATE_USER": "Visa din plats",
     "ZOOM_IN": "Zooma in",
-    "ZOOM_OUT": "Zooma ut"
+    "ZOOM_OUT": "Zooma ut",
+    "HEIGHT_PROFILE": {
+      "TITLE": "Höjdprofil",
+      "ELEVATION": "Höjd",
+      "DISTANCE": "Avstånd",
+      "SEGMENT_LENGTH": "Totalt avstånd",
+      "TYPE": "Typ",
+      "LEGEND": "Förklaring"
+    }
   },
   "UNIT_DETAILS": {
     "FURTHER_INFO": "Ytterligare upplysningar",

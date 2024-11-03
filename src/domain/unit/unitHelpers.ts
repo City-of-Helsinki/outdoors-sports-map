@@ -53,6 +53,7 @@ export const getFetchUnitsRequest = (params: Record<string, any>) =>
       only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
       include: "observations,connections",
       geometry: "true",
+      geometry_3d: "true",
       page_size: 1000,
       ...params,
     }),

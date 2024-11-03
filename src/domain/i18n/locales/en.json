@@ -30,7 +30,15 @@
     "ACCESSIBILITY_NOTICE": "Map. Currently map information is only accessible visually.",
     "LOCATE_USER": "Show your location",
     "ZOOM_IN": "Zoom in",
-    "ZOOM_OUT": "Zoom out"
+    "ZOOM_OUT": "Zoom out",
+    "HEIGHT_PROFILE": {
+      "TITLE": "Height profile",
+      "ELEVATION": "Elevation",
+      "DISTANCE": "Distance",
+      "SEGMENT_LENGTH": "Total length",
+      "TYPE": "Type",
+      "LEGEND": "Legend"
+    }
   },
   "UNIT_DETAILS": {
     "FURTHER_INFO": "Further information",
