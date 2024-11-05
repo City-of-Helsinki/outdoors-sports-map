@@ -15,8 +15,6 @@
       .leaflet-control {
         a {
           color: $content-text-secondary;
-
-          &:hover,
           &:active {
             background: $content-background;
             color: $ui-content;
