@@ -1,3 +1,4 @@
+import { Marker as LeafletMarker } from "leaflet";
 import React, { Component } from "react";
 import { Marker } from "react-leaflet";
 import { connect } from "react-redux";
@@ -26,7 +27,7 @@ const createIcon = () =>
   });
 
 class MapUserLocationMarker extends Component<Props> {
-  //locationRef = React.createRef<Marker>();
+  locationRef = React.createRef<LeafletMarker>();
 
   constructor(props: Props) {
     super(props);
@@ -35,7 +36,7 @@ class MapUserLocationMarker extends Component<Props> {
 
   handleDragEnd() {
     const { setLocation } = this.props;
-    const latLng = null; //this.locationRef.current?.getLatLng();
+    const latLng = this.locationRef.current?.getLatLng();
     console.log("handleDragEnd -> latLng", latLng);
 
     if (latLng) {
@@ -47,7 +48,7 @@ class MapUserLocationMarker extends Component<Props> {
   render() {
     return (
       <Marker
-        //(ref={this.locationRef}
+        ref={this.locationRef}
         icon={createIcon()}
         zIndexOffset={1000}
         draggable
