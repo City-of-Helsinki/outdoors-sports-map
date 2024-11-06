@@ -6,6 +6,28 @@ body {
   padding-left: 0;
 }
 
+.custom-control-button {
+  display: block;
+  background-color: #ffffff;
+
+  font-size: 19px;
+  line-height: 26px;
+  text-align: center;
+
+  border: 1px solid #ccc;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+
+  &:hover,
+  &:active {
+    color: #0072c6;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 // Re-skin bootstrap modals to visually appear more like the custom modal
 // implementation they were used to replace.
 .modal-content {

@@ -37,8 +37,6 @@ class MapUserLocationMarker extends Component<Props> {
   handleDragEnd() {
     const { setLocation } = this.props;
     const latLng = this.locationRef.current?.getLatLng();
-    console.log("handleDragEnd -> latLng", latLng);
-
     if (latLng) {
       const latLngArray = latLngToArray(latLng);
       setLocation(latLngArray);

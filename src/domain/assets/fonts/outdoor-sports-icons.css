@@ -54,6 +54,8 @@
 }
 .icon-locate:before {
   content: "\f102";
+  font-size: 19px;
+  line-height: 26px;
 }
 .icon-location:before {
   content: "\f103";
