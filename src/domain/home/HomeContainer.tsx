@@ -1,6 +1,5 @@
 import className from "classnames";
 import { useCallback, useRef, ReactNode, useState } from "react";
-import { MapContainer as RLMap } from "react-leaflet";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import useFetchInitialData from "./useFetchInitialData";
