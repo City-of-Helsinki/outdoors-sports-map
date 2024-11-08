@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { useMap } from 'react-leaflet';
 
+import useIsMobile from '../../common/hooks/useIsMobile';
 import { Unit } from "../unit/unitConstants";
 
 // Extend L.control to include heightgraph
@@ -16,10 +17,10 @@ declare module 'leaflet' {
 
 type Props = {
   unit: Unit;
-  isMobile: boolean;
 };
 
-function HeightProfileControl({unit, isMobile}: Props) {
+function HeightProfileControl({unit}: Props) {
+  const isMobile = useIsMobile();
   const { t } = useTranslation();
   const map = useMap();
   const [geometryIndex, setGeometryIndex] = useState(0);
@@ -76,7 +77,7 @@ function HeightProfileControl({unit, isMobile}: Props) {
     }
 
     const control = L.control.heightgraph({
-        position: !isMobile ? 'bottomright' : 'topright',
+        position: 'bottomright',
         mappings: {
             'HeightProfile': {
                 'flat': {
@@ -126,10 +127,6 @@ function HeightProfileControl({unit, isMobile}: Props) {
         .addTo(displayGroup);
     
     if (isMobile) {
-        control.getContainer().style.marginTop = '80px';
-        control.getContainer().style.marginRight = '-108px';
-        control._button.style.marginRight = '154px';
-        control._button.style.marginTop = '210px';
         control.resize({width:370, height:200});
     } else {
         control.resize({width:800, height:300});

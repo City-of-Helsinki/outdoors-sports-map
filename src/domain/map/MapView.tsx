@@ -1,6 +1,6 @@
 import { LatLngTuple } from "leaflet";
 import get from "lodash/get";
-import React, { Component, MutableRefObject } from "react";
+import { Component, MutableRefObject } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 
@@ -149,7 +149,7 @@ class MapView extends Component<Props, State> {
             <OSMIcon icon="locate" aria-label={t("MAP.LOCATE_USER")} />
           </Control>
           {selectedUnit && unitHasLineString3dGeometry(selectedUnit) && (
-            <HeightProfileControl unit={selectedUnit} isMobile={false} />
+            <HeightProfileControl unit={selectedUnit} />
           )}
         </MapContainer>
       </View>
