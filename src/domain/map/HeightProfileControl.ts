@@ -24,18 +24,20 @@ function HeightProfileControl({unit}: Props) {
   const { t } = useTranslation();
   const map = useMap();
   const [geometryIndex, setGeometryIndex] = useState(0);
-  const [geometry, setGeometry] = useState<{coordinates: Position[]} | null>(null);
+  const [geometry, setGeometry] = useState<Position[] | null>(null);
 
   useEffect(() => {
     const getUnitGeometry = (unitData: Unit) => {
       const { geometry_3d } = unitData;
       if (geometry_3d) {
         const coordinates = geometry_3d?.coordinates;
-        if (coordinates && geometry_3d.type === 'MultiLineString') {
-            const lineString = coordinates && coordinates[geometryIndex];
-            return {
-                coordinates: lineString,
-            };
+        if (coordinates) {
+            if (geometry_3d.type === 'MultiLineString') {
+                const lineString = coordinates && coordinates[geometryIndex];
+                return lineString;
+            } else if (geometry_3d.type === 'LineString') {
+                return coordinates as unknown as Position[];
+            }
         }
       }
       return null;
@@ -44,7 +46,7 @@ function HeightProfileControl({unit}: Props) {
   }, [unit, geometryIndex]);
 
   useEffect(() => {
-    if(!geometry || !geometry.coordinates) {
+    if(!geometry) {
         setGeometryIndex(0);
         return;
     }
@@ -67,7 +69,7 @@ function HeightProfileControl({unit}: Props) {
             }
         }];
     }
-    const geoJson = constructProfileGeoJson(geometry.coordinates);
+    const geoJson = constructProfileGeoJson(geometry);
     
     const onRoute = (event: any) => {
         control.mapMousemoveHandler(event, { showMapMarker: true });

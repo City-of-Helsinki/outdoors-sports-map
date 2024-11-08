@@ -92,7 +92,7 @@ class MapView extends Component<Props, State> {
 
     const { zoomLevel } = this.state;
 
-    const unitHasLineString3dGeometry = (u: Unit) => u?.geometry_3d && u?.geometry_3d?.type === 'MultiLineString';
+    const unitHasLineString3dGeometry = (u: Unit) => u?.geometry_3d;
 
     return (
       <View
