@@ -7,7 +7,7 @@ type MapEventsProps = {
 
 function MapEvents(props: MapEventsProps) {
     const { handleMapClick, setLocation } = props;
-    const map = useMapEvents({
+    useMapEvents({
       click: (e) => {
         handleMapClick(e);
       },

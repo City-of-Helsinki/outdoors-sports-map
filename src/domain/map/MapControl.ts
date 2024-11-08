@@ -36,8 +36,6 @@ const createMapControl = (props: Props) => {
     return control;
 };
 
-// Pass our createRoutingMachineLayer to the createControlHook:
 const MapControl = createControlComponent(createMapControl);
 
-// Export
 export default MapControl;
