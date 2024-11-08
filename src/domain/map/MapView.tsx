@@ -1,5 +1,6 @@
+import { LatLngTuple } from "leaflet";
 import get from "lodash/get";
-import React, { useRef, Component, MutableRefObject } from "react";
+import React, { Component, MutableRefObject } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 
@@ -29,7 +30,7 @@ type Props = WithTranslation & {
   openUnit: (unitId: string, unitName?: string) => void;
   setLocation: (coordinates: number[]) => void;
   leafletElementRef: MutableRefObject<L.Map | null>;
-  position: [number, number];
+  position: LatLngTuple;
   units: Unit[];
 };
 
@@ -59,7 +60,6 @@ class MapView extends Component<Props, State> {
   };
 
   locateUser = () => {
-    console.log("locateUser");
     this.leafletElement?.locate({
       setView: true,
     });
@@ -112,12 +112,9 @@ class MapView extends Component<Props, State> {
           minZoom={MIN_ZOOM}
           maxZoom={MAX_ZOOM}
           ref={(map) => {
-            const { selectedUnit, onCenterMapToUnit, leafletElementRef } = this.props;
+            const { leafletElementRef } = this.props;
             if(!leafletElementRef.current) {
               leafletElementRef.current = map;
-            }
-            if (map && selectedUnit) {
-              onCenterMapToUnit(selectedUnit, map);
             }
           }}
         >

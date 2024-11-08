@@ -1,6 +1,4 @@
 import { LatLngBoundsLiteral } from "leaflet";
-import { MutableRefObject } from "react";
-import { MapContainer } from "react-leaflet";
 
 import { normalizeActionName } from "../utils";
 

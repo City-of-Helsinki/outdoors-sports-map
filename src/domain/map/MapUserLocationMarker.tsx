@@ -1,4 +1,4 @@
-import { Marker as LeafletMarker } from "leaflet";
+import { LatLngTuple, Marker as LeafletMarker } from "leaflet";
 import React, { Component } from "react";
 import { Marker } from "react-leaflet";
 import { connect } from "react-redux";
@@ -14,7 +14,7 @@ import iconRetinaUrl from "../assets/markers/location@2x.png";
 
 type Props = {
   setLocation: (coordinates: number[]) => void;
-  position: [number, number];
+  position: LatLngTuple;
 };
 
 const createIcon = () =>
