@@ -28,6 +28,53 @@ body {
   }
 }
 
+.height-profile-buttons {
+  display: flex;
+  justify-content: right;
+}
+
+.height-profile-prev-button {
+  background: url(domain/assets/icons/icon-arrow-previous.svg) no-repeat center center;
+  width: 26px;
+  height: 26px;
+  margin-top: -26px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+
+  &:hover,
+  &:active {
+    color: #0072c6;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.height-profile-next-button {
+  background: url(domain/assets/icons/icon-arrow-next.svg) no-repeat center center;
+  width: 26px;
+  height: 26px;
+  margin-top: -26px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+
+  &:hover,
+  &:active {
+    color: #0072c6;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.heightgraph-toggle {
+  margin-left: 21px;
+}
+
 // Re-skin bootstrap modals to visually appear more like the custom modal
 // implementation they were used to replace.
 .modal-content {
@@ -63,8 +110,4 @@ body {
 #HdsCookieConsentContainer {
   position: relative;
   z-index: 100001;
-}
-
-.heightgraph-toggle {
-  margin-right: 3px;
 }

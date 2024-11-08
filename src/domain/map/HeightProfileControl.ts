@@ -15,22 +15,23 @@ declare module 'leaflet' {
 }
 
 type Props = {
-  data: Unit;
+  unit: Unit;
   isMobile: boolean;
 };
 
-function HeightProfileControl({data, isMobile}: Props) {
+function HeightProfileControl({unit, isMobile}: Props) {
   const { t } = useTranslation();
   const map = useMap();
-  const [geometryData, setGeometryData] = useState<{coordinates: Position[]} | null>(null);
+  const [geometryIndex, setGeometryIndex] = useState(0);
+  const [geometry, setGeometry] = useState<{coordinates: Position[]} | null>(null);
 
   useEffect(() => {
-    const getUnitGeometry = (unit: Unit) => {
-      const { geometry_3d } = unit;
+    const getUnitGeometry = (unitData: Unit) => {
+      const { geometry_3d } = unitData;
       if (geometry_3d) {
         const coordinates = geometry_3d?.coordinates;
         if (coordinates && geometry_3d.type === 'MultiLineString') {
-            const lineString = coordinates && coordinates[0];
+            const lineString = coordinates && coordinates[geometryIndex];
             return {
                 coordinates: lineString,
             };
@@ -38,12 +39,12 @@ function HeightProfileControl({data, isMobile}: Props) {
       }
       return null;
     };
-
-    setGeometryData(getUnitGeometry(data));
-  }, [data]);
+    setGeometry(getUnitGeometry(unit));
+  }, [unit, geometryIndex]);
 
   useEffect(() => {
-    if(!geometryData || !geometryData.coordinates) {
+    if(!geometry || !geometry.coordinates) {
+        setGeometryIndex(0);
         return;
     }
     function constructProfileGeoJson(coordinates: Position[]) {
@@ -65,7 +66,7 @@ function HeightProfileControl({data, isMobile}: Props) {
             }
         }];
     }
-    const geoJson = constructProfileGeoJson(geometryData.coordinates);
+    const geoJson = constructProfileGeoJson(geometry.coordinates);
     
     const onRoute = (event: any) => {
         control.mapMousemoveHandler(event, { showMapMarker: true });
@@ -96,7 +97,13 @@ function HeightProfileControl({data, isMobile}: Props) {
             type: t("MAP.HEIGHT_PROFILE.TYPE"),
             legend: t("MAP.HEIGHT_PROFILE.LEGEND"),
         },
-        expandControls: true
+        expandControls: true,
+        expandCallback: function(expanded: boolean) {
+            const heightProfileButtons = L.DomUtil.get("height-profile-buttons");
+            if (heightProfileButtons) {
+                heightProfileButtons.style.visibility = expanded ? "visible" : "hidden";
+            }
+        }
     });
 
     const displayGroup = new L.LayerGroup();
@@ -128,11 +135,30 @@ function HeightProfileControl({data, isMobile}: Props) {
         control.resize({width:800, height:300});
     }
 
+    const buttonsDiv = L.DomUtil.create("div", "height-profile-buttons", control.getContainer());
+    buttonsDiv.id = "height-profile-buttons";
+    const prevButton = L.DomUtil.create("button", "height-profile-prev-button", buttonsDiv);
+    const nextButton = L.DomUtil.create("button", "height-profile-next-button", buttonsDiv);
+
+    L.DomEvent.on(prevButton, "mousedown dblclick", L.DomEvent.stopPropagation)
+        .on(prevButton, "click", (event: Event) => {
+        if (geometryIndex > 0) {
+            setGeometryIndex(geometryIndex - 1);
+        }
+    });
+
+    L.DomEvent.on(nextButton, "mousedown dblclick", L.DomEvent.stopPropagation)
+        .on(nextButton, "click", (event: Event) => {
+        if (unit.geometry_3d && geometryIndex < unit.geometry_3d.coordinates.length - 1) {
+            setGeometryIndex(geometryIndex + 1);
+        }
+    });
+
     return () => {
         map.removeControl(control);
         map.removeLayer(displayGroup);
     }
-  });
+  }, [geometry, geometryIndex, isMobile, map, t, unit]);
 
   return null;
 }

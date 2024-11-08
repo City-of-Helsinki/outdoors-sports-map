@@ -149,7 +149,7 @@ class MapView extends Component<Props, State> {
             <OSMIcon icon="locate" aria-label={t("MAP.LOCATE_USER")} />
           </Control>
           {selectedUnit && unitHasLineString3dGeometry(selectedUnit) && (
-            <HeightProfileControl data={selectedUnit} isMobile={false} />
+            <HeightProfileControl unit={selectedUnit} isMobile={false} />
           )}
         </MapContainer>
       </View>
