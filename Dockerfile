@@ -1,5 +1,5 @@
 # ===============================================
-FROM node:22.2.0-bookworm-slim AS appbase
+FROM public.ecr.aws/docker/library/node:22.11.0-bookworm-slim AS appbase
 # ===============================================
 
 RUN mkdir /app && chown -R node:node /app
@@ -53,7 +53,7 @@ COPY --chown=node:node . /app/.
 RUN yarn build
 
 # ===================================
-FROM nginx:1.26.1-alpine AS production
+FROM public.ecr.aws/nginx/nginx:1.27-alpine-slim AS production
 # ===================================
 
 COPY --from=staticbuilder --chown=nginx:nginx /app/build /usr/share/nginx/html
