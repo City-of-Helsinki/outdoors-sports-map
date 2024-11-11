@@ -20,7 +20,7 @@ type Props = {
   leafletElementRef: RefObject<L.Map | null>;
 };
 
-function Map({ onCenterMapToUnit, leafletElementRef }: Props) {
+function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
   const dispatch = useDispatch();
   const language = useLanguage();
   const history = useHistory();
@@ -103,4 +103,4 @@ function Map({ onCenterMapToUnit, leafletElementRef }: Props) {
   );
 }
 
-export default Map;
+export default MapComponent;

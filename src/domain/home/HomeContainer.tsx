@@ -9,7 +9,7 @@ import AppInfoDropdown from "../app/AppInfoDropdown";
 import CookieConsent from "../app/CookieConsent";
 import routerPaths from "../app/appRoutes";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
-import Map from "../map/Map";
+import MapComponent from "../map/MapComponent";
 import { DETAIL_ZOOM_IN } from "../map/mapConstants";
 import UnitBrowser from "../unit/browser/UnitBrowser";
 import UnitDetails from "../unit/details/UnitDetails";
@@ -160,7 +160,7 @@ function HomeContainer() {
           </Switch>
         }
         map={
-          <Map
+          <MapComponent
             leafletElementRef={leafletElementRef}
             onCenterMapToUnit={handleCenterMapToUnit}
           />
