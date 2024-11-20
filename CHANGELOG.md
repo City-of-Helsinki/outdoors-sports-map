@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.4.0] - 2024-11-20
+
+### Added
+
+-   [#261](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/261) Heightprofile support for 3D-units
+
 ## [2.3.0] - 2024-06-14
 
 ### Added
