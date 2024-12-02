@@ -171,3 +171,22 @@
     background-color: #a8b5c2;
   }
 }
+
+.favorite-button {
+  background: none;
+  color: #0d6efd;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+.favorite-button-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

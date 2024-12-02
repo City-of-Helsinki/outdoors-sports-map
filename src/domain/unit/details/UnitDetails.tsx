@@ -1,7 +1,7 @@
-import { IconAngleDown } from "hds-react";
+import { IconAngleDown, IconStar, IconStarFill } from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -122,6 +122,48 @@ export function MobileFooter({ toggleExpand, isExpanded }: MobileFooterProps) {
       </div>
   </div>)
 }
+
+function isUnitInFavourites(unit: Unit): boolean {
+  const favourites = JSON.parse(localStorage.getItem('favouriteUnits') || '[]');
+  return favourites.some((favourite: Unit) => favourite.id === unit.id);
+}
+
+function handleAddToFavourites(unit: Unit) {
+  if (!isUnitInFavourites(unit)) {
+    const favourites = JSON.parse(localStorage.getItem('favouriteUnits') || '[]');
+    favourites.push(unit);
+    localStorage.setItem('favouriteUnits', JSON.stringify(favourites));
+  };
+};
+
+type AddFavoriteProps = {
+  unit: Unit;
+};
+
+function AddFavorite({ unit }: AddFavoriteProps) {
+  const { t } = useTranslation();
+  const [isFavourite, setIsFavourite] = useState(false);
+  
+  useEffect(() => {
+    setIsFavourite(isUnitInFavourites(unit));
+  }, [unit]);
+
+  const handleClick = () => {
+    handleAddToFavourites(unit);
+    setIsFavourite(true);
+  };
+
+  return (
+    <BodyBox title="">
+      <button className="favorite-button" onClick={handleClick}>
+        <span className="favorite-button-content">
+          <span>{t("UNIT_BROWSER.ADD_FAVOURITE")}</span>
+          {isFavourite ? <IconStarFill /> : <IconStar />}
+        </span>
+      </button>
+    </BodyBox>
+  )
+} 
 
 type LocationStateProps = {
   unit: Unit;
@@ -521,6 +563,7 @@ export function SingleUnitBody({
   return currentUnit && !isLoading ? (
     <div className="unit-container-body">
       <LocationState unit={currentUnit} />
+      <AddFavorite unit={currentUnit} />
       <NoticeInfo unit={currentUnit} />
       {!liveTemperatureObservation && temperatureObservation && (
         <LocationTemperature observation={temperatureObservation} />
