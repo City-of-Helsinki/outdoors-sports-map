@@ -96,6 +96,7 @@
     "NOT_FOUND": "Sorry, the object was not found :(",
     "QUALITY": "Condition",
     "ADD_FAVOURITE": "Add to favourites",
+    "REMOVE_FAVOURITE": "Remove from favourites",
     "INFO": "Information",
     "WEATHER": "Weather",
     "HEIGHT_PROFILE": "Height profile",
