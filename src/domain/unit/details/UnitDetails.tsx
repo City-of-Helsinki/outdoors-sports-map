@@ -128,12 +128,19 @@ function isUnitInFavourites(unit: Unit): boolean {
   return favourites.some((favourite: Unit) => favourite.id === unit.id);
 }
 
-function handleAddToFavourites(unit: Unit) {
-  if (!isUnitInFavourites(unit)) {
-    const favourites = JSON.parse(localStorage.getItem('favouriteUnits') || '[]');
+function toggleFavourite(unit: Unit) {
+  const favourites = JSON.parse(localStorage.getItem('favouriteUnits') || '[]');
+  const unitIndex = favourites.findIndex((favourite: Unit) => favourite.id === unit.id);
+
+  if (unitIndex === -1) {
+    // Add the unit to favourites
     favourites.push(unit);
-    localStorage.setItem('favouriteUnits', JSON.stringify(favourites));
-  };
+  } else {
+    // Remove the unit from favourites
+    favourites.splice(unitIndex, 1);
+  }
+
+  localStorage.setItem('favouriteUnits', JSON.stringify(favourites));
 };
 
 type AddFavoriteProps = {
@@ -149,15 +156,15 @@ function AddFavorite({ unit }: AddFavoriteProps) {
   }, [unit]);
 
   const handleClick = () => {
-    handleAddToFavourites(unit);
-    setIsFavourite(true);
+    toggleFavourite(unit);
+    setIsFavourite(!isFavourite);
   };
 
   return (
     <BodyBox title="">
       <button className="favorite-button" onClick={handleClick}>
         <span className="favorite-button-content">
-          <span>{t("UNIT_BROWSER.ADD_FAVOURITE")}</span>
+          <span>{isFavourite ? t("UNIT_BROWSER.REMOVE_FAVOURITE") : t("UNIT_BROWSER.ADD_FAVOURITE")}</span>
           {isFavourite ? <IconStarFill /> : <IconStar />}
         </span>
       </button>

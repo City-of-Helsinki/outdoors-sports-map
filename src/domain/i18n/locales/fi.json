@@ -96,6 +96,7 @@
     "NOT_FOUND": "Pahoittelut, kohdetta ei löytynyt :(",
     "QUALITY": "Kunto",
     "ADD_FAVOURITE": "Lisää suosikiksi",
+    "REMOVE_FAVOURITE": "Poista suosikeista",
     "INFO": "Info",
     "WEATHER": "Sää",
     "HEIGHT_PROFILE": "Korkeusprofiili",
