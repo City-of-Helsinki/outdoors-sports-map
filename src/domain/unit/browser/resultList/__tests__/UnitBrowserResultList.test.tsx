@@ -142,9 +142,9 @@ describe("<UnitBrowserResultList />", () => {
 
       const wrapper = getWrapper();
 
-      expect(wrapper.text().includes("Mustavuoren latu 2,1 km")).toEqual(true);
+      expect(wrapper.text().includes("Mustavuori-Talosaari latu 5,5 km")).toEqual(true);
       expect(
-        wrapper.text().includes("Mustavuori-Talosaari latu 5,5 km")
+        wrapper.text().includes("Mustavuoren latu 2,1 km")
       ).toEqual(false);
 
       const showMoreLink = getShowMoreLink(wrapper);
