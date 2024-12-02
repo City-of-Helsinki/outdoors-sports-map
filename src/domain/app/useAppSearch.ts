@@ -19,7 +19,7 @@ function useAppSearch() {
     sport = state?.search?.sport || getDefaultSportFilter(),
     status = state?.search?.status || getDefaultStatusFilter(),
     sportSpecification = state?.search?.sportSpecification || "",
-    sortKey = state?.search?.sortKey || SortKeys.DISTANCE,
+    sortKey = state?.search?.sortKey || SortKeys.CONDITION,
     maxUnitCount = state?.search?.maxUnitCount || UNIT_BATCH_SIZE.toString(),
   } = useSearch<AppSearch>();
 
