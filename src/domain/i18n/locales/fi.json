@@ -72,7 +72,8 @@
       "DEFAULT": "Oletus",
       "ALPHABETICAL": "Aakkosellinen",
       "CONDITION": "Paras kunto ensin",
-      "DISTANCE": "Lähimmät ensin"
+      "DISTANCE": "Lähimmät ensin",
+      "FAVORITES": "Suosikit"
     },
     "PHONE": "Puhelinnumero",
     "TMP_MESSAGE": "",

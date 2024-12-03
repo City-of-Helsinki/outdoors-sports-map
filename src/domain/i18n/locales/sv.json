@@ -72,7 +72,8 @@
       "DEFAULT": "Förinställt",
       "ALPHABETICAL": "Alfabetisk",
       "CONDITION": "I bästa skick först",
-      "DISTANCE": "Närmast först"
+      "DISTANCE": "Närmast först",
+      "FAVORITES": "Favoriter"
     },
     "PHONE": "Telefon",
     "TMP_MESSAGE": "",

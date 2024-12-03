@@ -208,6 +208,7 @@ export const SortKeys = {
   ALPHABETICAL: "alphabetical",
   DISTANCE: "distance",
   CONDITION: "condition",
+  FAVORITES: "favorites",
 } as const;
 
 export type SortKey = (typeof SortKeys)[keyof typeof SortKeys];

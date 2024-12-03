@@ -372,6 +372,13 @@ export const sortByCondition = (units: Unit[]) =>
     },
   ]);
 
+export const sortByFavorites = (units: Unit[]): Unit[] => {
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+  return units.filter((unit) =>
+    favourites.some((favourite: Unit) => favourite.id === unit.id),
+  );
+};
+
 export const getAddressToDisplay = (
   address: Record<string, any>,
   activeLang: string,
