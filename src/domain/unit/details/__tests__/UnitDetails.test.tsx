@@ -546,3 +546,20 @@ describe("<UnitDetails />", () => {
     expect(wrapperText.includes("Hiihtotyyli: Vapaa Koiralatu")).toEqual(true);
   });
 });
+
+it("should render 'Lisää suosikiksi' button", () => {
+  const wrapper = getWrapper();
+  expect(wrapper.find('button').text().includes("Lisää suosikiksi")).toEqual(true);
+});
+
+it("should render 'Poista suosikeista' button if unit is already in favourites", () => {
+  // Add unit to favourites
+  const favouriteUnit = unit;
+  localStorage.setItem('favouriteUnits', JSON.stringify([unit]));
+
+  const wrapper = getWrapper({ unit: favouriteUnit });
+  expect(wrapper.find('button').text().includes("Poista suosikeista")).toEqual(true);
+
+  // Clean up local storage
+  localStorage.removeItem('favouriteUnits');
+});
