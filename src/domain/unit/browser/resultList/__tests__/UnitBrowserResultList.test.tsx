@@ -159,3 +159,34 @@ describe("<UnitBrowserResultList />", () => {
     });
   });
 });
+
+describe("<UnitBrowserResultListSort />", () => {
+  it("should render sort by condition by default", () => {
+    const wrapper = getWrapper();
+    expect(wrapper.text().includes("Paras kunto ensin")).toEqual(true)
+  });
+
+  it("should render favorites by default if user has saved favorites", () => {
+    // Add unit to favourites
+    const favouriteUnit = units["53916"];
+    localStorage.setItem('favouriteUnits', JSON.stringify([favouriteUnit]));
+
+    const wrapper = getWrapper();
+    expect(wrapper.text().includes("Suosikit")).toEqual(true)
+
+    // Clean up
+    localStorage.removeItem('favouriteUnits');
+  });
+
+  it("should render sort by condition if user has favorites but not in selected sport", () => {
+    // Add unit to favourites
+    const favouriteUnit = {"id": 12345, "name": {"fi": "Testi tekojääkenttä" }, "services": [406]};
+    localStorage.setItem('favouriteUnits', JSON.stringify([favouriteUnit]));
+
+    const wrapper = getWrapper();
+    expect(wrapper.text().includes("Paras kunto ensin")).toEqual(true)
+
+    // Clean up
+    localStorage.removeItem('favouriteUnits');
+  });
+});
