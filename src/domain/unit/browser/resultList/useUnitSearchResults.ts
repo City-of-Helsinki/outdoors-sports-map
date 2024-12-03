@@ -35,6 +35,10 @@ function sortUnits({ units, position, leafletMap, sortKey }: SortOptions) {
       sortedUnits = unitHelpers.sortByDistance(units, position, leafletMap);
       break;
 
+    case SortKeys.FAVORITES:
+      sortedUnits = unitHelpers.sortByFavorites(units);
+      break;
+
     default:
       sortedUnits = units;
   }

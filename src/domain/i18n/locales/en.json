@@ -72,7 +72,8 @@
       "DEFAULT": "Default",
       "ALPHABETICAL": "Alphabetic",
       "CONDITION": "In best condition first",
-      "DISTANCE": "Closest first"
+      "DISTANCE": "Closest first",
+      "FAVORITES": "Favorites"
     },
     "PHONE": "Phone",
     "TMP_MESSAGE": "",
