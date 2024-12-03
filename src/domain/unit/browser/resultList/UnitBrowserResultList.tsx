@@ -85,6 +85,8 @@ function UnitBrowserResultList({ leafletMap }: Props) {
     leafletMap,
   });
 
+  const totalUnitResults = sortKey === "favorites" ? results?.length : totalUnits;
+
   const handleOnSortKeySelect = useCallback(
     (nextSortKey) => {
       if (nextSortKey) {
@@ -122,25 +124,31 @@ function UnitBrowserResultList({ leafletMap }: Props) {
         <div className="list-view__block">
           {results === null && <Loading />}
           {Array.isArray(results) && (
-            <>
-              {results.map((unit) => (
-                <UnitListItem key={unit.id} unit={unit} />
-              ))}
-              {results.length !== totalUnits && ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a
-                  style={{
-                    display: "block",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    margin: "18px auto 10px",
-                  }}
-                  href=""
-                  onClick={handleLoadMoreClick}
-                >
-                  {t("UNIT_DETAILS.SHOW_MORE")}
-                </a>
-              )}
-            </>
+          <>
+            {results.length === 0 && sortKey === 'favorites' ? (
+              <p style={{ textAlign: "center" }}>{t("UNIT_DETAILS.NO_FAVORITES")}</p>
+            ) : (
+              <>
+                {results.map((unit) => (
+                  <UnitListItem key={unit.id} unit={unit} />
+                ))}
+                {results.length !== totalUnitResults && ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                  <a
+                    style={{
+                      display: "block",
+                      textAlign: "center",
+                      cursor: "pointer",
+                      margin: "18px auto 10px",
+                    }}
+                    href=""
+                    onClick={handleLoadMoreClick}
+                  >
+                    {t("UNIT_DETAILS.SHOW_MORE")}
+                  </a>
+                )}
+              </>
+            )}
+          </>
           )}
         </div>
       </div>
