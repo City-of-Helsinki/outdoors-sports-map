@@ -9,10 +9,11 @@ declare global {
 
 function CookieConsent() {
   const { t, i18n } = useTranslation();
+  const currentLanguage = ['fi', 'sv', 'en'].includes(i18n.language) ? i18n.language : 'en';
 
   const contentSource: ContentSource = {
     siteName: t("APP.NAME"),
-    currentLanguage:  i18n.language as 'fi' | 'sv' | 'en',
+    currentLanguage:  currentLanguage as 'fi' | 'sv' | 'en',
     optionalCookies: {
       groups: [
         {
