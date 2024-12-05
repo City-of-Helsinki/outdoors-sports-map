@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.5.0] - 2024-12-05
+
+## Added
+
+-   [#265](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/265) Save units as favorites 
+
+## Changed
+
+-   [#264](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/264) Change unit sort default to condition
+
+## Fixed
+
+-   [#266](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/266) Validate currentLanguage in CookieConsent
+
 ## [2.4.0] - 2024-11-20
 
 ### Added
