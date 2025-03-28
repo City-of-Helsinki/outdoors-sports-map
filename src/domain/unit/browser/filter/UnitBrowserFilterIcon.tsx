@@ -11,6 +11,7 @@ function UnitBrowserFilterIcon({ filter, ...rest }: Props) {
   const STATUS_OK_ICON = "status-ok";
   const STATUS_ANY_ICON = "status-unknown";
   const HIKING_ICON = "hiking";
+  const SLEDDING_ICON = "sledding";
   let iconName = filter;
 
   switch (filter) {
@@ -29,6 +30,10 @@ function UnitBrowserFilterIcon({ filter, ...rest }: Props) {
     case UnitFilters.HIKING:
       iconName = HIKING_ICON;
       break;
+    
+    case UnitFilters.SLEDDING:
+      iconName = SLEDDING_ICON;
+      break; // is this needed?
 
     default: // Use received filter
   }

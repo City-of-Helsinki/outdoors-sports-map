@@ -65,7 +65,8 @@
       "COOKING_FACILITY": "Ruoanlaittopaikka",
       "CAMPING": "Telttailu ja leiriytyminen",
       "SKI_LODGE": "Ulkoilumaja / hiihtomaja",
-      "HIKING": "Retkeily"
+      "HIKING": "Retkeily",
+      "SLEDDING": "Pulkkailu"
     },
     "FILTER_SPORT": "Valitse laji",
     "FILTER_STATUS": "Valitse kunto",

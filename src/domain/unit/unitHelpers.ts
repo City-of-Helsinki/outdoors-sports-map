@@ -43,6 +43,7 @@ import {
   UnitServices,
   IceSwimmingServices,
   SupportingServices,
+  SleddingServices,
 } from "../service/serviceConstants";
 import { getOnSeasonServices } from "../service/serviceHelpers";
 
@@ -137,6 +138,9 @@ export const getUnitSport = (unit: Unit) => {
 
       if (IceSwimmingServices.includes(service)) {
         return UnitFilters.ICE_SWIMMING;
+      }
+      if (SleddingServices.includes(service)) {
+        return UnitFilters.SLEDDING;
       }
       if (SupportingServices.includes(service)) {
         switch (service) {
