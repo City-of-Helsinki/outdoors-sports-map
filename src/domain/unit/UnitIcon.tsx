@@ -26,6 +26,10 @@ function UnitIcon({ unit, alt }: Props) {
     case UnitFilters.ICE_SWIMMING:
       icon = "iceswim";
       break;
+
+    case UnitFilters.SLEDDING:
+      icon = "sledding";
+      break;
     
     case UnitFilters.COOKING_FACILITY:
       icon = UnitFilters.COOKING_FACILITY;

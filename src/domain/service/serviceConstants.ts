@@ -19,6 +19,7 @@ export const UnitServices = {
   COOKING_FACILITY: 586,
   CAMPING: 698,
   SKI_LODGE: 734,
+  SLEDDING_HILL: 1083,
 };
 
 export const IceSkatingServices = [
@@ -41,6 +42,8 @@ export const SwimmingServices = [
 ];
 
 export const IceSwimmingServices = [UnitServices.ICE_SWIMMING_PLACE];
+
+export const SleddingServices = [UnitServices.SLEDDING_HILL];
 
 export const SupportingServices = [
   UnitServices.LEAN_TO,
