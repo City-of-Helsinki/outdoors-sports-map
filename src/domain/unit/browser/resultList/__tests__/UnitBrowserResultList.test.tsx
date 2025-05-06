@@ -1,4 +1,5 @@
 import { mount } from "../../../../enzymeHelpers";
+import * as unitHelpers from "../../../unitHelpers";
 import UnitBrowserResultList from "../UnitBrowserResultList";
 
 jest.mock("../../../unitConstants", () => ({
@@ -122,6 +123,15 @@ const getWrapper = (props) =>
       },
     },
   });
+
+beforeEach(() => {
+  // Mock getDefaultSportFilter to always return the default winter sport ski
+  jest.spyOn(unitHelpers, 'getDefaultSportFilter').mockImplementation(() => 'ski');
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe("<UnitBrowserResultList />", () => {
   describe("show more link", () => {
