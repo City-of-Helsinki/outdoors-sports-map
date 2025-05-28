@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.6.0] - 2025-05-28
+
+## Added
+
+-   [#268](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/268) Add swim warning marker
+-   [#269](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/269) Add sledding to services
+-   [#271](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/271) AppInfo updates
+
+## Changed
+
+-   [#270](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/270) Update texts
+
 ## [2.5.0] - 2024-12-05
 
 ## Added
