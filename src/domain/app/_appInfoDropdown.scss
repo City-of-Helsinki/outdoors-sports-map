@@ -12,11 +12,11 @@
   }
 
   .dropdown-toggle {
-    height: 26px;
-    width: 26px;
+    height: 32px;
+    width: 32px;
     padding: 0;
 
-    line-height: 26px;
+    line-height: 29px;
 
     border: none;
     border-radius: 50%;
@@ -28,8 +28,8 @@
     }
 
     & > * {
-      font-size: 19px;
-      line-height: 26px;
+      font-size: 28px;
+      line-height: 29px;
     }
 
     &::after {
