@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import AppAboutModal from "./AppAboutModal";
 import AppAccessibilityModal from "./AppAccessibilityModal";
 import AppFeedbackModal from "./AppFeedbackModal";
+import AppInfoModal from "./AppInfoModal";
 import OutboundLink from "../../common/a11y/OutboundLink";
 import SMIcon from "../../common/components/SMIcon";
 
@@ -14,7 +15,7 @@ function AppInfoDropdown() {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
   const [modal, setModal] = useState<
-    "about" | "feedback" | "accessibility" | null
+    "about" | "feedback" | "accessibility" | "info" | null
   >(null);
   // Manage dropdown state "manually" to force it to remain open when a modal
   // is opened through it, or when the user tabs onwards from the toggle element.
@@ -60,6 +61,14 @@ function AppInfoDropdown() {
           <SMIcon icon="info" aria-label={t("APP.ABOUT")} />
         </Dropdown.Toggle>
         <Dropdown.Menu>
+          <Dropdown.Item onClick={() => setModal("info")}>
+            <SMIcon
+              icon="info"
+              className="app-info-dropdown__icon"
+              aria-hidden="true"
+            />
+            {t("APP.INFO_MENU.SERVICE_INFO")}
+          </Dropdown.Item>
           <Dropdown.Item onClick={() => setModal("feedback")}>
             <SMIcon
               icon="info"
@@ -91,6 +100,7 @@ function AppInfoDropdown() {
         </Dropdown.Menu>
       </Dropdown>
       <AppAboutModal show={modal === "about"} onClose={handleOnClose} />
+      <AppInfoModal show={modal === "info"} onClose={handleOnClose} />
       <AppFeedbackModal show={modal === "feedback"} onClose={handleOnClose} />
       <AppAccessibilityModal
         show={modal === "accessibility"}
