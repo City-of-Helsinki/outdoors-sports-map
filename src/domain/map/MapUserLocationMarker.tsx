@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
 
 import AriaHiddenIcon from "./MapAriaHiddenIcon";
-import latLngToArray from "./mapHelpers";
+import { latLngToArray } from "./mapHelpers";
 import { setLocation as setLocationActionFactory } from "./state/actions";
 import { getLocation } from "./state/selectors";
 import { AppState } from "../app/appConstants";
