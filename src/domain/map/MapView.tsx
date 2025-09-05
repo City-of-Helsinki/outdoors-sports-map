@@ -1,5 +1,4 @@
 import { LatLngTuple } from "leaflet";
-import get from "lodash/get";
 import { Component, MutableRefObject } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
@@ -12,12 +11,10 @@ import MapUserLocationMarker from "./MapUserLocationMarker";
 import {
   BOUNDARIES,
   DEFAULT_ZOOM,
-  MAP_RETINA_URL,
-  MAP_URL,
   MAX_ZOOM,
   MIN_ZOOM,
 } from "./mapConstants";
-import latLngToArray from "./mapHelpers";
+import { getMapUrl, latLngToArray } from "./mapHelpers";
 import OSMIcon from "../../common/components/OSMIcon";
 import { View } from "../unit/UnitView";
 import { Unit } from "../unit/unitConstants";
@@ -120,9 +117,7 @@ class MapView extends Component<Props, State> {
         >
           <TileLayer
             url={
-              isRetina()
-                ? get(MAP_RETINA_URL, language)
-                : get(MAP_URL, language)
+              getMapUrl(language || "fi", isRetina() ? "@3x" : "")
             }
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
