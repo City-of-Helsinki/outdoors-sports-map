@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 
-import { mount } from "../../enzymeHelpers";
+import { render, screen, userEvent } from "../../testinLibraryUtils";
 import TranslationProvider from "../I18nTranslationProvider";
 import i18n from "../i18n";
 
@@ -20,8 +20,8 @@ function ChangeLanguageButtons() {
   );
 }
 
-const getWrapper = () =>
-  mount(
+const renderComponent = () =>
+  render(
     <TranslationProvider>
       <ChangeLanguageButtons />
     </TranslationProvider>
@@ -34,12 +34,17 @@ describe("<TranslationProvider />", () => {
     expect(moment.locale()).toEqual(language);
     expect(document.documentElement.lang).toEqual(language);
   });
-  it("should change HTML document language and moment language when language changes", () => {
+  it("should change HTML document language and moment language when language changes", async() => {
     expect(moment.locale()).toEqual("fi");
 
-    const wrapper = getWrapper();
+    const user = userEvent.setup();
+    renderComponent();
 
-    wrapper.find("button").at(1).simulate("click");
+    // Change to Swedish
+    const svButton = screen.getAllByRole("button")[1];
+    await user.click(svButton);
+
+    // Verify that moment locale and document language have changed
     expect(moment.locale()).toEqual("sv");
     expect(document.documentElement.lang).toEqual("sv");
   });

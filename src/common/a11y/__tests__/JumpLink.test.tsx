@@ -1,13 +1,12 @@
-import { mount } from "../../../domain/enzymeHelpers";
+import { render } from "../../../domain/testinLibraryUtils";
 import JumpLink from "../JumpLink";
 import { MAIN_CONTENT_ID } from "../Page";
 
-const getWrapper = (props) => mount(<JumpLink {...props} />);
-
+const renderComponent = (props?: any) => render(<JumpLink {...props} />);
 describe("<JumpLink />", () => {
   it("should render an anchor with id of MAIN_CONTENT_ID", () => {
-    const wrapper = getWrapper();
+    const { container } = renderComponent();
 
-    expect(wrapper.find(`a[href="#${MAIN_CONTENT_ID}"]`).length).toEqual(1);
+    expect(container.querySelector(`a[href="#${MAIN_CONTENT_ID}"]`)).toBeInTheDocument();
   });
 });

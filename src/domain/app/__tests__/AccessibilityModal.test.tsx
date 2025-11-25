@@ -1,8 +1,8 @@
-import { mount } from "../../enzymeHelpers";
+import { render, screen } from "../../testinLibraryUtils";
 import AppAccessibilityModal from "../AppAccessibilityModal";
 
-const getWrapper = () =>
-  mount(
+const renderComponent = () =>
+  render(
     <AppAccessibilityModal
       onClose={() => {
         // pass
@@ -13,8 +13,8 @@ const getWrapper = () =>
 
 describe("<AppAccessibilityModal />", () => {
   it("renders correctly", () => {
-    const wrapper = getWrapper();
-
-    expect(wrapper.html()).toMatchSnapshot();
+    renderComponent();
+    const dialog = screen.getByRole("dialog"); 
+    expect(dialog.innerHTML).toMatchSnapshot();
   });
 });
