@@ -13,7 +13,7 @@ function UnitBrowserResultListSort({ active, values, onSelect }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Dropdown id="unit-sort-selector" className="unit-sort-selector">
+    <Dropdown id="unit-sort-selector" className="unit-sort-selector" onSelect={onSelect}>
       <Dropdown.Toggle>
         {t(`UNIT_DETAILS.SORT.${active.toUpperCase()}`)}
         <span className="custom-caret">
@@ -23,7 +23,7 @@ function UnitBrowserResultListSort({ active, values, onSelect }: Props) {
       <Dropdown.Menu>
         {values &&
           values.map((key) => (
-            <Dropdown.Item key={key} eventKey={key} onSelect={onSelect}>
+            <Dropdown.Item key={key} eventKey={key}>
               {t(`UNIT_DETAILS.SORT.${key.toUpperCase()}`)}
             </Dropdown.Item>
           ))}
