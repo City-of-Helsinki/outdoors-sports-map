@@ -234,10 +234,11 @@ export const getUnitIconURL = (
   const onOff = selected ? "on" : "off";
   const resolution = retina ? "@2x" : "";
 
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  return require(
+  const imported = require(
     `../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`,
-  ).default;
+  );
+  // Webpack 5 may or may not use .default depending on config
+  return imported.default || imported;
 };
 
 export const getUnitIconHeight = (unit: Unit) =>
