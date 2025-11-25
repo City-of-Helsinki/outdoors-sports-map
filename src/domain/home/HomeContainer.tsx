@@ -1,4 +1,5 @@
 import className from "classnames";
+import { Map } from "leaflet";
 import { useCallback, useRef, ReactNode, useState } from "react";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
@@ -13,6 +14,7 @@ import MapComponent from "../map/MapComponent";
 import { DETAIL_ZOOM_IN } from "../map/mapConstants";
 import UnitBrowser from "../unit/browser/UnitBrowser";
 import UnitDetails from "../unit/details/UnitDetails";
+import { Unit } from "../unit/unitConstants";
 import { getUnitPosition } from "../unit/unitHelpers";
 
 function useIsUnitDetailsSearchView() {
@@ -70,12 +72,12 @@ function HomeContainer() {
     setIsHomeContainerExpanded(!isHomeContainerExpanded)
   }
 
-  const handleOnViewChange = useCallback((coordinates) => {
+  const handleOnViewChange = useCallback((coordinates: [number, number]) => {
     leafletElementRef.current?.setView(coordinates);
   }, []);
 
   const handleCenterMapToUnit = useCallback(
-    (unit, map) => {
+    (unit: Unit, map: Map | null) => {
       const leafletElement = leafletElementRef.current || map;
       const location = getUnitPosition(unit);
 

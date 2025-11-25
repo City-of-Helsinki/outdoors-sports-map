@@ -46,6 +46,7 @@ function AppFeedbackModal({ onClose, show }: Props) {
 
   return (
     <Modal show={show} onHide={onClose} size="lg" animation={false}>
+      {/* @ts-ignore */}
       <Modal.Header closeButton closeLabel={t("APP.MODAL.CLOSE")}>
         <Modal.Title>
           <h2>{t("APP.INFO_MENU.GIVE_FEEDBACK")}</h2>

@@ -1,7 +1,7 @@
 import { createControlComponent } from "@react-leaflet/core";
 import L from "leaflet";
 import { ReactElement } from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 
 type Props = {
   handleClick: (e: Event) => void;
@@ -28,7 +28,9 @@ const createMapControl = (props: Props) => {
         handleClick && handleClick(event);
       });
 
-    ReactDOM.render(children, link);
+    // Render React element into the control
+    const root = createRoot(link);
+    root.render(children);
 
     return div;
   };

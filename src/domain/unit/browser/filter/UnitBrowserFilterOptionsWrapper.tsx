@@ -12,8 +12,8 @@ type State = {
   height: number;
 };
 
-class UnitBrowserFilterOptionsWrapper extends React.Component<Props, State> {
-  constructor(props: Props) {
+class UnitBrowserFilterOptionsWrapper extends React.Component<React.PropsWithChildren<Props>, State> {
+  constructor(props: React.PropsWithChildren<Props>) {
     super(props);
     this.state = {
       height: 0,

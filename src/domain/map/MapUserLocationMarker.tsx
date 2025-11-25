@@ -75,4 +75,4 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MapUserLocationMarker);
+)(MapUserLocationMarker as any);

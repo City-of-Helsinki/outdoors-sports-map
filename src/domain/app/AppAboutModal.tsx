@@ -11,6 +11,7 @@ function AppAboutModal({ show = false, onClose }: Props) {
 
   return (
     <Modal show={show} onHide={onClose} size="lg" animation={false}>
+      {/* @ts-ignore */}
       <Modal.Header closeButton closeLabel={t("APP.MODAL.CLOSE")}>
         <Modal.Title>
           <h2>{t("APP.NAME")}</h2>
