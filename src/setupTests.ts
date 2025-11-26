@@ -4,6 +4,21 @@
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
 
+// Suppress jsdom CSS parsing errors from hds-react
+const originalConsoleError = console.error;
+console.error = (...args: any[]) => {
+  if (
+    typeof args[0] === "string" &&
+    (args[0].includes("Could not parse CSS stylesheet") ||
+      args[0].includes(
+        "Error: Not implemented: HTMLFormElement.prototype.submit",
+      ))
+  ) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
