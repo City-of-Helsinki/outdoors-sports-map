@@ -1,4 +1,4 @@
-import { render, screen } from "../../../../testinLibraryUtils";
+import { render, screen } from "../../../../testingLibraryUtils";
 import * as unitHelpers from "../../../unitHelpers";
 import UnitBrowserResultList from "../UnitBrowserResultList";
 

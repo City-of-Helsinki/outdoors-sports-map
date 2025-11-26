@@ -1,4 +1,4 @@
-import { render, screen } from "../../../domain/testinLibraryUtils";
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import Page from "../Page";
 
 const renderComponent = (props: any) => render(<Page {...props} />);

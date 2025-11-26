@@ -1,7 +1,7 @@
 import moment from "moment";
 import ReactRouter from "react-router";
 
-import { render, screen, within } from "../../../testinLibraryUtils";
+import { render, screen, within } from "../../../testingLibraryUtils";
 import UnitDetails from "../UnitDetails";
 
 const temperatureDataObservation = {

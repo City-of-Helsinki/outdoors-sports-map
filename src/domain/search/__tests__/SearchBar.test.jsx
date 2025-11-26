@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, userEvent } from "../../testinLibraryUtils";
+import { fireEvent, render, screen, userEvent } from "../../testingLibraryUtils";
 import SearchBar from "../SearchBar";
 
 const renderComponent = (props) => render(<SearchBar {...props} />);

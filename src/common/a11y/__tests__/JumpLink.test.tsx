@@ -1,4 +1,4 @@
-import { render, screen } from "../../../domain/testinLibraryUtils";
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import JumpLink from "../JumpLink";
 import { MAIN_CONTENT_ID } from "../Page";
 

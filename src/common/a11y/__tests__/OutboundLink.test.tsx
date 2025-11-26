@@ -1,4 +1,4 @@
-import { render, screen, within } from "../../../domain/testinLibraryUtils";
+import { render, screen, within } from "../../../domain/testingLibraryUtils";
 import OutboundLink from "../OutboundLink";
 
 const defaultProps = {

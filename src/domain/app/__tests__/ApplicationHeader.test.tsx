@@ -1,4 +1,4 @@
-import { render, screen } from "../../testinLibraryUtils";
+import { render, screen } from "../../testingLibraryUtils";
 import ApplicationHeader from "../AppHeader";
 
 const defaultProps = {

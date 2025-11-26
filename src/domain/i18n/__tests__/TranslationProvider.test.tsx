@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 
-import { render, screen, userEvent } from "../../testinLibraryUtils";
+import { render, screen, userEvent } from "../../testingLibraryUtils";
 import TranslationProvider from "../I18nTranslationProvider";
 import i18n from "../i18n";
 
