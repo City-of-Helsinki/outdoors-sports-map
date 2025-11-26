@@ -1,19 +1,19 @@
-import React, { useCallback, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
+import {Button, Checkbox, Dialog, TextInput, TextArea, IconInfoCircle} from "hds-react";
+import React, { RefObject, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
 import * as appActions from "../app/state/actions";
 
 type Props = {
+  focusAfterCloseRef?: RefObject<HTMLElement>;
   onClose: () => void;
   show: boolean;
 };
 
-function AppFeedbackModal({ onClose, show }: Props) {
+function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
   const { t } = useTranslation();
+  const titleId = "feedback-dialog-title";
   const [emailInputOpen, setEmailInputOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
 
@@ -45,52 +45,51 @@ function AppFeedbackModal({ onClose, show }: Props) {
   );
 
   return (
-    <Modal show={show} onHide={onClose} size="lg" animation={false}>
-      <Modal.Header closeButton closeLabel={t("APP.MODAL.CLOSE")}>
-        <Modal.Title>
-          <h2>{t("APP.INFO_MENU.GIVE_FEEDBACK")}</h2>
-        </Modal.Title>
-      </Modal.Header>
-      <Form onSubmit={handleOnSubmit}>
-        <Modal.Body>
-          <Form.Group
-            controlId="formControlsTextarea"
-            className="feedback-modal__feedback"
-          >
-            <Form.Control
-              name="feedback"
-              as="textarea"
-              placeholder={t("APP.FEEDBACK.FEEDBACK")}
+      <Dialog
+          id="about-dialog"
+          aria-labelledby={titleId}
+          isOpen={show}
+          close={onClose}
+          closeButtonLabelText={t("APP.MODAL.CLOSE")}
+          focusAfterCloseRef={focusAfterCloseRef}
+        >
+          <form onSubmit={handleOnSubmit}>
+            <Dialog.Header
+              id={titleId}  
+              title={t("APP.INFO_MENU.GIVE_FEEDBACK")}
+              iconStart={<IconInfoCircle />}
             />
-          </Form.Group>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              label={t("APP.FEEDBACK.WANT_ANSWER")}
-              className="feedback-modal__checkbox"
-              onChange={handleToggleEmailInput}
-              checked={emailInputOpen}
-            />
-          </Form.Group>
-          {emailInputOpen && (
-            <Form.Group>
-              <Form.Control
-                name="email"
-                className="feedback-modal__email"
-                type="email"
-                placeholder={t("APP.FEEDBACK.EMAIL")}
+            <Dialog.Content className="outdoor-exercise-map-modal-content">
+              <TextArea
+                id="feedback"
+                label={t("APP.FEEDBACK.FEEDBACK")}
+                placeholder={t("APP.FEEDBACK.FEEDBACK")}
+                required
               />
-            </Form.Group>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" type="submit">
-            {t("APP.FEEDBACK.SEND")}
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
-  );
+              <Checkbox
+                id="want-answer"
+                label={t("APP.FEEDBACK.WANT_ANSWER")}
+                onChange={handleToggleEmailInput}
+                checked={emailInputOpen}
+              />
+              {emailInputOpen && (
+                <TextInput
+                  id="email"
+                  label={t("APP.FEEDBACK.EMAIL")}
+                  placeholder={t("APP.FEEDBACK.EMAIL")}
+                  type="email"
+                  required={emailInputOpen}
+                />
+              )}
+            </Dialog.Content>
+            <Dialog.ActionButtons>
+              <Button type="submit">
+                {t("APP.FEEDBACK.SEND")}
+              </Button>
+            </Dialog.ActionButtons>
+          </form>
+        </Dialog>
+    );
 }
 
 export default AppFeedbackModal;
