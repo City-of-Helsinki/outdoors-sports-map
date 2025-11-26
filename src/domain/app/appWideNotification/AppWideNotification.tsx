@@ -1,4 +1,4 @@
-import { Notification } from "hds-react";
+import { Notification, NotificationSize } from "hds-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,7 @@ export function AppWideNotification({initialState}: NotificationProps) {
     <Notification
       label={notificationTitle}
       type="info"
-      size="default"
+      size={NotificationSize.Medium}
       dismissible
       closeButtonLabelText={t("APP.NOTIFICATION_CLOSE") as string}
       className="app-wide-notification"

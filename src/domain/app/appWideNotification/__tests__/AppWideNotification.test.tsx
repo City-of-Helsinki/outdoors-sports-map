@@ -1,7 +1,7 @@
 import {
   render,
   screen,
-} from "../../../testinLibraryUtils";
+} from "../../../testingLibraryUtils";
 import AppWideNotification from "../AppWideNotification";
 
 describe("<AppWideNotification />", () => {

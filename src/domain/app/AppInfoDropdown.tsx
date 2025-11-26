@@ -31,7 +31,7 @@ function AppInfoDropdown() {
         ref={dropdownRef}
         className="app-info-dropdown"
         role="contentinfo"
-        onToggle={(isOpen, event, { source }) => {
+        onToggle={(isOpen, { source }) => {
           // Always open the menu
           if (isOpen) {
             return setIsDropdownOpen(isOpen);

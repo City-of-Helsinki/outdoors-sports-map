@@ -35,7 +35,7 @@ const customRender = (
   preloadedState?: Partial<AppState>
 ) =>
   render(ui, {
-    wrapper: ({ children }) => (
+    wrapper: ({ children }: any) => (
       <TestProviders preloadedState={preloadedState}>{children}</TestProviders>
     ),
     ...options,

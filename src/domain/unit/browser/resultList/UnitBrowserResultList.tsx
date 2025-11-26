@@ -88,7 +88,7 @@ function UnitBrowserResultList({ leafletMap }: Props) {
   const totalUnitResults = sortKey === "favorites" ? results?.length : totalUnits;
 
   const handleOnSortKeySelect = useCallback(
-    (nextSortKey) => {
+    (nextSortKey: string | null) => {
       if (nextSortKey) {
         doSearch({
           sortKey: nextSortKey,

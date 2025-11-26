@@ -1,4 +1,4 @@
-import { mount } from "../../../domain/enzymeHelpers";
+import { render, screen, within } from "../../../domain/testingLibraryUtils";
 import OutboundLink from "../OutboundLink";
 
 const defaultProps = {
@@ -6,15 +6,14 @@ const defaultProps = {
   children: "Label",
 };
 
-const getWrapper = (props) =>
-  mount(<OutboundLink {...defaultProps} {...props} />);
+const renderComponent = (props?: any) =>
+  render(<OutboundLink {...defaultProps} {...props} />);
 
 describe("<OutboundLink />", () => {
   it("should render a link with notice that it will be opened into a new window", () => {
-    const wrapper = getWrapper();
-    const link = wrapper.find("a");
-
-    expect(link.length).toEqual(1);
-    expect(link.find('span[title="Avaa uuden ikkunan"]').length).toEqual(1);
+    renderComponent();
+    const link = screen.getByRole("link");
+    expect(link).toBeInTheDocument();
+    expect(within(link).getByTitle("Avaa uuden ikkunan")).toBeInTheDocument();
   });
 });

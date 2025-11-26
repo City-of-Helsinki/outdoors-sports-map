@@ -1,7 +1,7 @@
 import moment from "moment";
 import ReactRouter from "react-router";
 
-import { mount } from "../../../enzymeHelpers";
+import { render, screen, within } from "../../../testingLibraryUtils";
 import UnitDetails from "../UnitDetails";
 
 const temperatureDataObservation = {
@@ -299,13 +299,12 @@ const defaultProps = {
   onCenterMapToUnit: () => {},
 };
 
-const getWrapper = (props?: any, modifiedUnit?: any) => {
+const renderComponent = (props?: any, modifiedUnit?: any) => {
   jest.spyOn(ReactRouter, "useParams").mockReturnValue({
     unitId: "40142",
   });
 
-  return mount(<UnitDetails {...defaultProps} {...props} />, {
-    preloadedState: {
+  return render(<UnitDetails {...defaultProps} {...props} />, undefined, {
       unit: {
         byId: {
           "40142": {
@@ -320,53 +319,47 @@ const getWrapper = (props?: any, modifiedUnit?: any) => {
         ski: [],
         swim: [],
         status_ok: [],
-      },
-    },
+    } as any,
   });
 };
 
 describe("<UnitDetails />", () => {
   describe("header", () => {
     it("should have a close button", async () => {
-      const wrapper = getWrapper();
+      renderComponent();
 
-      const closeButton = wrapper
-        .find({
-          "aria-label": "Sulje",
-        })
-        .at(0)
-        .parent();
+      const closeButton = await screen.findByRole("link", { name: "Sulje" });
 
       // It should exist
-      expect(closeButton.length > 0).toBeTruthy();
+      expect(closeButton).toBeInTheDocument();
       // It should take the user to the root route
-      expect(closeButton.prop("href")).toEqual("/fi/");
+      expect(closeButton.getAttribute("href")).toEqual("/fi/");
     });
   });
 
   describe("when live temperature data is available", () => {
-    const getWrapperWithLiveTemperatureData = (props?: any, unit?: any) =>
-      getWrapper(props, unit);
+    const renderWrapperWithLiveTemperatureData = (props?: any, unit?: any) =>
+      renderComponent(props, unit);
 
     it("should be displayed", () => {
-      const wrapper = getWrapperWithLiveTemperatureData();
+      renderWrapperWithLiveTemperatureData();
       const liveTemperature = `${liveTemperatureDataObservation.value.fi} °C`;
 
-      expect(wrapper.text().includes(liveTemperature)).toEqual(true);
+      expect(screen.getByText(liveTemperature)).toBeInTheDocument();
     });
 
     it("regular temperature should not be displayed", () => {
-      const wrapper = getWrapperWithLiveTemperatureData();
+      renderWrapperWithLiveTemperatureData();
       const temperature = `${temperatureDataObservation.name.fi}`;
 
-      expect(wrapper.text().includes(temperature)).toEqual(false);
+      expect(screen.queryByText(temperature)).toBeNull();
     });
 
     describe("temperature measurement time", () => {
       it("when less than an hour has passed it should use minutes", () => {
         const halfAnHourAgo = moment().subtract(0.5, "hours");
 
-        const wrapper = getWrapperWithLiveTemperatureData(
+        renderWrapperWithLiveTemperatureData(
           {},
           {
             observations: [
@@ -378,13 +371,13 @@ describe("<UnitDetails />", () => {
           }
         );
 
-        expect(wrapper.text().includes("30 minuuttia sitten")).toEqual(true);
+        expect(screen.getByText("30 minuuttia sitten")).toBeInTheDocument();
       });
 
       it("when at least an hour has passed it should use hours", () => {
         const anHourAgo = moment().subtract(2, "hours");
 
-        const wrapper = getWrapperWithLiveTemperatureData(
+        renderWrapperWithLiveTemperatureData(
           {},
           {
             observations: [
@@ -396,14 +389,14 @@ describe("<UnitDetails />", () => {
           }
         );
 
-        expect(wrapper.text().includes("kaksi tuntia sitten")).toEqual(true);
+        expect(screen.getByText("kaksi tuntia sitten")).toBeInTheDocument();
       });
     });
   });
 
   describe("when live water quality data is available", () => {
-    const getWrapperWithLiveWaterQualityData = (props?: any, unit?: any) =>
-      getWrapper(props, unit);
+    const renderWrapperWithLiveWaterQualityData = (props?: any, unit?: any) =>
+      renderComponent(props, unit);
     const waterQuality= {
       normal: "Tavanomainen",
       possibly_impaired: "Mahdollisesti heikentynyt",
@@ -411,145 +404,167 @@ describe("<UnitDetails />", () => {
       error: "Ei arviota"
     }
     it("should be displayed", () => {
-      const wrapper = getWrapperWithLiveWaterQualityData();
+      renderWrapperWithLiveWaterQualityData();
       const liveWaterQuality = waterQuality.possibly_impaired;
 
-      expect(wrapper.text().includes(liveWaterQuality)).toEqual(true);
+      expect(screen.getByText(liveWaterQuality)).toBeInTheDocument();
     });
   });
 
   describe("when control data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Valvonta: Valvottu")).toBeInTheDocument();
     });
   });
 
   describe("when control data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper({}, {
-        connections: unit.connections.filter((con) => con.tags === undefined)
-      });
-      expect(wrapper.text().includes("Valvonta: Valvottu")).toEqual(false);
+      renderComponent(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined)
+        }
+      );
+      expect(screen.queryByText("Valvonta: Valvottu")).toBeNull();
     });
   })
 
   describe("when parking data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toBeInTheDocument();
     });
   });
 
   describe("when parking data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper({}, {
-        connections: unit.connections.filter((con) => con.tags === undefined)
-      });
-      expect(wrapper.text().includes("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toEqual(false);
+      renderComponent(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined)
+        }
+      );
+      expect(screen.queryByText("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toBeNull();
     });
   })
   
   describe("when other services data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Muut palvelut: Luistelukentän muut palvelut")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Muut palvelut: Luistelukentän muut palvelut")).toBeInTheDocument();
     });
   });
 
   describe("when other services data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper({}, {
-        connections: unit.connections.filter((con) => con.tags === undefined)
-      });
-      expect(wrapper.text().includes("Muut palvelut: Luistelukentän muut palvelut")).toEqual(false);
+      renderComponent(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined)
+        }
+      );
+      expect(screen.queryByText("Muut palvelut: Luistelukentän muut palvelut")).toBeNull();
     });
   })
 
   describe("when more information data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com")).toBeInTheDocument();
     });
   });
 
   describe("when more information data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper({}, {
-        connections: unit.connections.filter((con) => con.tags === undefined)
-      });
-      expect(wrapper.text().includes("Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com")).toEqual(false);
+      renderComponent(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined)
+        }
+      );
+      expect(screen.queryByText("Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com")).toBeNull();
     });
   })
 
   describe("when heating data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Lämmitys: Lämmitetty")).toBeInTheDocument();
     });
   });
 
   describe("when heating data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper({}, {
-        connections: unit.connections.filter((con) => con.tags === undefined)
-      });
-      expect(wrapper.text().includes("Lämmitys: Lämmitetty")).toEqual(false);
+      renderComponent(
+        {},
+        {
+          connections: unit.connections.filter((con) => con.tags === undefined)
+        }
+      );
+      expect(screen.queryByText("Lämmitys: Lämmitetty")).toBeNull();
     });
   })
 
   describe("when lighting data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Valaistus: Valaistu")).toBeInTheDocument();
     });
   });
 
   describe("when lighting data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper(
+      renderComponent(
         {},
         {
           connections: unit.connections.filter((con) => con.tags === undefined),
         }
       );
-      expect(wrapper.text().includes("Valaistus: Valaistu")).toEqual(false);
+      expect(screen.queryByText("Valaistus: Valaistu")).toBeNull();
     });
   });
 
   describe("when dressing room data is available", () => {
     it("should be displayed", () => {
-      const wrapper = getWrapper();
-      expect(wrapper.text().includes("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toEqual(true);
+      renderComponent();
+      expect(screen.getByText("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toBeInTheDocument();
     });
   });
 
   describe("when dressing room data is not available", () => {
     it("should not be displayed", () => {
-      const wrapper = getWrapper(
+      renderComponent(
         {},
         {
           connections: unit.connections.filter((con) => con.tags === undefined),
         }
       );
-      expect(wrapper.text().includes("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toEqual(false);
+      expect(screen.queryByText("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toBeNull();
     });
   });
 
   it("should render extras correctly", () => {
-    const wrapper = getWrapper();
-    const wrapperText = wrapper.text();
+    renderComponent();
 
-    expect(wrapperText.includes("Info")).toEqual(true);
-    expect(wrapperText.includes("Reitin pituus: 4km")).toEqual(true);
-    expect(wrapperText.includes("Valaistu reitti: 0km")).toEqual(true);
-    expect(wrapperText.includes("Hiihtotyyli: Vapaa Koiralatu")).toEqual(true);
+    expect(screen.getByText("Info")).toBeInTheDocument();
+    const routeLength = screen.getByText("Reitin pituus:");
+    expect(routeLength).toBeInTheDocument();
+    expect(within(routeLength).getByText("4km")).toBeInTheDocument();
+    const litRouteLength = screen.getByText("Valaistu reitti:");
+    expect(litRouteLength).toBeInTheDocument();
+    expect(within(litRouteLength).getByText("0km")).toBeInTheDocument();
+    expect(screen.getByText("Hiihtotyyli:")).toBeInTheDocument();
+    expect(screen.getByText("Vapaa")).toBeInTheDocument();
+    expect(screen.getByText("Koiralatu")).toBeInTheDocument();
+
+    
   });
 });
 
 it("should render 'Lisää suosikiksi' button", () => {
-  const wrapper = getWrapper();
-  expect(wrapper.find('button').text().includes("Lisää suosikiksi")).toEqual(true);
+  renderComponent();
+  expect(screen.getByText("Lisää suosikiksi")).toBeInTheDocument();
 });
 
 it("should render 'Poista suosikeista' button if unit is already in favourites", () => {
@@ -557,8 +572,8 @@ it("should render 'Poista suosikeista' button if unit is already in favourites",
   const favouriteUnit = unit;
   localStorage.setItem('favouriteUnits', JSON.stringify([unit]));
 
-  const wrapper = getWrapper({ unit: favouriteUnit });
-  expect(wrapper.find('button').text().includes("Poista suosikeista")).toEqual(true);
+  renderComponent({ unit: favouriteUnit });
+  expect(screen.getByText("Poista suosikeista")).toBeInTheDocument();
 
   // Clean up local storage
   localStorage.removeItem('favouriteUnits');
