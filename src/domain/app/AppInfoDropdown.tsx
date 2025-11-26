@@ -116,7 +116,7 @@ function AppInfoDropdown() {
             />
             {t("APP.INFO_MENU.ABOUT_SERVICE")}
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => setModal("accessibility")}>
+          <Dropdown.Item onClick={createMenuLinkClickHandler("accessibility")}>
             <SMIcon
               icon="info"
               className="app-info-dropdown__icon"
@@ -134,6 +134,7 @@ function AppInfoDropdown() {
       <AppInfoModal show={modal === "info"} onClose={handleOnClose} />
       <AppFeedbackModal show={modal === "feedback"} onClose={handleOnClose} />
       <AppAccessibilityModal
+        focusAfterCloseRef={openDialogLinkRef}
         show={modal === "accessibility"}
         onClose={handleOnClose}
       />
