@@ -1,7 +1,7 @@
 import { createControlComponent } from "@react-leaflet/core";
 import L from "leaflet";
 import { ReactElement } from "react";
-import {createRoot} from "react-dom/client";
+import { createRoot } from "react-dom/client";
 
 type Props = {
   handleClick: (e: Event) => void;
