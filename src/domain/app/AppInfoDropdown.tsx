@@ -92,7 +92,7 @@ function AppInfoDropdown() {
           <SMIcon icon="info" aria-label={t("APP.ABOUT")} />
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item onClick={() => setModal("info")}>
+          <Dropdown.Item onClick={createMenuLinkClickHandler("info")}>
             <SMIcon
               icon="info"
               className="app-info-dropdown__icon"
@@ -131,7 +131,7 @@ function AppInfoDropdown() {
         </Dropdown.Menu>
       </Dropdown>
       <AppAboutModal focusAfterCloseRef={openDialogLinkRef} show={modal === "about"} onClose={handleOnClose} />
-      <AppInfoModal show={modal === "info"} onClose={handleOnClose} />
+      <AppInfoModal focusAfterCloseRef={openDialogLinkRef} show={modal === "info"} onClose={handleOnClose} />
       <AppFeedbackModal show={modal === "feedback"} onClose={handleOnClose} />
       <AppAccessibilityModal
         focusAfterCloseRef={openDialogLinkRef}

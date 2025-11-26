@@ -1,4 +1,4 @@
-import {Button, Dialog} from "hds-react";
+import {Button, Dialog, IconInfoCircle} from "hds-react";
 import { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -50,8 +50,9 @@ function AppAccessibilityModal({ focusAfterCloseRef, onClose, show }: Props) {
           <Dialog.Header
             id={titleId}  
             title={t("APP.INFO_MENU.ACCESSIBILITY")}
+            iconStart={<IconInfoCircle />}
           />
-          <Dialog.Content>
+          <Dialog.Content className="outdoor-exercise-map-modal-content">
             <Content />
           </Dialog.Content>
           <Dialog.ActionButtons>

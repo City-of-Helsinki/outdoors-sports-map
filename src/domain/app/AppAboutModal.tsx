@@ -1,4 +1,4 @@
-import {Button, Dialog} from "hds-react";
+import {Button, Dialog, IconInfoCircle} from "hds-react";
 import { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -27,8 +27,9 @@ function AppAboutModal({ focusAfterCloseRef, show = false, onClose }: Props) {
         <Dialog.Header
           id={titleId}  
           title={t("APP.NAME")}
+          iconStart={<IconInfoCircle />}
         />
-        <Dialog.Content>
+        <Dialog.Content className="outdoor-exercise-map-modal-content">
           <div
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
