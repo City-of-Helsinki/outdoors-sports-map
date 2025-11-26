@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
@@ -9,20 +9,51 @@ import AppInfoModal from "./AppInfoModal";
 import OutboundLink from "../../common/a11y/OutboundLink";
 import SMIcon from "../../common/components/SMIcon";
 
+type ModalType = "about" | "feedback" | "accessibility" | "info";
 // FIXME: When a modal is open, an escape key press will close the modal and
 //        the dropdown.
 function AppInfoDropdown() {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const openDialogLinkRef = useRef<HTMLElement | null>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
   const [modal, setModal] = useState<
-    "about" | "feedback" | "accessibility" | "info" | null
+    ModalType | null
   >(null);
   // Manage dropdown state "manually" to force it to remain open when a modal
   // is opened through it, or when the user tabs onwards from the toggle element.
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const handleOnClose = useCallback(() => {
-    setModal(null);
+    // Clear any existing timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    
+    // Add short delay before setting modal to null to allow
+    // dropdown to process the logic to handle rootClose event
+    closeTimeoutRef.current = setTimeout(() => {
+      setModal(null);
+      closeTimeoutRef.current = null;
+    }, 10);
+  }, []);
+
+  const createMenuLinkClickHandler = useCallback((modal: ModalType): MouseEventHandler<HTMLElement> => (event) => {
+    // Set the element that opened the dialog, so focus can be returned to it
+    // when the dialog is closed.
+    openDialogLinkRef.current = event.currentTarget;
+
+    // Open the modal
+    setModal(modal);
+  }, []);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -77,7 +108,7 @@ function AppInfoDropdown() {
             />
             {t("APP.INFO_MENU.GIVE_FEEDBACK")}
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => setModal("about")}>
+          <Dropdown.Item onClick={createMenuLinkClickHandler("about")}>
             <SMIcon
               icon="info"
               className="app-info-dropdown__icon"
@@ -99,7 +130,7 @@ function AppInfoDropdown() {
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-      <AppAboutModal show={modal === "about"} onClose={handleOnClose} />
+      <AppAboutModal focusAfterCloseRef={openDialogLinkRef} show={modal === "about"} onClose={handleOnClose} />
       <AppInfoModal show={modal === "info"} onClose={handleOnClose} />
       <AppFeedbackModal show={modal === "feedback"} onClose={handleOnClose} />
       <AppAccessibilityModal
