@@ -1,10 +1,12 @@
 # ===============================================
-FROM public.ecr.aws/docker/library/node:22.11.0-bookworm-slim AS appbase
+FROM registry.access.redhat.com/ubi9/nodejs-22 AS appbase
 # ===============================================
 
-RUN mkdir /app && chown -R node:node /app
-
 WORKDIR /app
+
+USER root
+RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+RUN yum -y install yarn
 
 # Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
 ENV NPM_CONFIG_LOGLEVEL warn
@@ -13,15 +15,23 @@ ENV NPM_CONFIG_LOGLEVEL warn
 ENV NPM_CONFIG_PREFIX=/app/.npm-global
 ENV PATH=$PATH:/app/.npm-global/bin
 
-COPY --chown=node:node docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
+# Yarn
+ENV YARN_VERSION=1.22.22
+RUN yarn policies set-version $YARN_VERSION
+
+RUN chown -R default:root /app
+
+USER default
+
+COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
 
 # Copy package.json and package-lock.json/yarn.lock files
-COPY --chown=node:node package*.json *yarn* ./
+COPY --chown=default:root package*.json *yarn* ./
 
-USER node
+USER default
 
-RUN yarn && yarn cache clean --force && chown -R node:node node_modules
+RUN yarn && yarn cache clean --force && chown -R default:root node_modules
 
 # Use non-root user
 
@@ -49,19 +59,28 @@ ARG REACT_APP_SITE_WIDE_NOTIFICATION_SV
 ARG REACT_APP_SITE_WIDE_NOTIFICATION_EN
 ARG GENERATE_SITEMAP
 
-COPY --chown=node:node . /app/.
+COPY --chown=default:root . /app/.
 
 RUN yarn build
 
 # ===================================
-FROM public.ecr.aws/nginx/nginx:1.27-alpine-slim AS production
+FROM registry.access.redhat.com/ubi9/nginx-124 AS production
 # ===================================
+# Add application sources to a directory that the assemble script expects them
+# and set permissions so that the container runs without root access
+USER root
 
-COPY --from=staticbuilder --chown=nginx:nginx /app/build /usr/share/nginx/html
-COPY .prod/nginx.conf /etc/nginx/conf.d/default.conf
+RUN chgrp -R 0 /usr/share/nginx/html && \
+  chmod -R g=u /usr/share/nginx/html
 
-# OpenShift write accesses, runtime is created "/var/cache/nginx/client_temp" 
-RUN chgrp -R 0 /var/cache/nginx && chmod g+w -R /var/cache/nginx
-RUN chgrp -R 0 /run && chmod g+w -R /run
+# Copy static build
+COPY --from=staticbuilder /app/build /usr/share/nginx/html
+# Copy nginx config
+COPY .prod/nginx.conf /etc/nginx/nginx.conf
+
+USER 1001
+
+# Run script uses standard ways to run the application
+CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]
 
 EXPOSE 8080
