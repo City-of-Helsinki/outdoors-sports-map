@@ -6,6 +6,7 @@
     "start": "cross-env NODE_ENV=development NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "ts-node --transpile-only --project ./scripts/tsconfig.json ./scripts/generate-sitemap.ts && cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!remark-breaks)/'",
+    "test:coverage": "react-scripts test --transformIgnorePatterns 'node_modules/(?!remark-breaks)/' --ci --runInBand --collect-coverage",
     "eject": "react-scripts eject",
     "fetch-types": "flow-typed install",
     "flow": "flow",
