@@ -80,13 +80,13 @@ The application is now available at [http://localhost](http://localhost/).
 
 ### Test
 
-Test environment is done from master branch. The pipeline is triggered with a commit to master branch. Normally the commit is pull request merge. 
+Test environment is done from main branch. The pipeline is triggered with a commit to main branch. Normally the commit is pull request merge. 
 
 Test url: [https://ulkoliikunta.test.hel.ninja](https://ulkoliikunta.test.hel.ninja/).
 
 ### Review
 
-Review environment is done from pr to master branch. The review environment url is posted to pull request when it is completed.
+Review environment is done from pr to main branch. The review environment url is posted to pull request when it is completed.
 
 ### Release (staging&production)
 
