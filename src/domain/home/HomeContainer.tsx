@@ -6,7 +6,6 @@ import { Switch, useRouteMatch, Route } from "react-router-dom";
 import useFetchInitialData from "./useFetchInitialData";
 import useIsMobile from "../../common/hooks/useIsMobile";
 import ApplicationHeader from "../app/AppHeader";
-import AppInfoDropdown from "../app/AppInfoDropdown";
 import CookieConsent from "../app/CookieConsent";
 import routerPaths from "../app/appRoutes";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
@@ -33,26 +32,57 @@ type MapLayoutProps = {
   toggleIsExpanded: () => void;
 };
 
-function MapLayout({ content, map, isExpanded, toggleIsExpanded }: MapLayoutProps) {
+function MapLayout({
+  content,
+  map,
+  isExpanded,
+  toggleIsExpanded,
+}: MapLayoutProps) {
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
   const isUnitDetailsOpen = useIsUnitDetailsSearchView();
 
   const isFilled = isUnitDetailsOpen || isUnitSearchOpen;
 
+  const [headerHeight, setHeaderHeight] = useState<number>(0);
+
   return (
     <>
+      <ApplicationHeader onHeaderHeightChange={setHeaderHeight} />
       <div
         className={className("map-foreground", {
           "is-filled": isFilled,
           "fill-color-content": !isUnitSearchOpen,
           "fill-color-background": isUnitSearchOpen,
         })}
+        style={
+          {
+            "--map-foreground-header-height": `${headerHeight}px`,
+          } as React.CSSProperties
+        }
       >
-        <ApplicationHeader toggleExpand={toggleIsExpanded} isExpanded={isExpanded} />
-        <div className={ isExpanded ? "map-foreground-content" : "map-foreground-content hidden"}>{content}</div>
+        <div
+          className={
+            isExpanded
+              ? "map-foreground-content"
+              : "map-foreground-content hidden"
+          }
+        >
+          {content}
+        </div>
       </div>
-      <AppInfoDropdown />
-      <div className="map-container">{map}</div>
+      {/* Render map only when screenHeight and headerHeight are known to center the map correctly */}
+      {headerHeight > 0 && (
+        <div
+          className="map-container"
+          style={
+            {
+              "--map-container-header-height": `${headerHeight}px`,
+            } as React.CSSProperties
+          }
+        >
+          {map}
+        </div>
+      )}
     </>
   );
 }
@@ -63,14 +93,14 @@ function HomeContainer() {
   const [isUnitDetailsExpanded, setIsUnitDetailsExpanded] = useState(false);
 
   const toggleIsUnitDetailsExpanded = () => {
-    setIsUnitDetailsExpanded(!isUnitDetailsExpanded)
-  }
+    setIsUnitDetailsExpanded(!isUnitDetailsExpanded);
+  };
 
   const [isHomeContainerExpanded, setIsHomeContainerExpanded] = useState(true);
 
   const toggleIsHomeContainerExpanded = () => {
-    setIsHomeContainerExpanded(!isHomeContainerExpanded)
-  }
+    setIsHomeContainerExpanded(!isHomeContainerExpanded);
+  };
 
   const handleOnViewChange = useCallback((coordinates: [number, number]) => {
     leafletElementRef.current?.setView(coordinates);
@@ -96,27 +126,40 @@ function HomeContainer() {
         // on the visible map
         pixelLocation.x -= 200;
 
-        const adjustedCenter = leafletElement?.containerPointToLatLng(
-          pixelLocation
-        );
+        const adjustedCenter =
+          leafletElement?.containerPointToLatLng(pixelLocation);
 
         if (adjustedCenter) {
           leafletElement?.setView(adjustedCenter);
-          if (unit.geometry.type === 'MultiLineString') {
+          if (unit.geometry.type === "MultiLineString") {
             // if the geometry is a MultiLineString, then zoom in to the bounds of the geometry
             // get a flat array of coordinates
             const coordinates = unit.geometry.coordinates.flat();
             // get the maximum latitude and longitude
-            const maxLon = Math.max(...coordinates.map((coord:number[]) => coord[0])),
-            minLon = Math.min(...coordinates.map((coord:number[]) => coord[0])),
-            maxLat = Math.max(...coordinates.map((coord:number[]) => coord[1])),
-            minLat = Math.min(...coordinates.map((coord:number[]) => coord[1]));
+            const maxLon = Math.max(
+                ...coordinates.map((coord: number[]) => coord[0]),
+              ),
+              minLon = Math.min(
+                ...coordinates.map((coord: number[]) => coord[0]),
+              ),
+              maxLat = Math.max(
+                ...coordinates.map((coord: number[]) => coord[1]),
+              ),
+              minLat = Math.min(
+                ...coordinates.map((coord: number[]) => coord[1]),
+              );
             // zoom to the bounds of the geometry
-            leafletElement?.fitBounds([[minLat, minLon], [maxLat, maxLon]]);
+            leafletElement?.fitBounds([
+              [minLat, minLon],
+              [maxLat, maxLon],
+            ]);
           } else {
             // if the geometry is a point, then zoom in to that point
             const coordinates = unit.location.coordinates;
-            leafletElement?.flyTo([coordinates[1], coordinates[0]], DETAIL_ZOOM_IN);
+            leafletElement?.flyTo(
+              [coordinates[1], coordinates[0]],
+              DETAIL_ZOOM_IN,
+            );
           }
         }
       } else {
@@ -124,16 +167,15 @@ function HomeContainer() {
         // big info box does not hide the selected unit.
         pixelLocation.y -= 250;
 
-        const adjustedCenter = leafletElement?.containerPointToLatLng(
-          pixelLocation
-        );
+        const adjustedCenter =
+          leafletElement?.containerPointToLatLng(pixelLocation);
 
         if (adjustedCenter) {
           leafletElement?.setView(adjustedCenter);
         }
       }
     },
-    [isMobile]
+    [isMobile],
   );
 
   useFetchInitialData();
@@ -147,7 +189,11 @@ function HomeContainer() {
               exact
               path={routerPaths.unitDetails}
               render={() => (
-                <UnitDetails onCenterMapToUnit={handleCenterMapToUnit} isExpanded={isUnitDetailsExpanded} toggleIsExpanded={toggleIsUnitDetailsExpanded} />
+                <UnitDetails
+                  onCenterMapToUnit={handleCenterMapToUnit}
+                  isExpanded={isUnitDetailsExpanded}
+                  toggleIsExpanded={toggleIsUnitDetailsExpanded}
+                />
               )}
             />
             <Route
