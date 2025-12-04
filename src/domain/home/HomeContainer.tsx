@@ -1,9 +1,12 @@
 import className from "classnames";
+import { IconAngleLeft, IconAngleRight } from "hds-react";
 import { Map } from "leaflet";
 import { useCallback, useRef, ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Switch, useRouteMatch, Route } from "react-router-dom";
 
 import useFetchInitialData from "./useFetchInitialData";
+import TextRevealButton from "../../common/components/TextRevealButton";
 import useIsMobile from "../../common/hooks/useIsMobile";
 import ApplicationHeader from "../app/AppHeader";
 import CookieConsent from "../app/CookieConsent";
@@ -15,6 +18,8 @@ import UnitBrowser from "../unit/browser/UnitBrowser";
 import UnitDetails from "../unit/details/UnitDetails";
 import { Unit } from "../unit/unitConstants";
 import { getUnitPosition } from "../unit/unitHelpers";
+
+const PANEL_ID = "map-foreground-panel";
 
 function useIsUnitDetailsSearchView() {
   const match = useRouteMatch({
@@ -38,37 +43,75 @@ function MapLayout({
   isExpanded,
   toggleIsExpanded,
 }: MapLayoutProps) {
+  const { t } = useTranslation();
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
   const isUnitDetailsOpen = useIsUnitDetailsSearchView();
 
   const isFilled = isUnitDetailsOpen || isUnitSearchOpen;
 
+  const isMobile = useIsMobile();
+
   const [headerHeight, setHeaderHeight] = useState<number>(0);
 
   return (
     <>
-      <ApplicationHeader onHeaderHeightChange={setHeaderHeight} />
+      <ApplicationHeader
+        isExpanded={isExpanded}
+        onHeaderHeightChange={setHeaderHeight}
+        panelId={PANEL_ID}
+        toggleIsExpanded={toggleIsExpanded}
+      />
       <div
         className={className("map-foreground", {
-          "is-filled": isFilled,
-          "fill-color-content": !isUnitSearchOpen,
-          "fill-color-background": isUnitSearchOpen,
+          "full-height": isUnitDetailsOpen || isUnitSearchOpen,
+          "panel-expanded": isExpanded,
         })}
-        style={
-          {
-            "--map-foreground-header-height": `${headerHeight}px`,
-          } as React.CSSProperties
-        }
       >
         <div
-          className={
-            isExpanded
-              ? "map-foreground-content"
-              : "map-foreground-content hidden"
+          id={PANEL_ID}
+          className={className("map-foreground__panel", {
+            "is-filled": isFilled,
+            "fill-color-content": !isUnitSearchOpen,
+            "fill-color-background": isUnitSearchOpen,
+          })}
+          role="complementary"
+          aria-label={
+            isUnitDetailsOpen
+              ? t("APP.UNIT_DETAILS_PANEL")
+              : t("APP.SEARCH_RESULTS_PANEL")
+          }
+          aria-hidden={!isExpanded}
+          hidden={!isExpanded}
+          style={
+            {
+              "--map-foreground-header-height": `${headerHeight}px`,
+            } as React.CSSProperties
           }
         >
-          {content}
+          <div
+            className={
+              isExpanded
+                ? "map-foreground__panel-content"
+                : "map-foreground__panel-content hidden"
+            }
+          >
+            {content}
+          </div>
         </div>
+        {!isMobile && (
+          <TextRevealButton
+            aria-controls={PANEL_ID}
+            aria-expanded={isExpanded}
+            className={className("map-collapse-button", {
+              "panel-hidden": !isExpanded,
+            })}
+            icon={isExpanded ? <IconAngleLeft /> : <IconAngleRight />}
+            iconPosition={isExpanded ? "start" : "end"}
+            showTextAlways={!isExpanded}
+            text={isExpanded ? t("APP.HIDE_SIDEBAR") : t("APP.SHOW_SIDEBAR")}
+            onClick={toggleIsExpanded}
+          />
+        )}
       </div>
       {/* Render map only when screenHeight and headerHeight are known to center the map correctly */}
       {headerHeight > 0 && (

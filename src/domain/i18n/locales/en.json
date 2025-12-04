@@ -12,6 +12,14 @@
       "CHOOSE_LANGUAGE": "Choose language",
       "ACCESSIBILITY": "Accessibility statement"
     },
+    "HIDE_SIDEBAR": "Hide sidebar",
+    "SHOW_SIDEBAR": "Show sidebar",
+    "MAP_BUTTON": {
+      "CLOSE": "Close Map",
+      "OPEN": "Open Map"
+    },
+    "UNIT_DETAILS_PANEL": "Unit details",
+    "SEARCH_RESULTS_PANEL": "Search results",
     "MODAL": {
       "CLOSE": "Close"
     },

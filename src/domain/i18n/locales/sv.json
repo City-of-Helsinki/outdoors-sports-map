@@ -12,6 +12,14 @@
       "CHOOSE_LANGUAGE": "Välj språk",
       "ACCESSIBILITY": "Tillgänglighets­utlåtande"
     },
+    "HIDE_SIDEBAR": "Minska sidopanelen",
+    "SHOW_SIDEBAR": "Utvidga sidopanelen",
+    "MAP_BUTTON": {
+      "CLOSE": "Stäng Kartan",
+      "OPEN": "Öppna Kartan"
+    },
+    "UNIT_DETAILS_PANEL": "Verksamhetsställetdetaljer",
+    "SEARCH_RESULTS_PANEL": "Sökresultat",
     "MODAL": {
       "CLOSE": "Stänga"
     },

@@ -12,6 +12,14 @@
       "CHOOSE_LANGUAGE": "Valitse kieli",
       "ACCESSIBILITY": "Saavutettavuusseloste"
     },
+    "HIDE_SIDEBAR": "Pienennä sivupaneeli",
+    "SHOW_SIDEBAR": "Laajenna sivupaneeli",
+    "MAP_BUTTON": {
+      "CLOSE": "Sulje Kartta",
+      "OPEN": "Avaa Kartta"
+    },
+    "UNIT_DETAILS_PANEL": "Toimipisteen tiedot",
+    "SEARCH_RESULTS_PANEL": "Hakutulokset",
     "MODAL": {
       "CLOSE": "Sulje"
     },

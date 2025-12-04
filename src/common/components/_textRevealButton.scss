@@ -1,0 +1,63 @@
+@import "../_variables.scss";
+
+.text-reveal-button {
+    --max-width: 15rem;
+    --height: 40px;
+    --bg-color: var(--color-coat-of-arms);
+    --text-color: var(--color-white);
+    --hover-bg-color: var(--color-white);
+    --hover-text-color: var(--color-coat-of-arms);
+    --icon-size: 24px;
+
+	display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--height);
+  border: 2px solid var(--bg-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--fontsize-body-s);
+  cursor: pointer;
+  padding: 0 var(--spacing-2-xs);
+  transition: width 0.3s ease;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: var(--icon-size);
+      height: var(--icon-size);
+    }
+  }
+
+  &__text {
+    overflow: hidden;
+    max-width: 0;
+    white-space: nowrap;
+  }
+
+  &--show-text-always &__text,
+  &:hover &__text,
+  &:focus &__text {
+    max-width: var(--max-width);
+    margin-inline: var(--spacing-2-xs);
+  }
+
+  &:hover,
+  &:focus {
+    background: var(--hover-bg-color);
+    border-color: var(--hover-bg-color);
+    color: var(--hover-text-color);
+  }
+  
+  &:hover &__text {
+    transition: max-width 0.3s ease;
+  }
+
+  &:focus {
+    outline: 4px solid var(--color-focus-outline);
+    outline-offset: 4px;
+  }
+}

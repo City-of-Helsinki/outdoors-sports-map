@@ -1,4 +1,4 @@
-import { Header, IconInfoCircle } from "hds-react";
+import { Header, IconInfoCircle, IconMap } from "hds-react";
 import {
   MouseEventHandler,
   useCallback,
@@ -13,10 +13,12 @@ import AppAboutModal from "./AppAboutModal";
 import AppAccessibilityModal from "./AppAccessibilityModal";
 import AppFeedbackModal from "./AppFeedbackModal";
 import AppInfoModal from "./AppInfoModal";
+import HeaderButton from "../../common/components/HeaderButton";
 import { replaceLanguageInPath } from "../../common/utils/pathUtils";
 import { SUPPORTED_LANGUAGES } from "../i18n/i18nConstants";
 import useLocale from "./hooks/useLocale";
 import { MAIN_CONTENT_ID } from "../../common/a11y/Page";
+import useIsMobile from "../../common/hooks/useIsMobile";
 
 const DROPDOWN_ID = "app-info-dropdown";
 const HEADER_ID = "app-header";
@@ -32,12 +34,21 @@ const languages = Object.entries(SUPPORTED_LANGUAGES).map(
 type ModalType = "about" | "feedback" | "accessibility" | "info";
 
 type ApplicationHeaderProps = {
+  isExpanded?: boolean;
   onHeaderHeightChange?: (height: number) => void;
+  panelId?: string;
+  toggleIsExpanded?: () => void;
 };
 
-function ApplicationHeader({ onHeaderHeightChange }: ApplicationHeaderProps) {
+function ApplicationHeader({
+  isExpanded,
+  onHeaderHeightChange,
+  panelId,
+  toggleIsExpanded,
+}: ApplicationHeaderProps) {
   const { t } = useTranslation();
   const locale = useLocale();
+  const isMobile = useIsMobile();
 
   const history = useHistory();
   const { pathname } = useLocation();
@@ -148,6 +159,21 @@ function ApplicationHeader({ onHeaderHeightChange }: ApplicationHeaderProps) {
           logoAriaLabel={"logo"}
           logoHref={`/${locale}`}
         >
+          {isMobile && (
+            <HeaderButton
+              id="action-bar-map-toggle"
+              aria-expanded={isExpanded}
+              aria-controls={panelId}
+              icon={<IconMap />}
+              label={
+                isExpanded
+                  ? t("APP.MAP_BUTTON.OPEN")
+                  : t("APP.MAP_BUTTON.CLOSE")
+              }
+              onClick={toggleIsExpanded}
+            />
+          )}
+
           <Header.SimpleLanguageOptions languages={languages} />
           <Header.ActionBarItem
             id={DROPDOWN_ID}

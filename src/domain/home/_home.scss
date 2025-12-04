@@ -1,83 +1,84 @@
 $header-height: 64px;
 
 .map-container {
-  --map-container-header-height: #{ $header-height };
-
   position: fixed;
-  top: var(--map-container-header-height);
+  top: $header-height;
   right: 0;
   width: 100%;
-  // Set height to full viewport height minus header height to avoid missing part of the map on bottom
-  height: calc(100vh - var(--map-container-header-height));
+  height: calc(100vh - #{$header-height});
 }
 
 .map-foreground {
-  --map-foreground-header-height: #{ $header-height };
-
   position: fixed;
   z-index: 798;
   background: transparent;
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  width: 0;
 
-  &.is-filled {
-    background-color: $ui-content;
-
-    @media only screen and (min-width: 768px) {
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    &.fill-color-background {
-      // When foreground is filled with background color, it should always fill
-      // the entire screen height, but not more, to enable proper behaviour with
-      // scrolling.
-      height: calc(100vh - var(--map-foreground-header-height));
-
-      border-bottom: solid #4d4d4d 4px;
-      background-color: $ui-background;
-      box-shadow: none;
-    }
+  &.panel-expanded {
+    width: 100%;
   }
 
   @media only screen and (min-width: $breakpoint) {
-    width: 400px;
-    // Set height to full viewport height minus header height to avoid missing part of the foreground on bottom
-    height: calc(100vh - var(--map-foreground-header-height));
+    max-height: calc(100vh - #{$header-height});
 
-    pointer-events: none;
+    &.full-height {
+      height: calc(100vh - #{$header-height});
+    }
 
-    & > * {
-      pointer-events: initial;
+    &.panel-expanded {
+      width: 400px;
     }
   }
 
-  &-content {
+  &__panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &.is-filled {
+      background-color: $ui-content;
+
+      @media only screen and (min-width: 768px) {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      &.fill-color-background {
+        height: calc(100vh - #{$header-height});
+        border-bottom: 4px solid #4d4d4d;
+        background-color: $ui-background;
+        box-shadow: none;
+      }
+    }
+
+    @media only screen and (min-width: $breakpoint) {
+      pointer-events: none;
+      > * { pointer-events: auto; }
+    }
+  }
+
+  &__content {
     overflow-y: auto;
     pointer-events: none;
     display: flex;
     flex-direction: column;
 
-    & > * {
-      pointer-events: initial;
-    }
+    > * { pointer-events: auto; }
 
     &.hidden {
       display: none;
     }
   }
 
-  &-unit-browser {
-    height: 100%;
-    pointer-events: none;
+}
 
-    & > * {
-      pointer-events: initial;
-    }
+.map-collapse-button {
+  margin-top: 18px;
+  position: absolute;
+  left: 400px;
 
-    &.hidden {
-      display: none;
-    }
+  &.panel-hidden {
+    left: 0;
   }
 }
 
