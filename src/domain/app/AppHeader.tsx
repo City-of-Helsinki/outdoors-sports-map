@@ -200,7 +200,7 @@ function ApplicationHeader({
               />
               <Header.ActionBarSubItem
                 label={t("APP.MAP_ATTRIBUTION")}
-                href="http://osm.org/copyright"
+                href="https://osm.org/copyright"
                 external
               />
             </Header.ActionBarSubItemGroup>
