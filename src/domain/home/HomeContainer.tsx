@@ -42,7 +42,7 @@ function MapLayout({
   map,
   isExpanded,
   toggleIsExpanded,
-}: MapLayoutProps) {
+}: Readonly<MapLayoutProps>) {
   const { t } = useTranslation();
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
   const isUnitDetailsOpen = useIsUnitDetailsSearchView();
@@ -67,14 +67,13 @@ function MapLayout({
           "panel-expanded": isExpanded,
         })}
       >
-        <div
+        <aside
           id={PANEL_ID}
           className={className("map-foreground__panel", {
             "is-filled": isFilled,
             "fill-color-content": !isUnitSearchOpen,
             "fill-color-background": isUnitSearchOpen,
           })}
-          role="complementary"
           aria-label={
             isUnitDetailsOpen
               ? t("APP.UNIT_DETAILS_PANEL")
@@ -97,7 +96,7 @@ function MapLayout({
           >
             {content}
           </div>
-        </div>
+        </aside>
         {!isMobile && (
           <TextRevealButton
             aria-controls={PANEL_ID}

@@ -18,7 +18,7 @@ function FavoriteButton({
   isFavorite,
   onClick,
   removeFavoriteText,
-}: Props) {
+}: Readonly<Props>) {
   return (
     <Button
       className="favorite-button"

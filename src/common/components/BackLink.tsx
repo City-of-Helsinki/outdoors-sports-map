@@ -9,7 +9,7 @@ type Props = {
   label: string;
 };
 
-function BackLink({ className, label }: Props) {
+function BackLink({ className, label }: Readonly<Props>) {
   const location = useLocation<{ previous?: string }>();
 
   return (

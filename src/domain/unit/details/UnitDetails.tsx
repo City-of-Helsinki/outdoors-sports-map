@@ -330,9 +330,9 @@ function LocationInfo({ unit }: LocationInfoProps) {
               },
             ]
               .filter((technique) => technique.condition)
-              .map((technique, index) => (
+              .map((technique) => (
                 <BodyBoxIconAndValue
-                  key={index}
+                  key={technique.value}
                   icon={technique.icon}
                   value={technique.value}
                 />
@@ -532,7 +532,7 @@ type LiveWaterQualityProps = {
   observation: Record<string, any>;
 };
 
-function LiveWaterQuality({ observation }: LiveWaterQualityProps) {
+function LiveWaterQuality({ observation }: Readonly<LiveWaterQualityProps>) {
   const { t } = useTranslation();
   const waterQuality = get(observation, "value.fi");
   const observationTime = getObservationTime(observation);
@@ -566,7 +566,7 @@ type BodyBoxIconAndValueProps = {
   value: ReactNode;
 };
 
-function BodyBoxIconAndValue({ icon, value }: BodyBoxIconAndValueProps) {
+function BodyBoxIconAndValue({ icon, value }: Readonly<BodyBoxIconAndValueProps>) {
   return (
     <div className="unit-container-body-box-icon-and-value">
       {icon}
@@ -635,7 +635,7 @@ export function SingleUnitBody({
 }
 
 function findAlternatePathname(pathname: string, unit: Unit, language: string) {
-  const base = `${window.location.origin}/${language}/unit/${unit.id}`;
+  const base = `${globalThis.location.origin}/${language}/unit/${unit.id}`;
   // @ts-ignore
   const unitName = unit.name[language];
 
@@ -656,7 +656,7 @@ function UnitDetails({
   onCenterMapToUnit,
   isExpanded,
   toggleIsExpanded,
-}: Props) {
+}: Readonly<Props>) {
   const language = useLanguage();
   const { t } = useTranslation();
   const { pathname } = useLocation();

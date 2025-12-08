@@ -45,7 +45,7 @@ function ApplicationHeader({
   onHeaderHeightChange,
   panelId,
   toggleIsExpanded,
-}: ApplicationHeaderProps) {
+}: Readonly<ApplicationHeaderProps>) {
   const { t } = useTranslation();
   const locale = useLocale();
   const isMobile = useIsMobile();

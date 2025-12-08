@@ -53,6 +53,6 @@ class MockResizeObserver {
   }
 }
 
-global.ResizeObserver ??= MockResizeObserver as any;
+globalThis.ResizeObserver ??= MockResizeObserver as any;
 
 jest.spyOn(window.navigator, "languages", "get").mockReturnValue(["fi"]);
