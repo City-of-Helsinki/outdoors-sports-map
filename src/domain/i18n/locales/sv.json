@@ -51,6 +51,7 @@
     }
   },
   "UNIT_DETAILS": {
+    "BACK": "Tillbaka",
     "FURTHER_INFO": "Ytterligare upplysningar",
     "SHOW_MORE": "Visa mer",
     "SHOW_LESS": "Visa mindre",
@@ -105,6 +106,7 @@
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",
+    "LOADING_FINISHED": "Objektladdning slutförd",
     "NOT_FOUND": "Beklagar, objektet hittades inte :(",
     "QUALITY": "Skick",
     "ADD_FAVOURITE": "Lägg till som favorit",
@@ -148,7 +150,8 @@
     "YESTERDAY": "i går"
   },
   "OUTBOUND_LINK": {
-    "DESCRIPTION": "Öppnar ett nytt fönster"
+    "OPEN_IN_EXTERNAL_DOMAIN": "Flyttar till en extern tjänst.",
+    "OPEN_IN_NEW_TAB": "Öppnar ett nytt fönster."
   },
   "JUMP_LINK": {
     "LABEL": "Gå direkt till innehållet"

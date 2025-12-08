@@ -3,10 +3,10 @@
 .text-reveal-button {
     --max-width: 15rem;
     --height: 40px;
-    --bg-color: var(--color-coat-of-arms);
-    --text-color: var(--color-white);
-    --hover-bg-color: var(--color-white);
-    --hover-text-color: var(--color-coat-of-arms);
+    --bg-color: var(--color-white);
+    --text-color: var(--color-coat-of-arms);
+    --hover-bg-color: var(--color-coat-of-arms);
+    --hover-text-color: var(--color-white);
     --icon-size: 24px;
 
 	display: flex;

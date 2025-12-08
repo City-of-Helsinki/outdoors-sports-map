@@ -1,4 +1,10 @@
-import { IconAngleDown, IconStar, IconStarFill } from "hds-react";
+import {
+  Button,
+  ButtonSize,
+  ButtonVariant,
+  IconAngleDown,
+  LoadingSpinner,
+} from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
 import { ReactNode, useEffect, useState } from "react";
@@ -12,9 +18,13 @@ import breaks from "remark-breaks";
 import useSyncUnitNameWithLanguage from "./useSyncUnitNameWithLanguage";
 import OutboundLink from "../../../common/a11y/OutboundLink";
 import Page from "../../../common/a11y/Page";
-import { IconSkiingDogSkijoring, IconSkiingFreestyle, IconSkiingTraditional } from "../../../common/components/CustomIcons";
-import Link from "../../../common/components/Link";
-import SMIcon from "../../../common/components/SMIcon";
+import BackLink from "../../../common/components/BackLink";
+import {
+  IconSkiingDogSkijoring,
+  IconSkiingFreestyle,
+  IconSkiingTraditional,
+} from "../../../common/components/CustomIcons";
+import FavoriteButton from "../../../common/components/FavoriteButton";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
@@ -38,7 +48,6 @@ import {
   getOpeningHours,
 } from "../unitHelpers";
 
-
 type HeaderProps = {
   unit?: Unit;
   services: Record<string, any>;
@@ -48,7 +57,6 @@ type HeaderProps = {
 export function Header({ unit, services, isLoading }: HeaderProps) {
   const { t } = useTranslation();
   const language = useLanguage();
-  const location = useLocation<{ previous?: string }>();
 
   const unitAddress = unit ? getAttr(unit.street_address, language) : null;
   const unitZIP = unit ? unit.address_zip : null;
@@ -56,30 +64,32 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
 
   return (
     <div className="unit-container-header">
-      <div className="unit-container-header-name">
+      <div className="unit-container-header-name-bar">
+        <BackLink label={t("UNIT_DETAILS.BACK")} />
         <div>
           {isLoading ? (
-            <h4>{t("UNIT_BROWSER.LOADING")}</h4>
+            <div className="unit-container-header-name-wrapper">
+              <LoadingSpinner
+                small={true}
+                theme={{ "--spinner-color": "var(--color-white)" }}
+                loadingText={t("UNIT_BROWSER.LOADING")}
+                loadingFinishedText={t("UNIT_BROWSER.LOADING_FINISHED")}
+              />
+              <h3>{t("UNIT_BROWSER.LOADING")}</h3>
+            </div>
           ) : (
-            <h4>
+            <h3>
               {unit
                 ? getAttr(unit.name, language)
                 : t("UNIT_BROWSER.NOT_FOUND")}
-            </h4>
+            </h3>
           )}
         </div>
         <div
           style={{
             alignSelf: "center",
           }}
-        >
-          <Link // If there was a previous saved into location state, re-apply it
-            to={location.state?.previous || "/"}
-            className="unit-container-close-button close-unit-container"
-          >
-            <SMIcon icon="close" aria-label={t("UNIT_BROWSER.CLOSE")} />
-          </Link>
-        </div>
+        ></div>
       </div>
       {unit ? (
         <div className="unit-container-header-description">
@@ -87,16 +97,14 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
             unit={unit}
             alt={getServiceName(unit.services, services, language)}
           />
-          <div>
-            <p>{getServiceName(unit.services, services, language)}</p>
+          <div className="unit-container-header-description-text-content">
+            <p className="unit-container-header-service-name">
+              {getServiceName(unit.services, services, language)}
+            </p>
             <p>
               {unitAddress ? `${unitAddress}, ` : ""}
               {unitZIP ? `${unitZIP} ` : ""}
-              <span
-                style={{
-                  textTransform: "capitalize",
-                }}
-              >
+              <span className="unit-container-header-unit-address-municipality">
                 {unitMunicipality || ""}
               </span>
             </p>
@@ -110,27 +118,46 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
 type MobileFooterProps = {
   toggleExpand: () => void;
   isExpanded: boolean;
-}
+};
 export function MobileFooter({ toggleExpand, isExpanded }: MobileFooterProps) {
   const { t } = useTranslation();
-  const footerText = isExpanded ? t("UNIT_DETAILS.SHOW_LESS") : t("UNIT_DETAILS.SHOW_MORE");
+  const footerText = isExpanded
+    ? t("UNIT_DETAILS.SHOW_LESS")
+    : t("UNIT_DETAILS.SHOW_MORE");
+
   return (
-  <div className="unit-details-mobile-footer">
-    <div className="unit-details-mobile-footer-expander" onClick={toggleExpand}>
+    <div className="unit-details-mobile-footer">
+      <Button
+        className="unit-details-mobile-footer-expander"
+        onClick={toggleExpand}
+        size={ButtonSize.Small}
+        variant={ButtonVariant.Supplementary}
+        iconEnd={
+          <IconAngleDown
+            className={
+              isExpanded
+                ? "unit-details-mobile-footer-icon-expanded"
+                : "unit-details-mobile-footer-icon"
+            }
+          />
+        }
+      >
         {footerText}
-        <IconAngleDown className={ isExpanded ? "unit-details-mobile-footer-icon-expanded" : "unit-details-mobile-footer-icon"} />
-      </div>
-  </div>)
+      </Button>
+    </div>
+  );
 }
 
 function isUnitInFavourites(unit: Unit): boolean {
-  const favourites = JSON.parse(localStorage.getItem('favouriteUnits') || '[]');
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
   return favourites.some((favourite: Unit) => favourite.id === unit.id);
 }
 
 function toggleFavourite(unit: Unit) {
-  const favourites = JSON.parse(localStorage.getItem('favouriteUnits') || '[]');
-  const unitIndex = favourites.findIndex((favourite: Unit) => favourite.id === unit.id);
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+  const unitIndex = favourites.findIndex(
+    (favourite: Unit) => favourite.id === unit.id,
+  );
 
   if (unitIndex === -1) {
     // Add the unit to favourites
@@ -140,8 +167,8 @@ function toggleFavourite(unit: Unit) {
     favourites.splice(unitIndex, 1);
   }
 
-  localStorage.setItem('favouriteUnits', JSON.stringify(favourites));
-};
+  localStorage.setItem("favouriteUnits", JSON.stringify(favourites));
+}
 
 type AddFavoriteProps = {
   unit: Unit;
@@ -150,7 +177,7 @@ type AddFavoriteProps = {
 function AddFavorite({ unit }: AddFavoriteProps) {
   const { t } = useTranslation();
   const [isFavourite, setIsFavourite] = useState(false);
-  
+
   useEffect(() => {
     setIsFavourite(isUnitInFavourites(unit));
   }, [unit]);
@@ -161,16 +188,16 @@ function AddFavorite({ unit }: AddFavoriteProps) {
   };
 
   return (
-    <BodyBox title="">
-      <button className="favorite-button" onClick={handleClick}>
-        <span className="favorite-button-content">
-          <span>{isFavourite ? t("UNIT_BROWSER.REMOVE_FAVOURITE") : t("UNIT_BROWSER.ADD_FAVOURITE")}</span>
-          {isFavourite ? <IconStarFill /> : <IconStar />}
-        </span>
-      </button>
+    <BodyBox className="no-margin-top" title="">
+      <FavoriteButton
+        onClick={handleClick}
+        isFavorite={isFavourite}
+        addFavoriteText={t("UNIT_BROWSER.ADD_FAVOURITE")}
+        removeFavoriteText={t("UNIT_BROWSER.REMOVE_FAVOURITE")}
+      />
     </BodyBox>
-  )
-} 
+  );
+}
 
 type LocationStateProps = {
   unit: Unit;
@@ -198,22 +225,22 @@ function LocationInfo({ unit }: LocationInfoProps) {
   const unitExtraLipasRouteLengthKm = get(
     unit,
     ["extra", "lipas.routeLengthKm"],
-    null
+    null,
   );
   const unitExtraLipasLitRouteLengthKm = get(
     unit,
     ["extra", "lipas.litRouteLengthKm"],
-    null
+    null,
   );
   const unitExtraLipasSkiTrackFreestyle = get(
     unit,
     ["extra", "lipas.skiTrackFreestyle"],
-    null
+    null,
   );
   const unitExtraLipasSkiTrackTraditional = get(
     unit,
     ["extra", "lipas.skiTrackTraditional"],
-    null
+    null,
   );
 
   const hasExtras =
@@ -228,36 +255,36 @@ function LocationInfo({ unit }: LocationInfoProps) {
 
   const unitControlConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.CONTROL
+    UnitConnectionTags.CONTROL,
   );
   const unitHeatedConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.HEATING
+    UnitConnectionTags.HEATING,
   );
   const unitLightedConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.LIGHTED
-  )
+    UnitConnectionTags.LIGHTED,
+  );
   const unitDressingRoomConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.DRESSING_ROOM
-  )
+    UnitConnectionTags.DRESSING_ROOM,
+  );
   const dogSkijoringTrackConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.DOG_SKIJORING_TRACK
-  )
+    UnitConnectionTags.DOG_SKIJORING_TRACK,
+  );
   const unitParkingConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.PARKING
-  )
+    UnitConnectionTags.PARKING,
+  );
   const unitOtherServicesConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.OTHER_SERVICES
-  )
+    UnitConnectionTags.OTHER_SERVICES,
+  );
   const unitMoreInfoConnection = getConnectionByTag(
     unit,
-    UnitConnectionTags.MORE_INFO
-  )
+    UnitConnectionTags.MORE_INFO,
+  );
   // Should show info if at least some data is present
   if (
     !(
@@ -280,76 +307,83 @@ function LocationInfo({ unit }: LocationInfoProps) {
         !!unitExtraLipasSkiTrackTraditional ||
         dogSkijoringTrackConnection !== undefined) && (
         <>
-          <p className="no-margin">
-            {t("UNIT_BROWSER.SKIING_TECHNIQUE")}:
-          </p>
+          <p className="small-margin">{t("UNIT_BROWSER.SKIING_TECHNIQUE")}:</p>
           <div className="unit-container-body-box-icon-and-value-wrapper">
-            {!!unitExtraLipasSkiTrackFreestyle && <span className="unit-container-body-box-icon-and-value">
-              <IconSkiingFreestyle /> {t("UNIT_BROWSER.SKIING_TECHNIQUE_FREESTYLE")}
-            </span>}
-            {!!unitExtraLipasSkiTrackTraditional && <span className="unit-container-body-box-icon-and-value">
-              <IconSkiingTraditional /> {t("UNIT_BROWSER.SKIING_TECHNIQUE_TRADITIONAL")}
-            </span>}
-            {dogSkijoringTrackConnection !== undefined && <span className="unit-container-body-box-icon-and-value">
-              <IconSkiingDogSkijoring /> {getAttr(dogSkijoringTrackConnection.name, language) || t("UNIT_DETAILS.DOG_SKIJORING_TRACK")}
-            </span>}
+            {[
+              {
+                condition: !!unitExtraLipasSkiTrackFreestyle,
+                icon: <IconSkiingFreestyle />,
+                value: t("UNIT_BROWSER.SKIING_TECHNIQUE_FREESTYLE"),
+              },
+              {
+                condition: !!unitExtraLipasSkiTrackTraditional,
+                icon: <IconSkiingTraditional />,
+                value: t("UNIT_BROWSER.SKIING_TECHNIQUE_TRADITIONAL"),
+              },
+              {
+                condition: dogSkijoringTrackConnection !== undefined,
+                icon: <IconSkiingDogSkijoring />,
+                value:
+                  (dogSkijoringTrackConnection &&
+                    getAttr(dogSkijoringTrackConnection.name, language)) ||
+                  t("UNIT_DETAILS.DOG_SKIJORING_TRACK"),
+              },
+            ]
+              .filter((technique) => technique.condition)
+              .map((technique, index) => (
+                <BodyBoxIconAndValue
+                  key={index}
+                  icon={technique.icon}
+                  value={technique.value}
+                />
+              ))}
           </div>
         </>
       )}
-      {unitExtraLipasRouteLengthKm !== null && (
-        <p className="no-margin">
-          {`${t("UNIT_BROWSER.ROUTE_LENGTH")}: `}
-          <span>{unitExtraLipasRouteLengthKm}km</span>
-        </p>
-      )}
-      {unitExtraLipasLitRouteLengthKm !== null && (
-        <p className="no-margin">
-          {`${t("UNIT_BROWSER.LIT_ROUTE_LENGTH")}: `}
-          <span>{unitExtraLipasLitRouteLengthKm}km</span>
-        </p>
-      )}
-      {unitControlConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.CONTROL")}`}:{" "}
-          {getAttr(unitControlConnection.name, language)}
-        </p>
-      )}
-      {unitHeatedConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.HEATING")}`}:{" "}
-          {getAttr(unitHeatedConnection.name, language)}
-        </p>
-      )}
-      {unitLightedConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.LIGHTED")}`}:{" "}
-          {getAttr(unitLightedConnection.name, language)}
-        </p>
-      )}
-      {unitDressingRoomConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.DRESSING_ROOM")}`}:{" "}
-          {getAttr(unitDressingRoomConnection.name, language)}
-        </p>
-      )}
-      {unitParkingConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.PARKING")}`}:{" "}
-          {getAttr(unitParkingConnection.name, language)}
-        </p>
-      )}
-      {unitOtherServicesConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.OTHER_SERVICES")}`}:{" "}
-          {getAttr(unitOtherServicesConnection.name, language)}
-        </p>
-      )}
-      {unitMoreInfoConnection !== undefined && (
-        <p className="no-margin">
-          {`${t("UNIT_DETAILS.MORE_INFO")}`}:{" "}
-          {getAttr(unitMoreInfoConnection.name, language)}
-        </p>
-      )}
+      {/* Route lengths */}
+      {[
+        {
+          value: unitExtraLipasRouteLengthKm,
+          labelKey: "UNIT_BROWSER.ROUTE_LENGTH",
+        },
+        {
+          value: unitExtraLipasLitRouteLengthKm,
+          labelKey: "UNIT_BROWSER.LIT_ROUTE_LENGTH",
+        },
+      ]
+        .filter((item) => item.value !== null)
+        .map(({ value, labelKey }) => (
+          <p key={labelKey} className="small-margin">
+            {`${t(labelKey)}: `}
+            <span>{value}km</span>
+          </p>
+        ))}
+
+      {/* Connection details */}
+      {[
+        { connection: unitControlConnection, labelKey: "UNIT_DETAILS.CONTROL" },
+        { connection: unitHeatedConnection, labelKey: "UNIT_DETAILS.HEATING" },
+        { connection: unitLightedConnection, labelKey: "UNIT_DETAILS.LIGHTED" },
+        {
+          connection: unitDressingRoomConnection,
+          labelKey: "UNIT_DETAILS.DRESSING_ROOM",
+        },
+        { connection: unitParkingConnection, labelKey: "UNIT_DETAILS.PARKING" },
+        {
+          connection: unitOtherServicesConnection,
+          labelKey: "UNIT_DETAILS.OTHER_SERVICES",
+        },
+        {
+          connection: unitMoreInfoConnection,
+          labelKey: "UNIT_DETAILS.MORE_INFO",
+        },
+      ]
+        .filter((item) => item.connection !== undefined)
+        .map(({ connection, labelKey }) => (
+          <p key={labelKey} className="small-margin">
+            {`${t(labelKey)}`}: {getAttr(connection!.name, language)}
+          </p>
+        ))}
       {unit.phone && (
         <p>
           {t("UNIT_DETAILS.PHONE")}:{" "}
@@ -408,29 +442,22 @@ function LocationRoute({
 }: LocationRouteProps) {
   const { t } = useTranslation();
 
+  const links = [
+    { url: routeUrl, labelKey: "UNIT_BROWSER.GET_ROUTE" },
+    { url: extraUrl, labelKey: "UNIT_BROWSER.EXTRA_INFO" },
+    { url: palvelukarttaUrl, labelKey: "UNIT_BROWSER.SEE_ON_SERVICE_MAP" },
+  ].filter((link) => link.url);
+
   return (
     <BodyBox title={t("UNIT_BROWSER.LINKS")}>
       <ul className="unit-container-body-list">
-        {routeUrl && (
-          <li>
-            <OutboundLink href={routeUrl}>
-              {t("UNIT_BROWSER.GET_ROUTE")}
-            </OutboundLink>
-          </li>
-        )}
-        {extraUrl && (
-          <li>
-            <OutboundLink href={extraUrl}>
-              {t("UNIT_BROWSER.EXTRA_INFO")}
-            </OutboundLink>
-          </li>
-        )}
-        {palvelukarttaUrl && (
-          <li>
-            <OutboundLink href={palvelukarttaUrl}>
-              {t("UNIT_BROWSER.SEE_ON_SERVICE_MAP")}
-            </OutboundLink>
-          </li>
+        {links.map(
+          ({ url, labelKey }) =>
+            url && (
+              <li key={labelKey}>
+                <OutboundLink href={url}>{t(labelKey)}</OutboundLink>
+              </li>
+            ),
         )}
       </ul>
     </BodyBox>
@@ -505,20 +532,17 @@ type LiveWaterQualityProps = {
   observation: Record<string, any>;
 };
 
-function LiveWaterQuality({
-  observation,
-}: LiveWaterQualityProps) {
+function LiveWaterQuality({ observation }: LiveWaterQualityProps) {
   const { t } = useTranslation();
   const waterQuality = get(observation, "value.fi");
   const observationTime = getObservationTime(observation);
-  
+
   return (
     <BodyBox title={t("UNIT_BROWSER.WATER_QUALITY")}>
-      <StatusUpdatedAgo
-        time={observationTime}
-        sensorName={""}
-      />
-      <p className={`water-quality-${waterQuality}`}>{t(`WATER_QUALITY.${waterQuality}`)}</p>
+      <StatusUpdatedAgo time={observationTime} sensorName={""} />
+      <p className={`water-quality-${waterQuality}`}>
+        {t(`WATER_QUALITY.${waterQuality}`)}
+      </p>
     </BodyBox>
   );
 }
@@ -531,8 +555,22 @@ type BodyBoxProps = {
 function BodyBox({ title, children, className = "", ...rest }: BodyBoxProps) {
   return (
     <div className={`${className} unit-container-body-box`} {...rest}>
-      {title && <div className="unit-container-body-box-headline">{title}</div>}
+      {title && <h4 className="unit-container-body-box-headline">{title}</h4>}
       {children}
+    </div>
+  );
+}
+
+type BodyBoxIconAndValueProps = {
+  icon: ReactNode;
+  value: ReactNode;
+};
+
+function BodyBoxIconAndValue({ icon, value }: BodyBoxIconAndValueProps) {
+  return (
+    <div className="unit-container-body-box-icon-and-value">
+      {icon}
+      {value}
     </div>
   );
 }
@@ -554,7 +592,7 @@ export function SingleUnitBody({
   routeUrl,
   temperatureObservation,
   palvelukarttaUrl,
-  liveWaterQualityObservation
+  liveWaterQualityObservation,
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
@@ -578,11 +616,9 @@ export function SingleUnitBody({
       {liveTemperatureObservation && (
         <LiveLocationTemperature observation={liveTemperatureObservation} />
       )}
-      {
-        liveWaterQualityObservation && (
-          <LiveWaterQuality observation={liveWaterQualityObservation} />
-        )
-      }
+      {liveWaterQualityObservation && (
+        <LiveWaterQuality observation={liveWaterQualityObservation} />
+      )}
       <LocationInfo unit={currentUnit} />
       {getOpeningHours(currentUnit, language) && (
         <LocationOpeningHours unit={currentUnit} />
@@ -616,7 +652,11 @@ type Props = {
   toggleIsExpanded: () => void;
 };
 
-function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props) {
+function UnitDetails({
+  onCenterMapToUnit,
+  isExpanded,
+  toggleIsExpanded,
+}: Props) {
   const language = useLanguage();
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -625,7 +665,7 @@ function UnitDetails({ onCenterMapToUnit, isExpanded, toggleIsExpanded }: Props)
   const unit = useSelector<AppState, Unit | undefined>((state) =>
     fromUnit.getUnitById(state, {
       id: unitId,
-    })
+    }),
   );
   const isLoading = useSelector(getIsLoading);
 

@@ -51,6 +51,7 @@
     }
   },
   "UNIT_DETAILS": {
+    "BACK": "Back",
     "FURTHER_INFO": "Further information",
     "SHOW_MORE": "Show more",
     "SHOW_LESS": "Show less",
@@ -105,6 +106,7 @@
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",
+    "LOADING_FINISHED": "Object loading finished",
     "NOT_FOUND": "Sorry, the object was not found :(",
     "QUALITY": "Condition",
     "ADD_FAVOURITE": "Add to favourites",
@@ -149,7 +151,8 @@
     "YESTERDAY": "yesterday"
   },
   "OUTBOUND_LINK": {
-    "DESCRIPTION": "Opens a new window"
+    "OPEN_IN_EXTERNAL_DOMAIN": "(Moves to an external service.",
+    "OPEN_IN_NEW_TAB": "Opens a new window."
   },
   "JUMP_LINK": {
     "LABEL": "Jump straight to content"

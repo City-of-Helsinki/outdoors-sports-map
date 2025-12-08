@@ -33,9 +33,9 @@ const liveWaterQualityObservation = {
   time: "2023-03-16T13:00:04.499827+0200",
   expiration_time: null,
   value: {
-      fi: "possibly_impaired"
-  }
-}
+    fi: "possibly_impaired",
+  },
+};
 const unit = {
   id: 40142,
   name: {
@@ -134,14 +134,11 @@ const unit = {
       },
       www: {
         // eslint-disable-next-line max-len
-        fi:
-          "https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/fi/palvelut/liikunta-ja-ulkoilu/uimarantojen-jarjestyssaannot",
+        fi: "https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/fi/palvelut/liikunta-ja-ulkoilu/uimarantojen-jarjestyssaannot",
         // eslint-disable-next-line max-len
-        sv:
-          "https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/sv/tjanster/motion-och-friluftsliv/ordningsstadga-for-badstrander",
+        sv: "https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/sv/tjanster/motion-och-friluftsliv/ordningsstadga-for-badstrander",
         // eslint-disable-next-line max-len
-        en:
-          "https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/en/services/sports-and-recreation/rules-and-regulations-for-beaches",
+        en: "https://www.hel.fi/kulttuurin-ja-vapaa-ajan-toimiala/en/services/sports-and-recreation/rules-and-regulations-for-beaches",
       },
       email: null,
       phone: null,
@@ -172,56 +169,48 @@ const unit = {
       name: {
         fi: "Valvottu",
         sv: "Kontrollerade",
-        en: "Controlled"
+        en: "Controlled",
       },
       www: null,
       email: null,
       phone: null,
       contact_person: null,
-      tags: [
-        "#valvonta"
-      ]
+      tags: ["#valvonta"],
     },
     {
       section_type: "OTHER_INFO",
       name: {
-          "fi": "Pysäköintipaikkoja 20 kpl, 2h pysäköinti.",
-          "sv": "20 parkeringsplatser, 2 timmars parkering.",
-          "en": "20 parking spaces, 2-hour parking."
+        fi: "Pysäköintipaikkoja 20 kpl, 2h pysäköinti.",
+        sv: "20 parkeringsplatser, 2 timmars parkering.",
+        en: "20 parking spaces, 2-hour parking.",
       },
       www: null,
       email: null,
       phone: null,
       contact_person: null,
-      tags: [
-          "#pysäköinti"
-      ]
+      tags: ["#pysäköinti"],
     },
     {
-      "section_type": "OTHER_INFO",
-      "name": {
-          "fi": "Luistelukentän muut palvelut"
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Luistelukentän muut palvelut",
       },
-      "www": null,
-      "email": null,
-      "phone": null,
-      "contact_person": null,
-      "tags": [
-        "#muut_palvelut"
-      ]
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: ["#muut_palvelut"],
     },
     {
-      "section_type": "OTHER_INFO",
-      "name": {
-          "fi": "Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com"
+      section_type: "OTHER_INFO",
+      name: {
+        fi: "Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com",
       },
-      "www": null,
-      "email": null,
-      "phone": null,
-      "contact_person": null,
-      "tags": [
-          "#lisätietoja"
-      ]
+      www: null,
+      email: null,
+      phone: null,
+      contact_person: null,
+      tags: ["#lisätietoja"],
     },
     {
       id: 12514,
@@ -229,15 +218,13 @@ const unit = {
       name: {
         fi: "Lämmitetty",
         sv: "Uppvärmd",
-        en: "Heated"
+        en: "Heated",
       },
       www: null,
       email: null,
       phone: null,
       contact_person: null,
-      tags: [
-        "#lämmitys"
-      ]
+      tags: ["#lämmitys"],
     },
     {
       id: 12515,
@@ -245,15 +232,13 @@ const unit = {
       name: {
         fi: "Valaistu",
         sv: "Upplyst",
-        en: "Lighted"
+        en: "Lighted",
       },
       www: null,
       email: null,
       phone: null,
       contact_person: null,
-      tags: [
-        "#valaisu"
-      ]
+      tags: ["#valaisu"],
     },
     {
       id: 12516,
@@ -261,32 +246,32 @@ const unit = {
       name: {
         fi: "Pukukopit 2kpl, avoinna 24h",
         sv: "Omklädningsrum 2st, öppet 24h",
-        en: "Dressing rooms 2pcs, open 24h"
+        en: "Dressing rooms 2pcs, open 24h",
       },
       www: null,
       email: null,
       phone: null,
       contact_person: null,
-      tags: [
-        "#pukukoppi"
-      ]
+      tags: ["#pukukoppi"],
     },
     {
       id: 1166808,
-      section_type: 'OTHER_INFO',
+      section_type: "OTHER_INFO",
       name: {
-        fi: 'Koiralatu'
+        fi: "Koiralatu",
       },
       www: null,
       email: null,
       phone: null,
       contact_person: null,
-      tags: [
-        '#koiralatu'
-      ]
-    }
+      tags: ["#koiralatu"],
+    },
   ],
-  observations: [temperatureDataObservation, liveTemperatureDataObservation, liveWaterQualityObservation],
+  observations: [
+    temperatureDataObservation,
+    liveTemperatureDataObservation,
+    liveWaterQualityObservation,
+  ],
   extra: {
     "lipas.routeLengthKm": 4,
     "lipas.litRouteLengthKm": 0,
@@ -305,30 +290,30 @@ const renderComponent = (props?: any, modifiedUnit?: any) => {
   });
 
   return render(<UnitDetails {...defaultProps} {...props} />, undefined, {
-      unit: {
-        byId: {
-          "40142": {
-            ...unit,
-            ...modifiedUnit,
-          },
+    unit: {
+      byId: {
+        "40142": {
+          ...unit,
+          ...modifiedUnit,
         },
-        isFetching: false,
-        fetchError: null,
-        all: ["40142"],
-        iceskate: [],
-        ski: [],
-        swim: [],
-        status_ok: [],
+      },
+      isFetching: false,
+      fetchError: null,
+      all: ["40142"],
+      iceskate: [],
+      ski: [],
+      swim: [],
+      status_ok: [],
     } as any,
   });
 };
 
 describe("<UnitDetails />", () => {
   describe("header", () => {
-    it("should have a close button", async () => {
+    it("should have a back link", async () => {
       renderComponent();
 
-      const closeButton = await screen.findByRole("link", { name: "Sulje" });
+      const closeButton = await screen.findByRole("link", { name: "Takaisin" });
 
       // It should exist
       expect(closeButton).toBeInTheDocument();
@@ -368,7 +353,7 @@ describe("<UnitDetails />", () => {
                 time: halfAnHourAgo.toISOString(),
               },
             ],
-          }
+          },
         );
 
         expect(screen.getByText("30 minuuttia sitten")).toBeInTheDocument();
@@ -386,7 +371,7 @@ describe("<UnitDetails />", () => {
                 time: anHourAgo.toISOString(),
               },
             ],
-          }
+          },
         );
 
         expect(screen.getByText("kaksi tuntia sitten")).toBeInTheDocument();
@@ -397,12 +382,12 @@ describe("<UnitDetails />", () => {
   describe("when live water quality data is available", () => {
     const renderWrapperWithLiveWaterQualityData = (props?: any, unit?: any) =>
       renderComponent(props, unit);
-    const waterQuality= {
+    const waterQuality = {
       normal: "Tavanomainen",
       possibly_impaired: "Mahdollisesti heikentynyt",
       probably_impaired: "Mahdollisesti heikentynyt",
-      error: "Ei arviota"
-    }
+      error: "Ei arviota",
+    };
     it("should be displayed", () => {
       renderWrapperWithLiveWaterQualityData();
       const liveWaterQuality = waterQuality.possibly_impaired;
@@ -423,17 +408,21 @@ describe("<UnitDetails />", () => {
       renderComponent(
         {},
         {
-          connections: unit.connections.filter((con) => con.tags === undefined)
-        }
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        },
       );
       expect(screen.queryByText("Valvonta: Valvottu")).toBeNull();
     });
-  })
+  });
 
   describe("when parking data is available", () => {
     it("should be displayed", () => {
       renderComponent();
-      expect(screen.getByText("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.",
+        ),
+      ).toBeInTheDocument();
     });
   });
 
@@ -442,17 +431,23 @@ describe("<UnitDetails />", () => {
       renderComponent(
         {},
         {
-          connections: unit.connections.filter((con) => con.tags === undefined)
-        }
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        },
       );
-      expect(screen.queryByText("Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.")).toBeNull();
+      expect(
+        screen.queryByText(
+          "Pysäköinti: Pysäköintipaikkoja 20 kpl, 2h pysäköinti.",
+        ),
+      ).toBeNull();
     });
-  })
-  
+  });
+
   describe("when other services data is available", () => {
     it("should be displayed", () => {
       renderComponent();
-      expect(screen.getByText("Muut palvelut: Luistelukentän muut palvelut")).toBeInTheDocument();
+      expect(
+        screen.getByText("Muut palvelut: Luistelukentän muut palvelut"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -461,17 +456,23 @@ describe("<UnitDetails />", () => {
       renderComponent(
         {},
         {
-          connections: unit.connections.filter((con) => con.tags === undefined)
-        }
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        },
       );
-      expect(screen.queryByText("Muut palvelut: Luistelukentän muut palvelut")).toBeNull();
+      expect(
+        screen.queryByText("Muut palvelut: Luistelukentän muut palvelut"),
+      ).toBeNull();
     });
-  })
+  });
 
   describe("when more information data is available", () => {
     it("should be displayed", () => {
       renderComponent();
-      expect(screen.getByText("Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com",
+        ),
+      ).toBeInTheDocument();
     });
   });
 
@@ -480,12 +481,16 @@ describe("<UnitDetails />", () => {
       renderComponent(
         {},
         {
-          connections: unit.connections.filter((con) => con.tags === undefined)
-        }
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        },
       );
-      expect(screen.queryByText("Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com")).toBeNull();
+      expect(
+        screen.queryByText(
+          "Lisätietoja: Lisätietoja suoraan seuralta kskdjdseuraj@gmail.com",
+        ),
+      ).toBeNull();
     });
-  })
+  });
 
   describe("when heating data is available", () => {
     it("should be displayed", () => {
@@ -499,12 +504,12 @@ describe("<UnitDetails />", () => {
       renderComponent(
         {},
         {
-          connections: unit.connections.filter((con) => con.tags === undefined)
-        }
+          connections: unit.connections.filter((con) => con.tags === undefined),
+        },
       );
       expect(screen.queryByText("Lämmitys: Lämmitetty")).toBeNull();
     });
-  })
+  });
 
   describe("when lighting data is available", () => {
     it("should be displayed", () => {
@@ -519,7 +524,7 @@ describe("<UnitDetails />", () => {
         {},
         {
           connections: unit.connections.filter((con) => con.tags === undefined),
-        }
+        },
       );
       expect(screen.queryByText("Valaistus: Valaistu")).toBeNull();
     });
@@ -528,7 +533,9 @@ describe("<UnitDetails />", () => {
   describe("when dressing room data is available", () => {
     it("should be displayed", () => {
       renderComponent();
-      expect(screen.getByText("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toBeInTheDocument();
+      expect(
+        screen.getByText("Pukukoppi: Pukukopit 2kpl, avoinna 24h"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -538,9 +545,11 @@ describe("<UnitDetails />", () => {
         {},
         {
           connections: unit.connections.filter((con) => con.tags === undefined),
-        }
+        },
       );
-      expect(screen.queryByText("Pukukoppi: Pukukopit 2kpl, avoinna 24h")).toBeNull();
+      expect(
+        screen.queryByText("Pukukoppi: Pukukopit 2kpl, avoinna 24h"),
+      ).toBeNull();
     });
   });
 
@@ -557,8 +566,6 @@ describe("<UnitDetails />", () => {
     expect(screen.getByText("Hiihtotyyli:")).toBeInTheDocument();
     expect(screen.getByText("Vapaa")).toBeInTheDocument();
     expect(screen.getByText("Koiralatu")).toBeInTheDocument();
-
-    
   });
 });
 
@@ -570,11 +577,11 @@ it("should render 'Lisää suosikiksi' button", () => {
 it("should render 'Poista suosikeista' button if unit is already in favourites", () => {
   // Add unit to favourites
   const favouriteUnit = unit;
-  localStorage.setItem('favouriteUnits', JSON.stringify([unit]));
+  localStorage.setItem("favouriteUnits", JSON.stringify([unit]));
 
   renderComponent({ unit: favouriteUnit });
   expect(screen.getByText("Poista suosikeista")).toBeInTheDocument();
 
   // Clean up local storage
-  localStorage.removeItem('favouriteUnits');
+  localStorage.removeItem("favouriteUnits");
 });

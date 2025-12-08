@@ -51,6 +51,7 @@
     }
   },
   "UNIT_DETAILS": {
+    "BACK": "Takaisin",
     "FURTHER_INFO": "Lisää tietoa",
     "SHOW_MORE": "Näytä enemmän",
     "SHOW_LESS": "Näytä vähemmän",
@@ -105,7 +106,8 @@
     }
   },
   "UNIT_BROWSER": {
-    "LOADING": "Ladataan kohdetta...",
+    "LOADING": "Ladataan kohdetta",
+    "LOADING_FINISHED": "Kohteen lataus valmis",
     "NOT_FOUND": "Pahoittelut, kohdetta ei löytynyt :(",
     "QUALITY": "Kunto",
     "ADD_FAVOURITE": "Lisää suosikiksi",
@@ -149,7 +151,8 @@
     "YESTERDAY": "eilen"
   },
   "OUTBOUND_LINK": {
-    "DESCRIPTION": "Avaa uuden ikkunan"
+    "openInExternalDomainAriaLabel": "Siirtyy ulkopuoliseen palveluun.",
+    "OPEN_IN_NEW_TAB": "Avaa uuden ikkunan."
   },
   "JUMP_LINK": {
     "LABEL": "Siirry suoraan sisältöön"
