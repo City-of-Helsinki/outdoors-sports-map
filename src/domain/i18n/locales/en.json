@@ -34,7 +34,8 @@
     "NOTIFICATION_CLOSE": "Close"
   },
   "GENERAL": {
-    "LOADING": "Loading..."
+    "LOADING": "Loading",
+    "LOADING_FINISHED": "Loading finished"
   },
   "MAP": {
     "ACCESSIBILITY_NOTICE": "Map. Currently map information is only accessible visually.",

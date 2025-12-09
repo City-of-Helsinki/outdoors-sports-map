@@ -1,0 +1,9 @@
+.loading-wrapper {
+    display: grid;
+    grid-gap: var(--spacing-s);
+    grid-template-columns: auto 1fr;
+    justify-self: center;
+    align-items: center;
+    margin-top: var(--spacing-xl);
+    font-size: var(--fontsize-body-m);
+}

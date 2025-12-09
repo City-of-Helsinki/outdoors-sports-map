@@ -5,7 +5,7 @@ $marker-height: 40px;
 $icon-size: 20px;
 
 // COLORS
-$ui-background: #77d5ed;
+$ui-background: var(--color-fog, #9fc9eb);
 $ui-content: #0072c6;
 $ui-enabled: #2d5c90;
 $ui-disabled: #61abd3;
@@ -21,7 +21,7 @@ $content-text: #333333;
 $content-text-secondary: #4d4d4d;
 $unit-filter-hover: #036ea4;
 $sort-selector-dropdown-hover: #30a1d5;
-$list-view-item-hover: #e5f4fa;
+$list-view-item-hover: var(--color-black-5, f2f2f2);
 
 // Lato font
 @import url("https://fonts.googleapis.com/css?family=Lato:light,400,700");
