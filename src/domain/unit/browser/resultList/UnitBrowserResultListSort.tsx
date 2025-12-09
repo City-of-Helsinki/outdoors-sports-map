@@ -1,7 +1,7 @@
+import classNames from "classnames";
+import { IconAngleDown } from "hds-react";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-
-import SMIcon from "../../../../common/components/SMIcon";
 
 type Props = {
   active: string;
@@ -13,17 +13,24 @@ function UnitBrowserResultListSort({ active, values, onSelect }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Dropdown id="unit-sort-selector" className="unit-sort-selector" onSelect={onSelect}>
+    <Dropdown
+      id="unit-sort-selector"
+      className="unit-sort-selector"
+      onSelect={onSelect}
+    >
       <Dropdown.Toggle>
         {t(`UNIT_DETAILS.SORT.${active.toUpperCase()}`)}
         <span className="custom-caret">
-          <SMIcon icon="expand" />
+          <IconAngleDown
+            aria-hidden={true}
+            className={classNames("unit-sort-selector__icon")}
+          />
         </span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {values &&
           values.map((key) => (
-            <Dropdown.Item key={key} eventKey={key}>
+            <Dropdown.Item active={key === active} key={key} eventKey={key}>
               {t(`UNIT_DETAILS.SORT.${key.toUpperCase()}`)}
             </Dropdown.Item>
           ))}
