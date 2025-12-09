@@ -1,0 +1,35 @@
+.back-link {
+      position: relative;
+      box-sizing: border-box;
+      background-color: transparent;
+      outline: 0px;
+      border: 0px;
+      border-radius: 0px;
+      cursor: pointer;
+      display: flex;
+      width: fit-content;
+      margin-left: -4px;
+      color: var(--color-white);
+      font-size: var(--fontsize-body-s);
+      text-decoration: none;
+
+      &-content {
+        display: flex;
+        flex: 0 1 auto;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &-label {
+        margin-left: var(--spacing-2-xs);
+      }
+
+      &:hover {
+        color: var(--color-white);
+      }
+
+      &:focus-visible {
+        outline: var(--focus-outline-width) solid var(--color-white);
+        outline-offset: var(--focus-outline-width);
+      }
+    }

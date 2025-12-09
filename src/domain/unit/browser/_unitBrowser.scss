@@ -4,6 +4,7 @@
   height: unset;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
 
   & > * {
     pointer-events: auto;

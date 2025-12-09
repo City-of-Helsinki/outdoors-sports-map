@@ -5,3 +5,7 @@
         font-weight: 700;
     }
 }
+
+div[class*="Dialog-module_dialogContainer"] {
+    z-index: 1001 !important;
+}

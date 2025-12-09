@@ -1,21 +1,33 @@
+import classNames from "classnames";
+import { Link as HdsLink, LinkSize, LinkProps } from "hds-react";
 import { useTranslation } from "react-i18next";
-
-import SMIcon from "../components/SMIcon";
 
 type Props = {
   href: string;
   children: string;
   className?: string;
-};
+} & LinkProps;
 
-function OutboundLink({ href, children, ...rest }: Props) {
+function OutboundLink({ href, children, className, ...rest }: Props) {
   const { t } = useTranslation();
-  const name = t("OUTBOUND_LINK.DESCRIPTION");
+  const openInNewTabAriaLabel = t("OUTBOUND_LINK.OPEN_IN_NEW_TAB");
+  const openInExternalDomainAriaLabel = t(
+    "OUTBOUND_LINK.openInExternalDomainAriaLabel",
+  );
 
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
-      {children} <SMIcon icon="outbound-link" aria-label={name} title={name} />
-    </a>
+    <HdsLink
+      size={LinkSize.Small}
+      openInNewTab={true}
+      href={href}
+      external
+      openInNewTabAriaLabel={openInNewTabAriaLabel}
+      openInExternalDomainAriaLabel={openInExternalDomainAriaLabel}
+      className={classNames(className, "outbound-link")}
+      {...rest}
+    >
+      {children}
+    </HdsLink>
   );
 }
 

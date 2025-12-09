@@ -1,75 +1,89 @@
+$header-height: 64px;
+
 .map-container {
   position: fixed;
-  top: 0;
+  top: $header-height;
   right: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - #{$header-height});
 }
 
 .map-foreground {
+  max-height: 100%  ;
   position: fixed;
   z-index: 798;
   background: transparent;
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  width: 0;
 
-  &.is-filled {
-    background-color: $ui-content;
-
-    @media only screen and (min-width: 768px) {
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    &.fill-color-background {
-      // When foreground is filled with background color, it should always fill
-      // the entire screen height, but not more, to enable proper behaviour with
-      // scrolling.
-      height: 100vh;
-
-      border-bottom: solid #4d4d4d 4px;
-      background-color: $ui-background;
-      box-shadow: none;
-    }
+  &.panel-expanded {
+    width: 100%;
   }
 
   @media only screen and (min-width: $breakpoint) {
-    width: 400px;
-    height: 100vh;
+    max-height: calc(100vh - #{$header-height});
 
-    pointer-events: none;
+    &.full-height {
+      height: calc(100vh - #{$header-height});
+    }
 
-    & > * {
-      pointer-events: initial;
+    &.panel-expanded {
+      width: 400px;
     }
   }
 
-  &-content {
+  &__panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &.is-filled {
+      background-color: var(--color-fog);
+
+      @media only screen and (min-width: 768px) {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      &.fill-color-background {
+        height: calc(100vh - #{$header-height});
+        border-bottom: 4px solid #4d4d4d;
+        background-color: $ui-background;
+        box-shadow: none;
+      }
+    }
+
+    &-content {
+      max-height: 100%;
+    }
+
+    @media only screen and (min-width: $breakpoint) {
+      pointer-events: none;
+      > * { pointer-events: auto; }
+    }
+  }
+
+  &__content {
     overflow-y: auto;
     pointer-events: none;
     display: flex;
     flex-direction: column;
 
-    & > * {
-      pointer-events: initial;
-    }
+    > * { pointer-events: auto; }
 
     &.hidden {
       display: none;
     }
   }
 
-  &-unit-browser {
-    height: 100%;
-    pointer-events: none;
+}
 
-    & > * {
-      pointer-events: initial;
-    }
+.map-collapse-button {
+  margin-top: 0;
+  position: absolute;
+  left: 400px;
 
-    &.hidden {
-      display: none;
-    }
+  &.panel-hidden {
+    left: 0;
   }
 }
 
@@ -89,6 +103,47 @@
     &-expanded {
       transform: rotate(-180deg);
       transition: transform 0.5s ease-in-out
+    }
+  }
+}
+
+.app-header {
+  --header-max-width: unset !important;
+  --action-bar-container-height: #{ $header-height } !important;
+
+  z-index: 1000;
+
+  // Hide the logo element
+  a[class*="HeaderActionBar-module_titleAndLogoContainer"][class*="HeaderActionBar-module_logo"] {
+    display: none;
+  }
+
+  // Fix alignment of text and icon in the info dropdown button
+  #app-info-dropdown {
+    button {
+      div[class*="HeaderActionBarItemButton-module_buttonContent"] { 
+        span {
+          align-items: center;
+          display: flex;
+        }
+      }
+    }
+  }
+
+  // Set background color for dropdown menu
+  #app-info-dropdown-dropdown {
+    background-color: var(--header-background-color);
+  }
+
+  // Adjust margin for title to align it properly vertically
+  a[class*="HeaderActionBar-module_normal"]>[class*="HeaderActionBar-module_title"] {
+        margin-top: 2px;
+    }
+
+  @media only screen and (max-width: 767px) {
+    // Increase font size for title on small screens
+    a[class*="HeaderActionBar-module_normal"]>[class*="HeaderActionBar-module_title"] {
+        font-size: var(--fontsize-body-l);
     }
   }
 }

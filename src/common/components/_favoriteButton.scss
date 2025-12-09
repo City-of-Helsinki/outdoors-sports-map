@@ -1,0 +1,14 @@
+.favorite-button {
+    padding-inline: var(--spacing-2-xs) !important;
+    margin-inline: calc(0px - var(--spacing-2-xs)) !important;
+    width: calc(100% + 2 * var(--spacing-2-xs)) !important;
+
+    > span {
+        width: 100%;
+        text-align: left;
+    }
+
+    div[class*="Button-module_icon"] {
+        margin-right: 0 !important;
+    }
+}

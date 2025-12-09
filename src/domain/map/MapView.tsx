@@ -119,7 +119,7 @@ class MapView extends Component<Props, State> {
             url={
               getMapUrl(language || "fi", isRetina() ? "@3x" : "")
             }
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
           />
           <MapEvents
             handleMapClick={this.handleMapClick}

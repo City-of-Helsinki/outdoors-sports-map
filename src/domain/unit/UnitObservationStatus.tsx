@@ -1,3 +1,4 @@
+import { Tag, TagSize } from "hds-react";
 import { useTranslation } from "react-i18next";
 
 import { Unit } from "./unitConstants";
@@ -14,11 +15,15 @@ import useLanguage from "../../common/hooks/useLanguage";
 
 type StatusBarProps = {
   quality: string;
-  label: String;
+  label: string;
 };
 
 export function StatusBar({ quality, label }: StatusBarProps) {
-  return <div className={`observation-status__bar--${quality}`}>{label}</div>;
+  return (
+    <Tag className={`observation-status__bar--${quality}`} size={TagSize.Small}>
+      {label}
+    </Tag>
+  );
 }
 
 type StatusUpdatedProps = {
@@ -29,12 +34,7 @@ export function StatusUpdated({ time }: StatusUpdatedProps) {
   const { t } = useTranslation();
 
   return (
-    <div
-      className="obervation-status__time"
-      style={{
-        fontSize: 12,
-      }}
-    >
+    <div className="observation-status__time">
       {t("UNIT_DETAILS.UPDATED")} <Time time={time} />
     </div>
   );
@@ -50,12 +50,7 @@ export function StatusUpdatedAgo({
   sensorName = "",
 }: StatusUpdatedAgoProps) {
   return (
-    <div
-      className="obervation-status__time"
-      style={{
-        fontSize: 12,
-      }}
-    >
+    <div className="observation-status__time">
       <TimeAgo time={time} />
       {sensorName && ` (${sensorName})`}
     </div>
@@ -71,12 +66,7 @@ export function MaintenanceUpdated({ name, time }: MaintenanceUpdatedProps) {
   const language = useLanguage();
 
   return (
-    <div
-      className="observation-status__time"
-      style={{
-        fontSize: 12,
-      }}
-    >
+    <div className="observation-status__time">
       {getAttr(name, language)} <Time time={time} />
     </div>
   );
