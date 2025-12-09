@@ -34,7 +34,8 @@
     "NOTIFICATION_CLOSE": "Stänga"
   },
   "GENERAL": {
-    "LOADING": "Laddar..."
+    "LOADING": "Laddar",
+    "LOADING_FINISHED": "Laddning slutförd"
   },
   "MAP": {
     "ACCESSIBILITY_NOTICE": "Kartvy. Kartans uppgifter kan i nuläget granskas endast visuellt.",

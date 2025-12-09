@@ -1,3 +1,4 @@
+import { Button, ButtonVariant, IconArrowRight } from "hds-react";
 import L from "leaflet";
 import values from "lodash/values";
 import React, { RefObject, useCallback } from "react";
@@ -8,7 +9,6 @@ import UnitBrowserResultListSort from "./UnitBrowserResultListSort";
 import useUnitSearchResults from "./useUnitSearchResults";
 import Link from "../../../../common/components/Link";
 import Loading from "../../../../common/components/Loading";
-import SMIcon from "../../../../common/components/SMIcon";
 import useDoSearch from "../../../../common/hooks/useDoSearch";
 import useLanguage from "../../../../common/hooks/useLanguage";
 import * as PathUtils from "../../../../common/utils/pathUtils";
@@ -29,12 +29,9 @@ const UnitListItem = React.memo<UnitListItemProps>(
     const { pathname, search } = useLocation();
     const appSearch = useAppSearch();
 
-    // @ts-ignore
-    const unitNameInLanguage = unit.name[language];
-    const unitPath = unitNameInLanguage
-      ? `/unit/${unit.id}-${encodeURIComponent(
-          encodeURIComponent(unitHelpers.getAttr(unit.name, language))
-        )}`
+    const unitName = unitHelpers.getAttr(unit.name, language);
+    const unitPath = unitName
+      ? `/unit/${unit.id}-${encodeURIComponent(unitName)}`
       : `/unit/${unit.id}`;
 
     return (
@@ -43,7 +40,7 @@ const UnitListItem = React.memo<UnitListItemProps>(
           pathname: unitPath,
           state: {
             previous: `${PathUtils.removeLanguageFromPathname(
-              pathname
+              pathname,
             )}${search}`,
             search: appSearch,
           },
@@ -54,20 +51,18 @@ const UnitListItem = React.memo<UnitListItemProps>(
           <UnitIcon unit={unit} />
         </div>
         <div className="list-view-item__unit-details">
-          <div className="list-view-item__unit-name">
-            {unitHelpers.getAttr(unit.name, language)}
-          </div>
+          <div className="list-view-item__unit-name">{unitName}</div>
           <ObservationStatus unit={unit} />
         </div>
         <div className="list-view-item__unit-open">
-          <SMIcon icon="forward" />
+          <IconArrowRight aria-hidden="true" />
         </div>
       </Link>
     );
   },
   ({ unit }, { unit: nextUnit }) => {
     return JSON.stringify(nextUnit) !== JSON.stringify(unit);
-  }
+  },
 );
 
 type Props = {
@@ -85,8 +80,6 @@ function UnitBrowserResultList({ leafletMap }: Props) {
     leafletMap,
   });
 
-  const totalUnitResults = sortKey === "favorites" ? results?.length : totalUnits;
-
   const handleOnSortKeySelect = useCallback(
     (nextSortKey: string | null) => {
       if (nextSortKey) {
@@ -96,19 +89,19 @@ function UnitBrowserResultList({ leafletMap }: Props) {
         });
       }
     },
-    [doSearch]
+    [doSearch],
   );
 
   const handleLoadMoreClick = useCallback(
-    (e: React.SyntheticEvent<HTMLAnchorElement>) => {
+    (e: React.SyntheticEvent<HTMLButtonElement>) => {
       e.preventDefault();
 
       doSearch(
         "maxUnitCount",
-        (Number(maxUnitCount) + UNIT_BATCH_SIZE).toString()
+        (Number(maxUnitCount) + UNIT_BATCH_SIZE).toString(),
       );
     },
-    [maxUnitCount, doSearch]
+    [maxUnitCount, doSearch],
   );
 
   return (
@@ -121,34 +114,31 @@ function UnitBrowserResultList({ leafletMap }: Props) {
             onSelect={handleOnSortKeySelect}
           />
         </div>
-        <div className="list-view__block">
+        <div className="list-view__items-block">
           {results === null && <Loading />}
           {Array.isArray(results) && (
-          <>
-            {results.length === 0 && sortKey === 'favorites' ? (
-              <p style={{ textAlign: "center" }}>{t("UNIT_DETAILS.NO_FAVORITES")}</p>
-            ) : (
-              <>
-                {results.map((unit) => (
-                  <UnitListItem key={unit.id} unit={unit} />
-                ))}
-                {results.length !== totalUnitResults && ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    style={{
-                      display: "block",
-                      textAlign: "center",
-                      cursor: "pointer",
-                      margin: "18px auto 10px",
-                    }}
-                    href=""
-                    onClick={handleLoadMoreClick}
-                  >
-                    {t("UNIT_DETAILS.SHOW_MORE")}
-                  </a>
-                )}
-              </>
-            )}
-          </>
+            <>
+              {results.length === 0 && sortKey === "favorites" ? (
+                <p style={{ textAlign: "center" }}>
+                  {t("UNIT_DETAILS.NO_FAVORITES")}
+                </p>
+              ) : (
+                <>
+                  {results.map((unit) => (
+                    <UnitListItem key={unit.id} unit={unit} />
+                  ))}
+                  {sortKey !== "favorites" && results.length < totalUnits && (
+                    <Button
+                      className="list-view__show-more-button"
+                      onClick={handleLoadMoreClick}
+                      variant={ButtonVariant.Secondary}
+                    >
+                      {t("UNIT_DETAILS.SHOW_MORE")}
+                    </Button>
+                  )}
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
