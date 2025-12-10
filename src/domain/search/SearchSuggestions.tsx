@@ -1,3 +1,4 @@
+import { Button, ButtonSize, ButtonVariant, IconSearch } from "hds-react";
 import { LocationDescriptor } from "history";
 import { useTranslation } from "react-i18next";
 
@@ -16,7 +17,7 @@ export type Suggestion = {
 };
 
 type Props = {
-  openAllResults: (e: React.SyntheticEvent<HTMLAnchorElement>) => void;
+  openAllResults: (e: React.SyntheticEvent<HTMLButtonElement>) => void;
   handleAddressClick: (coordinates: [number, number]) => void;
   suggestions: Suggestion[];
 };
@@ -30,24 +31,24 @@ function SearchSuggestions({
 
   const suggestionCount = suggestions.length;
   const searchableSuggestionCount = suggestions.filter(
-    ({ type }) => type === "searchable"
+    ({ type }) => type === "searchable",
   ).length;
 
   return (
     <div className="search-suggestions">
       {suggestionCount > 0 ? (
         <div className="search-suggestions__list">
-          {searchableSuggestionCount > 0 && ( // eslint-disable-next-line jsx-a11y/anchor-is-valid
-            <a
-              href=""
+          {searchableSuggestionCount > 0 && (
+            <Button
               className="search-suggestions__open-all"
-              onClick={(e) => {
-                e.preventDefault();
-                openAllResults(e);
-              }}
+              type="button"
+              onClick={openAllResults}
+              variant={ButtonVariant.Supplementary}
+              iconEnd={<IconSearch />}
+              size={ButtonSize.Small}
             >
               {t("SEARCH.SHOW_ALL_RESULTS")}
-            </a>
+            </Button>
           )}
           {suggestions.map(({ icon, label, to, coordinates, unit }) => (
             <Link

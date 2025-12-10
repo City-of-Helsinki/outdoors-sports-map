@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 import SearchBar from "./SearchBar";
 import SearchSuggestions, { Suggestion } from "./SearchSuggestions";
@@ -14,95 +14,131 @@ type Props = {
   onAddressClick: (coordinates: [number, number]) => void;
 };
 
-type State = {
-  searchPhrase: string;
-  showSuggestions: boolean;
-};
+function SearchContainer({
+  search = "",
+  disabled,
+  suggestions,
+  isActive,
+  onFindSuggestions,
+  onSearch,
+  onClear,
+  onAddressClick,
+}: Props) {
+  const [searchPhrase, setSearchPhrase] = useState(search);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const preventFocusOpen = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-const initialState = (searchPhrase = "") => ({
-  searchPhrase,
-  showSuggestions: false,
-});
+  useEffect(() => {
+    setSearchPhrase(search);
+  }, [search]);
 
-class SearchContainer extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    const { search } = this.props;
+  const onInputChange = useCallback(
+    (value: string): void => {
+      setSearchPhrase(value);
+      setShowSuggestions(true);
+      onFindSuggestions(value);
+    },
+    [onFindSuggestions],
+  );
 
-    this.state = initialState(search);
-  }
-
-  /**
-   *
-   * @param  {string} value [description]
-   * @return {void}       [description]
-   */
-  onInputChange = (value: string): void => {
-    this.setState({
-      searchPhrase: value,
-      showSuggestions: true,
-    });
-    this.getSuggestions(value);
-  };
-
-  search = () => {
-    const { onSearch } = this.props;
-    const { searchPhrase } = this.state;
-
+  const handleSearch = useCallback(() => {
     onSearch(searchPhrase);
-    this.setState({
-      showSuggestions: false,
-    });
-  };
+    setShowSuggestions(false);
+  }, [onSearch, searchPhrase]);
 
-  /**
-   * @param  {string} searchPhrase [description]
-   * @return {void}              [description]
-   */
-  getSuggestions = (searchPhrase: string): void => {
-    const { onFindSuggestions } = this.props;
-
-    onFindSuggestions(searchPhrase);
-  };
-
-  clear = () => {
-    const { onClear } = this.props;
-
-    this.setState(initialState());
+  const clear = useCallback(() => {
+    setSearchPhrase("");
+    setShowSuggestions(false);
     onClear();
-  };
+  }, [onClear]);
 
-  handleAddressClick = (coordinates: [number, number]) => {
-    const { onAddressClick } = this.props;
+  const handleAddressClick = useCallback(
+    (coordinates: [number, number]) => {
+      setSearchPhrase("");
+      setShowSuggestions(false);
+      onClear();
+      onAddressClick(coordinates);
+    },
+    [onAddressClick, onClear],
+  );
 
-    this.clear();
-    onAddressClick(coordinates);
-  };
+  const handleFocus = useCallback(() => {
+    // Don't open suggestions immediately after ESC was pressed
+    if (preventFocusOpen.current) {
+      preventFocusOpen.current = false;
+      return;
+    }
 
-  render() {
-    const { suggestions, isActive, disabled } = this.props;
-    const { searchPhrase, showSuggestions } = this.state;
+    if (searchPhrase && searchPhrase.length > 0) {
+      setShowSuggestions(true);
+      onFindSuggestions(searchPhrase);
+    }
+  }, [searchPhrase, onFindSuggestions, preventFocusOpen]);
 
-    return (
-      <div className="search-container">
-        <SearchBar
-          input={searchPhrase}
-          onInput={this.onInputChange}
-          onSubmit={this.search}
-          onClear={this.clear}
-          searchActive={isActive}
-          disabled={disabled}
+  const handleBlur = useCallback((event: React.FocusEvent) => {
+    // Check if the new focus target is within the container
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.relatedTarget as Node)
+    ) {
+      setShowSuggestions(false);
+    }
+  }, []);
+
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === "Escape") {
+      preventFocusOpen.current = true;
+      setShowSuggestions(false);
+
+      // Focus the search input after closing suggestions
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }
+  }, []);
+
+  const handleInputKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        event.preventDefault();
+        if (!showSuggestions && searchPhrase && searchPhrase.length > 0) {
+          setShowSuggestions(true);
+          onFindSuggestions(searchPhrase);
+        }
+      }
+    },
+    [showSuggestions, searchPhrase, onFindSuggestions],
+  );
+
+  return (
+    <div
+      className="search-container"
+      ref={containerRef}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+    >
+      <SearchBar
+        input={searchPhrase}
+        onInput={onInputChange}
+        onSubmit={handleSearch}
+        onClear={clear}
+        onFocus={handleFocus}
+        onKeyDown={handleInputKeyDown}
+        inputRef={searchInputRef}
+        searchActive={isActive}
+        disabled={disabled}
+      />
+      {showSuggestions && (
+        <SearchSuggestions
+          openAllResults={handleSearch}
+          suggestions={suggestions}
+          handleAddressClick={handleAddressClick}
         />
-        {showSuggestions && (
-          <SearchSuggestions
-            openAllResults={this.search}
-            suggestions={suggestions}
-            handleAddressClick={this.handleAddressClick}
-          />
-        )}
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }
 
 export default SearchContainer;
