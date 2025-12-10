@@ -111,13 +111,15 @@ function UnitBrowserHeader({ onViewChange }: Props) {
         maxUnitCount: UNIT_BATCH_SIZE.toString(),
       };
 
-      // If the search page is not yet open, take the user there.
-      if (!searchMatch) {
+      // If we are already in search view, just update the search params
+      // Otherwise, navigate to search view with the params
+      if (searchMatch) {
+        doSearch(nextSearch);
+      } else {
         const searchParams = new URLSearchParams(nextSearch);
 
         history.push(`/fi/search?${searchParams.toString()}`);
-      } else {
-        doSearch(nextSearch);
+        
       }
 
       dispatch(
