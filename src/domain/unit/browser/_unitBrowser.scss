@@ -98,20 +98,9 @@
 
 .address-bar {
   &__container {
-    border-radius: 18px;
-    padding: 3px 10px;
-    background: $ui-content;
-    color: #fff;
-    margin-top: $gap;
-    display: block;
-    border: none;
     width: 100%;
-    text-align: left;
-
-    &:hover {
-      background: $ui-enabled;
-      cursor: pointer;
-    }
+    margin-top: $gap;
+    justify-content: flex-start !important;
   }
 
   &__marker {

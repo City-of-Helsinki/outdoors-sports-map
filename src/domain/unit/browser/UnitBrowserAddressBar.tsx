@@ -1,6 +1,7 @@
+import { IconLocation, Tag } from "hds-react";
+
 import useLanguage from "../../../common/hooks/useLanguage";
 import { Address } from "../../app/appConstants";
-import addressBarMarker from "../../assets/markers/location.svg";
 import { getAddressToDisplay } from "../unitHelpers";
 
 type Props = {
@@ -11,24 +12,26 @@ type Props = {
 function UnitBrowserAddressBarProps({ address, handleClick }: Props) {
   const language = useLanguage();
 
+  const addressText = getAddressToDisplay(address, language) || "";
+
   return (
-    <button
-      type="button"
+    <Tag 
       className="address-bar__container"
+      iconStart={<IconLocation />}
       onClick={() => {
         const [long, lat] = address.location.coordinates;
         handleClick([lat, long]);
       }}
+      theme={{
+        '--background-color': 'var(--color-coat-of-arms)',
+        '--background-color-hover': 'var(--color-coat-of-arms-dark)',
+        '--color': 'var(--color-white)',
+        "--border-color": 'var(--color-coat-of-arms)',
+        "--border-color-hover": 'var(--color-coat-of-arms-dark)',
+      } as any}
     >
-      <img
-        className="address-bar__marker"
-        src={addressBarMarker}
-        height="20px"
-        width="16px"
-        alt=""
-      />
-      {address && getAddressToDisplay(address, language)}
-    </button>
+      {addressText}
+    </Tag>
   );
 }
 
