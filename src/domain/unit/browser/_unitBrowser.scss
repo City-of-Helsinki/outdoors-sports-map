@@ -79,12 +79,18 @@
       color: $ui-text;
       border: 0;
       line-height: 24px;
+
       &[aria-pressed="true"] {
         background: $ui-enabled;
       }
 
       & > .unit-browser__action {
         font-size: 24px;
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--color-white);
+        outline-offset: -3px;
       }
     }
   }
