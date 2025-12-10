@@ -23,7 +23,7 @@ function SearchContainer({
   onSearch,
   onClear,
   onAddressClick,
-}: Props) {
+}: Readonly<Props>) {
   const [searchPhrase, setSearchPhrase] = useState(search);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const preventFocusOpen = useRef(false);
@@ -113,6 +113,7 @@ function SearchContainer({
   );
 
   return (
+    /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
     <div
       className="search-container"
       ref={containerRef}
