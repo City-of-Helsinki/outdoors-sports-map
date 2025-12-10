@@ -1,10 +1,10 @@
+import { IconMap, IconMenuHamburger } from "hds-react";
 import { pick } from "lodash";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router";
 
-import SMIcon from "../../../common/components/SMIcon";
 import useDoSearch from "../../../common/hooks/useDoSearch";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
@@ -21,7 +21,7 @@ import { getAttr } from "../unitHelpers";
 
 type ActionButtonProps = {
   action: () => void;
-  icon: string;
+  icon: React.ReactNode;
   isActive: boolean;
   name: string;
 };
@@ -30,42 +30,44 @@ function ActionButton({ action, icon, isActive, name }: ActionButtonProps) {
   return (
     <button
       className="action-button"
+      aria-label={name}
       aria-pressed={isActive}
       onClick={action}
       type="button"
     >
-      <SMIcon className="unit-browser__action" icon={icon} aria-label={name} />
+      {icon}
     </button>
   );
 }
 
-const suggestionsSelectorFactory = (search: string, language: string) => (
-  state: AppState
-) => {
-  const unitResults = unitSearchSelectors.getUnitSuggestions(state).filter(function(unit) {
-    return unit !== undefined;
-  });
-  const addressesResults = unitSearchSelectors.getAddresses(state);
-  const unitSuggestions = unitResults.map((unit) => ({
-    type: "searchable" as const,
-    label: getAttr(unit.name, language),
-    unit,
-    to: {
-      pathname: `/unit/${unit.id}`,
-      state: {
-        search,
+const suggestionsSelectorFactory =
+  (search: string, language: string) => (state: AppState) => {
+    const unitResults = unitSearchSelectors
+      .getUnitSuggestions(state)
+      .filter(function (unit) {
+        return unit !== undefined;
+      });
+    const addressesResults = unitSearchSelectors.getAddresses(state);
+    const unitSuggestions = unitResults.map((unit) => ({
+      type: "searchable" as const,
+      label: getAttr(unit.name, language),
+      unit,
+      to: {
+        pathname: `/unit/${unit.id}`,
+        state: {
+          search,
+        },
       },
-    },
-  }));
-  const addressSuggestions = addressesResults.map((address) => ({
-    type: "loose" as const,
-    label: address.properties.label,
-    icon: addressIcon,
-    coordinates: address.geometry.coordinates.slice().reverse(),
-  }));
+    }));
+    const addressSuggestions = addressesResults.map((address) => ({
+      type: "loose" as const,
+      label: address.properties.label,
+      icon: addressIcon,
+      coordinates: address.geometry.coordinates.slice().reverse(),
+    }));
 
-  return [...unitSuggestions, ...addressSuggestions];
-};
+    return [...unitSuggestions, ...addressSuggestions];
+  };
 
 type Props = {
   onViewChange: (coordinates: [number, number]) => void;
@@ -81,7 +83,7 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   const { q, ...appSearch } = useAppSearch();
   const doSearch = useDoSearch();
   const suggestions = useSelector(
-    suggestionsSelectorFactory(searchString, language)
+    suggestionsSelectorFactory(searchString, language),
   );
   const disabled = useSelector(unitSelectors.getIsLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
@@ -91,14 +93,14 @@ function UnitBrowserHeader({ onViewChange }: Props) {
       dispatch(setLocation(coordinates));
       onViewChange(coordinates);
     },
-    [dispatch, onViewChange]
+    [dispatch, onViewChange],
   );
 
   const handleOnFindSuggestions = useCallback(
     (input: string) => {
       dispatch(unitSearchActions.fetchUnitSuggestions(input));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleOnSearch = useCallback(
@@ -121,11 +123,11 @@ function UnitBrowserHeader({ onViewChange }: Props) {
       dispatch(
         unitSearchActions.searchUnits(
           input,
-          pick(nextSearch, ["status", "sport"])
-        )
+          pick(nextSearch, ["status", "sport"]),
+        ),
       );
     },
-    [doSearch, dispatch, history, searchMatch, appSearch]
+    [doSearch, dispatch, history, searchMatch, appSearch],
   );
 
   const handleOnClear = useCallback(() => {
@@ -150,7 +152,7 @@ function UnitBrowserHeader({ onViewChange }: Props) {
           action={() => {
             history.push(`/${language}${searchString}`);
           }}
-          icon="map-options"
+          icon={<IconMap aria-hidden={true} />}
           isActive={searchMatch === null}
           name={t("UNIT_DETAILS.MAP_BUTTON")}
         />
@@ -158,7 +160,7 @@ function UnitBrowserHeader({ onViewChange }: Props) {
           action={() => {
             history.push(`/${language}/search${searchString}`);
           }}
-          icon="browse"
+          icon={<IconMenuHamburger aria-hidden={true} />}
           isActive={searchMatch !== null}
           name={t("UNIT_DETAILS.LIST_BUTTON")}
         />
