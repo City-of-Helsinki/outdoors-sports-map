@@ -10,16 +10,19 @@
       flex: 2 1 auto;
       display: inline-block;
       border: 2px solid $ui-content;
-      border-radius: 30px;
+      border-radius: 0;
       padding: 0 $gap;
-      line-height: 30px;
-      height: 34px;
+      line-height: $input-line-height;
+      height: $input-height;
       font-family: "Lato", sans-serif !important;
       width: 100%;
 
       &:focus {
-        box-shadow: 0 0 0 2px $content-background !important;
-        outline: none;
+        outline: 2px solid var(--color-white);
+        outline-offset: 2px;
+      }
+      &:disabled {
+        padding-left: 40px;
       }
 
       &:disabled:hover {
@@ -29,10 +32,16 @@
 
     &-clear {
       position: absolute;
-      right: 40px;
-
+      right: 43px;
       border: none;
       background: none;
+      color: var(--color-black-80);
+      padding: var(--spacing-4-xs);
+
+      &:focus {
+        outline: 3px solid var(--color-focus-outline);
+        outline-offset: -3px;
+      }
     }
 
     @keyframes spin {
@@ -47,22 +56,23 @@
     &-loading {
       position: absolute;
       left: 16px;
-      animation: spin 1s linear infinite;
     }
 
     &-submit {
       flex: 0 1 auto;
       display: inline-block;
-      padding-right: 6px;
-      margin: 0;
-      width: 24px;
-
-      font-size: 18px;
-      line-height: 30px;
+      padding: 0;
+      margin-left: $gap - 2px;
+      line-height: $input-line-height;
       color: $ui-text;
 
       border: none;
       background: none;
+
+      &:focus {
+        outline: 2px solid var(--color-white);
+        outline-offset: 2px;
+      }
     }
   }
 }

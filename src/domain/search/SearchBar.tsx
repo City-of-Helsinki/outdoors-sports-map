@@ -1,12 +1,15 @@
+import { IconCrossCircle, IconSearch, LoadingSpinner } from "hds-react";
+import { RefObject } from "react";
 import { useTranslation } from "react-i18next";
-
-import SMIcon from "../../common/components/SMIcon";
 
 type Props = {
   input: string;
   onInput: (value: string) => void;
   onSubmit: () => void;
   onClear: () => void;
+  onFocus?: () => void;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
+  inputRef?: RefObject<HTMLInputElement>;
   searchActive: boolean;
   disabled: boolean;
 };
@@ -16,10 +19,15 @@ function SearchBar({
   onInput,
   onSubmit,
   onClear,
+  onFocus,
+  onKeyDown,
+  inputRef,
   searchActive,
   disabled,
 }: Props) {
   const { t } = useTranslation();
+  const loaddingText = t("GENERAL.LOADING");
+  const loadingFinishedText = t("GENERAL.LOADING_FINISHED");
 
   return (
     <div className="search-bar">
@@ -31,23 +39,25 @@ function SearchBar({
           onSubmit();
         }}
       >
-        {disabled && ( // TODO: Use buttons instead of a span
-          // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-          <span className="search-bar__input-loading" onClick={onClear}>
-            <SMIcon icon="loading" aria-label={t("SEARCH.LOADING")} />
+        {disabled && (
+          <span className="search-bar__input-loading">
+            <LoadingSpinner
+              small
+              loadingText={loaddingText}
+              loadingFinishedText={loadingFinishedText}
+            />
           </span>
         )}
         <input
+          ref={inputRef}
           name="search"
           id="search"
           aria-label={t("SEARCH.SEARCH")}
           type="text"
           onChange={(e) => onInput(e.target.value)}
-          placeholder={
-            disabled
-              ? `      ${t("GENERAL.LOADING")}`
-              : `${t("SEARCH.SEARCH")}...`
-          }
+          onFocus={onFocus}
+          onKeyDown={onKeyDown}
+          placeholder={disabled ? loaddingText : `${t("SEARCH.SEARCH")}...`}
           disabled={disabled}
           value={input}
         />
@@ -56,12 +66,17 @@ function SearchBar({
             type="button"
             className="search-bar__input-clear"
             onClick={onClear}
+            aria-label={t("SEARCH.CLEAR")}
           >
-            <SMIcon icon="close" aria-label={t("SEARCH.CLEAR")} />
+            <IconCrossCircle aria-hidden="true" />
           </button>
         )}
-        <button type="submit" className="search-bar__input-submit">
-          <SMIcon icon="search" aria-label={t("SEARCH.SUBMIT")} />
+        <button
+          type="submit"
+          aria-label={t("SEARCH.SUBMIT")}
+          className="search-bar__input-submit"
+        >
+          <IconSearch aria-hidden="true" />
         </button>
       </form>
     </div>

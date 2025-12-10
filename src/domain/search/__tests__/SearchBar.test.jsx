@@ -1,4 +1,9 @@
-import { fireEvent, render, screen, userEvent } from "../../testingLibraryUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+} from "../../testingLibraryUtils";
 import SearchBar from "../SearchBar";
 
 const renderComponent = (props) => render(<SearchBar {...props} />);
@@ -10,7 +15,7 @@ describe("<SearchBar />", () => {
     renderComponent({ onInput });
     const input = screen.getByRole("textbox", { name: "Etsi" });
 
-    expect(input).toBeTruthy();
+    expect(input).toBeInTheDocument();
 
     fireEvent.change(input, { target: { value } });
 
@@ -36,7 +41,9 @@ describe("<SearchBar />", () => {
       searchActive: true,
     });
 
-    expect(screen.getByRole("button", { name: "Tyhjennä haku" })).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: "Tyhjennä haku" }),
+    ).toBeInTheDocument();
   });
 
   it("should show a loading indicator when disabled is true", () => {
@@ -44,6 +51,8 @@ describe("<SearchBar />", () => {
       disabled: true,
     });
 
-    expect(screen.getByLabelText("Ladataan")).toBeTruthy();
+    const loadingSpinnerStatus = screen.getByRole("status");
+    expect(loadingSpinnerStatus).toBeInTheDocument();
+    expect(loadingSpinnerStatus).toHaveTextContent("Ladataan");
   });
 });

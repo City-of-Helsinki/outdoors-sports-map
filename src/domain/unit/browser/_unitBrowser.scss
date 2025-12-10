@@ -116,7 +116,7 @@
 @media only screen and (min-width: $breakpoint) {
   .unit-browser {
     .header .search-container .search-suggestions {
-      width: 400px;
+      width: 400px - 2 * $gap;
     }
 
     &.expanded {
