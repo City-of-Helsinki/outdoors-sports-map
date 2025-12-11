@@ -89,8 +89,8 @@
       }
 
       &:focus-visible {
-        outline: 3px solid var(--color-white);
-        outline-offset: -3px;
+        outline: 3px solid var(--color-focus-outline);
+        outline-offset: 2px;
       }
     }
   }

@@ -112,7 +112,7 @@
 
     &:focus-visible {
       outline: 2px solid var(--color-white);
-      outline-offset: 3px;
+      outline-offset: 0px;
     }
 
     .dropdown-indicator {
@@ -148,7 +148,7 @@
     label {
       color: #fff;
       font-size: 1em;
-      margin-bottom: 3px;
+      margin-bottom: 6px;
       font-weight: 400;
       line-height: 1;
     }
@@ -157,6 +157,20 @@
       --toggle-button-unselected-color: #{$ui-text-disabled} !important;
       height: 30px;
       border-width: 1px;
+    }
+
+    button[class*="ToggleButton-module_toggleButton"] {
+      &:focus:after {
+        border: none !important;
+        outline: 2px solid white !important;
+        outline-offset: -6px;
+      }
+
+      &[aria-pressed=true] {
+        div[class*="ToggleButton-module_onIcon"] {
+              margin-left: 26px !important
+        }
+      }
     }
 
     button:not([aria-pressed=true]) {
