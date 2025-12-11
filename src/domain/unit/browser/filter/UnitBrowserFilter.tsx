@@ -26,6 +26,7 @@ export type FilterOptionProps = {
   onToggle: () => void;
   onSelect: (filterName: string, option: string) => void;
   filter: UnitFilterProps;
+  customActiveLogic?: (option: string, filter: UnitFilterProps) => boolean;
 };
 
 export function FilterOption({
@@ -33,6 +34,7 @@ export function FilterOption({
   isActive,
   onToggle,
   onSelect,
+  customActiveLogic,
 }: FilterOptionProps) {
   const { t } = useTranslation();
   const controlId = `control-${filter.name}`;
@@ -53,16 +55,22 @@ export function FilterOption({
 
   const renderOptions = (options: string[], className: string) => (
     <Row className={`${className} filter-options-row`}>
-      {options.map((option) => (
-        <Col className="unit-filters__option" xs={6} key={option}>
-          <UnitFilterButton
-            filterName={option}
-            isActive={option === filter.active}
-            onClick={() => handleSelect(filter.name, option)}
-            message={t(`UNIT_DETAILS.FILTER.${invert(UnitFilters)[option]}`)}
-          />
-        </Col>
-      ))}
+      {options.map((option) => {
+        const isOptionActive = customActiveLogic 
+          ? customActiveLogic(option, filter)
+          : option === filter.active;
+        
+        return (
+          <Col className="unit-filters__option" xs={6} key={option}>
+            <UnitFilterButton
+              filterName={option}
+              isActive={isOptionActive}
+              onClick={() => handleSelect(filter.name, option)}
+              message={t(`UNIT_DETAILS.FILTER.${invert(UnitFilters)[option]}`)}
+            />
+          </Col>
+        );
+      })}
     </Row>
   );
 

@@ -48,6 +48,7 @@ function HikingFilter({
                 onToggle={() => toggleExpandedFilter(filter)}
                 onSelect={onMenuSelect}
                 isActive={filterEquals(filter, expandedFilter)}
+                customActiveLogic={() => isSelected}
               />
             </Col>
           ))}
