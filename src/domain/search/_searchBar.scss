@@ -22,7 +22,7 @@
         outline-offset: 2px;
       }
       &:disabled {
-        padding-left: 40px;
+        padding-left: 32px;
       }
 
       &:disabled:hover {
@@ -56,6 +56,10 @@
     &-loading {
       position: absolute;
       left: 16px;
+
+      div[class*="LoadingSpinner-module_small"] {
+        --spinner-size: 1.125rem !important;
+      }
     }
 
     &-submit {
