@@ -49,6 +49,9 @@ function ApplicationHeader({
   const { t } = useTranslation();
   const locale = useLocale();
   const isMobile = useIsMobile();
+  const openInNewTabAriaLabel = t("OUTBOUND_LINK.OPEN_IN_NEW_TAB");
+  const osmLinkLabel = t("APP.MAP_ATTRIBUTION");
+  const osmLinkLabelAria = `${osmLinkLabel}. ${openInNewTabAriaLabel}`;
 
   const history = useHistory();
   const { pathname } = useLocation();
@@ -199,9 +202,14 @@ function ApplicationHeader({
                 onClick={createMenuLinkClickHandler("accessibility")}
               />
               <Header.ActionBarSubItem
-                label={t("APP.MAP_ATTRIBUTION")}
+                label={osmLinkLabel}
                 href="https://osm.org/copyright"
+                // @ts-ignore
+                target="_blank" // HDS types do not include target prop, so ignore ts error
+                rel="noopener"
+                aria-label={osmLinkLabelAria}
                 external
+                openInExternalDomainAriaLabel={t("OUTBOUND_LINK.OPEN_IN_EXTERNAL_DOMAIN")}
               />
             </Header.ActionBarSubItemGroup>
           </Header.ActionBarItem>

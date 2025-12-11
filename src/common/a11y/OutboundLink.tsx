@@ -12,7 +12,7 @@ function OutboundLink({ href, children, className, ...rest }: Props) {
   const { t } = useTranslation();
   const openInNewTabAriaLabel = t("OUTBOUND_LINK.OPEN_IN_NEW_TAB");
   const openInExternalDomainAriaLabel = t(
-    "OUTBOUND_LINK.openInExternalDomainAriaLabel",
+    "OUTBOUND_LINK.OPEN_IN_EXTERNAL_DOMAIN",
   );
 
   return (

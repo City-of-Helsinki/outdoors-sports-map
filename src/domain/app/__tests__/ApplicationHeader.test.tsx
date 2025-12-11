@@ -103,7 +103,7 @@ describe("<ApplicationHeader />", () => {
       expect(accessibilityButton).toBeInTheDocument();
 
       const openMapLink = withinDropdown.getByRole("link", {
-        name: "OpenStreetMap tekijät. Siirtyy toiseen sivustoon.",
+        name: "OpenStreetMap tekijät. Avaa uuden ikkunan. Siirtyy ulkopuoliseen palveluun.",
       });
       expect(openMapLink).toBeInTheDocument();
     });
