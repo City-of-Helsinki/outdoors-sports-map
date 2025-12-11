@@ -387,12 +387,17 @@ export const sortByFavorites = (units: Unit[]): Unit[] => {
 export const getAddressToDisplay = (
   address: Record<string, any>,
   activeLang: string,
-) =>
-  Object.keys(address).length !== 0
-    ? `${String(getAttr(address.street.name, activeLang))} ${
-        address.number
-      }, ${upperFirst(address.street.municipality)}`
-    : null;
+) => {
+  if (Object.keys(address).length === 0) {
+    return null;
+  }
+
+  const streetName = getAttr(address.street?.name, activeLang) || "";
+  const streetAddress = [streetName, address.number].filter(Boolean).join(" ");
+  const municipality = getAttr(address.municipality?.name, activeLang);
+
+  return [streetAddress, upperFirst(municipality)].filter(Boolean).join(", ");
+};
 
 export const getAllSportServices = () => {
   return values(UnitServices).join(",");
