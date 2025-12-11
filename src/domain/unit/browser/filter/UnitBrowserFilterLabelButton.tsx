@@ -6,22 +6,19 @@ import UnitBrowserFilterButton from "./UnitBrowserFilterButton";
 import UnitBrowserFilterLabel from "./UnitBrowserFilterLabel";
 import { UnitFilters } from "../../unitConstants";
 
-const filterNameToLabel = (filterName: string, isHiking: boolean) => {
-  if( isHiking && filterName==='sport'){
-    return "UNIT_DETAILS.SUPPORTING_SERVICES";
-  }else{
-    switch (filterName) {
-      case "sport":
-        return "UNIT_DETAILS.FILTER_SPORT";
+const filterNameToLabel = (filterName: string) => {
+  switch (filterName) {
+    case "hiking":
+      return "UNIT_DETAILS.SUPPORTING_SERVICES";
+    case "sport":
+      return "UNIT_DETAILS.FILTER_SPORT";
 
-      case "status":
-        return "UNIT_DETAILS.FILTER_STATUS";
+    case "status":
+      return "UNIT_DETAILS.FILTER_STATUS";
 
-      default:
-        return "";
-    }
+    default:
+      return "";
   }
-  
 };
 
 type Filter = {
@@ -44,9 +41,9 @@ function UnitBrowserFilterLabelButton({
   ...rest
 }: UnitFilterLabelButtonProps) {
   const { t } = useTranslation();
-  const labelMessage = t(filterNameToLabel(filter.name, (filter?.isHiking ?? false)));
+  const labelMessage = t(filterNameToLabel(filter.name));
   const buttonMessage = t(
-    `UNIT_DETAILS.FILTER.${invert(UnitFilters)[filter.active]}`
+    `UNIT_DETAILS.FILTER.${invert(UnitFilters)[filter.active]}`,
   );
 
   return (
@@ -55,6 +52,7 @@ function UnitBrowserFilterLabelButton({
       <UnitBrowserFilterButton
         filterName={filter.active}
         className={isActive ? "active" : ""}
+        isActive={isActive}
         onClick={() => onAction(filter)}
         showDropdownIndicator
         message={buttonMessage}

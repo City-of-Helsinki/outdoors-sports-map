@@ -1,94 +1,76 @@
-import get from "lodash/get";
 import invert from "lodash/invert";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import UnitFilterButton from "./UnitBrowserFilterButton";
 import UnitFilterLabelButton from "./UnitBrowserFilterLabelButton";
 import UnitFilterOptionsWrapper from "./UnitBrowserFilterOptionsWrapper";
 import { UnitFilters } from "../../unitConstants";
 
-type UnitFilterProps = {
+export type UnitFilterProps = {
   name: string;
   active: string;
   options: Array<string>;
   secondaryOptions?: Array<string> | null | undefined;
   isHiking?: boolean;
 };
+
 type UnitFiltersProps = {
   filters: Array<UnitFilterProps>;
-  t: () => string;
   updateFilter: (filter: string, value: string) => void;
 };
-type FilterOptionsRowProps = {
-  t: (arg0: string) => string;
-  className: string;
-  filterName: string;
-  options: string[];
-  onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => void;
+
+export type FilterOptionProps = {
+  isActive: boolean;
+  onToggle: () => void;
   onSelect: (filterName: string, option: string) => void;
+  filter: UnitFilterProps;
 };
 
-function FilterOptionsRow({
-  t,
-  className,
-  filterName,
-  options,
-  onKeyDown,
+export function FilterOption({
+  filter,
+  isActive,
+  onToggle,
   onSelect,
-}: FilterOptionsRowProps) {
-  return (
+}: FilterOptionProps) {
+  const { t } = useTranslation();
+  const controlId = `control-${filter.name}`;
+  const menuId = `menu-${filter.name}`;
+
+  const handleSelect = (filterName: string, option: string) => {
+    onSelect(filterName, option);
+
+    // Return focus to the toggle button after selection with a small delay
+    // to ensure the menu has closed and the button is focusable
+    setTimeout(() => {
+      const element = document.getElementById(controlId);
+      if (element) {
+        element.focus();
+      }
+    }, 10);
+  };
+
+  const renderOptions = (options: string[], className: string) => (
     <Row className={`${className} filter-options-row`}>
       {options.map((option) => (
         <Col className="unit-filters__option" xs={6} key={option}>
           <UnitFilterButton
             filterName={option}
-            onKeyDown={onKeyDown}
-            onClick={() => onSelect(filterName, option)}
+            isActive={option === filter.active}
+            onClick={() => handleSelect(filter.name, option)}
             message={t(`UNIT_DETAILS.FILTER.${invert(UnitFilters)[option]}`)}
           />
         </Col>
       ))}
     </Row>
   );
-}
-
-type FilterOptionProps = {
-  t: (arg0: string) => string;
-  isActive: boolean;
-  onAction: (filter: Record<string, any>) => void;
-  onSelect: (filterName: string, option: string) => void;
-  filter: UnitFilterProps;
-};
-
-function FilterOption({
-  t,
-  filter,
-  isActive,
-  onAction,
-  onSelect,
-}: FilterOptionProps) {
-  const controlId = `control-${filter.name}`;
-  const menuId = `menu-${filter.name}`;
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    const element = document.getElementById(controlId);
-
-    if (e.key === "Enter" && element) {
-      element.focus();
-    }
-  };
-
-  const handleSelect = (filterName: string, option: string) => {
-    onSelect(filterName, option);
-  };
 
   return (
-    <div>
+    <div className={filter.name}>
       <UnitFilterLabelButton
         filter={filter}
-        onAction={onAction}
+        onAction={onToggle}
         isActive={isActive}
         aria-haspopup="true"
         aria-controls={menuId}
@@ -102,26 +84,15 @@ function FilterOption({
           role="region"
           aria-labelledby={controlId}
         >
-          <FilterOptionsRow
-            filterName={filter.name}
-            className="unit-filters__options"
-            options={filter.options}
-            onKeyDown={handleKeyDown}
-            onSelect={handleSelect}
-            t={t}
-          />
+          {renderOptions(filter.options, "unit-filters__options")}
           {filter.secondaryOptions && (
-            <Row as="hr" className="unit-filters__options-separator" />
-          )}
-          {filter.secondaryOptions && (
-            <FilterOptionsRow
-              className="unit-filters__options secondary"
-              filterName={filter.name}
-              options={filter.secondaryOptions}
-              onKeyDown={handleKeyDown}
-              onSelect={handleSelect}
-              t={t}
-            />
+            <>
+              <Row as="hr" className="unit-filters__options-separator" />
+              {renderOptions(
+                filter.secondaryOptions,
+                "unit-filters__options secondary",
+              )}
+            </>
           )}
         </UnitFilterOptionsWrapper>
       )}
@@ -129,72 +100,54 @@ function FilterOption({
   );
 }
 
-const filterEquals = (a: any, b: any) => {
+export const filterEquals = (a: any, b: any) => {
   // Checks if a and b are the same by comparing their names.
   if (a && b) {
-    return get(a, "name") === get(b, "name");
+    return a.name === b.name;
   }
-
   return false;
 };
 
-type State = {
-  expandedFilter: {} | null;
-};
+function UnitBrowserFilter({ filters, updateFilter }: UnitFiltersProps) {
+  const [expandedFilterName, setExpandedFilterName] = useState<string | null>(
+    null,
+  );
 
-export class UnitBrowserFilter extends React.Component<
-  UnitFiltersProps,
-  State
-> {
-  constructor(props: UnitFiltersProps) {
-    super(props);
-    this.state = {
-      expandedFilter: null,
-    };
-  }
+  const onMenuSelect = useCallback(
+    (filterName: string, value: string): void => {
+      setExpandedFilterName(null);
+      updateFilter(filterName, value);
+    },
+    [updateFilter],
+  );
 
-  onMenuSelect = (key: string, value: string): void => {
-    const { updateFilter } = this.props;
+  const toggleFilter = useCallback(
+    (filterName: string) => {
+      setExpandedFilterName(
+        expandedFilterName === filterName ? null : filterName,
+      );
+    },
+    [expandedFilterName],
+  );
 
-    this.setState({
-      expandedFilter: null,
-    });
-    updateFilter(key, value);
-  };
-
-  toggleExpandedFilter = (filter: Record<string, any>) => {
-    const { expandedFilter } = this.state;
-    const isFilterActive = filterEquals(filter, expandedFilter);
-
-    this.setState({
-      expandedFilter: isFilterActive ? null : filter,
-    });
-  };
-
-  render() {
-    const { filters, t } = this.props;
-    const { expandedFilter } = this.state;
-
-    return (
-      <div className="unit-filters">
-        <Container className="unit-filters__filters">
-          <Row className="unit-filters__filters">
-            {filters.map((filter) => (
-              <Col className="unit-filters__edit" xs={6} key={filter.name}>
-                <FilterOption
-                  filter={filter}
-                  onAction={this.toggleExpandedFilter}
-                  onSelect={this.onMenuSelect}
-                  isActive={filterEquals(filter, expandedFilter)}
-                  t={t}
-                />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </div>
-    );
-  }
+  return (
+    <div className="unit-filters">
+      <Container className="unit-filters__filters">
+        <Row className="unit-filters__filters">
+          {filters.map((filter) => (
+            <Col className="unit-filters__edit" xs={6} key={filter.name}>
+              <FilterOption
+                filter={filter}
+                onToggle={() => toggleFilter(filter.name)}
+                onSelect={onMenuSelect}
+                isActive={filter.name === expandedFilterName}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
+  );
 }
 
-export default withTranslation()(UnitBrowserFilter);
+export default UnitBrowserFilter;

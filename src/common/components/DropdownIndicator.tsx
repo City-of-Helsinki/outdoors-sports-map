@@ -1,9 +1,18 @@
-import SMIcon from "./SMIcon";
+import classNames from "classnames";
+import { IconAngleDown } from "hds-react";
 
-function DropdownIndicator() {
+type Props = {
+  isActive?: boolean;
+};
+
+function DropdownIndicator({ isActive = false }: Props) {
   return (
-    <span className="dropdown-indicator" aria-hidden="true">
-      <SMIcon icon="expand" />
+    <span
+      className={classNames("dropdown-indicator", { active: isActive })}
+      aria-hidden="true"
+      data-testid="dropdown-indicator"
+    >
+      <IconAngleDown />
     </span>
   );
 }
