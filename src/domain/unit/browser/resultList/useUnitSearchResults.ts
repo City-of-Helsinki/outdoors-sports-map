@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LatLngTuple } from "leaflet";
 import { RefObject } from "react";
 import { useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ import * as unitHelpers from "../../unitHelpers";
 
 type SortOptions = {
   units: Unit[];
-  position: [number, number];
+  position: LatLngTuple;
   leafletMap?: L.Map | null;
   sortKey: string;
 };
@@ -33,6 +33,10 @@ function sortUnits({ units, position, leafletMap, sortKey }: SortOptions) {
     case SortKeys.DISTANCE:
       // @ts-ignore
       sortedUnits = unitHelpers.sortByDistance(units, position, leafletMap);
+      break;
+
+    case SortKeys.FAVORITES:
+      sortedUnits = unitHelpers.sortByFavorites(units);
       break;
 
     default:
@@ -59,7 +63,7 @@ function useUnitSearchResults({ leafletMap }: Options) {
   const isSearching = useSelector<AppState, boolean>(
     fromUnitSearch.getIsFetching,
   );
-  const position = useSelector<AppState, [number, number]>(fromMap.getLocation);
+  const position = useSelector<AppState, LatLngTuple>(fromMap.getLocation);
 
   if (isLoading || isSearching) {
     return { totalUnits: units.length, results: null };

@@ -3,6 +3,8 @@ import { SortKey, SportFilter, StatusFilter } from "../unit/unitConstants";
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL;
 
+export const MAP_URL_TEMPLATE = process.env.REACT_APP_MAP_URL_TEMPLATE;
+
 export const DIGITRANSIT_API_BASE_URL =
   process.env.REACT_APP_DIGITRANSIT_API_URL;
 

@@ -1,7 +1,8 @@
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import {Button, Dialog, IconInfoCircle} from "hds-react";
+import { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
+import { MODAL_WIDTH } from "../constants";
 import AccessibilityStatementEn from "./accessibilityStatement/AccessibilityStatementEn";
 import AccessibilityStatementFi from "./accessibilityStatement/AccessibilityStatementFi";
 import AccessibilityStatementSv from "./accessibilityStatement/AccessibilityStatementSv";
@@ -15,15 +16,18 @@ const modalContentMap = {
 } as const;
 
 type Props = {
+  focusAfterCloseRef?: RefObject<HTMLElement>;
   onClose: () => void;
   show: boolean;
 };
 
-function AppAccessibilityModal({ onClose, show }: Props) {
+function AppAccessibilityModal({ focusAfterCloseRef, onClose, show }: Props) {
   const {
     t,
     i18n: { language },
   } = useTranslation();
+
+  const titleId = "accessibility-dialog-title";
 
   const Content = modalContentMap[
     language as AccessibilityStatementLanguage
@@ -34,24 +38,30 @@ function AppAccessibilityModal({ onClose, show }: Props) {
   );
 
   return (
-    <Modal show={show} onHide={onClose} size="lg" animation={false}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <h2>{t("APP.INFO_MENU.ACCESSIBILITY")}</h2>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Content />
-      </Modal.Body>
-      <Modal.Footer>
-        {/* Give screen reader users a control for closing the modal after */}
-        {/* they've gone through the content. */}
-        <Button variant="primary" onClick={onClose}>
-          {t("APP.MODAL.CLOSE")}
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
+      <Dialog
+          id="accessibility-dialog"
+          aria-labelledby={titleId}
+          isOpen={show}
+          close={onClose}
+          closeButtonLabelText={t("APP.MODAL.CLOSE")}
+          focusAfterCloseRef={focusAfterCloseRef}
+          style={{width: MODAL_WIDTH}}
+        >
+          <Dialog.Header
+            id={titleId}  
+            title={t("APP.INFO_MENU.ACCESSIBILITY")}
+            iconStart={<IconInfoCircle />}
+          />
+          <Dialog.Content className="outdoor-exercise-map-modal-content">
+            <Content />
+          </Dialog.Content>
+          <Dialog.ActionButtons>
+            <Button onClick={onClose}>
+              {t("APP.MODAL.CLOSE")}
+            </Button>
+          </Dialog.ActionButtons>
+        </Dialog>
+    );
 }
 
 export default AppAccessibilityModal;

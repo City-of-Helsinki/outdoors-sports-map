@@ -6,6 +6,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.6.0] - 2025-05-28
+
+## Added
+
+-   [#268](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/268) Add swim warning marker
+-   [#269](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/269) Add sledding to services
+-   [#271](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/271) AppInfo updates
+
+## Changed
+
+-   [#270](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/270) Update texts
+
+## [2.5.0] - 2024-12-05
+
+## Added
+
+-   [#265](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/265) Save units as favorites 
+
+## Changed
+
+-   [#264](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/264) Change unit sort default to condition
+
+## Fixed
+
+-   [#266](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/266) Validate currentLanguage in CookieConsent
+
+## [2.4.0] - 2024-11-20
+
+### Added
+
+-   [#261](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/261) Heightprofile support for 3D-units
+
+## [2.3.0] - 2024-06-14
+
+### Added
+
+-   [#252](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/252) Add possibility to hide/show home-container
+-   [#253](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/253) Select route on map line geometry click
+
+### Changed
+
+-   [#251](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/251) Update Matomo-tracking to use DigiaIiris-service
+-   [#254](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/254) Update map zooming
+-   [#255](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/255) Update packages, use NodeJS v22 and Nginx v1.2.6
+
+### Fixed
+
+-   [#250](https://github.com/City-of-Helsinki/outdoors-sports-map/pull/250) Fix address location
+
 ## [2.2.2] - 2024-01-09
 
 ### Added

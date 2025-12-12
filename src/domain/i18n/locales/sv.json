@@ -3,13 +3,23 @@
     "NAME": "Utemotionskarta",
     "ABOUT": "Information om tjänsten",
     "DESCRIPTION": "Utemotionskartan (Ulkoliikuntakartta) är en digital karttjänst där man hittar huvudstadsregionens skidspår och skidspårsinfo, skridskobanor och konstisbanor samt badstränder och utomhusbad. Utemotionskartans uppgifter produceras av Helsingfors, Esbo, Vanda och Kyrkslätt.",
-    "ABOUT_MODAL": "<h3>Information om tjänsten</h3> <p>Utemotionskartan är en öppen kommunikationskanal om skicket på anläggningarna för utomhusidrott i Helsingfors, Esbo, Vanda och Kyrkslatt. Utemotionskartan hjälper kommuninvånarna att hitta uppdaterad information om de tjänster för utomhusidrott som staden upprätthåller. I nuläget omfattar tjänsten stadens skidspår och skridskoplaner och på våren kommer den också att omfatta badstränder.</p> <p>Ulkoliikunta.fi är en tjänst som Helsingfors stad erbjuder i samarbete med Esbo, Vanda och Kyrkslätt.</p><h3>Status färgkoder</h3><p>Den automatiska ändringen av statusen för utomhusidrottsanläggningarna hjälper kartan att hålla sig uppdaterad även när informationen inte uppdateras dagligen. Statusen för spåren blir hyfsad (gul) när statusen inte har uppdaterats på sju dagar och okänd (grå) när tio dagar har gått sedan föregående uppdatering. Statusen för skridskobanorna blir grå när den senaste uppdateringen har gjorts tio dagar tidigare och statusen för badstränderna inom fem dagar efter den senaste uppdateringen av observationerna av blågrönalger.</p> <h3>Respons</h3> <p>Vi är tacksamma för all respons, så att vi kan utveckla Utemotionskartan och göra den allt bättre.</p> <h3>© Information och upphovsrätt</h3> <p>Utemotionskartan har byggs med hjälp av så öppna data som möjligt och öppen källkod.</p> <p>Kartans källkod finns på <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> och vi uppmuntrar till utveckling av den.</p> <p>Idrottsplatsernas uppgifter är öppna data och användbara via REST-gränssnittet.</p> <p>Kartuppgifterna hämtas från öppna <a target='_blank' href='https://www.openstreetmap.org/'>OpenStreetMap</a> och kartornas upphovsrätt hör till <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMaps skapare.</a></p> <p>Adressuppgifterna hämtas med hjälp av Helsingforsregionens trafiks <a target='_blank' href='http://developer.reittiopas.fi/'>öppna gränssnitt</a>.",
+    "ABOUT_MODAL": "<h3>Information om tjänsten</h3><p>Utemotionskartan är en öppen kommunikationskanal om skicket på anläggningarna för utomhusidrott i Helsingfors, Esbo, Vanda och Kyrkslatt. Utemotionskartan hjälper kommuninvånarna att hitta uppdaterad information om de tjänster för utomhusidrott som staden upprätthåller. I nuläget omfattar tjänsten stadens skidspår och skridskoplaner och på våren kommer den också att omfatta badstränder.</p> <p>Ulkoliikunta.fi är en tjänst som Helsingfors stad erbjuder i samarbete med Esbo, Vanda och Kyrkslätt.</p><h3>Respons</h3> <p>Vi är tacksamma för all respons, så att vi kan utveckla Utemotionskartan och göra den allt bättre.</p> <h3>© Information och upphovsrätt</h3> <p>Utemotionskartan har byggs med hjälp av så öppna data som möjligt och öppen källkod.</p> <p>Tjänstens källkod finns på <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> och vi uppmuntrar till utveckling av den.</p> <p>Idrottsplatsernas uppgifter är öppna data och användbara via REST-gränssnittet.</p> <p>Kartuppgifterna hämtas från öppna <a target='_blank' href='https://www.openstreetmap.org/'>OpenStreetMap</a> och kartornas upphovsrätt hör till <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMaps skapare.</a></p> <p>Adressuppgifterna hämtas med hjälp av Helsingforsregionens trafiks <a target='_blank' href='http://developer.reittiopas.fi/'>öppna gränssnitt</a>.",
+    "INFO_MODAL": "<p>Kartan är indelad i två säsonger. Vintersäsong och sommarsäsong.</p><p>Vintersäsongen börjar den 1 november och slutar den 30 april, och då visas skidåkning, skridskoåkning och vinterbad på kartan. Det vill säga skidspår, konstisbanor, naturisbanor, pulkabackar samt vinterbadplatser som upprätthålls av föreningar och kommuner.</p><p>Sommarsäsongen börjar den 1 maj och slutar den 31 oktober, och då visas badstränder på kartan.</p><p>Frilufts- och utflyktstjänster visas året runt.</p><h3>Skidåkning</h3><p>Spår som är i gott skick är markerade med grönt. Statusen ändras till nöjaktig (gul) när den inte har uppdaterats på 7 dagar och okänd (ljusblå) när det har gått 10 dagar sedan den senaste uppdateringen. Spår som inte är i bruk är markerade med svart.</p><p>Du kan stänga höjdprofilen via krysset uppe till höger i grafiken.</p><p>Du kan söka efter spår i listan eller på kartan genom att klicka på spårets kontur eller cirkel. Då öppnas alla uppgifter om spåret.</p><h3>Skridskoåkning</h3><p>Skridskobanorna är markerade med grönt när de kan användas och statusen ändras till grått när den senaste uppdateringen gjorts för 10 dagar sedan. Om de inte är i bruk är de markerade med svart.</p><h3>Vinterbad</h3><p>För vinterbadplatserna uppdateras inga statusuppgifter, men eventuella avvikelser anges i informationen för stället ifråga.</p><h3>Pulkabackar</h3><p>För pulkabackarna uppdateras inga statusuppgifter, men eventuella avvikelser anges i informationen för stället ifråga.</p><h3>Badstränder</h3><p>Badstränderna är markerade med grönt när de kan användas och deras status ändras till grått 5 dagar efter att förekomsten av blågröna alger senast uppdaterats. Om ett exceptionellt problem som förhindrar användning har upptäckts på stranden är den markerad med lila. Om stranden inte är i bruk är den markerad med svart.</p><h3>Utfärder</h3><p>För utfärder uppdateras inga statusuppgifter, men eventuella avvikelser anges i informationen för utfärden ifråga.</p>",
     "INFO_MENU": {
+      "SERVICE_INFO": "Anvisningar",
       "GIVE_FEEDBACK": "Ge respons",
       "ABOUT_SERVICE": "Information om tjänsten",
       "CHOOSE_LANGUAGE": "Välj språk",
       "ACCESSIBILITY": "Tillgänglighets­utlåtande"
     },
+    "HIDE_SIDEBAR": "Minska sidopanelen",
+    "SHOW_SIDEBAR": "Utvidga sidopanelen",
+    "MAP_BUTTON": {
+      "CLOSE": "Stäng Kartan",
+      "OPEN": "Öppna Kartan"
+    },
+    "UNIT_DETAILS_PANEL": "Verksamhetsställetdetaljer",
+    "SEARCH_RESULTS_PANEL": "Sökresultat",
     "MODAL": {
       "CLOSE": "Stänga"
     },
@@ -30,12 +40,22 @@
     "ACCESSIBILITY_NOTICE": "Kartvy. Kartans uppgifter kan i nuläget granskas endast visuellt.",
     "LOCATE_USER": "Visa din plats",
     "ZOOM_IN": "Zooma in",
-    "ZOOM_OUT": "Zooma ut"
+    "ZOOM_OUT": "Zooma ut",
+    "HEIGHT_PROFILE": {
+      "TITLE": "Höjdprofil",
+      "ELEVATION": "Höjd",
+      "DISTANCE": "Avstånd",
+      "SEGMENT_LENGTH": "Totalt avstånd",
+      "TYPE": "Typ",
+      "LEGEND": "Förklaring"
+    }
   },
   "UNIT_DETAILS": {
+    "BACK": "Tillbaka",
     "FURTHER_INFO": "Ytterligare upplysningar",
     "SHOW_MORE": "Visa mer",
     "SHOW_LESS": "Visa mindre",
+    "NO_FAVORITES": "Inga favoriter",
     "STATUS": "Skick",
     "UNKNOWN": "Okänt",
     "SATISFACTORY": "Hyfsad",
@@ -64,7 +84,8 @@
       "DEFAULT": "Förinställt",
       "ALPHABETICAL": "Alfabetisk",
       "CONDITION": "I bästa skick först",
-      "DISTANCE": "Närmast först"
+      "DISTANCE": "Närmast först",
+      "FAVORITES": "Favoriter"
     },
     "PHONE": "Telefon",
     "TMP_MESSAGE": "",
@@ -85,8 +106,11 @@
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",
+    "LOADING_FINISHED": "Objektladdning slutförd",
     "NOT_FOUND": "Beklagar, objektet hittades inte :(",
     "QUALITY": "Skick",
+    "ADD_FAVOURITE": "Lägg till som favorit",
+    "REMOVE_FAVOURITE": "Ta bort som favorit",
     "INFO": "Information",
     "WEATHER": "Väder",
     "HEIGHT_PROFILE": "Höjdprofil",
@@ -104,7 +128,7 @@
     "WATER_TEMPERATURE": "Vattnets temperatur",
     "WATER_TEMPERATURE_SENSOR": "Vattentemperatur sensor",
     "CLOSE": "Stänga",
-    "SEE_ON_SERVICE_MAP": "Mer information på servicekartan",
+    "SEE_ON_SERVICE_MAP": "Övriga uppgifter om platsen på Servicekartan",
     "WATER_QUALITY": "Hygienisk vattenkvalitet",
     "WATER_QUALITY_SENSOR": "Vattenkvalitetssensor"
   },
@@ -126,7 +150,8 @@
     "YESTERDAY": "i går"
   },
   "OUTBOUND_LINK": {
-    "DESCRIPTION": "Öppnar ett nytt fönster"
+    "OPEN_IN_EXTERNAL_DOMAIN": "Flyttar till en extern tjänst.",
+    "OPEN_IN_NEW_TAB": "Öppnar ett nytt fönster."
   },
   "JUMP_LINK": {
     "LABEL": "Gå direkt till innehållet"

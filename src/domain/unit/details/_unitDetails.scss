@@ -1,12 +1,18 @@
 .unit-container {
+  --focus-outline-width: 3px;
+
   max-height: 30vh;
-  padding: 10px;
+  padding: var(--spacing-2-xs) var(--spacing-s) var(--spacing-s);
   overflow-y: auto;
   transition: max-height 0.5s ease-in-out;
 
   &.expanded {
     max-height: 80vh;
     transition: max-height 0.5s ease-in-out;
+
+    @media only screen and (min-width: 768px) {
+      max-height: unset;
+    }
   }
 
   @media only screen and (min-width: 768px) {
@@ -14,10 +20,10 @@
     height: 100%;
   }
 
-  h4 {
-    margin: 10px 0;
+  h3 {
+    margin: var(--spacing-xs) 0;
 
-    font-size: 18px;
+    font-size: var(--fontsize-heading-xs);
     line-height: 1.1;
   }
 
@@ -27,68 +33,107 @@
     &.no-margin {
       margin-bottom: 0;
     }
+
+    &.small-margin {
+      margin-bottom: var(--spacing-3-xs);
+    }
   }
 
   .modal-body-list li {
-    margin-bottom: 10px;
+    margin-bottom: var(--spacing-xs);
   }
 
   &-header {
-    padding: 10px;
-    color: #fff;
+    padding: var(--spacing-2-xs) var(--spacing-s) var(--spacing-s);
+    margin: calc(0px - var(--spacing-2-xs)) calc(0px - var(--spacing-s)) 0;
+    color: var(--color-white);
     border: none;
+    background-color: $ui-content;
 
     &-container {
       width: 100%;
     }
 
+    &-bar {
+      display: flex;
+      align-items: flex-start;
+      color: var(--color-white);
+      padding: var(--spacing-2-xs) var(--spacing-2-xs) var(--spacing-2-xs) var(--spacing-s);
+      flex-direction: column;
+    }
+
+    &-name-wrapper {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: var(--spacing-xs);
+      align-items: center;
+    }
+
     &-name {
       display: flex;
       justify-content: space-between;
-
-      .close-unit-container {
-        color: $ui-text;
-        font-size: 1.4em;
-      }
     }
 
     &-description {
-      padding-top: 5px;
-      border-top: 1px solid #fff;
-      font-size: 12px;
+      font-size: var(--fontsize-body-s);
       display: flex;
 
-      p {
-        margin-bottom: 5px;
-      }
 
       .unit-icon {
-        margin-right: 10px;
-        font-size: 3em;
+        margin-right: var(--spacing-s);
+        font-size: var(--spacing-xl);
         line-height: 1;
       }
+    }
+
+    &-description-text-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      p {
+        margin-bottom: var(--spacing-3-xs);
+      }
+
+      p:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+
+    &-service-name::first-letter {
+      text-transform: uppercase;
+    }
+
+    &-unit-address-municipality {
+      text-transform: capitalize;
     }
   }
 
   &-body {
     padding: $gap 0;
 
+    a {
+      color: var(--color-bus);
+    }
+
     &-box {
-      background: #fff;
-      padding: 10px;
+      background: var(--color-white);
+      padding: var(--spacing-2-xs) var(--spacing-s);
+      margin: calc(0px - var(--spacing-2-xs)) calc(0px - var(--spacing-s));
       align-items: center;
 
       &:empty {
         display: none;
       }
 
-      & + & {
-        margin-top: $gap;
+      &.no-margin-top {
+        margin-top: 0 !important;
       }
 
       &-headline {
         font-weight: 700;
-        margin-bottom: 3px;
+        margin-bottom: var(--spacing-3-xs);
+        font-size: var(--fontsize-heading-xxs);
       }
 
       &-icon-and-value-wrapper {
@@ -107,13 +152,17 @@
           font-size: 2em;
           flex-grow: 0;
           margin-right: calc($gap / 1.5);
+          border-radius: var(--spacing-3-xs);
         }
       }
     }
 
     &-multi-line {
       white-space: pre-wrap;
-      margin-top: 2rem;
+
+      &:not(:first-of-type) {
+        margin-top: var(--spacing-s);
+      }
 
       & > * {
         display: inline-block;
@@ -126,7 +175,7 @@
       list-style-type: none;
 
       & > li {
-        margin-bottom: 1rem;
+        margin-bottom: var(--spacing-2-xs);
       }
     }
   }
@@ -143,9 +192,10 @@
     display: none;
   }
 
-  padding: 10px;
-  color: var(--color-info-light);
+  padding: var(--spacing-3-xs) var(--spacing-s);
   text-align: right;
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-black-20);
 
   &-icon {
     transform: rotate(0deg);

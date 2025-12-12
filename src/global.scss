@@ -6,6 +6,79 @@ body {
   padding-left: 0;
 }
 
+.custom-control-button {
+  display: block;
+  background-color: #ffffff;
+
+  font-size: 19px;
+  line-height: 26px;
+  text-align: center;
+
+  border: 1px solid #ccc;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+
+  &:hover,
+  &:active {
+    color: #0072c6;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.height-profile-buttons {
+  display: flex;
+  justify-content: right;
+}
+
+.height-profile-prev-button {
+  background: url(domain/assets/icons/icon-arrow-previous.svg) no-repeat center center;
+  width: 30px;
+  height: 30px;
+  margin-top: -30px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+
+  &:hover,
+  &:active {
+    color: #0072c6;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.height-profile-next-button {
+  background: url(domain/assets/icons/icon-arrow-next.svg) no-repeat center center;
+  width: 30px;
+  height: 30px;
+  margin-top: -30px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+
+  &:hover,
+  &:active {
+    color: #0072c6;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.heightgraph-toggle {
+  margin-left: 21px;
+}
+
+.heightgraph-close-icon {
+  background-size: 20px 20px;
+}
+
 // Re-skin bootstrap modals to visually appear more like the custom modal
 // implementation they were used to replace.
 .modal-content {
@@ -36,9 +109,4 @@ body {
   border-top: none;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-#HdsCookieConsentContainer {
-  position: relative;
-  z-index: 100001;
 }

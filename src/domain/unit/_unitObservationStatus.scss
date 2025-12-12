@@ -7,24 +7,36 @@
     color: $ui-text;
 
     &--good {
-      background: $status-ok;
+      --background-color: #72bc3d;
+      --color: var(--color-black);
+      
+      margin-bottom: var(--spacing-3-xs);
     }
 
     &--satisfactory {
-      background: $status-average;
+      --background-color: #f5c01a;
+      --color: var(--color-black);
+
+      margin-bottom: var(--spacing-3-xs);
     }
 
     &--unusable {
-      background: $status-bad;
-      color: white;
+      --background-color: var(--color-black);
+      --color: var(--color-white);
+
+      margin-bottom: var(--spacing-3-xs);
     }
 
     &--unknown {
-      background: $status-unknown;
+      --background-color: var(--color-black-30);
+      --color: var(--color-black);
+
+      margin-bottom: var(--spacing-3-xs);
     }
   }
 
   &__time {
     color: $content-text-secondary;
+    font-size: 12px;
   }
 }

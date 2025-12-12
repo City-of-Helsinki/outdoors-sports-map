@@ -3,8 +3,24 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-import { configure } from "enzyme";
+
+// Suppress jsdom CSS parsing errors from hds-react
+const originalConsoleError = console.error;
+console.error = (...args: any[]) => {
+  const errorPatterns = [
+    "Could not parse CSS stylesheet",
+    "Error: Not implemented: HTMLFormElement.prototype.submit",
+    "Support for defaultProps will be removed from function components in a future major release",
+  ];
+
+  if (
+    typeof args[0] === "string" &&
+    errorPatterns.some((pattern) => args[0].includes(pattern))
+  ) {
+    return;
+  }
+  originalConsoleError(...args);
+};
 
 const localStorageMock = {
   getItem: jest.fn(),
@@ -16,7 +32,27 @@ const localStorageMock = {
 // eslint-disable-next-line no-undef
 global.localStorage ??= Object.create(localStorageMock);
 
+// Mock ResizeObserver
+class MockResizeObserver {
+  callback: ResizeObserverCallback;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+
+  observe() {
+    // Mock implementation
+  }
+
+  disconnect() {
+    // Mock implementation
+  }
+
+  unobserve() {
+    // Mock implementation
+  }
+}
+
+globalThis.ResizeObserver ??= MockResizeObserver as any;
+
 jest.spyOn(window.navigator, "languages", "get").mockReturnValue(["fi"]);
-configure({
-  adapter: new Adapter(),
-});

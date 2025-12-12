@@ -1,10 +1,10 @@
 # Outdoor Exercise Map
 
-The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo and Vantaa. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks and ice-skating fields maintained by the cities.
+The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo, Vantaa and Kirkkonummi. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks, ice-skating fields, swimming places and other public outdoor services maintained by the cities.
 
 ## Development
 
-Follow the instructions to set up local development environment. Altertanively, you can use Docker ([see below](#development-with-docker)).
+Follow the instructions to set up local development environment. Alternatively, you can use Docker ([see below](#development-with-docker)).
 
 ### Prerequisites
 
@@ -27,7 +27,7 @@ To start development server, run:
 yarn start
 ```
 
-The application is now available at [http://localhost:5000](http://localhost:5000/).
+The application is now available at [http://localhost:3000](http://localhost:3000/).
 
 ## Development with Docker
 
@@ -48,7 +48,7 @@ Start the application:
 docker-compose up
 ```
 
-The application is now available at [http://localhost:5000](http://localhost:5000/).
+The application is now available at [http://localhost:3000](http://localhost:3000/).
 
 ### Starting dockerized production environment
 

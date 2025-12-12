@@ -1,4 +1,4 @@
-import { Geometry } from "geojson";
+import { Geometry, MultiLineString } from "geojson";
 import { NormalizedSchema, schema } from "normalizr";
 
 import {
@@ -8,6 +8,7 @@ import {
   IceSwimmingServices,
   SummerSupportingServices,
   YearRoundSupportingServices,
+  SleddingServices,
 } from "../service/serviceConstants";
 import { normalizeActionName } from "../utils";
 
@@ -33,6 +34,7 @@ export const UnitFilters = {
   COOKING_FACILITY: "cooking",
   CAMPING: "camping",
   SKI_LODGE: "skilodge",
+  SLEDDING: "sledding",
 } as const;
 
 export type UnitFilterValues = (typeof UnitFilters)[keyof typeof UnitFilters];
@@ -50,6 +52,7 @@ export const SportFilters = [
   UnitFilters.SWIMMING,
   UnitFilters.ICE_SWIMMING,
   UnitFilters.HIKING,
+  UnitFilters.SLEDDING,
 ] as const;
 
 export type SportFilter = (typeof SportFilters)[number];
@@ -109,6 +112,7 @@ export type Unit = {
   phone?: string;
   url?: string;
   geometry: Geometry;
+  geometry_3d?: MultiLineString;
   location: {
     coordinates: [number, number];
   };
@@ -178,8 +182,14 @@ export const WinterSeason: Season = {
     UnitFilters.SKIING,
     UnitFilters.ICE_SKATING,
     UnitFilters.ICE_SWIMMING,
+    UnitFilters.SLEDDING,
   ],
-  services: [...IceSkatingServices, ...IceSwimmingServices, ...SkiingServices],
+  services: [
+    ...IceSkatingServices,
+    ...IceSwimmingServices,
+    ...SkiingServices,
+    ...SleddingServices,
+  ],
   hikeFilters: [],
 };
 
@@ -207,6 +217,7 @@ export const SortKeys = {
   ALPHABETICAL: "alphabetical",
   DISTANCE: "distance",
   CONDITION: "condition",
+  FAVORITES: "favorites",
 } as const;
 
 export type SortKey = (typeof SortKeys)[keyof typeof SortKeys];
@@ -273,6 +284,10 @@ export const UnitAutomaticConditionChangeDays = {
   [UnitFilters.LEAN_TO]: {
     [UnitQualityConst.SATISFACTORY]: undefined,
     [UnitQualityConst.UNKNOWN]: 5,
+  },
+  [UnitFilters.SLEDDING]: {
+    [UnitQualityConst.SATISFACTORY]: undefined,
+    [UnitQualityConst.UNKNOWN]: 10,
   },
 };
 

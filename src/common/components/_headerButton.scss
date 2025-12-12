@@ -1,0 +1,40 @@
+.header-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    background: transparent;
+    border: none;
+    color: var(--header-color);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+
+    &:focus-visible {
+        outline: var(--header-focus-outline-width) solid var(--header-focus-outline-color);
+        outline-offset: calc(-1 * var(--header-focus-outline-width));
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__icon {
+        display: block;
+        width: var(--icon-size);
+        height: var(--icon-size);
+        margin: 0 auto;
+        padding: 0;
+        pointer-events: none;
+    }
+
+    &__label {
+        color: var(--action-bar-item-title-font-color);
+        display: block;
+        font-size: var(--fontsize-body-m);
+        white-space: nowrap;
+        margin: 0 auto;
+        pointer-events: none;
+    }
+}

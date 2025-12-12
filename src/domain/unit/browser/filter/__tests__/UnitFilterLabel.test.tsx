@@ -1,9 +1,9 @@
-import { shallow } from "enzyme";
+import {render} from "@testing-library/react";
 
 import UnitFilterLabel from "../UnitBrowserFilterLabel";
 
 it("renders snapshot correctly", () => {
-  const unitFilterLabel = shallow(<UnitFilterLabel message="sport" />);
+  const { container } = render(<UnitFilterLabel message="sport" />);
 
-  expect(unitFilterLabel.html()).toMatchSnapshot();
+  expect(container).toMatchSnapshot();
 });

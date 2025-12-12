@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { Marker as LeafletMarker } from "leaflet";
 import React, { Component } from "react";
 import { Marker } from "react-leaflet";
 
@@ -22,7 +22,7 @@ type Props = {
 };
 
 class MapUnitMarker extends Component<Props> {
-  markerRef = React.createRef<Marker>();
+  markerRef = React.createRef<LeafletMarker>();
 
   constructor(props: Props) {
     super(props);
@@ -55,7 +55,7 @@ class MapUnitMarker extends Component<Props> {
       : POPUP_OFFSET + 24);
 
   openPopup() {
-    this.markerRef.current?.leafletElement.openPopup();
+    this.markerRef.current?.openPopup();
   }
 
   _createIcon(unit: Unit, isSelected: boolean) {
@@ -75,7 +75,7 @@ class MapUnitMarker extends Component<Props> {
   }
 
   closePopup() {
-    this.markerRef.current?.leafletElement.closePopup();
+    this.markerRef.current?.closePopup();
   }
 
   render() {
@@ -92,9 +92,11 @@ class MapUnitMarker extends Component<Props> {
         ref={this.markerRef}
         position={position}
         icon={this._createIcon(unit, isSelected)}
-        onclick={handleClick}
-        onmouseover={this.openPopup}
-        onmouseout={this.closePopup}
+        eventHandlers={{
+          click: handleClick,
+          mouseover: this.openPopup,
+          mouseout: this.closePopup,
+        }}
         keyboard={false}
         {...rest}
       >
