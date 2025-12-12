@@ -142,6 +142,7 @@ function ApplicationHeader({
         id={HEADER_ID}
         lang={locale}
         className="app-header"
+        defaultLanguage={locale}
         languages={languages}
         onDidChangeLanguage={(lng) => {
           const newPath = replaceLanguageInPath(pathname, lng);
@@ -177,7 +178,7 @@ function ApplicationHeader({
             />
           )}
 
-          <Header.SimpleLanguageOptions languages={languages} />
+          <Header.LanguageSelector />
           <Header.ActionBarItem
             id={DROPDOWN_ID}
             icon={<IconInfoCircle />}
