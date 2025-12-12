@@ -57,6 +57,7 @@
     "SHOW_MORE": "Näytä enemmän",
     "SHOW_LESS": "Näytä vähemmän",
     "NO_FAVORITES": "Ei suosikkeja",
+    "NO_RESULTS": "Ei hakutuloksia",
     "STATUS": "Kunto",
     "UNKNOWN": "Tuntematon",
     "SATISFACTORY": "Tyydyttävä",
@@ -152,7 +153,7 @@
     "YESTERDAY": "eilen"
   },
   "OUTBOUND_LINK": {
-    "openInExternalDomainAriaLabel": "Siirtyy ulkopuoliseen palveluun.",
+    "OPEN_IN_EXTERNAL_DOMAIN": "Siirtyy ulkopuoliseen palveluun.",
     "OPEN_IN_NEW_TAB": "Avaa uuden ikkunan."
   },
   "JUMP_LINK": {

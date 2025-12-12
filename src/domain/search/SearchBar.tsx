@@ -45,6 +45,7 @@ function SearchBar({
               small
               loadingText={loaddingText}
               loadingFinishedText={loadingFinishedText}
+              style={{zIndex: 1000}}
             />
           </span>
         )}

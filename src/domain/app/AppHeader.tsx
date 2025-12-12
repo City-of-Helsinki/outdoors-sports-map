@@ -49,6 +49,9 @@ function ApplicationHeader({
   const { t } = useTranslation();
   const locale = useLocale();
   const isMobile = useIsMobile();
+  const openInNewTabAriaLabel = t("OUTBOUND_LINK.OPEN_IN_NEW_TAB");
+  const osmLinkLabel = t("APP.MAP_ATTRIBUTION");
+  const osmLinkLabelAria = `${osmLinkLabel}. ${openInNewTabAriaLabel}`;
 
   const history = useHistory();
   const { pathname } = useLocation();
@@ -139,6 +142,7 @@ function ApplicationHeader({
         id={HEADER_ID}
         lang={locale}
         className="app-header"
+        defaultLanguage={locale}
         languages={languages}
         onDidChangeLanguage={(lng) => {
           const newPath = replaceLanguageInPath(pathname, lng);
@@ -174,7 +178,7 @@ function ApplicationHeader({
             />
           )}
 
-          <Header.SimpleLanguageOptions languages={languages} />
+          <Header.LanguageSelector />
           <Header.ActionBarItem
             id={DROPDOWN_ID}
             icon={<IconInfoCircle />}
@@ -199,9 +203,14 @@ function ApplicationHeader({
                 onClick={createMenuLinkClickHandler("accessibility")}
               />
               <Header.ActionBarSubItem
-                label={t("APP.MAP_ATTRIBUTION")}
+                label={osmLinkLabel}
                 href="https://osm.org/copyright"
+                // @ts-ignore
+                target="_blank" // HDS types do not include target prop, so ignore ts error
+                rel="noopener"
+                aria-label={osmLinkLabelAria}
                 external
+                openInExternalDomainAriaLabel={t("OUTBOUND_LINK.OPEN_IN_EXTERNAL_DOMAIN")}
               />
             </Header.ActionBarSubItemGroup>
           </Header.ActionBarItem>

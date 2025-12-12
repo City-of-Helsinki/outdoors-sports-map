@@ -118,9 +118,11 @@ function UnitBrowserResultList({ leafletMap }: Props) {
           {results === null && <Loading />}
           {Array.isArray(results) && (
             <>
-              {results.length === 0 && sortKey === "favorites" ? (
+              {results.length === 0 ? (
                 <p style={{ textAlign: "center" }}>
-                  {t("UNIT_DETAILS.NO_FAVORITES")}
+                  {sortKey === "favorites"
+                    ? t("UNIT_DETAILS.NO_FAVORITES")
+                    : t("UNIT_DETAILS.NO_RESULTS")}
                 </p>
               ) : (
                 <>

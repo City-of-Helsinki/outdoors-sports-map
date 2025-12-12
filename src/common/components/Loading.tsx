@@ -7,13 +7,15 @@ function Loading() {
   const loadingFinishedText = t("GENERAL.LOADING_FINISHED");
 
   return (
-    <div className="loading-wrapper">
-      <LoadingSpinner
-        loadingText={loadingText}
-        loadingFinishedText={loadingFinishedText}
-        small
-      />
-      {loadingText}
+    <div className="loading-container">
+      <div className="loading-wrapper">
+        <LoadingSpinner
+          loadingText={loadingText}
+          loadingFinishedText={loadingFinishedText}
+          small
+        />
+        {loadingText}
+      </div>
     </div>
   );
 }

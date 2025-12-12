@@ -34,6 +34,7 @@ type MapLayoutProps = {
   content: ReactNode;
   map: ReactNode;
   isExpanded: boolean;
+  onHeaderHeightChange?: (height: number) => void;
   toggleIsExpanded: () => void;
 };
 
@@ -41,6 +42,7 @@ function MapLayout({
   content,
   map,
   isExpanded,
+  onHeaderHeightChange,
   toggleIsExpanded,
 }: Readonly<MapLayoutProps>) {
   const { t } = useTranslation();
@@ -53,11 +55,15 @@ function MapLayout({
 
   const [headerHeight, setHeaderHeight] = useState<number>(0);
 
+  console.log("Rendering MapLayout", headerHeight);
   return (
     <>
       <ApplicationHeader
         isExpanded={isExpanded}
-        onHeaderHeightChange={setHeaderHeight}
+        onHeaderHeightChange={(height) => {
+          setHeaderHeight(height);
+          onHeaderHeightChange?.(height);
+        }}
         panelId={PANEL_ID}
         toggleIsExpanded={toggleIsExpanded}
       />
@@ -66,6 +72,11 @@ function MapLayout({
           "full-height": isUnitDetailsOpen || isUnitSearchOpen,
           "panel-expanded": isExpanded,
         })}
+        style={
+          {
+            "--map-foreground-header-height": `${headerHeight}px`,
+          } as React.CSSProperties
+        }
       >
         <aside
           id={PANEL_ID}
@@ -130,6 +141,7 @@ function MapLayout({
 }
 
 function HomeContainer() {
+  const [headerHeight, setHeaderHeight] = useState<number>(0);
   const leafletElementRef = useRef<L.Map | null>(null);
   const isMobile = useIsMobile();
   const [isUnitDetailsExpanded, setIsUnitDetailsExpanded] = useState(false);
@@ -232,6 +244,7 @@ function HomeContainer() {
               path={routerPaths.unitDetails}
               render={() => (
                 <UnitDetails
+                  headerHeight={headerHeight}
                   onCenterMapToUnit={handleCenterMapToUnit}
                   isExpanded={isUnitDetailsExpanded}
                   toggleIsExpanded={toggleIsUnitDetailsExpanded}
@@ -256,6 +269,7 @@ function HomeContainer() {
           />
         }
         isExpanded={isHomeContainerExpanded}
+        onHeaderHeightChange={setHeaderHeight}
         toggleIsExpanded={toggleIsHomeContainerExpanded}
       />
       <CookieConsent />

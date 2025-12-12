@@ -5,10 +5,6 @@
   background: $ui-content;
   color: $ui-text;
 
-  & + .unit-filters {
-    border-top: 1px solid $ui-enabled;
-  }
-
   &__filters {
     position: unset;
     width: unset;
@@ -42,8 +38,7 @@
   }
 
   &__options {
-    background: $ui-disabled;
-    color: $ui-text;
+    background: var(--color-fog-medium-light);
   }
 
   &__options-separator {
@@ -75,14 +70,14 @@
   .unit-filter-button {
     width: 100%;
     background: transparent;
-    border: 1px solid $ui-text-disabled;
+    border: 1px solid var(--color-white);
     color: inherit;
     padding: 2px $gap;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     cursor: pointer;
-    border-radius: 999999px;
+    border-radius: 0;
     font-size: 14px;
     line-height: 1;
     min-height: 30px;
@@ -92,24 +87,52 @@
     }
 
     &__icon {
-      padding-right: 3px;
+      width: 24px;
+      height: 24px;
+      margin-right: var(--spacing-2-xs);
       font-size: $icon-size;
       line-height: 1;
     }
 
     &.active,
     &:active {
-      background-color: $ui-enabled;
-      color: $ui-text;
+      background-color: var(--color-coat-of-arms-dark);
+      color: var(--color-white);
       box-shadow: none;
     }
 
     &:hover {
-      border-color: $ui-text;
+      background-color: var(--color-coat-of-arms-dark);
+      border-color: var(--color-white);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-white);
+      outline-offset: 0px;
     }
 
     .dropdown-indicator {
       margin-left: auto;
+    }
+  }
+
+  .unit-filter-option-button {
+    --background-color: var(--color-coat-of-arms);
+    --background-color-hover: var(--color-coat-of-arms-dark);
+    --border-color: var(--color-coat-of-arms);
+    --border-color-hover: var(--color-coat-of-arms-dark);
+
+    width: 100%;
+    justify-content: flex-start;
+
+    &.active {
+      --background-color: var(--color-coat-of-arms-dark);
+      --border-color: var(--color-coat-of-arms-dark);
+    }
+
+    &__icon {
+      font-size: $icon-size;
+      line-height: 1;
     }
   }
 
@@ -121,7 +144,7 @@
     label {
       color: #fff;
       font-size: 1em;
-      margin-bottom: 3px;
+      margin-bottom: 6px;
       font-weight: 400;
       line-height: 1;
     }
@@ -130,6 +153,20 @@
       --toggle-button-unselected-color: #{$ui-text-disabled} !important;
       height: 30px;
       border-width: 1px;
+    }
+
+    button[class*="ToggleButton-module_toggleButton"] {
+      &:focus:after {
+        border: none !important;
+        outline: 2px solid white !important;
+        outline-offset: -6px;
+      }
+
+      &[aria-pressed=true] {
+        div[class*="ToggleButton-module_onIcon"] {
+              margin-left: 26px !important
+        }
+      }
     }
 
     button:not([aria-pressed=true]) {

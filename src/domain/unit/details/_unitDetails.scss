@@ -1,13 +1,20 @@
 .unit-container {
   --focus-outline-width: 3px;
+  --header-height: 64px;
+  --footer-height: 52px;
 
   max-height: 30vh;
-  padding: var(--spacing-2-xs) var(--spacing-s) var(--spacing-s);
+  height: unset;
+  padding: var(--spacing-2-xs) var(--spacing-s) 0;
   overflow-y: auto;
   transition: max-height 0.5s ease-in-out;
 
   &.expanded {
-    max-height: 80vh;
+    max-height: calc(100dvh - var(--header-height) - var(--footer-height));
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - var(--header-height) - var(--footer-height));
+    }
+
     transition: max-height 0.5s ease-in-out;
 
     @media only screen and (min-width: 768px) {
@@ -209,15 +216,27 @@
 }
 .water-quality{
   &-normal {
-    background-color: #008450;
+    --background-color: #008450;
+    --color: var(--color-white);
+
+    margin-bottom: var(--spacing-3-xs);
   }
   &-possibly_impaired {
-    background-color: #EFB700;
+    --background-color: #EFB700;
+    --color: var(--color-black);
+
+    margin-bottom: var(--spacing-3-xs);
   }
   &-probably_impaired {
-    background-color: #EFB700;
+    --background-color: #EFB700;
+    --color: var(--color-black);
+
+    margin-bottom: var(--spacing-3-xs);
   }
   &-error {
-    background-color: #a8b5c2;
+    --background-color: #a8b5c2;
+    --color: var(--color-black);
+
+    margin-bottom: var(--spacing-3-xs);
   }
 }
