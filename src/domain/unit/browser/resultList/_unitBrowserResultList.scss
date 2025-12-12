@@ -42,6 +42,7 @@
 
     &__unit-marker,
     &__unit-open {
+      flex-shrink: 0;
       width: 50px;
       text-align: center;
       line-height: 30px;
