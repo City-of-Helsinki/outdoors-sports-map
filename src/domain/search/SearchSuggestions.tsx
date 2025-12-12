@@ -20,12 +20,14 @@ type Props = {
   openAllResults: (e: React.SyntheticEvent<HTMLButtonElement>) => void;
   handleAddressClick: (coordinates: [number, number]) => void;
   suggestions: Suggestion[];
+  menuPosition: { top: number };
 };
 
 function SearchSuggestions({
   openAllResults,
   handleAddressClick,
   suggestions,
+  menuPosition,
 }: Props) {
   const { t } = useTranslation();
 
@@ -35,7 +37,14 @@ function SearchSuggestions({
   ).length;
 
   return (
-    <div className="search-suggestions">
+    <div
+      className="search-suggestions"
+      style={{
+        position: "fixed",
+        top: `${menuPosition.top}px`,
+        zIndex: 799,
+      }}
+    >
       {suggestionCount > 0 ? (
         <div className="search-suggestions__list">
           {searchableSuggestionCount > 0 && (
