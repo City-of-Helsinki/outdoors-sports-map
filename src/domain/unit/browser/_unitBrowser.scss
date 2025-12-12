@@ -97,6 +97,7 @@
       color: $ui-text;
       border: 0;
       line-height: 24px;
+      border-radius: $border-radius;
 
       &[aria-pressed="true"] {
         background: $ui-enabled;

@@ -5,12 +5,13 @@
     display: flex;
     align-items: center;
     position: relative;
+    border-radius: $border-radius;
 
     input[name="search"] {
       flex: 2 1 auto;
       display: inline-block;
       border: 2px solid $ui-content;
-      border-radius: 0;
+      border-radius: $border-radius;
       padding: 0 $gap;
       line-height: $input-line-height;
       height: $input-height;

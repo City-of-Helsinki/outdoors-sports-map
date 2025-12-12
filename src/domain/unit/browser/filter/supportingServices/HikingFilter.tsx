@@ -38,7 +38,7 @@ function HikingFilter({
   );
 
   return (
-    <div className="unit-filters">
+    <div className="unit-filters rounded-bottom-corners">
       <Container className="unit-filters__filters">
         <Row className="unit-filters__filters">
           {filters.map((filter) => (
