@@ -1,13 +1,20 @@
 .unit-container {
   --focus-outline-width: 3px;
+  --header-height: 64px;
+  --footer-height: 52px;
 
   max-height: 30vh;
-  padding: var(--spacing-2-xs) var(--spacing-s) var(--spacing-s);
+  height: unset;
+  padding: var(--spacing-2-xs) var(--spacing-s) 0;
   overflow-y: auto;
   transition: max-height 0.5s ease-in-out;
 
   &.expanded {
-    max-height: 80vh;
+    max-height: calc(100dvh - var(--header-height) - var(--footer-height));
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - var(--header-height) - var(--footer-height));
+    }
+
     transition: max-height 0.5s ease-in-out;
 
     @media only screen and (min-width: 768px) {

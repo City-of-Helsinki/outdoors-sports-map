@@ -8,7 +8,7 @@ import {
 } from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -117,17 +117,32 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
 }
 
 type MobileFooterProps = {
+  onFooterHeightChange?: (height: number) => void;
   toggleExpand: () => void;
   isExpanded: boolean;
 };
-export function MobileFooter({ toggleExpand, isExpanded }: MobileFooterProps) {
+export function MobileFooter({
+  onFooterHeightChange,
+  toggleExpand,
+  isExpanded,
+}: Readonly<MobileFooterProps>) {
+  const footerRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
   const footerText = isExpanded
     ? t("UNIT_DETAILS.SHOW_LESS")
     : t("UNIT_DETAILS.SHOW_MORE");
 
+  useEffect(() => {
+    if (onFooterHeightChange) {
+      const footerElement = footerRef.current;
+      if (footerElement) {
+        onFooterHeightChange(footerElement.clientHeight);
+      }
+    }
+  }, [isExpanded, onFooterHeightChange]);
+
   return (
-    <div className="unit-details-mobile-footer">
+    <div className="unit-details-mobile-footer" ref={footerRef}>
       <Button
         className="unit-details-mobile-footer-expander"
         onClick={toggleExpand}
@@ -567,7 +582,10 @@ type BodyBoxIconAndValueProps = {
   value: ReactNode;
 };
 
-function BodyBoxIconAndValue({ icon, value }: Readonly<BodyBoxIconAndValueProps>) {
+function BodyBoxIconAndValue({
+  icon,
+  value,
+}: Readonly<BodyBoxIconAndValueProps>) {
   return (
     <div className="unit-container-body-box-icon-and-value">
       {icon}
@@ -648,12 +666,14 @@ function findAlternatePathname(pathname: string, unit: Unit, language: string) {
 }
 
 type Props = {
+  headerHeight: number;
   onCenterMapToUnit: (unit: Unit, map: L.Map | null) => void;
   isExpanded: boolean;
   toggleIsExpanded: () => void;
 };
 
 function UnitDetails({
+  headerHeight,
   onCenterMapToUnit,
   isExpanded,
   toggleIsExpanded,
@@ -668,6 +688,7 @@ function UnitDetails({
       id: unitId,
     }),
   );
+  const [footerHeight, setFooterHeight] = useState<number>(0);
   const isLoading = useSelector(getIsLoading);
 
   useEffect(() => {
@@ -730,6 +751,12 @@ function UnitDetails({
         }
         image={unit?.picture_url}
         className={isExpanded ? "unit-container expanded" : "unit-container"}
+        style={
+          {
+            "--header-height": `${headerHeight}px`,
+            "--footer-height": `${footerHeight}px`,
+          } as React.CSSProperties
+        }
       >
         <Header unit={unit} services={services} isLoading={isLoading} />
         <SingleUnitBody
@@ -742,7 +769,11 @@ function UnitDetails({
           palvelukarttaUrl={palvelukarttaUrl}
         />
       </Page>
-      <MobileFooter toggleExpand={toggleIsExpanded} isExpanded={isExpanded} />
+      <MobileFooter
+        onFooterHeightChange={setFooterHeight}
+        toggleExpand={toggleIsExpanded}
+        isExpanded={isExpanded}
+      />
     </>
   );
 }
