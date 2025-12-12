@@ -28,6 +28,7 @@ function SearchContainer({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0 });
   const preventFocusOpen = useRef(false);
+  const preventBlurClose = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -112,13 +113,22 @@ function SearchContainer({
   }, [searchPhrase, onFindSuggestions, preventFocusOpen, updateMenuPosition]);
 
   const handleBlur = useCallback((event: React.FocusEvent) => {
-    // Check if the new focus target is within the container
-    if (
-      containerRef.current &&
-      !containerRef.current.contains(event.relatedTarget as Node)
-    ) {
-      setShowSuggestions(false);
+    // Don't close if we're preventing blur (e.g., clicking on suggestions)
+    if (preventBlurClose.current) {
+      preventBlurClose.current = false;
+      return;
     }
+
+    // Use setTimeout to allow click events to fire first on mobile
+    setTimeout(() => {
+      // Check if the new focus target is within the container
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(document.activeElement as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    }, 10);
   }, []);
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
@@ -173,6 +183,7 @@ function SearchContainer({
           suggestions={suggestions}
           handleAddressClick={handleAddressClick}
           menuPosition={menuPosition}
+          preventBlurClose={preventBlurClose}
         />
       )}
     </div>

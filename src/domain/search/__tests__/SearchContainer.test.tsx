@@ -3,6 +3,7 @@ import {
   render,
   screen,
   userEvent,
+  act,
 } from "../../testingLibraryUtils";
 import SearchContainer from "../SearchContainer";
 
@@ -230,18 +231,34 @@ describe("<SearchContainer />", () => {
       const container = screen
         .getByTestId("search-input")
         .closest(".search-container");
+      const input = screen.getByTestId("search-input");
 
       // First type to show suggestions
       const user = userEvent.setup();
-      await user.type(screen.getByTestId("search-input"), "H");
+      await user.type(input, "H");
       expect(screen.getByTestId("search-suggestions")).toBeInTheDocument();
 
-      // Simulate blur event with focus moving outside container
-      fireEvent.blur(container!, { relatedTarget: null });
+      // Create an external element to focus to
+      const externalButton = document.createElement("button");
+      document.body.appendChild(externalButton);
+
+      // Focus the external element to simulate focus leaving the container
+      externalButton.focus();
+
+      // Simulate blur event on the container with relatedTarget outside
+      fireEvent.blur(container!, { relatedTarget: externalButton });
+
+      // Wait for the blur timeout to complete (10ms + small buffer)
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      });
 
       expect(
         screen.queryByTestId("search-suggestions"),
       ).not.toBeInTheDocument();
+
+      // Cleanup
+      document.body.removeChild(externalButton);
     });
   });
 

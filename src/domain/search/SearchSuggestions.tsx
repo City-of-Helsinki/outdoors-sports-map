@@ -1,5 +1,6 @@
 import { Button, ButtonSize, ButtonVariant, IconSearch } from "hds-react";
 import { LocationDescriptor } from "history";
+import { MutableRefObject } from "react";
 import { useTranslation } from "react-i18next";
 
 import Link from "../../common/components/Link";
@@ -21,6 +22,7 @@ type Props = {
   handleAddressClick: (coordinates: [number, number]) => void;
   suggestions: Suggestion[];
   menuPosition: { top: number };
+  preventBlurClose: MutableRefObject<boolean>;
 };
 
 function SearchSuggestions({
@@ -28,6 +30,7 @@ function SearchSuggestions({
   handleAddressClick,
   suggestions,
   menuPosition,
+  preventBlurClose,
 }: Props) {
   const { t } = useTranslation();
 
@@ -37,12 +40,19 @@ function SearchSuggestions({
   ).length;
 
   return (
+    /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
     <div
       className="search-suggestions"
       style={{
         position: "fixed",
         top: `${menuPosition.top}px`,
         zIndex: 799,
+      }}
+      onMouseDown={() => {
+        preventBlurClose.current = true;
+      }}
+      onTouchStart={() => {
+        preventBlurClose.current = true;
       }}
     >
       {suggestionCount > 0 ? (
