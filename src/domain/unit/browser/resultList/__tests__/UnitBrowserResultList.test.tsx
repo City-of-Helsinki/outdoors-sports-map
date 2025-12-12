@@ -1,4 +1,5 @@
-import { mount } from "../../../../enzymeHelpers";
+import { render, screen } from "../../../../testingLibraryUtils";
+import * as unitHelpers from "../../../unitHelpers";
 import UnitBrowserResultList from "../UnitBrowserResultList";
 
 jest.mock("../../../unitConstants", () => ({
@@ -107,55 +108,81 @@ const defaultProps = {
   services: {},
 };
 
-const getWrapper = (props) =>
-  mount(<UnitBrowserResultList {...defaultProps} {...props} />, {
-    preloadedState: {
-      unit: {
-        byId: units,
-        isFetching: false,
-        fetchError: null,
-        all: Object.keys(units),
-        iceskate: Object.keys(units),
-        ski: Object.keys(units),
-        swim: Object.keys(units),
-        status_ok: [],
-      },
-    },
+const renderComponent = (props?: any) =>
+  render(<UnitBrowserResultList {...defaultProps} {...props} />, undefined, {
+    unit: {
+      byId: units,
+      isFetching: false,
+      fetchError: null,
+      all: Object.keys(units),
+      iceskate: Object.keys(units),
+      ski: Object.keys(units),
+      swim: Object.keys(units),
+      status_ok: [],
+    } as any,
   });
+
+beforeEach(() => {
+  // Mock getDefaultSportFilter to always return the default winter sport ski
+  jest.spyOn(unitHelpers, 'getDefaultSportFilter').mockImplementation(() => 'ski');
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe("<UnitBrowserResultList />", () => {
   describe("show more link", () => {
-    const getShowMoreLink = (wrapper) =>
-      wrapper.find({
-        children: "Näytä enemmän",
-      });
+    const getShowMoreLink = () =>
+      screen.getByText("Näytä enemmän");
 
-    it("should be rendered", () => {
-      const wrapper = getWrapper();
-
-      expect(getShowMoreLink(wrapper).length).toEqual(1);
+    it("should be rendered", async () => {  
+      renderComponent();
+      expect(getShowMoreLink()).toBeInTheDocument();
     });
-    it("should prevent default action and load more unit on click", () => {
-      const mockEvent = {
-        preventDefault: jest.fn(),
-      };
+    it("should load more units on click", async () => {
+      renderComponent();
 
-      const wrapper = getWrapper();
+      expect(screen.getByText("Mustavuori-Talosaari latu 5,5 km")).toBeInTheDocument();
+      expect(screen.queryByText("Mustavuoren latu 2,1 km")).not.toBeInTheDocument();
 
-      expect(wrapper.text().includes("Mustavuoren latu 2,1 km")).toEqual(true);
-      expect(
-        wrapper.text().includes("Mustavuori-Talosaari latu 5,5 km")
-      ).toEqual(false);
+      const showMoreLink = getShowMoreLink();
+      const user = require("@testing-library/user-event").default.setup();
+      await user.click(showMoreLink);
 
-      const showMoreLink = getShowMoreLink(wrapper);
-
-      showMoreLink.simulate("click", mockEvent);
-      expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
-
-      expect(wrapper.text().includes("Mustavuoren latu 2,1 km")).toEqual(true);
-      expect(
-        wrapper.text().includes("Mustavuori-Talosaari latu 5,5 km")
-      ).toEqual(true);
+      expect(screen.getByText("Mustavuoren latu 2,1 km")).toBeInTheDocument();
+      expect(screen.getByText("Mustavuori-Talosaari latu 5,5 km")).toBeInTheDocument();
     });
+  });
+});
+
+describe("<UnitBrowserResultListSort />", () => {
+  it("should render sort by condition by default", async () => {
+    renderComponent();
+    expect(await screen.findByText("Paras kunto ensin")).toBeInTheDocument();
+  });
+
+  it("should render favorites by default if user has saved favorites", async () => {
+    // Add unit to favourites
+    const favouriteUnit = units["53916"];
+    localStorage.setItem('favouriteUnits', JSON.stringify([favouriteUnit]));
+
+    renderComponent();
+    expect(await screen.findByText("Suosikit")).toBeInTheDocument();
+
+    // Clean up
+    localStorage.removeItem('favouriteUnits');
+  });
+
+  it("should render sort by condition if user has favorites but not in selected sport", async () => {
+    // Add unit to favourites
+    const favouriteUnit = {"id": 12345, "name": {"fi": "Testi tekojääkenttä" }, "services": [406]};
+    localStorage.setItem('favouriteUnits', JSON.stringify([favouriteUnit]));
+
+    renderComponent();
+    expect(await screen.findByText("Paras kunto ensin")).toBeInTheDocument();
+
+    // Clean up
+    localStorage.removeItem('favouriteUnits');
   });
 });

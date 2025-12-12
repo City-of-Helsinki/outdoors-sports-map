@@ -1,0 +1,11 @@
+.outdoor-exercise-map-modal-content {
+    h3 {
+        margin-block: var(--spacing-s);
+        font-size: var(--fontsize-heading-xs);
+        font-weight: 700;
+    }
+}
+
+div[class*="Dialog-module_dialogContainer"] {
+    z-index: 1001 !important;
+}

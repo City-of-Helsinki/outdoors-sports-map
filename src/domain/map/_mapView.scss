@@ -9,14 +9,12 @@
       .leaflet-bottom,
       .leaflet-left,
       .leaflet-right {
-        z-index: 1002;
+        z-index: 792;
       }
 
       .leaflet-control {
         a {
           color: $content-text-secondary;
-
-          &:hover,
           &:active {
             background: $content-background;
             color: $ui-content;

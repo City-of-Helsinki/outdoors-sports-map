@@ -1,21 +1,20 @@
-import get from "lodash/get";
-import { Component, RefObject } from "react";
+import { LatLngTuple } from "leaflet";
+import { Component, MutableRefObject } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { Map, TileLayer, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 
+import HeightProfileControl from "./HeightProfileControl";
 import Control from "./MapControl";
+import MapEvents from "./MapEvents";
 import MapUnitsOnMap from "./MapUnits";
 import MapUserLocationMarker from "./MapUserLocationMarker";
 import {
   BOUNDARIES,
   DEFAULT_ZOOM,
-  MapRef,
-  MAP_RETINA_URL,
-  MAP_URL,
   MAX_ZOOM,
   MIN_ZOOM,
 } from "./mapConstants";
-import latLngToArray from "./mapHelpers";
+import { getMapUrl, latLngToArray } from "./mapHelpers";
 import OSMIcon from "../../common/components/OSMIcon";
 import { View } from "../unit/UnitView";
 import { Unit } from "../unit/unitConstants";
@@ -23,18 +22,18 @@ import { isRetina } from "../utils";
 
 type Props = WithTranslation & {
   selectedUnit: Unit;
-  onCenterMapToUnit: (unit: Unit) => void;
+  onCenterMapToUnit: (unit: Unit, map: L.Map) => void;
   activeLanguage: string;
   openUnit: (unitId: string, unitName?: string) => void;
   setLocation: (coordinates: number[]) => void;
-  position: [number, number];
+  leafletElementRef: MutableRefObject<L.Map | null>;
+  position: LatLngTuple;
   units: Unit[];
-  mapRef: MapRef;
-  leafletElementRef: RefObject<L.Map | null>;
 };
 
 type State = {
   zoomLevel: number;
+  leafletElement: L.Map | null;
 };
 
 class MapView extends Component<Props, State> {
@@ -42,24 +41,13 @@ class MapView extends Component<Props, State> {
     super(props);
     this.state = {
       zoomLevel: DEFAULT_ZOOM,
+      leafletElement: null,
     };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { selectedUnit, onCenterMapToUnit } = this.props;
-
-    if (
-      selectedUnit &&
-      (!prevProps.selectedUnit || selectedUnit.id !== prevProps.selectedUnit.id)
-    ) {
-      onCenterMapToUnit(selectedUnit);
-    }
   }
 
   get leafletElement() {
     const { leafletElementRef } = this.props;
-
-    return leafletElementRef?.current;
+    return leafletElementRef.current;
   }
 
   handleZoom = () => {
@@ -74,7 +62,7 @@ class MapView extends Component<Props, State> {
     });
   };
 
-  handleClick = (event: Record<string, any>) => {
+  handleMapClick = (event: Record<string, any>) => {
     // Click events from info menu and language changer hit this. Don't
     // do anything for those events.
     if (event.originalEvent.target.localName !== "path" && event.originalEvent.target.className.includes("leaflet")) {
@@ -84,12 +72,7 @@ class MapView extends Component<Props, State> {
 
   setLocation = (event: Record<string, any>) => {
     const { setLocation } = this.props;
-
     setLocation((latLngToArray(event.latlng) as any) as [number, number]);
-  };
-
-  setView = (coordinates: [number, number]) => {
-    this.leafletElement?.setView(coordinates);
   };
 
   render() {
@@ -98,7 +81,6 @@ class MapView extends Component<Props, State> {
       selectedUnit,
       units,
       openUnit,
-      mapRef,
       t,
       i18n: {
         languages: [language],
@@ -106,6 +88,8 @@ class MapView extends Component<Props, State> {
     } = this.props;
 
     const { zoomLevel } = this.state;
+
+    const unitHasLineString3dGeometry = (u: Unit) => u?.geometry_3d;
 
     return (
       <View
@@ -116,8 +100,7 @@ class MapView extends Component<Props, State> {
         aria-hidden="false"
         tabIndex={-1}
       >
-        <Map
-          ref={mapRef}
+        <MapContainer
           zoomControl={false}
           attributionControl={false}
           center={position}
@@ -125,19 +108,23 @@ class MapView extends Component<Props, State> {
           zoom={DEFAULT_ZOOM}
           minZoom={MIN_ZOOM}
           maxZoom={MAX_ZOOM}
-          onclick={this.handleClick}
-          onlocationfound={this.setLocation}
-          onzoomend={this.handleZoom}
+          ref={(map) => {
+            const { leafletElementRef } = this.props;
+            if(!leafletElementRef.current) {
+              leafletElementRef.current = map;
+            }
+          }}
         >
           <TileLayer
             url={
-              isRetina()
-                ? get(MAP_RETINA_URL, language)
-                : get(MAP_URL, language)
+              getMapUrl(language || "fi", isRetina() ? "@3x" : "")
             }
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          <MapUserLocationMarker />
+          <MapEvents
+            handleMapClick={this.handleMapClick}
+            setLocation={this.setLocation} />
+          <MapUserLocationMarker/>
           <MapUnitsOnMap
             units={units}
             zoomLevel={zoomLevel}
@@ -156,7 +143,10 @@ class MapView extends Component<Props, State> {
           >
             <OSMIcon icon="locate" aria-label={t("MAP.LOCATE_USER")} />
           </Control>
-        </Map>
+          {selectedUnit && unitHasLineString3dGeometry(selectedUnit) && (
+            <HeightProfileControl unit={selectedUnit} />
+          )}
+        </MapContainer>
       </View>
     );
   }

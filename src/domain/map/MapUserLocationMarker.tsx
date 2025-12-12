@@ -1,10 +1,11 @@
+import { LatLngTuple, Marker as LeafletMarker } from "leaflet";
 import React, { Component } from "react";
 import { Marker } from "react-leaflet";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
 
 import AriaHiddenIcon from "./MapAriaHiddenIcon";
-import latLngToArray from "./mapHelpers";
+import { latLngToArray } from "./mapHelpers";
 import { setLocation as setLocationActionFactory } from "./state/actions";
 import { getLocation } from "./state/selectors";
 import { AppState } from "../app/appConstants";
@@ -13,7 +14,7 @@ import iconRetinaUrl from "../assets/markers/location@2x.png";
 
 type Props = {
   setLocation: (coordinates: number[]) => void;
-  position: [number, number];
+  position: LatLngTuple;
 };
 
 const createIcon = () =>
@@ -26,7 +27,7 @@ const createIcon = () =>
   });
 
 class MapUserLocationMarker extends Component<Props> {
-  locationRef = React.createRef<Marker>();
+  locationRef = React.createRef<LeafletMarker>();
 
   constructor(props: Props) {
     super(props);
@@ -35,11 +36,9 @@ class MapUserLocationMarker extends Component<Props> {
 
   handleDragEnd() {
     const { setLocation } = this.props;
-    const latLng = this.locationRef.current?.leafletElement.getLatLng();
-
+    const latLng = this.locationRef.current?.getLatLng();
     if (latLng) {
       const latLngArray = latLngToArray(latLng);
-
       setLocation(latLngArray);
     }
   }
@@ -51,7 +50,9 @@ class MapUserLocationMarker extends Component<Props> {
         icon={createIcon()}
         zIndexOffset={1000}
         draggable
-        ondragend={this.handleDragEnd}
+        eventHandlers={{
+          dragend: this.handleDragEnd,
+        }}
         keyboard={false}
         {...this.props}
       />
@@ -74,4 +75,4 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MapUserLocationMarker);
+)(MapUserLocationMarker as any);

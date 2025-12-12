@@ -2,10 +2,11 @@ import { useLocation } from "react-router";
 
 import useSearch from "../../common/hooks/useSearch";
 import { AppSearch, AppSearchLocationState } from "../app/appConstants";
-import { SortKeys, UNIT_BATCH_SIZE } from "../unit/unitConstants";
+import { SortKeys, Unit, UNIT_BATCH_SIZE } from "../unit/unitConstants";
 import {
   getDefaultSportFilter,
   getDefaultStatusFilter,
+  getUnitSport,
 } from "../unit/unitHelpers";
 
 function useAppSearch() {
@@ -19,11 +20,31 @@ function useAppSearch() {
     sport = state?.search?.sport || getDefaultSportFilter(),
     status = state?.search?.status || getDefaultStatusFilter(),
     sportSpecification = state?.search?.sportSpecification || "",
-    sortKey = state?.search?.sortKey || SortKeys.DISTANCE,
+    sortKey = state?.search?.sortKey,
     maxUnitCount = state?.search?.maxUnitCount || UNIT_BATCH_SIZE.toString(),
   } = useSearch<AppSearch>();
 
-  return { q, sport, status, sportSpecification, sortKey, maxUnitCount };
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+  const selectedSport = sport;
+  const sportFavourites = favourites.filter(
+    (favourite: Unit) => getUnitSport(favourite) === selectedSport,
+  );
+
+  // If there are favourites, sort by them by default, otherwise sort by condition
+  const defaultSortKey =
+    sportFavourites.length > 0 ? SortKeys.FAVORITES : SortKeys.CONDITION;
+
+  // Use defaultSortKey if sortKey is not defined
+  const finalSortKey = sortKey || defaultSortKey;
+
+  return {
+    q,
+    sport,
+    status,
+    sportSpecification,
+    sortKey: finalSortKey,
+    maxUnitCount,
+  };
 }
 
 export default useAppSearch;

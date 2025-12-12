@@ -43,6 +43,7 @@ import {
   UnitServices,
   IceSwimmingServices,
   SupportingServices,
+  SleddingServices,
 } from "../service/serviceConstants";
 import { getOnSeasonServices } from "../service/serviceHelpers";
 
@@ -53,6 +54,7 @@ export const getFetchUnitsRequest = (params: Record<string, any>) =>
       only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
       include: "observations,connections",
       geometry: "true",
+      geometry_3d: "true",
       page_size: 1000,
       ...params,
     }),
@@ -136,6 +138,9 @@ export const getUnitSport = (unit: Unit) => {
 
       if (IceSwimmingServices.includes(service)) {
         return UnitFilters.ICE_SWIMMING;
+      }
+      if (SleddingServices.includes(service)) {
+        return UnitFilters.SLEDDING;
       }
       if (SupportingServices.includes(service)) {
         switch (service) {
@@ -229,10 +234,11 @@ export const getUnitIconURL = (
   const onOff = selected ? "on" : "off";
   const resolution = retina ? "@2x" : "";
 
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  return require(
+  const imported = require(
     `../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`,
-  ).default;
+  );
+  // Webpack 5 may or may not use .default depending on config
+  return imported.default || imported;
 };
 
 export const getUnitIconHeight = (unit: Unit) =>
@@ -370,6 +376,13 @@ export const sortByCondition = (units: Unit[]) =>
       return new Date().getTime() - observationTime;
     },
   ]);
+
+export const sortByFavorites = (units: Unit[]): Unit[] => {
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+  return units.filter((unit) =>
+    favourites.some((favourite: Unit) => favourite.id === unit.id),
+  );
+};
 
 export const getAddressToDisplay = (
   address: Record<string, any>,

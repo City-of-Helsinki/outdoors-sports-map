@@ -1,15 +1,25 @@
 {
   "APP": {
     "NAME": "Outdoor Exercise Map",
-    "ABOUT": "Information on the service",
+    "ABOUT": "Information about the service",
     "DESCRIPTION": "The Outdoor Exercise Map (Ulkoliikuntakartta) is a digital map service. There you can find information about ski tracks, ice skating tracks and rinks, beaches and public lidos. The map service data is provided by the municipalities of Helsinki, Espoo, Vantaa and Kirkkonummi.",
-    "ABOUT_MODAL": "<h3>Information on the service</h3> <p>The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo, Vantaa and Kirkkonummi. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks and ice-skating fields maintained by the cities and in the spring it will also contain beaches.</p> <p>Ulkoliikunta.fi (Outdoor Exercise Map) is a service provided by the City of Helsinki in cooperation with Espoo, Vantaa and Kirkkonummi.</p> <h3>Status color codes</h3><p>The automatic colour change in the status of the outdoor exercise facilities helps to keep the map up to date, even when the information is not updated daily. The status of ski tracks changes to satisfactory (yellow) when the status has not been updated for 7 days and to unknown (grey) when 10 days have passed since the last update. The status of ice-skating rinks turns grey 10 days after the last update, and the status of beaches turns grey when 5 days have passed since the last update of blue-green algae sightings.</p> <h3>Feedback</h3> <p>We are grateful for all your feedback, it allows us to develop the Outdoor Exercise Map and make it even better.</p> <h3>© Information and copyright</h3> <p>The Outdoor Exercise Map has been constructed using as open data as possible and open-source code.</p> <p>The source code of the map is on <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> and we encourage development of it.</p> <p>The sports facility information is open data and usable through the REST interface.</p> <p>The map data is from <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> and the copyright of the maps belongs to <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>.</p> <p>The address information is from Helsinki Region Transport’s <a target='_blank' href='http://developer.reittiopas.fi/'>open interface</a>.</p>",
+    "ABOUT_MODAL": "<h3>Information about the service</h3> <p>The Outdoor Exercise Map is an open communications channel for checking the condition of outdoor sports facilities in Helsinki, Espoo, Vantaa and Kirkkonummi. The Outdoor Exercise Map helps the inhabitants of the municipality find up-to-date information on the City’s outdoor sports services. Currently, the services encompasses the skiing tracks and ice-skating fields maintained by the cities and in the spring it will also contain beaches.</p> <p>Ulkoliikunta.fi (Outdoor Exercise Map) is a service provided by the City of Helsinki in cooperation with Espoo, Vantaa and Kirkkonummi.</p><h3>Feedback</h3> <p>We are grateful for all your feedback, it allows us to develop the Outdoor Exercise Map and make it even better.</p> <h3>© Information and copyright</h3> <p>The Outdoor Exercise Map has been constructed using as open data as possible and open-source code.</p> <p>The source code of the service is on <a target='_blank' href='https://github.com/City-of-Helsinki/outdoors-sports-map'>GitHub</a> and we encourage development of it.</p> <p>The sports facility information is open data and usable through the REST interface.</p> <p>The map data is from <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> and the copyright of the maps belongs to <a target='_blank' href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>.</p> <p>The address information is from Helsinki Region Transport’s <a target='_blank' href='http://developer.reittiopas.fi/'>open interface</a>.</p>",
+    "INFO_MODAL": "<p>The information on the map is shown according to two seasons: the winter and summer season.</p><p>The winter season starts on 1 November and ends on 30 April. During this time the map will display skiing, ice skating and winter swimming. This means that you can find skiing tracks, mechanically frozen open-air ice rinks, natural ice rinks, sledding hills and winter swimming spots maintained by clubs and municipalities on the map.</p><p>The summer season starts on 1 May and ends on 31 October. During this time the map will display public beaches.</p><p>Note that recreation services and camping sites will be displayed on the map all year.</p><h3>Cross-country skiing</h3><p>The tracks will be displayed in green when they are in good condition. The condition of skiing tracks will show as satisfactory (yellow) when the data has not been updated for seven days and unknown (light blue) when no up-date has been done for 10 days. The tracks are displayed in black when they are out of use.</p><p>You can hide the elevation profile by clicking the x at the top right corner of the graphics.</p><p>You can search for skiing tracks by using the list or the map by clicking on the outline or the ball symbol of the track. This will display all of the information on the skiing track.</p><h3>Ice skating</h3><p>Ice skating rinks are displayed in green when you can skate on them. Their status will change to grey when no up-date has been done for 10 days. The tracks are displayed in black when they are out of use.</p><h3>Winter swimming</h3><p>There is no status data to be updated for winter swimming. Exceptions will be reported directly in the info section of the winter swimming spot in question.</p><h3>Sledding slope</h3><p>There is no status data to be updated for sledding slopes. Exceptions will be reported in the information section for the slope in question.</p><h3>Beaches</h3><p>Beaches are displayed in green when they are available for use. Their status will change to grey within five days of the last blue-green algae up-date. The status will be displayed in purple if an exceptional obstacle to use has been observed on the beach. Beaches are displayed in black when they are out of use.</p><h3>Camping</h3><p>There is no status data to be updated for camping sites. Exceptions will be reported in the information section for the recreational service.</p>",
     "INFO_MENU": {
+      "SERVICE_INFO": "Instructions",
       "GIVE_FEEDBACK": "Give feedback",
-      "ABOUT_SERVICE": "Information on the service",
+      "ABOUT_SERVICE": "Information about the service",
       "CHOOSE_LANGUAGE": "Choose language",
       "ACCESSIBILITY": "Accessibility statement"
     },
+    "HIDE_SIDEBAR": "Hide sidebar",
+    "SHOW_SIDEBAR": "Show sidebar",
+    "MAP_BUTTON": {
+      "CLOSE": "Close Map",
+      "OPEN": "Open Map"
+    },
+    "UNIT_DETAILS_PANEL": "Unit details",
+    "SEARCH_RESULTS_PANEL": "Search results",
     "MODAL": {
       "CLOSE": "Close"
     },
@@ -30,12 +40,22 @@
     "ACCESSIBILITY_NOTICE": "Map. Currently map information is only accessible visually.",
     "LOCATE_USER": "Show your location",
     "ZOOM_IN": "Zoom in",
-    "ZOOM_OUT": "Zoom out"
+    "ZOOM_OUT": "Zoom out",
+    "HEIGHT_PROFILE": {
+      "TITLE": "Height profile",
+      "ELEVATION": "Elevation",
+      "DISTANCE": "Distance",
+      "SEGMENT_LENGTH": "Total length",
+      "TYPE": "Type",
+      "LEGEND": "Legend"
+    }
   },
   "UNIT_DETAILS": {
+    "BACK": "Back",
     "FURTHER_INFO": "Further information",
     "SHOW_MORE": "Show more",
     "SHOW_LESS": "Show less",
+    "NO_FAVORITES": "No favorites",
     "STATUS": "Condition",
     "UNKNOWN": "Unknown",
     "SATISFACTORY": "Decent",
@@ -50,7 +70,7 @@
       "SKIING_FREESTYLE": "Freestyle",
       "SKIING_TRADITIONAL": "Classic",
       "SKIING_DOG_SKIJORING_TRACK": "Dog skijoring",
-      "ICE_SWIMMING": "Ice swimming",
+      "ICE_SWIMMING": "Winter swimming",
       "LEAN_TO": "Lapp tent shelter / earth lodge",
       "INFORMATION_POINT": "Information point",
       "COOKING_FACILITY": "Cooking facility",
@@ -64,7 +84,8 @@
       "DEFAULT": "Default",
       "ALPHABETICAL": "Alphabetic",
       "CONDITION": "In best condition first",
-      "DISTANCE": "Closest first"
+      "DISTANCE": "Closest first",
+      "FAVORITES": "Favorites"
     },
     "PHONE": "Phone",
     "TMP_MESSAGE": "",
@@ -85,8 +106,11 @@
   },
   "UNIT_BROWSER": {
     "LOADING": "Loading the object",
+    "LOADING_FINISHED": "Object loading finished",
     "NOT_FOUND": "Sorry, the object was not found :(",
     "QUALITY": "Condition",
+    "ADD_FAVOURITE": "Add to favourites",
+    "REMOVE_FAVOURITE": "Remove from favourites",
     "INFO": "Information",
     "WEATHER": "Weather",
     "HEIGHT_PROFILE": "Height profile",
@@ -104,7 +128,7 @@
     "WATER_TEMPERATURE": "Water temperature",
     "WATER_TEMPERATURE_SENSOR": "Water temperature sensor",
     "CLOSE": "Close",
-    "SEE_ON_SERVICE_MAP": "More information on the Service Map",
+    "SEE_ON_SERVICE_MAP": "Other information on sites on the Service Map",
     "WATER_QUALITY": "Hygienic water quality",
     "WATER_QUALITY_SENSOR": "Water quality sensor"
 
@@ -127,7 +151,8 @@
     "YESTERDAY": "yesterday"
   },
   "OUTBOUND_LINK": {
-    "DESCRIPTION": "Opens a new window"
+    "OPEN_IN_EXTERNAL_DOMAIN": "(Moves to an external service.",
+    "OPEN_IN_NEW_TAB": "Opens a new window."
   },
   "JUMP_LINK": {
     "LABEL": "Jump straight to content"

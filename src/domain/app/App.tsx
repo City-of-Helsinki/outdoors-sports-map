@@ -2,7 +2,6 @@ import { Redirect, Route, Switch, RouteComponentProps } from "react-router-dom";
 
 import LanguageAwareRoutes from "./AppLanguageAwareRoutes";
 import AppWideNotification from "./appWideNotification/AppWideNotification";
-import JumpLink from "../../common/a11y/JumpLink";
 import ResetFocus from "../../common/a11y/ResetFocus";
 import useLanguage from "../../common/hooks/useLanguage";
 import useScrollToTop from "../../common/hooks/useScrollToTop";
@@ -20,7 +19,6 @@ function App() {
       <AppMeta />
       <LanguageMeta />
       <ResetFocus />
-      <JumpLink />
       <AppWideNotification />
       <Switch>
         <Route path={`/${languageParam}`} component={LanguageAwareRoutes} />

@@ -1,26 +1,26 @@
-import { mount } from "../../../domain/enzymeHelpers";
-import Page, { MAIN_CONTENT_ID } from "../Page";
+import { render, screen } from "../../../domain/testingLibraryUtils";
+import Page from "../Page";
 
-const getWrapper = (props) => mount(<Page {...props} />);
+const renderComponent = (props: any) => render(<Page {...props} />);
 
 describe("<Page />", () => {
   it("should render children within <main />", () => {
-    const children = <div id="test" />;
+    const children = <div data-testid="test" />;
 
-    const wrapper = getWrapper({
+    renderComponent({
       children,
     });
 
-    expect(wrapper.find(`main#${MAIN_CONTENT_ID}`).prop("children")).toEqual(
-      children
+    expect(screen.getByRole("main")).toContainElement(
+      screen.getByTestId("test")
     );
   });
   it("should set title", async () => {
     const title = "Title";
 
-    getWrapper({
+    renderComponent({
       title,
-      children: <div />,
+      children: <div data-testid="test" />,
     });
 
     await new Promise((resolve) => setTimeout(resolve, 100));

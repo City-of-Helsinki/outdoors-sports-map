@@ -1,3 +1,4 @@
+import { LatLngTuple } from "leaflet";
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
 
@@ -8,7 +9,7 @@ import { mapActions } from "../mapConstants";
 const centerReducer = handleActions(
   {
     [mapActions.SET_LOCATION]: (
-      state: [number, number],
+      state: LatLngTuple,
       { payload: { position } }: Action,
     ) => position,
   },
