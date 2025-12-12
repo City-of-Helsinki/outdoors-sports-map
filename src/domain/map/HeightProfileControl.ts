@@ -151,11 +151,16 @@ function HeightProfileControl({ unit }: Props) {
       "height-profile-prev-button",
       buttonsDiv,
     );
+    // Add HDS IconAngleLeft as innerHTML
+    prevButton.innerHTML = `<svg aria-label="angle-left" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 12L15.5 17L14 18.5L7.5 12L14 5.5L15.5 7L10.5 12Z" fill="currentColor"></path></svg>`;
+    
     const nextButton = L.DomUtil.create(
       "button",
       "height-profile-next-button",
       buttonsDiv,
     );
+    // Add HDS IconAngleRight as innerHTML
+    nextButton.innerHTML = `<svg aria-label="angle-right" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 12L8.5 7L10 5.5L16.5 12L10 18.5L8.5 17L13.5 12Z" fill="currentColor"></path></svg>`;
 
     L.DomEvent.on(
       prevButton,

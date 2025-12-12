@@ -33,33 +33,24 @@ body {
   justify-content: right;
 }
 
-.height-profile-prev-button {
-  background: url(domain/assets/icons/icon-arrow-previous.svg) no-repeat center center;
-  width: 30px;
-  height: 30px;
-  margin-top: -30px;
-  border: 1px solid #ccc;
-  box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
-  border-radius: 2px;
-
-  &:hover,
-  &:active {
-    color: #0072c6;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
+.height-profile-prev-button,
 .height-profile-next-button {
-  background: url(domain/assets/icons/icon-arrow-next.svg) no-repeat center center;
+  background: transparent;
   width: 30px;
   height: 30px;
   margin-top: -30px;
   border: 1px solid #ccc;
   box-shadow: 0 0px 2px rgba(0, 0, 0, 0.6);
   border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
 
   &:hover,
   &:active {
@@ -72,11 +63,16 @@ body {
 }
 
 .heightgraph-toggle {
-  margin-left: 21px;
+  margin-right: 4px;
+  float: right;
 }
 
 .heightgraph-close-icon {
-  background-size: 20px 20px;
+  background: none;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20' height='20'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M18.5 5.5L13.41 10.59L18.5 15.68L15.68 18.5L10.59 13.41L5.5 18.5L2.68 15.68L7.77 10.59L2.68 5.5L5.5 2.68L10.59 7.77L15.68 2.68L18.5 5.5Z' fill='%23000'/%3E%3C/svg%3E");
+  width: 26px;
+  height: 26px;
+  padding: 3px;
 }
 
 // Re-skin bootstrap modals to visually appear more like the custom modal
