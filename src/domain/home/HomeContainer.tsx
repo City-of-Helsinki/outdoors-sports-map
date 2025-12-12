@@ -53,6 +53,7 @@ function MapLayout({
 
   const [headerHeight, setHeaderHeight] = useState<number>(0);
 
+  console.log("Rendering MapLayout", headerHeight);
   return (
     <>
       <ApplicationHeader
@@ -66,6 +67,9 @@ function MapLayout({
           "full-height": isUnitDetailsOpen || isUnitSearchOpen,
           "panel-expanded": isExpanded,
         })}
+        style={{
+          "--map-foreground-header-height": `${headerHeight}px`,
+          } as React.CSSProperties }
       >
         <aside
           id={PANEL_ID}
@@ -81,11 +85,9 @@ function MapLayout({
           }
           aria-hidden={!isExpanded}
           hidden={!isExpanded}
-          style={
-            {
-              "--map-foreground-header-height": `${headerHeight}px`,
-            } as React.CSSProperties
-          }
+          style={{
+            "--map-foreground-header-height": `${headerHeight}px`,
+          } as React.CSSProperties }
         >
           <div
             className={

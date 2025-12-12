@@ -1,14 +1,22 @@
 $header-height: 64px;
 
 .map-container {
+  --map-container-header-height: 64px;
+
   position: fixed;
-  top: $header-height;
+  top: var(--map-container-header-height);
   right: 0;
   width: 100%;
-  height: calc(100vh - #{$header-height});
+  height: calc(100vh - var(--map-container-header-height)); /* Fallback */
+
+  @supports (height: 100dvh) {
+    height: calc(100dvh - var(--map-container-header-height));
+  }
 }
 
 .map-foreground {
+  --map-foreground-header-height: 64px;
+
   max-height: 100%  ;
   position: fixed;
   z-index: 798;
@@ -21,10 +29,16 @@ $header-height: 64px;
   }
 
   @media only screen and (min-width: $breakpoint) {
-    max-height: calc(100vh - #{$header-height});
+    max-height: calc(100vh - var(--map-foreground-header-height)); /* Fallback */
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - var(--map-foreground-header-height));
+    }
 
     &.full-height {
-      height: calc(100vh - #{$header-height});
+      height: calc(100vh - var(--map-foreground-header-height)  ); /* Fallback */
+      @supports (height: 100dvh) {
+        height: calc(100dvh - var(--map-foreground-header-height));
+      }
     }
 
     &.panel-expanded {
@@ -33,6 +47,8 @@ $header-height: 64px;
   }
 
   &__panel {
+    --map-foreground-header-height: 64px;
+
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -45,10 +61,13 @@ $header-height: 64px;
       }
 
       &.fill-color-background {
-        height: calc(100vh - #{$header-height});
-        border-bottom: 4px solid #4d4d4d;
         background-color: $ui-background;
         box-shadow: none;
+
+        height: calc(100vh - var(--map-foreground-header-height)); // Fallback
+        @supports (height: 100dvh) {
+          height: calc(100dvh - var(--map-foreground-header-height));
+        }
       }
     }
 
