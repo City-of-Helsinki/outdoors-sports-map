@@ -19,7 +19,7 @@ type Props = {
   onViewChange: (coordinates: [number, number]) => void;
 };
 
-function UnitBrowserFilterSection({ address, onViewChange }: Props) {
+function UnitBrowserFilterSection({ address, onViewChange }: Readonly<Props>) {
   const doSearch = useDoSearch();
   const { sport, status, sportSpecification } = useAppSearch();
   const [isHikingSelected, setIsHikingSelected] = useState<boolean>(false);

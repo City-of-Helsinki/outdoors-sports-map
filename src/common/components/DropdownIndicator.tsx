@@ -5,7 +5,7 @@ type Props = {
   isActive?: boolean;
 };
 
-function DropdownIndicator({ isActive = false }: Props) {
+function DropdownIndicator({ isActive = false }: Readonly<Props>) {
   return (
     <span
       className={classNames("dropdown-indicator", { active: isActive })}

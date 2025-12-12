@@ -18,7 +18,7 @@ function HikingFilter({
   filters,
   handleHikingSelect,
   isSelected,
-}: UnitFiltersProps) {
+}: Readonly<UnitFiltersProps>) {
   const [expandedFilter, setExpandedFilter] = useState<{} | null>(null);
 
   const onMenuSelect = useCallback(

@@ -35,7 +35,7 @@ export function FilterOption({
   onToggle,
   onSelect,
   customActiveLogic,
-}: FilterOptionProps) {
+}: Readonly<FilterOptionProps>) {
   const { t } = useTranslation();
   const controlId = `control-${filter.name}`;
   const menuId = `menu-${filter.name}`;
@@ -116,7 +116,7 @@ export const filterEquals = (a: any, b: any) => {
   return false;
 };
 
-function UnitBrowserFilter({ filters, updateFilter }: UnitFiltersProps) {
+function UnitBrowserFilter({ filters, updateFilter }: Readonly<UnitFiltersProps>) {
   const [expandedFilterName, setExpandedFilterName] = useState<string | null>(
     null,
   );
