@@ -55,7 +55,7 @@ function UnitBrowserFilterSection({ address, onViewChange }: Readonly<Props>) {
 
   return (
     <>
-      <div className="unit-browser__fixed">
+      <div className="unit-browser__fixed no-bottom-padding">
         <UnitBrowserFilters filters={mainFilters} updateFilter={doSearch} />
 
         {hasSkiingSubFilters && (
@@ -68,6 +68,9 @@ function UnitBrowserFilterSection({ address, onViewChange }: Readonly<Props>) {
         )}
       </div>
 
+      <div className="unit-browser__divider-wrapper">
+        <div className="unit-browser__divider" />
+      </div>
       <div className="unit-browser__fixed">
         <HikingFilter
           filters={hikingFilters}

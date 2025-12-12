@@ -5,10 +5,6 @@
   background: $ui-content;
   color: $ui-text;
 
-  & + .unit-filters {
-    border-top: 1px solid $ui-enabled;
-  }
-
   &__filters {
     position: unset;
     width: unset;
