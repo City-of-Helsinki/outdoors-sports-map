@@ -209,15 +209,27 @@
 }
 .water-quality{
   &-normal {
-    background-color: #008450;
+    --background-color: #008450;
+    --color: var(--color-white);
+
+    margin-bottom: var(--spacing-3-xs);
   }
   &-possibly_impaired {
-    background-color: #EFB700;
+    --background-color: #EFB700;
+    --color: var(--color-black);
+
+    margin-bottom: var(--spacing-3-xs);
   }
   &-probably_impaired {
-    background-color: #EFB700;
+    --background-color: #EFB700;
+    --color: var(--color-black);
+
+    margin-bottom: var(--spacing-3-xs);
   }
   &-error {
-    background-color: #a8b5c2;
+    --background-color: #a8b5c2;
+    --color: var(--color-black);
+
+    margin-bottom: var(--spacing-3-xs);
   }
 }

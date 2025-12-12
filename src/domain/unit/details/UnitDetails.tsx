@@ -4,6 +4,7 @@ import {
   ButtonVariant,
   IconAngleDown,
   LoadingSpinner,
+  Tag,
 } from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
@@ -539,10 +540,10 @@ function LiveWaterQuality({ observation }: Readonly<LiveWaterQualityProps>) {
 
   return (
     <BodyBox title={t("UNIT_BROWSER.WATER_QUALITY")}>
-      <StatusUpdatedAgo time={observationTime} sensorName={""} />
-      <p className={`water-quality-${waterQuality}`}>
+      <Tag className={`water-quality-${waterQuality}`}>
         {t(`WATER_QUALITY.${waterQuality}`)}
-      </p>
+      </Tag>
+      <StatusUpdatedAgo time={observationTime} sensorName={""} />
     </BodyBox>
   );
 }
