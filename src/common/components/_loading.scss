@@ -1,9 +1,12 @@
-.loading-wrapper {
-    display: grid;
-    grid-gap: var(--spacing-s);
-    grid-template-columns: auto 1fr;
-    justify-self: center;
-    align-items: center;
+.loading-container {
+    display: flex;
+    justify-content: center;
     margin-top: var(--spacing-xl);
+}
+
+.loading-wrapper {
+    display: flex;
+    gap: var(--spacing-s);
+    align-items: center;
     font-size: var(--fontsize-body-m);
 }
