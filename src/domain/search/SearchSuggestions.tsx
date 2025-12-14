@@ -43,6 +43,7 @@ function SearchSuggestions({
     /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
     <div
       className="search-suggestions"
+      data-testid="search-suggestions"
       style={{
         position: "fixed",
         top: `${menuPosition.top}px`,
@@ -56,7 +57,10 @@ function SearchSuggestions({
       }}
     >
       {suggestionCount > 0 ? (
-        <div className="search-suggestions__list">
+        <div
+          className="search-suggestions__list"
+          data-testid="suggestions-list"
+        >
           {searchableSuggestionCount > 0 && (
             <Button
               className="search-suggestions__open-all"

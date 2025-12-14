@@ -223,9 +223,6 @@ describe("<SearchContainer />", () => {
     it("should hide suggestions when focus leaves the container", async () => {
       renderComponent({ suggestions: mockSuggestions });
 
-      const container = screen
-        .getByTestId("search-input")
-        .closest(".search-container");
       const input = screen.getByTestId("search-input");
 
       // First type to show suggestions

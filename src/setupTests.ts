@@ -11,6 +11,7 @@ console.error = (...args: any[]) => {
     "Could not parse CSS stylesheet",
     "Error: Not implemented: HTMLFormElement.prototype.submit",
     "Support for defaultProps will be removed from function components in a future major release",
+    "Error: Not implemented: navigation (except hash changes)",
   ];
 
   if (
