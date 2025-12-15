@@ -1,6 +1,6 @@
 .search-suggestions {
   position: fixed;
-  top: 120px;
+  top: 120px; // This will be overridden by inline styles
   z-index: 799;
   background: transparent;
   text-align: center;

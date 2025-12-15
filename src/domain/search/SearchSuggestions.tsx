@@ -1,5 +1,6 @@
 import { Button, ButtonSize, ButtonVariant, IconSearch } from "hds-react";
 import { LocationDescriptor } from "history";
+import { MutableRefObject } from "react";
 import { useTranslation } from "react-i18next";
 
 import Link from "../../common/components/Link";
@@ -20,12 +21,16 @@ type Props = {
   openAllResults: (e: React.SyntheticEvent<HTMLButtonElement>) => void;
   handleAddressClick: (coordinates: [number, number]) => void;
   suggestions: Suggestion[];
+  menuPosition: { top: number };
+  preventBlurClose: MutableRefObject<boolean>;
 };
 
 function SearchSuggestions({
   openAllResults,
   handleAddressClick,
   suggestions,
+  menuPosition,
+  preventBlurClose,
 }: Props) {
   const { t } = useTranslation();
 
@@ -35,9 +40,27 @@ function SearchSuggestions({
   ).length;
 
   return (
-    <div className="search-suggestions">
+    /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
+    <div
+      className="search-suggestions"
+      data-testid="search-suggestions"
+      style={{
+        position: "fixed",
+        top: `${menuPosition.top}px`,
+        zIndex: 799,
+      }}
+      onMouseDown={() => {
+        preventBlurClose.current = true;
+      }}
+      onTouchStart={() => {
+        preventBlurClose.current = true;
+      }}
+    >
       {suggestionCount > 0 ? (
-        <div className="search-suggestions__list">
+        <div
+          className="search-suggestions__list"
+          data-testid="suggestions-list"
+        >
           {searchableSuggestionCount > 0 && (
             <Button
               className="search-suggestions__open-all"

@@ -26,7 +26,9 @@ function SearchContainer({
 }: Readonly<Props>) {
   const [searchPhrase, setSearchPhrase] = useState(search);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0 });
   const preventFocusOpen = useRef(false);
+  const preventBlurClose = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -34,13 +36,44 @@ function SearchContainer({
     setSearchPhrase(search);
   }, [search]);
 
+  const updateMenuPosition = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setMenuPosition({ top: rect.bottom + window.scrollY });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (showSuggestions) {
+      updateMenuPosition();
+    }
+  }, [showSuggestions, updateMenuPosition]);
+
+  useEffect(() => {
+    const handlePositionUpdate = () => {
+      if (showSuggestions) {
+        updateMenuPosition();
+      }
+    };
+
+    window.addEventListener("resize", handlePositionUpdate);
+    window.addEventListener("scroll", handlePositionUpdate, true);
+
+    return () => {
+      window.removeEventListener("resize", handlePositionUpdate);
+      window.removeEventListener("scroll", handlePositionUpdate, true);
+    };
+  }, [showSuggestions, updateMenuPosition]);
+
   const onInputChange = useCallback(
     (value: string): void => {
       setSearchPhrase(value);
       setShowSuggestions(true);
       onFindSuggestions(value);
+      // Update position when opening suggestions
+      setTimeout(updateMenuPosition, 0);
     },
-    [onFindSuggestions],
+    [onFindSuggestions, updateMenuPosition],
   );
 
   const handleSearch = useCallback(() => {
@@ -74,17 +107,28 @@ function SearchContainer({
     if (searchPhrase && searchPhrase.length > 0) {
       setShowSuggestions(true);
       onFindSuggestions(searchPhrase);
+      // Update position when opening suggestions
+      setTimeout(updateMenuPosition, 0);
     }
-  }, [searchPhrase, onFindSuggestions, preventFocusOpen]);
+  }, [searchPhrase, onFindSuggestions, preventFocusOpen, updateMenuPosition]);
 
   const handleBlur = useCallback((event: React.FocusEvent) => {
-    // Check if the new focus target is within the container
-    if (
-      containerRef.current &&
-      !containerRef.current.contains(event.relatedTarget as Node)
-    ) {
-      setShowSuggestions(false);
+    // Don't close if we're preventing blur (e.g., clicking on suggestions)
+    if (preventBlurClose.current) {
+      preventBlurClose.current = false;
+      return;
     }
+
+    // Use setTimeout to allow click events to fire first on mobile
+    setTimeout(() => {
+      // Check if the new focus target is within the container
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(document.activeElement as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    }, 10);
   }, []);
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
@@ -106,10 +150,12 @@ function SearchContainer({
         if (!showSuggestions && searchPhrase && searchPhrase.length > 0) {
           setShowSuggestions(true);
           onFindSuggestions(searchPhrase);
+          // Update position when opening suggestions
+          setTimeout(updateMenuPosition, 0);
         }
       }
     },
-    [showSuggestions, searchPhrase, onFindSuggestions],
+    [showSuggestions, searchPhrase, onFindSuggestions, updateMenuPosition],
   );
 
   return (
@@ -136,6 +182,8 @@ function SearchContainer({
           openAllResults={handleSearch}
           suggestions={suggestions}
           handleAddressClick={handleAddressClick}
+          menuPosition={menuPosition}
+          preventBlurClose={preventBlurClose}
         />
       )}
     </div>
