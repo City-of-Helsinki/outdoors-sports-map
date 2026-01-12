@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.7.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.6.0...outdoors-sports-map-v2.7.0) (2026-01-12)
+
+
+### Features
+
+* Add 'no results' message for empty search results in multiple languages ([8b316dd](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/8b316dda72ee9ca120e2fa22f3d126699d8572cf))
+* Add custom active logic to filter options for enhanced selection handling ([4c2acde](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/4c2acde7b5b99f19a585148c5d8b2d7193aa5b43))
+* Add rounded corners to unit filters and update styles for consistency ([3ce7ef2](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/3ce7ef2f357f8437e12de4d82a29aa82409ea285))
+* Add sledding marker images and SVGs for satisfactory and warning states ([9f7af62](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/9f7af62d057e8eb1363ba2a47c1d0b19371da951))
+* Add support for helsinki maptiles ([cc50c78](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/cc50c78022b5bceaa4cfe185de2f0a87341e824a))
+* Add testing for SearchSuggestions component ([8b65318](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/8b653184e62e858c4ff185129e38ca51233e263e))
+* Apply Readonly type to component props for improved type safety ([0523c60](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/0523c605fa8e499997ccf23ce2b8dc4f2f127279))
+* Enhance height profile control buttons with SVG icons and improved styles ([cc71575](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/cc71575b4abe5a3ec32cfdd9802f80d8664a954e))
+* Enhance layout and responsiveness by adding dynamic header and footer height handling ([47d1d78](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/47d1d785802d1280f16d164951b9d444c488e67e))
+* Enhance layout and styling of UnitBrowserFilterSection with new divider and paddings ([babfd7b](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/babfd7bfec13c91aacc37332c73d1673daea028a))
+* Enhance search functionality with improved keyboard navigation and styling ([3487e72](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/3487e72fbb39470b6b7f6cbe0260aff615f1cc3b))
+* Enhance search suggestions behavior by preventing blur close on interaction ([6475d89](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/6475d891b4fa4fed90583581b777fcb938b1509d))
+* Ensure consistent flex behavior for unit marker and open elements ([104bc0d](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/104bc0d0bfc5eda382f16ae5a4d0cd86c3f4a574))
+* Implement dynamic positioning for search suggestions menu ([2225b7e](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/2225b7e6de855d5ce37cb35e4211dcb2523ae74d))
+* Improve address formatting in getAddressToDisplay function ([e9157cc](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/e9157cc19531ddec7f80a594cc7cfa3fbc852785))
+* Improve loading component layout and add z-index to SearchBar loading spinner ([366fb49](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/366fb49e779789f74efecc71c04668ba10361b48))
+* Improve search result list styling and user experience ([6b0ef38](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/6b0ef3871713a786f8e4cbdd3afa0a2a7a7d07e7))
+* Improve SearchContainer tests with helper functions and real components ([53d495a](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/53d495a015506b458265f7b42f6080621d44e707))
+* Modernize Unit Details component with HDS components and improved UX ([1de3805](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/1de38051aa70533832111a7d7966329c4b0faf54))
+* Refactor address bar to use Tag component and improve styling ([2eb9d7d](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/2eb9d7d059f2f54072a4783d1cafd60fb2910265))
+* Refactor ApplicationHeader to use HDS Header and improve accessibility ([107f87d](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/107f87d005e374c085993733bdd335eb3c947ca1))
+* Refactor header height handling in MapLayout and styles for improved responsiveness ([09f2a6e](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/09f2a6ef875d5e97fed3f7ec45a5d2ebb841def2))
+* Remove margin adjustments from list-view items block for improved layout consistency ([a0dfb2e](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/a0dfb2e3002424f24cffaf051fd6a0385cbe898d))
+* Replace SimpleLanguageOptions with LanguageSelector for improved language selection ([c2cf6b6](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/c2cf6b69f12e4dd10e0977f6bac0bd53bf9c7344))
+* Replace SMIcon with HDS IconAngleDown and enhance dropdown styling ([92ad18e](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/92ad18ebb492434086dcf931cbc4339cf63da0a0))
+* Update INFO_MODAL content for sledding slope status ([5f5494a](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/5f5494a45fe7644f2a5e48648a3e2d90bf864795))
+* Update INFO_MODAL content for sledding slope status ([ec22e34](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/ec22e344012a921928d2be48acd31ef4ab43b419))
+* Update UI variables and enhance accessibility for action buttons ([283bca9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/283bca92d71db6f21fbd96f4f173c0886e5f6738))
+* Update water quality display with improved styling and semantic tags ([d88b993](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/d88b993ad643f5e5eac05a41dc87f854bb5c197b))
+
+
+### Bug Fixes
+
+* Adjust padding for disabled search input and fine-tune loading spinner size ([1277cc9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/1277cc9765ea2c581e4e3c334f1648b69fe62f5e))
+* Fix aria label keys for outbound links in Finnish localization ([6bfbb11](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/6bfbb11391b8f6033463646790eabd2c64e763f3))
+* Update focus outline styles for better accessibility and consistency ([18e9ecd](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/18e9ecd9ad6fda8f17df2ea26f144a79fb6ba575))
+* Update OpenStreetMap copyright links to use HTTPS ([c3ca3f7](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/c3ca3f7120e44bdd377a5ba8256dcabdf03dddb0))
+
 ## [Unreleased]
 
 ## [2.6.0] - 2025-05-28
