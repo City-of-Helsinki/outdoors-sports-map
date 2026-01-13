@@ -14,7 +14,7 @@ import { setLocation, useLazyGetAddressQuery } from "../../map/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
 import * as unitSearchActions from "../state/search/actions";
 import * as unitSearchSelectors from "../state/search/selectors";
-import * as unitSelectors from "../state/selectors";
+import { selectIsUnitLoading } from "../state/selectors";
 import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
 
@@ -55,7 +55,7 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   
   const unitResults = useSelector(unitSearchSelectors.getUnitSuggestions);
   const addressesResults = useSelector(unitSearchSelectors.getAddresses);
-  const disabled = useSelector(unitSelectors.getIsUnitLoading);
+  const disabled = useSelector(selectIsUnitLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
   const [triggerGetAddress] = useLazyGetAddressQuery();
 

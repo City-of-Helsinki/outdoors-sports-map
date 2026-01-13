@@ -37,7 +37,7 @@ import UnitObservationStatus, {
   StatusUpdated,
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
-import * as fromUnit from "../state/selectors";
+import { selectUnitById } from "../state/selectors";
 import { Translatable, Unit, UnitConnectionTags } from "../unitConstants";
 import {
   createPalvelukarttaUrl,
@@ -684,7 +684,7 @@ function UnitDetails({
   const { unitId } = useParams<UnitDetailsParams>();
   const services = useSelector(selectServicesObject);
   const unit = useSelector<AppState, Unit | undefined>((state) =>
-    fromUnit.getUnitById(state, {
+    selectUnitById(state, {
       id: unitId,
     }),
   );

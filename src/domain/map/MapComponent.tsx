@@ -10,7 +10,7 @@ import { AppState } from "../app/appConstants";
 import { AppSearchLocationState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
 import useAppSearch from "../app/useAppSearch";
-import * as fromUnit from "../unit/state/selectors";
+import { selectVisibleUnits, selectUnitById } from "../unit/state/selectors";
 import { Unit } from "../unit/unitConstants";
 
 type Props = {
@@ -32,10 +32,10 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
     routerPaths.unitDetails
   );
   const unitData = useSelector<AppState, Unit[]>((state) =>
-    fromUnit.getVisibleUnits(state, appSearch.sport, appSearch.status, appSearch.sportSpecification)
+    selectVisibleUnits(state, appSearch.sport, appSearch.status, appSearch.sportSpecification)
   );
   const selectedUnit = useSelector<AppState, Unit>((state) =>
-    fromUnit.getUnitById(state, {
+    selectUnitById(state, {
       id: unitDetailsMatch?.params?.unitId,
     })
   );

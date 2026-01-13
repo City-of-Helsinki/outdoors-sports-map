@@ -7,7 +7,7 @@ import * as fromHome from "../../../app/appSelectors";
 import useAppSearch from "../../../app/useAppSearch";
 import { selectLocation } from "../../../map/state/selectors";
 import * as fromUnitSearch from "../../state/search/selectors";
-import * as fromUnit from "../../state/selectors";
+import { selectVisibleUnits } from "../../state/selectors";
 import { SortKeys, Unit } from "../../unitConstants";
 import * as unitHelpers from "../../unitHelpers";
 
@@ -57,7 +57,7 @@ function useUnitSearchResults({ leafletMap }: Options) {
     useAppSearch();
 
   const units = useSelector<AppState, Unit[]>((state) =>
-    fromUnit.getVisibleUnits(state, sport, status, sportSpecification),
+    selectVisibleUnits(state, sport, status, sportSpecification),
   );
   const isLoading = useSelector<AppState, boolean>(fromHome.selectIsLoading);
   const isSearching = useSelector<AppState, boolean>(

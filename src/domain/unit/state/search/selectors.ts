@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { AppState } from "../../../app/appConstants";
 import { Unit } from "../../unitConstants";
-import { getUnitById } from "../selectors";
+import { selectUnitById } from "../selectors";
 
 export const getIsActive = (state: AppState): boolean => state.search.isActive;
 
@@ -16,7 +16,7 @@ export const getUnitResults = createSelector(
   [selectUnitResultIds, (state: AppState) => state],
   (unitResults, state): Array<Record<string, any>> =>
     unitResults.map((id) =>
-      getUnitById(state, {
+      selectUnitById(state, {
         id,
       }),
     )
@@ -26,7 +26,7 @@ export const getUnitSuggestions = createSelector(
   [selectUnitSuggestionIds, (state: AppState) => state],
   (unitSuggestions, state): Unit[] =>
     unitSuggestions.map((id) =>
-      getUnitById(state, {
+      selectUnitById(state, {
         id,
       }),
     )

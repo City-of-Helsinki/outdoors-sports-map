@@ -1,7 +1,7 @@
+import { createSelector } from "@reduxjs/toolkit";
 import { union } from "lodash";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
-import memoize from "lodash/memoize";
 
 import {
   getIsActive as getSearchActive,
@@ -25,96 +25,94 @@ import {
   getNoneHikingUnit,
 } from "../unitHelpers";
 
-export const getUnitById = (state: AppState, props: Record<string, any>) =>
+export const selectUnitById = (state: AppState, props: Record<string, any>) =>
   state.unit.byId[props.id];
 
-export const getAllUnits = (state: AppState) =>
+export const selectAllUnits = (state: AppState) =>
   state.unit.all.map((id) =>
-    getUnitById(state, {
+    selectUnitById(state, {
       id,
     }),
   );
 
-const _getVisibleUnits = (
-  state: AppState,
-  sport: SportFilter = getDefaultSportFilter(),
-  status: UnitFilterValues = getDefaultStatusFilter(),
-  sportSpecification: string,
-): Unit[] => {
-  const hasHikingSportSpecification = sportSpecification
-    .split(",")
-    .some((elm: string) => HikingFilters.includes(elm as HikingFilter));
-  const hasSkiSportSpecification = sportSpecification
-    .split(",")
-    .some((elm: string) => SkiingFilters.includes(elm as SkiingFilter));
+export const selectVisibleUnits = createSelector(
+  [
+    (state: AppState) => state.unit,
+    (state: AppState, sport: SportFilter = getDefaultSportFilter()) => sport,
+    (
+      state: AppState,
+      sport: SportFilter = getDefaultSportFilter(),
+      status: UnitFilterValues = getDefaultStatusFilter(),
+    ) => status,
+    (
+      state: AppState,
+      sport: SportFilter = getDefaultSportFilter(),
+      status: UnitFilterValues = getDefaultStatusFilter(),
+      sportSpecification: string,
+    ) => sportSpecification,
+    (state: AppState) => getSearchActive(state),
+    (state: AppState) => getUnitResultIDs(state),
+  ],
+  (unitState, sport, status, sportSpecification, isSearchActive, unitResultIDs): Unit[] => {
+    const hasHikingSportSpecification = sportSpecification
+      .split(",")
+      .some((elm: string) => HikingFilters.includes(elm as HikingFilter));
+    const hasSkiSportSpecification = sportSpecification
+      .split(",")
+      .some((elm: string) => SkiingFilters.includes(elm as SkiingFilter));
 
-  let visibleUnits;
-  if (hasHikingSportSpecification) {
-    const selectedUnit = state.unit[sport],
-      hikeUnit = state.unit[UnitFilters.HIKING],
-      combinedUnit = selectedUnit.concat(hikeUnit);
-    visibleUnits = combinedUnit;
-  } else {
-    visibleUnits = state.unit[sport];
-  }
-
-  if (status === UnitFilters.STATUS_OK) {
-    visibleUnits = intersection(
-      visibleUnits,
-      state.unit[UnitFilters.STATUS_OK],
-    );
-  }
-
-  if (!!sportSpecification) {
+    let visibleUnits;
     if (hasHikingSportSpecification) {
-      visibleUnits = union(
-        hasSkiSportSpecification
-          ? getFilteredUnitsBySportSpecification(
-              getNoneHikingUnit(visibleUnits, state.unit),
-              state.unit,
-              sportSpecification,
-            )
-          : getNoneHikingUnit(visibleUnits, state.unit),
-        getFilteredUnitsBySportSpecification(
-          visibleUnits,
-          state.unit,
-          sportSpecification,
-        ),
-      );
+      const selectedUnit = unitState[sport],
+        hikeUnit = unitState[UnitFilters.HIKING],
+        combinedUnit = selectedUnit.concat(hikeUnit);
+      visibleUnits = combinedUnit;
     } else {
+      visibleUnits = unitState[sport];
+    }
+
+    if (status === UnitFilters.STATUS_OK) {
       visibleUnits = intersection(
         visibleUnits,
-        getFilteredUnitsBySportSpecification(
-          visibleUnits,
-          state.unit,
-          sportSpecification,
-        ),
+        unitState[UnitFilters.STATUS_OK],
       );
     }
-  }
 
-  if (getSearchActive(state)) {
-    visibleUnits = intersection(visibleUnits, getUnitResultIDs(state));
-  }
+    if (!!sportSpecification) {
+      if (hasHikingSportSpecification) {
+        visibleUnits = union(
+          hasSkiSportSpecification
+            ? getFilteredUnitsBySportSpecification(
+                getNoneHikingUnit(visibleUnits, unitState),
+                unitState,
+                sportSpecification,
+              )
+            : getNoneHikingUnit(visibleUnits, unitState),
+          getFilteredUnitsBySportSpecification(
+            visibleUnits,
+            unitState,
+            sportSpecification,
+          ),
+        );
+      } else {
+        visibleUnits = intersection(
+          visibleUnits,
+          getFilteredUnitsBySportSpecification(
+            visibleUnits,
+            unitState,
+            sportSpecification,
+          ),
+        );
+      }
+    }
 
-  return visibleUnits.map((id: string) =>
-    getUnitById(state, {
-      id,
-    }),
-  );
-};
+    if (isSearchActive) {
+      visibleUnits = intersection(visibleUnits, unitResultIDs);
+    }
 
-export const getVisibleUnits = memoize(
-  _getVisibleUnits,
-  (state, sport, status, sportSpecification) =>
-    `${JSON.stringify(state.unit)}${String(
-      getSearchActive(state),
-    )}${JSON.stringify(
-      getUnitResultIDs(state),
-    )}${sport},${status},${sportSpecification}`,
+    return visibleUnits.map((id: string) => unitState.byId[id]);
+  },
 );
 
-export const getIsFetchingUnits = (state: AppState) => state.unit.isFetching;
-
-export const getIsUnitLoading = (state: AppState) =>
+export const selectIsUnitLoading = (state: AppState) =>
   state.unit.isFetching && isEmpty(state.unit.all);
