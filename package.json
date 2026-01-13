@@ -63,6 +63,7 @@
   "dependencies": {
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.25.9",
     "@react-leaflet/core": "2.1.0",
+    "@reduxjs/toolkit": "^2.11.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",

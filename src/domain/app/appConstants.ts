@@ -1,4 +1,4 @@
-import { RootState } from "../bootstrap/createStore";
+import { RootState } from "../store/createStore";
 import { SortKey, SportFilter, StatusFilter } from "../unit/unitConstants";
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL;
