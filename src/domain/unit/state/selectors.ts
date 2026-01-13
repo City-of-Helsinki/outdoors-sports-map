@@ -116,5 +116,5 @@ export const getVisibleUnits = memoize(
 
 export const getIsFetchingUnits = (state: AppState) => state.unit.isFetching;
 
-export const getIsLoading = (state: AppState) =>
+export const getIsUnitLoading = (state: AppState) =>
   state.unit.isFetching && isEmpty(state.unit.all);
