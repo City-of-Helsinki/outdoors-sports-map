@@ -2,7 +2,7 @@ import { Notification, NotificationSize } from "hds-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useGetAppWideNotificationsQuery } from "./appWideNotificationSlice";
+import { useGetAppWideNotificationsQuery } from "../state/appWideNotificationSlice";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
 

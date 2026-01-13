@@ -3,11 +3,11 @@ import { RefObject } from "react";
 import { useSelector } from "react-redux";
 
 import { AppState } from "../../../app/appConstants";
-import { selectIsLoading } from "../../../app/appSelectors";
+import { selectIsLoading } from "../../../app/state/appSelectors";
 import useAppSearch from "../../../app/useAppSearch";
-import { selectLocation } from "../../../map/state/selectors";
-import { selectIsFetching } from "../../state/search/selectors";
-import { selectVisibleUnits } from "../../state/selectors";
+import { selectLocation } from "../../../map/state/mapSlice";
+import { selectIsFetching } from "../../state/searchSlice";
+import { selectVisibleUnits } from "../../state/unitSlice";
 import { SortKeys, Unit } from "../../unitConstants";
 import {
   sortByName,

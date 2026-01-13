@@ -10,22 +10,20 @@ import useLanguage from "../../../common/hooks/useLanguage";
 import routerPaths from "../../app/appRoutes";
 import useAppSearch from "../../app/useAppSearch";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
-import { setLocation, useLazyGetAddressQuery } from "../../map/mapSlice";
+import { setLocation, useLazyGetAddressQuery } from "../../map/state/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
 import {
   useLazySearchUnitsQuery,
   useLazySearchSuggestionsQuery,
   clearSearch,
-} from "../state/search/searchSlice";
-import {
   selectUnitSuggestions,
   selectAddresses,
   selectIsActive,
-} from "../state/search/selectors";
-import { selectIsUnitLoading } from "../state/selectors";
+} from "../state/searchSlice";
+import { selectIsUnitLoading } from "../state/unitSlice";
+import { receiveUnits } from "../state/unitSlice";
 import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
-import { receiveUnits } from "../unitSlice";
 
 type ActionButtonProps = {
   action: () => void;

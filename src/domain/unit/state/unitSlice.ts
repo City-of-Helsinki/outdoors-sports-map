@@ -1,19 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { union } from "lodash";
+import intersection from "lodash/intersection";
+import isEmpty from "lodash/isEmpty";
 import keys from "lodash/keys";
 import { normalize, schema } from "normalizr";
 
 import {
-  NormalizedUnitSchema,
-  QualityEnum,
-  Unit,
-  unitSchema,
-} from "./unitConstants";
-import {
-  enumerableQuality,
-  getUnitQuality,
-  handleUnitConditionUpdates,
-} from "./unitHelpers";
-import { apiSlice } from "../api/apiSlice";
+  selectUnitResultIDs,
+  selectIsActive,
+} from "./searchSlice";
+import { apiSlice } from "../../api/apiSlice";
+import { AppState } from "../../app/appConstants";
 import {
   IceSkatingServices,
   IceSwimmingServices,
@@ -21,8 +18,30 @@ import {
   SleddingServices,
   SupportingServices,
   SwimmingServices,
-} from "../service/serviceConstants";
-import { getOnSeasonServices } from "../service/serviceHelpers";
+} from "../../service/serviceConstants";
+import { getOnSeasonServices } from "../../service/serviceHelpers";
+import {
+  HikingFilter,
+  HikingFilters,
+  SkiingFilter,
+  SkiingFilters,
+  SportFilter,
+  UnitFilters,
+  UnitFilterValues,
+  NormalizedUnitSchema,
+  QualityEnum,
+  Unit,
+  unitSchema,
+} from "../unitConstants";
+import {
+  enumerableQuality,
+  getDefaultSportFilter,
+  getDefaultStatusFilter,
+  getFilteredUnitsBySportSpecification,
+  getNoneHikingUnit,
+  getUnitQuality,
+  handleUnitConditionUpdates,
+} from "../unitHelpers";
 
 
 
@@ -161,3 +180,96 @@ const unitSlice = createSlice({
 
 export const { receiveUnits, setFetchError } = unitSlice.actions;
 export default unitSlice.reducer;
+
+// Selectors
+export const selectUnitById = (state: AppState, props: Record<string, any>) =>
+  state.unit.byId[props.id];
+
+export const selectAllUnits = (state: AppState) =>
+  state.unit.all.map((id) =>
+    selectUnitById(state, {
+      id,
+    }),
+  );
+
+export const selectVisibleUnits = createSelector(
+  [
+    (state: AppState) => state.unit,
+    (state: AppState, sport: SportFilter = getDefaultSportFilter()) => sport,
+    (
+      state: AppState,
+      sport: SportFilter = getDefaultSportFilter(),
+      status: UnitFilterValues = getDefaultStatusFilter(),
+    ) => status,
+    (
+      state: AppState,
+      sport: SportFilter = getDefaultSportFilter(),
+      status: UnitFilterValues = getDefaultStatusFilter(),
+      sportSpecification: string,
+    ) => sportSpecification,
+    (state: AppState) => selectIsActive(state),
+    (state: AppState) => selectUnitResultIDs(state),
+  ],
+  (unitState, sport, status, sportSpecification, isSearchActive, unitResultIDs): Unit[] => {
+    const hasHikingSportSpecification = sportSpecification
+      .split(",")
+      .some((elm: string) => HikingFilters.includes(elm as HikingFilter));
+    const hasSkiSportSpecification = sportSpecification
+      .split(",")
+      .some((elm: string) => SkiingFilters.includes(elm as SkiingFilter));
+
+    let visibleUnits;
+    if (hasHikingSportSpecification) {
+      const selectedUnit = unitState[sport],
+        hikeUnit = unitState[UnitFilters.HIKING],
+        combinedUnit = selectedUnit.concat(hikeUnit);
+      visibleUnits = combinedUnit;
+    } else {
+      visibleUnits = unitState[sport];
+    }
+
+    if (status === UnitFilters.STATUS_OK) {
+      visibleUnits = intersection(
+        visibleUnits,
+        unitState[UnitFilters.STATUS_OK],
+      );
+    }
+
+    if (!!sportSpecification) {
+      if (hasHikingSportSpecification) {
+        visibleUnits = union(
+          hasSkiSportSpecification
+            ? getFilteredUnitsBySportSpecification(
+                getNoneHikingUnit(visibleUnits, unitState),
+                unitState,
+                sportSpecification,
+              )
+            : getNoneHikingUnit(visibleUnits, unitState),
+          getFilteredUnitsBySportSpecification(
+            visibleUnits,
+            unitState,
+            sportSpecification,
+          ),
+        );
+      } else {
+        visibleUnits = intersection(
+          visibleUnits,
+          getFilteredUnitsBySportSpecification(
+            visibleUnits,
+            unitState,
+            sportSpecification,
+          ),
+        );
+      }
+    }
+
+    if (isSearchActive) {
+      visibleUnits = intersection(visibleUnits, unitResultIDs);
+    }
+
+    return visibleUnits.map((id: string) => unitState.byId[id]);
+  },
+);
+
+export const selectIsUnitLoading = (state: AppState) =>
+  state.unit.isFetching && isEmpty(state.unit.all);

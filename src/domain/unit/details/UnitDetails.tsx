@@ -29,7 +29,7 @@ import FavoriteButton from "../../../common/components/FavoriteButton";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
-import { selectIsLoading } from "../../app/appSelectors";
+import { selectIsLoading } from "../../app/state/appSelectors";
 import getServiceName from "../../service/serviceHelpers";
 import { selectServicesObject } from "../../service/serviceSlice";
 import UnitIcon from "../UnitIcon";
@@ -37,7 +37,7 @@ import UnitObservationStatus, {
   StatusUpdated,
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
-import { selectUnitById } from "../state/selectors";
+import { selectUnitById } from "../state/unitSlice";
 import { Translatable, Unit, UnitConnectionTags } from "../unitConstants";
 import {
   createPalvelukarttaUrl,

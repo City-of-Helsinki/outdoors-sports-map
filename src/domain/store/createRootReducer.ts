@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
 import { apiSlice } from "../api/apiSlice";
-import mapReducer from "../map/mapSlice";
-import searchReducer from "../unit/state/search/searchSlice";
-import unitReducer from "../unit/unitSlice";
+import mapReducer from "../map/state/mapSlice";
+import searchReducer from "../unit/state/searchSlice";
+import unitReducer from "../unit/state/unitSlice";
 
 const createRootReducer = () =>
   combineReducers({

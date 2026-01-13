@@ -4,8 +4,8 @@ import useSearch from "../../common/hooks/useSearch";
 import { AppSearch } from "../app/appConstants";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import { useGetServicesQuery } from "../service/serviceSlice";
-import { useLazySearchUnitsQuery } from "../unit/state/search/searchSlice";
-import { useGetUnitsQuery } from "../unit/unitSlice";
+import { useLazySearchUnitsQuery } from "../unit/state/searchSlice";
+import { useGetUnitsQuery } from "../unit/state/unitSlice";
 
 function useFetchInitialData() {
   const isFirstRender = useRef<Boolean>(true);

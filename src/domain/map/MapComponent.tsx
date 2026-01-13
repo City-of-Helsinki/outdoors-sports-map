@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 
 import MapView from "./MapView";
-import { setLocation, useLazyGetAddressQuery, selectLocation } from "./mapSlice";
+import { setLocation, useLazyGetAddressQuery, selectLocation } from "./state/mapSlice";
 import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
 import { AppState } from "../app/appConstants";
 import { AppSearchLocationState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
 import useAppSearch from "../app/useAppSearch";
-import { selectVisibleUnits, selectUnitById } from "../unit/state/selectors";
+import { selectVisibleUnits, selectUnitById } from "../unit/state/unitSlice";
 import { Unit } from "../unit/unitConstants";
 
 type Props = {
