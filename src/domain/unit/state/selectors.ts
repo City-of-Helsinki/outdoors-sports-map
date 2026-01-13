@@ -4,8 +4,8 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 
 import {
-  getIsActive as getSearchActive,
-  getUnitResultIDs,
+  selectUnitResultIDs,
+  selectIsActive,
 } from "./search/selectors";
 import { AppState } from "../../app/appConstants";
 import {
@@ -50,8 +50,8 @@ export const selectVisibleUnits = createSelector(
       status: UnitFilterValues = getDefaultStatusFilter(),
       sportSpecification: string,
     ) => sportSpecification,
-    (state: AppState) => getSearchActive(state),
-    (state: AppState) => getUnitResultIDs(state),
+    (state: AppState) => selectIsActive(state),
+    (state: AppState) => selectUnitResultIDs(state),
   ],
   (unitState, sport, status, sportSpecification, isSearchActive, unitResultIDs): Unit[] => {
     const hasHikingSportSpecification = sportSpecification

@@ -3,13 +3,18 @@ import { RefObject } from "react";
 import { useSelector } from "react-redux";
 
 import { AppState } from "../../../app/appConstants";
-import * as fromHome from "../../../app/appSelectors";
+import { selectIsLoading } from "../../../app/appSelectors";
 import useAppSearch from "../../../app/useAppSearch";
 import { selectLocation } from "../../../map/state/selectors";
-import * as fromUnitSearch from "../../state/search/selectors";
+import { selectIsFetching } from "../../state/search/selectors";
 import { selectVisibleUnits } from "../../state/selectors";
 import { SortKeys, Unit } from "../../unitConstants";
-import * as unitHelpers from "../../unitHelpers";
+import {
+  sortByName,
+  sortByCondition,
+  sortByDistance,
+  sortByFavorites,
+} from "../../unitHelpers";
 
 type SortOptions = {
   units: Unit[];
@@ -23,20 +28,20 @@ function sortUnits({ units, position, leafletMap, sortKey }: SortOptions) {
 
   switch (sortKey) {
     case SortKeys.ALPHABETICAL:
-      sortedUnits = unitHelpers.sortByName(units, "fi");
+      sortedUnits = sortByName(units, "fi");
       break;
 
     case SortKeys.CONDITION:
-      sortedUnits = unitHelpers.sortByCondition(units);
+      sortedUnits = sortByCondition(units);
       break;
 
     case SortKeys.DISTANCE:
       // @ts-ignore
-      sortedUnits = unitHelpers.sortByDistance(units, position, leafletMap);
+      sortedUnits = sortByDistance(units, position, leafletMap);
       break;
 
     case SortKeys.FAVORITES:
-      sortedUnits = unitHelpers.sortByFavorites(units);
+      sortedUnits = sortByFavorites(units);
       break;
 
     default:
@@ -59,10 +64,8 @@ function useUnitSearchResults({ leafletMap }: Options) {
   const units = useSelector<AppState, Unit[]>((state) =>
     selectVisibleUnits(state, sport, status, sportSpecification),
   );
-  const isLoading = useSelector<AppState, boolean>(fromHome.selectIsLoading);
-  const isSearching = useSelector<AppState, boolean>(
-    fromUnitSearch.getIsFetching,
-  );
+  const isLoading = useSelector<AppState, boolean>(selectIsLoading);
+  const isSearching = useSelector<AppState, boolean>(selectIsFetching);
   const position = useSelector<AppState, LatLngTuple>(selectLocation);
 
   if (isLoading || isSearching) {

@@ -1,18 +1,17 @@
 import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 
 import useSearch from "../../common/hooks/useSearch";
 import { AppSearch } from "../app/appConstants";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import { useGetServicesQuery } from "../service/serviceSlice";
-import { searchUnits } from "../unit/state/search/actions";
+import { useLazySearchUnitsQuery } from "../unit/state/search/searchSlice";
 import { useGetUnitsQuery } from "../unit/unitSlice";
 
 function useFetchInitialData() {
   const isFirstRender = useRef<Boolean>(true);
-  const dispatch = useDispatch();
   const search = useSearch<AppSearch>();
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
+  const [triggerSearchUnits] = useLazySearchUnitsQuery();
   
   // Fetch services and units using RTK Query
   useGetServicesQuery();
@@ -22,10 +21,10 @@ function useFetchInitialData() {
     if (isFirstRender.current) {
       const { q, ...params } = search;
       if (isUnitSearchOpen && q) {
-        dispatch(searchUnits(q, params));
+        triggerSearchUnits({ input: q, params });
       }
     }
-  }, [dispatch, isUnitSearchOpen, search]);
+  }, [triggerSearchUnits, isUnitSearchOpen, search]);
 
   useEffect(() => {
     isFirstRender.current = false;

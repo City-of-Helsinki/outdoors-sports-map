@@ -1,10 +1,8 @@
 import { configureStore as rawConfigureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import createSagaMiddleware from "redux-saga";
 
 import createRootReducer from "./createRootReducer";
-import rootSaga from "./rootSaga";
 import { apiSlice } from "../api/apiSlice";
 import { APP_NAME } from "../app/appConstants";
 
@@ -31,7 +29,6 @@ const createStore = (preloadedState?: RootState) => {
 
   const rootReducer = createRootReducer();
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-  const sagaMiddleware = createSagaMiddleware();
 
   const store = rawConfigureStore({
     reducer: persistedReducer as any,
@@ -45,13 +42,11 @@ const createStore = (preloadedState?: RootState) => {
           ignoredPaths: ["api.queries", "api.mutations", "unit.byId"],
           warnAfter: 128, // Increase threshold from 32ms to 128ms
         },
-      }).concat(apiSlice.middleware, sagaMiddleware) as any,
+      }).concat(apiSlice.middleware) as any,
     preloadedState,
   });
 
   const persistor = persistStore(store);
-
-  sagaMiddleware.run(rootSaga);
 
   return {
     store,
