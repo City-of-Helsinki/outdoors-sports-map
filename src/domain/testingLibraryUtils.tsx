@@ -6,8 +6,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 
 import { AppState } from "./app/appConstants";
-import createStore from "./bootstrap/createStore";
 import TranslationProvider from "./i18n/I18nTranslationProvider";
+import createStore from "./store/createStore";
 
 type Props = {
   children: React.ReactNode;
