@@ -86,7 +86,7 @@ Test url: [https://ulkoliikunta.test.hel.ninja](https://ulkoliikunta.test.hel.ni
 
 ### Review
 
-Review environment is done from pr to master branch. The review environment url is posted to pull request when it is completed.
+Review environment is done from pr to main branch. The review environment url is posted to pull request when it is completed.
 
 ### Release (staging&production)
 
