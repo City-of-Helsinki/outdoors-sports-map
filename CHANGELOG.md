@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.8.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.7.0...outdoors-sports-map-v2.8.0) (2026-01-13)
+
+
+### Features
+
+* Add 404 error page ([29dcd55](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/29dcd55ddf631f28ae6fb6cc82763ca746b24607))
+
 ## [2.7.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.6.0...outdoors-sports-map-v2.7.0) (2026-01-12)
 
 
