@@ -30,8 +30,8 @@ import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
 import { getIsLoading } from "../../app/appSelectors";
-import * as fromService from "../../service/selectors";
 import getServiceName from "../../service/serviceHelpers";
+import { selectServicesObject } from "../../service/serviceSlice";
 import UnitIcon from "../UnitIcon";
 import UnitObservationStatus, {
   StatusUpdated,
@@ -682,7 +682,7 @@ function UnitDetails({
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const { unitId } = useParams<UnitDetailsParams>();
-  const services = useSelector(fromService.getServicesObject);
+  const services = useSelector(selectServicesObject);
   const unit = useSelector<AppState, Unit | undefined>((state) =>
     fromUnit.getUnitById(state, {
       id: unitId,

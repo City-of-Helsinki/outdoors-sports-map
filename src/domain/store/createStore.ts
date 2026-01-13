@@ -18,6 +18,15 @@ const createStore = (preloadedState?: RootState) => {
     whitelist: ["map"],
     blacklist: ["api"], // Don't persist RTK Query cache
     keyPrefix: `${APP_NAME}:`,
+    version: 1, // Increment version to clear old persisted state with "service" key
+    migrate: (state: any) => {
+      // Remove old "service" key from persisted state
+      if (state && state.service) {
+        const { service, ...rest } = state;
+        return Promise.resolve(rest);
+      }
+      return Promise.resolve(state);
+    },
   };
 
   const rootReducer = createRootReducer();

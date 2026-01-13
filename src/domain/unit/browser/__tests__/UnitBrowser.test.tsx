@@ -39,6 +39,32 @@ describe("UnitBrowser", () => {
   it("hides filter section when loading", () => {
     // Create state that triggers loading = true (unit.isFetching=true AND unit.all is empty)
     const loadingState = {
+      api: {
+        queries: {
+          'getServices(undefined)': {
+            status: 'fulfilled',
+            endpointName: 'getServices',
+            requestId: 'test-request-id',
+            originalArgs: undefined,
+            startedTimeStamp: Date.now(),
+            fulfilledTimeStamp: Date.now(),
+            data: { byId: {}, all: [] },
+          },
+        },
+        mutations: {},
+        provided: {},
+        subscriptions: {},
+        config: {
+          online: true,
+          focused: true,
+          middlewareRegistered: true,
+          refetchOnFocus: false,
+          refetchOnReconnect: false,
+          refetchOnMountOrArgChange: false,
+          keepUnusedDataFor: 60,
+          reducerPath: 'api',
+        },
+      },
       unit: {
         isFetching: true,
         all: [], // Empty array triggers loading state
@@ -51,12 +77,6 @@ describe("UnitBrowser", () => {
         sledding: [],
         status_ok: [],
         hike: [],
-      },
-      service: {
-        isFetching: false,
-        all: [],
-        fetchError: null,
-        byId: {},
       },
     } as any; // Use type assertion to bypass strict typing for test
 
