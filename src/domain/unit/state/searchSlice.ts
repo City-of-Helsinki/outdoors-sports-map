@@ -1,15 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { normalize, schema } from "normalizr";
 
-import { digitransitApiHeaders } from "../../../api/apiHelpers";
-import { apiSlice } from "../../../api/apiSlice";
-import { getOnSeasonServices } from "../../../service/serviceHelpers";
+import { digitransitApiHeaders } from "../../api/apiHelpers";
+import { apiSlice } from "../../api/apiSlice";
+import type { AppState } from "../../app/appConstants";
+import { getOnSeasonServices } from "../../service/serviceHelpers";
 import {
   Unit,
   NormalizedUnitSchema,
   unitSchema,
   MAX_SUGGESTION_COUNT,
-} from "../../unitConstants";
+} from "../unitConstants";
 
 // Types for API responses
 interface DigitransitFeature {
@@ -231,3 +232,29 @@ const searchSlice = createSlice({
 
 export const { clearSearch, setUnitSuggestions, setAddressSuggestions } = searchSlice.actions;
 export default searchSlice.reducer;
+
+// Selectors
+export const selectIsActive = (state: AppState): boolean => state.search.isActive;
+
+export const selectIsFetching = (state: AppState): boolean =>
+  state.search.isFetching;
+
+const selectUnitSuggestionIds = (state: AppState) => state.search.unitSuggestions;
+
+export const selectUnitSuggestions = createSelector(
+  [selectUnitSuggestionIds, (state: AppState) => state],
+  (unitSuggestions, state): Unit[] => {
+    const { selectUnitById } = require("./unitSlice");
+    return unitSuggestions.map((id) =>
+      selectUnitById(state, {
+        id,
+      }),
+    );
+  }
+);
+
+export const selectUnitResultIDs = (state: AppState): string[] =>
+  state.search.unitResults;
+
+export const selectAddresses = (state: AppState): Record<string, any>[] =>
+  state.search.addressSuggestions;

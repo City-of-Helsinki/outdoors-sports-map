@@ -6,8 +6,7 @@ import { bindActionCreators, Dispatch } from "redux";
 
 import AriaHiddenIcon from "./MapAriaHiddenIcon";
 import { latLngToArray } from "./mapHelpers";
-import { setLocation as setLocationActionFactory } from "./mapSlice";
-import { selectLocation } from "./state/selectors";
+import { setLocation as setLocationActionFactory, selectLocation } from "./state/mapSlice";
 import { AppState } from "../app/appConstants";
 import iconUrl from "../assets/markers/location.png";
 import iconRetinaUrl from "../assets/markers/location@2x.png";

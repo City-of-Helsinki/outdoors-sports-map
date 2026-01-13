@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import isEmpty from "lodash/isEmpty";
 
-import type { AppState } from "./appConstants";
-import { selectIsFetchingService, selectServicesState } from "../service/serviceSlice";
+import { selectIsFetchingService, selectServicesState } from "../../service/serviceSlice";
+import type { AppState } from "../appConstants";
 
 export const selectIsLoading = createSelector(
   [

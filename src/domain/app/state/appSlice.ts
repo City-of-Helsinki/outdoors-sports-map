@@ -1,4 +1,4 @@
-import { apiSlice } from "../api/apiSlice";
+import { apiSlice } from "../../api/apiSlice";
 
 // Helper to convert object to URL-encoded form data
 const stringifyQuery = (params: Record<string, any>): string => {

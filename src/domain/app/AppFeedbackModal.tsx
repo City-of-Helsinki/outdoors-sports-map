@@ -9,7 +9,7 @@ import {
 import React, { RefObject, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useSendFeedbackMutation } from "./appSlice";
+import { useSendFeedbackMutation } from "./state/appSlice";
 
 type Props = {
   focusAfterCloseRef?: RefObject<HTMLElement>;

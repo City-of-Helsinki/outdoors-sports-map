@@ -8,7 +8,7 @@ import AppFeedbackModal from "../AppFeedbackModal";
 
 // Mock the RTK Query mutation hook
 const mockSendFeedback = jest.fn();
-jest.mock("../appSlice", () => ({
+jest.mock("../state/appSlice", () => ({
   useSendFeedbackMutation: () => [mockSendFeedback, {}],
 }));
 

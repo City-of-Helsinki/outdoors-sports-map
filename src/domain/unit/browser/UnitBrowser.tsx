@@ -9,8 +9,8 @@ import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 import Page from "../../../common/a11y/Page";
 import { Address, AppState } from "../../app/appConstants";
 import routerPaths from "../../app/appRoutes";
-import * as fromHome from "../../app/appSelectors";
-import { selectAddress } from "../../map/state/selectors";
+import { selectIsLoading } from "../../app/state/appSelectors";
+import { selectAddress } from "../../map/state/mapSlice";
 
 type Props = {
   leafletMap?: RefObject<L.Map | null>;
@@ -19,7 +19,7 @@ type Props = {
 
 function UnitBrowser({ onViewChange, leafletMap }: Props) {
   const { t } = useTranslation();
-  const isLoading = useSelector<AppState, boolean>(fromHome.selectIsLoading);
+  const isLoading = useSelector<AppState, boolean>(selectIsLoading);
   const address = useSelector<AppState, Address | undefined | null>(
     selectAddress,
   );
