@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import useSearch from "../../common/hooks/useSearch";
 import { AppSearch } from "../app/appConstants";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
-import { fetchServices } from "../service/actions";
+import { useGetServicesQuery } from "../service/serviceSlice";
 import { fetchUnits } from "../unit/state/actions";
 import { searchUnits } from "../unit/state/search/actions";
 
@@ -13,6 +13,9 @@ function useFetchInitialData() {
   const dispatch = useDispatch();
   const search = useSearch<AppSearch>();
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
+  
+  // Fetch services using RTK Query
+  useGetServicesQuery();
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -23,7 +26,6 @@ function useFetchInitialData() {
 
       // Fetch initial data
       dispatch(fetchUnits({}));
-      dispatch(fetchServices({}));
     }
   }, [dispatch, isUnitSearchOpen, search]);
 
