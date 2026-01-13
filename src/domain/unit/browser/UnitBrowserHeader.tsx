@@ -1,6 +1,6 @@
 import { IconMap, IconMenuHamburger } from "hds-react";
 import { pick } from "lodash";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router";
@@ -12,11 +12,20 @@ import useAppSearch from "../../app/useAppSearch";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
 import { setLocation, useLazyGetAddressQuery } from "../../map/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
-import * as unitSearchActions from "../state/search/actions";
-import * as unitSearchSelectors from "../state/search/selectors";
+import {
+  useLazySearchUnitsQuery,
+  useLazySearchSuggestionsQuery,
+  clearSearch,
+} from "../state/search/searchSlice";
+import {
+  selectUnitSuggestions,
+  selectAddresses,
+  selectIsActive,
+} from "../state/search/selectors";
 import { selectIsUnitLoading } from "../state/selectors";
 import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
+import { receiveUnits } from "../unitSlice";
 
 type ActionButtonProps = {
   action: () => void;
@@ -53,11 +62,20 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   const { q, ...appSearch } = useAppSearch();
   const doSearch = useDoSearch();
   
-  const unitResults = useSelector(unitSearchSelectors.getUnitSuggestions);
-  const addressesResults = useSelector(unitSearchSelectors.getAddresses);
+  const [triggerSearchUnits, searchUnitsResult] = useLazySearchUnitsQuery();
+  const [triggerSearchSuggestions] = useLazySearchSuggestionsQuery();
+  const unitResults = useSelector(selectUnitSuggestions);
+  const addressesResults = useSelector(selectAddresses);
   const disabled = useSelector(selectIsUnitLoading);
-  const isActive = useSelector(unitSearchSelectors.getIsActive);
+  const isActive = useSelector(selectIsActive);
   const [triggerGetAddress] = useLazyGetAddressQuery();
+
+  // Update units in store when search completes
+  useEffect(() => {
+    if (searchUnitsResult.data) {
+      dispatch(receiveUnits(searchUnitsResult.data));
+    }
+  }, [searchUnitsResult.data, dispatch]);
 
   // Memoize suggestions to avoid creating new arrays on every render
   const suggestions = useMemo(() => {
@@ -94,9 +112,9 @@ function UnitBrowserHeader({ onViewChange }: Props) {
 
   const handleOnFindSuggestions = useCallback(
     (input: string) => {
-      dispatch(unitSearchActions.fetchUnitSuggestions(input));
+      triggerSearchSuggestions(input);
     },
-    [dispatch],
+    [triggerSearchSuggestions],
   );
 
   const handleOnSearch = useCallback(
@@ -118,19 +136,17 @@ function UnitBrowserHeader({ onViewChange }: Props) {
         
       }
 
-      dispatch(
-        unitSearchActions.searchUnits(
-          input,
-          pick(nextSearch, ["status", "sport"]),
-        ),
-      );
+      triggerSearchUnits({
+        input,
+        params: pick(nextSearch, ["status", "sport"]),
+      });
     },
-    [doSearch, dispatch, history, searchMatch, appSearch],
+    [doSearch, triggerSearchUnits, history, searchMatch, appSearch],
   );
 
   const handleOnClear = useCallback(() => {
     doSearch("q");
-    dispatch(unitSearchActions.clearSearch());
+    dispatch(clearSearch());
   }, [dispatch, doSearch]);
 
   return (
