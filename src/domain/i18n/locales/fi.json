@@ -18,6 +18,11 @@
       "CLOSE": "Sulje Kartta",
       "OPEN": "Avaa Kartta"
     },
+    "NOT_FOUND": {
+      "TITLE": "Sivua ei löytynyt",
+      "DESCRIPTION": "Hakemaasi sivua ei löytynyt. Sivu on saatettu siirtää tai poistaa, tai osoitteessa on kirjoitusvirhe.",
+      "GO_HOME": "Palaa etusivulle"
+    },
     "UNIT_DETAILS_PANEL": "Toimipisteen tiedot",
     "SEARCH_RESULTS_PANEL": "Hakutulokset",
     "MODAL": {

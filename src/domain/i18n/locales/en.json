@@ -18,6 +18,11 @@
       "CLOSE": "Close Map",
       "OPEN": "Open Map"
     },
+    "NOT_FOUND": {
+      "TITLE": "Page not found",
+      "DESCRIPTION": "The page you are looking for could not be found. It may have been moved or deleted, or there may be a typo in the address.",
+      "GO_HOME": "Go to homepage"
+    },
     "UNIT_DETAILS_PANEL": "Unit details",
     "SEARCH_RESULTS_PANEL": "Search results",
     "MODAL": {
