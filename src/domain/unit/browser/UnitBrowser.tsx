@@ -19,7 +19,7 @@ type Props = {
 
 function UnitBrowser({ onViewChange, leafletMap }: Props) {
   const { t } = useTranslation();
-  const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
+  const isLoading = useSelector<AppState, boolean>(fromHome.selectIsLoading);
   const address = useSelector<AppState, Address | undefined | null>(
     selectAddress,
   );

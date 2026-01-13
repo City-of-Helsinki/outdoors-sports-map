@@ -8,9 +8,8 @@ import {
 } from "hds-react";
 import React, { RefObject, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 
-import * as appActions from "../app/state/actions";
+import { useSendFeedbackMutation } from "./appSlice";
 
 type Props = {
   focusAfterCloseRef?: RefObject<HTMLElement>;
@@ -24,7 +23,7 @@ function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
   const [feedback, setFeedback] = useState<string>("");
   const [emailInputOpen, setEmailInputOpen] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
-  const dispatch = useDispatch();
+  const [sendFeedback] = useSendFeedbackMutation();
 
   // Clear values when modal is opened
   React.useEffect(() => {
@@ -44,7 +43,7 @@ function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
       e.preventDefault();
 
       if (feedback) {
-        dispatch(appActions.sendFeedback(feedback, email));
+        sendFeedback({ feedback, email });
         onClose();
       } else {
         console.error(
@@ -52,7 +51,7 @@ function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
         );
       }
     },
-    [dispatch, email, feedback, onClose],
+    [sendFeedback, email, feedback, onClose],
   );
 
   return (

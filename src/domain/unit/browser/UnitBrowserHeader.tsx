@@ -55,7 +55,7 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   
   const unitResults = useSelector(unitSearchSelectors.getUnitSuggestions);
   const addressesResults = useSelector(unitSearchSelectors.getAddresses);
-  const disabled = useSelector(unitSelectors.getIsLoading);
+  const disabled = useSelector(unitSelectors.getIsUnitLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
   const [triggerGetAddress] = useLazyGetAddressQuery();
 

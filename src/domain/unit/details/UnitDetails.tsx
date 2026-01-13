@@ -29,7 +29,7 @@ import FavoriteButton from "../../../common/components/FavoriteButton";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
-import { getIsLoading } from "../../app/appSelectors";
+import { selectIsLoading } from "../../app/appSelectors";
 import getServiceName from "../../service/serviceHelpers";
 import { selectServicesObject } from "../../service/serviceSlice";
 import UnitIcon from "../UnitIcon";
@@ -689,7 +689,7 @@ function UnitDetails({
     }),
   );
   const [footerHeight, setFooterHeight] = useState<number>(0);
-  const isLoading = useSelector(getIsLoading);
+  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
     if (unit) {

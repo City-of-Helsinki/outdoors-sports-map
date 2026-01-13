@@ -6,11 +6,10 @@ import {
 } from "../../testingLibraryUtils";
 import AppFeedbackModal from "../AppFeedbackModal";
 
-// Mock useDispatch to prevent real saga execution
-const mockDispatch = jest.fn();
-jest.mock("react-redux", () => ({
-  ...jest.requireActual("react-redux"),
-  useDispatch: () => mockDispatch,
+// Mock the RTK Query mutation hook
+const mockSendFeedback = jest.fn();
+jest.mock("../appSlice", () => ({
+  useSendFeedbackMutation: () => [mockSendFeedback, {}],
 }));
 
 describe("<AppFeedbackModal />", () => {
@@ -50,7 +49,7 @@ describe("<AppFeedbackModal />", () => {
     expect(console.error).toHaveBeenCalledWith(
       "User attempted to send feedback without providing feedback",
     );
-    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(mockSendFeedback).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
   });
 
@@ -79,10 +78,10 @@ describe("<AppFeedbackModal />", () => {
     await user.type(getFeedbackTextarea(), "Test feedback");
     fireEvent.click(getSubmitButton());
 
-    // And optionally check sendFeedback was called
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: expect.stringMatching(/SEND_FEEDBACK$/),
-      payload: { feedback: "Test feedback", email: "" },
+    // Check that sendFeedback mutation was called with correct params
+    expect(mockSendFeedback).toHaveBeenCalledWith({
+      feedback: "Test feedback",
+      email: "",
     });
 
     // You can check that onClose was called
