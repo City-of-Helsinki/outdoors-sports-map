@@ -33,7 +33,6 @@ import {
   UnitQualityConst,
   HikingFilter,
 } from "./unitConstants";
-import { createRequest, createUrl } from "../api/apiHelpers";
 import { AppState, DEFAULT_LANG } from "../app/appConstants";
 import i18n from "../i18n/i18n";
 import {
@@ -45,20 +44,6 @@ import {
   SupportingServices,
   SleddingServices,
 } from "../service/serviceConstants";
-import { getOnSeasonServices } from "../service/serviceHelpers";
-
-export const getFetchUnitsRequest = (params: Record<string, any>) =>
-  createRequest(
-    createUrl("unit/", {
-      service: getOnSeasonServices().join(","),
-      only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
-      include: "observations,connections",
-      geometry: "true",
-      geometry_3d: "true",
-      page_size: 1000,
-      ...params,
-    }),
-  );
 
 export const getAttr = (
   attr: Record<string, any>,
@@ -610,12 +595,15 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
     UnitFilters.ICE_SWIMMING,
   ] as string[];
 
+  // Create a copy of the unit to avoid mutating frozen objects from RTK Query
+  let updatedUnit = { ...unit };
+
   if (filters.includes(sport)) {
     const defaultObservations = [getDefaultUnitObservation(unit)];
-    unit.observations = defaultObservations;
+    updatedUnit = { ...updatedUnit, observations: defaultObservations };
   }
 
-  const { observations } = unit;
+  const { observations } = updatedUnit;
 
   // Get latest primary observation
   const primaryObservation = observations.find((obs) => obs.primary) || null;
@@ -649,7 +637,7 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
     primaryObservation?.value === "closed" ||
     !primaryObservation
   ) {
-    return unit;
+    return updatedUnit;
   }
 
   // Unknown
@@ -685,13 +673,12 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
     daysFromLastUpdate < UnitAutomaticConditionChangeDays[sport].unknown;
 
   // Set new observation copy as the first observation in unit's observations list
+  // Return a new unit object instead of mutating the original
   if (isSatisfactory) {
-    unit.observations = [satisfactoryObservation, ...observations];
+    return { ...updatedUnit, observations: [satisfactoryObservation, ...observations] };
   } else {
-    unit.observations = [unknownObservation, ...observations];
+    return { ...updatedUnit, observations: [unknownObservation, ...observations] };
   }
-
-  return unit;
 };
 
 export const handleUnitConditionUpdates = (units: Record<number, Unit>) => {

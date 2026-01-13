@@ -5,8 +5,8 @@ import useSearch from "../../common/hooks/useSearch";
 import { AppSearch } from "../app/appConstants";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import { useGetServicesQuery } from "../service/serviceSlice";
-import { fetchUnits } from "../unit/state/actions";
 import { searchUnits } from "../unit/state/search/actions";
+import { useGetUnitsQuery } from "../unit/unitSlice";
 
 function useFetchInitialData() {
   const isFirstRender = useRef<Boolean>(true);
@@ -14,8 +14,9 @@ function useFetchInitialData() {
   const search = useSearch<AppSearch>();
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
   
-  // Fetch services using RTK Query
+  // Fetch services and units using RTK Query
   useGetServicesQuery();
+  useGetUnitsQuery({});
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -23,9 +24,6 @@ function useFetchInitialData() {
       if (isUnitSearchOpen && q) {
         dispatch(searchUnits(q, params));
       }
-
-      // Fetch initial data
-      dispatch(fetchUnits({}));
     }
   }, [dispatch, isUnitSearchOpen, search]);
 

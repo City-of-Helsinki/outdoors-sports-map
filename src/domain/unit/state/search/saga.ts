@@ -4,7 +4,6 @@ import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import {
   receiveAddressSuggestions,
   receiveUnitSuggestions,
-  receiveUnits,
 } from "./actions";
 import {
   callApi,
@@ -22,7 +21,7 @@ import {
   unitSchema,
   UnitSearchActions,
 } from "../../unitConstants";
-import { getFetchUnitsRequest } from "../../unitHelpers";
+import { receiveUnits } from "../../unitSlice";
 
 function* searchUnits({
   payload: { params },
@@ -32,10 +31,20 @@ function* searchUnits({
 
   // Make search request only when there's input
   if (params.input && params.input.length) {
-    request = createRequest(createUrl("search/", params)); // Otherwise get all units in order to comply with accessibility
-    // requirements
+    request = createRequest(createUrl("search/", params));
   } else {
-    request = getFetchUnitsRequest(params);
+    // Otherwise get all units - reuse the same params structure that RTK Query uses
+    request = createRequest(
+      createUrl("unit/", {
+        service: params.service,
+        only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
+        include: "observations,connections",
+        geometry: "true",
+        geometry_3d: "true",
+        page_size: 1000,
+        ...params,
+      }),
+    );
   }
 
   const { bodyAsJson } = yield call(callApi, request);

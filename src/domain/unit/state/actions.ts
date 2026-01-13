@@ -1,22 +1,8 @@
 import { createAction } from "redux-actions";
 
-import { ApiResponse } from "../../api/apiConstants";
 import { Action } from "../../app/appConstants";
 import { getOnSeasonServices } from "../../service/serviceHelpers";
-import { NormalizedUnitSchema, UnitActions } from "../unitConstants";
-
-export const fetchUnits = (params: Record<string, any>): Action =>
-  createAction(UnitActions.FETCH)({
-    params,
-  });
-
-export const receiveUnits = (data: NormalizedUnitSchema): Action =>
-  createAction(UnitActions.RECEIVE)(data);
-
-export const setFetchError = (error: ApiResponse) =>
-  createAction(UnitActions.FETCH_ERROR)({
-    error,
-  });
+import { UnitActions } from "../unitConstants";
 
 export const clearSearch = () => createAction(UnitActions.SEARCH_CLEAR)();
 
