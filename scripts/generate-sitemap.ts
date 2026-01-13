@@ -1,4 +1,5 @@
 #!/usr/bin/env ts-node
+/* eslint-disable import/first */
 
 import axios from "axios";
 import dotenv from "dotenv";
@@ -6,15 +7,15 @@ import fs from "fs";
 import get from "lodash/get";
 import prettier from "prettier";
 
+// Find environment variables from a dotenv if available. Helps in debugging
+// locally. MUST be called before importing app constants.
+dotenv.config();
+
 // Find configuration values from the application code to decrease the chance
 // of them going out of sync.
 import { API_BASE_URL } from "../src/domain/app/appConstants";
 import { SUPPORTED_LANGUAGES } from "../src/domain/i18n/i18nConstants";
 import { UnitServices } from "../src/domain/service/serviceConstants";
-
-// Find environment variables from a dotenv if available. Helps in debugging
-// locally.
-dotenv.config();
 
 const productionAddress = "https://ulkoliikunta.fi";
 const LANGUAGES = Object.values(SUPPORTED_LANGUAGES);
