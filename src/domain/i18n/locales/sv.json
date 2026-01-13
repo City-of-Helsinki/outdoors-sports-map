@@ -17,7 +17,12 @@
     "MAP_BUTTON": {
       "CLOSE": "Stäng Kartan",
       "OPEN": "Öppna Kartan"
-    },
+    },    
+    "NOT_FOUND": {
+      "TITLE": "Sidan hittades inte",
+      "DESCRIPTION": "Sidan du sökte hittades inte. Sidan kan ha flyttats eller tagits bort, eller så finns det ett stavfel i adressen.",
+      "GO_HOME": "Gå till startsidan"
+    },    
     "UNIT_DETAILS_PANEL": "Verksamhetsställetdetaljer",
     "SEARCH_RESULTS_PANEL": "Sökresultat",
     "MODAL": {

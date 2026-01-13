@@ -10,6 +10,7 @@ import TextRevealButton from "../../common/components/TextRevealButton";
 import useIsMobile from "../../common/hooks/useIsMobile";
 import ApplicationHeader from "../app/AppHeader";
 import CookieConsent from "../app/CookieConsent";
+import NotFound from "../app/NotFound";
 import routerPaths from "../app/appRoutes";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import MapComponent from "../map/MapComponent";
@@ -55,7 +56,6 @@ function MapLayout({
 
   const [headerHeight, setHeaderHeight] = useState<number>(0);
 
-  console.log("Rendering MapLayout", headerHeight);
   return (
     <>
       <ApplicationHeader
@@ -232,46 +232,59 @@ function HomeContainer() {
     [isMobile],
   );
 
+  const renderWithMapLayout = (content: ReactNode) => (
+    <MapLayout
+      content={content}
+      map={
+        <MapComponent
+          leafletElementRef={leafletElementRef}
+          onCenterMapToUnit={handleCenterMapToUnit}
+        />
+      }
+      isExpanded={isHomeContainerExpanded}
+      onHeaderHeightChange={setHeaderHeight}
+      toggleIsExpanded={toggleIsHomeContainerExpanded}
+    />
+  );
+
   useFetchInitialData();
 
   return (
     <>
-      <MapLayout
-        content={
-          <Switch>
-            <Route
-              exact
-              path={routerPaths.unitDetails}
-              render={() => (
-                <UnitDetails
-                  headerHeight={headerHeight}
-                  onCenterMapToUnit={handleCenterMapToUnit}
-                  isExpanded={isUnitDetailsExpanded}
-                  toggleIsExpanded={toggleIsUnitDetailsExpanded}
-                />
-              )}
+      <Switch>
+        <Route
+          exact
+          path={routerPaths.unitDetails}
+          render={() => renderWithMapLayout(
+            <UnitDetails
+              headerHeight={headerHeight}
+              onCenterMapToUnit={handleCenterMapToUnit}
+              isExpanded={isUnitDetailsExpanded}
+              toggleIsExpanded={toggleIsUnitDetailsExpanded}
             />
-            <Route
-              path={routerPaths.unitBrowser}
-              render={() => (
-                <UnitBrowser
-                  leafletMap={leafletElementRef}
-                  onViewChange={handleOnViewChange}
-                />
-              )}
+          )}
+        />
+        <Route
+          exact
+          path={routerPaths.unitBrowser}
+          render={() => renderWithMapLayout(
+            <UnitBrowser
+              leafletMap={leafletElementRef}
+              onViewChange={handleOnViewChange}
             />
-          </Switch>
-        }
-        map={
-          <MapComponent
-            leafletElementRef={leafletElementRef}
-            onCenterMapToUnit={handleCenterMapToUnit}
-          />
-        }
-        isExpanded={isHomeContainerExpanded}
-        onHeaderHeightChange={setHeaderHeight}
-        toggleIsExpanded={toggleIsHomeContainerExpanded}
-      />
+          )}
+        />
+        <Route
+          path={routerPaths.unitBrowserSearch}
+          render={() => renderWithMapLayout(
+            <UnitBrowser
+              leafletMap={leafletElementRef}
+              onViewChange={handleOnViewChange}
+            />
+          )}
+        />
+        <Route component={NotFound} />
+      </Switch>
       <CookieConsent />
     </>
   );
