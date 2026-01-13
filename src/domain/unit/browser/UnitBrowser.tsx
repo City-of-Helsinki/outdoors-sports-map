@@ -10,7 +10,7 @@ import Page from "../../../common/a11y/Page";
 import { Address, AppState } from "../../app/appConstants";
 import routerPaths from "../../app/appRoutes";
 import * as fromHome from "../../app/appSelectors";
-import * as fromMap from "../../map/state/selectors";
+import { selectAddress } from "../../map/state/selectors";
 
 type Props = {
   leafletMap?: RefObject<L.Map | null>;
@@ -21,7 +21,7 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
   const { t } = useTranslation();
   const isLoading = useSelector<AppState, boolean>(fromHome.getIsLoading);
   const address = useSelector<AppState, Address | undefined | null>(
-    fromMap.getAddress,
+    selectAddress,
   );
 
   const hasTmpMessage = t("UNIT_DETAILS.TMP_MESSAGE").length > 0;

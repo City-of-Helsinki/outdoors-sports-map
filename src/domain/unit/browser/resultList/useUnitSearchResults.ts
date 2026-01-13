@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../../app/appConstants";
 import * as fromHome from "../../../app/appSelectors";
 import useAppSearch from "../../../app/useAppSearch";
-import * as fromMap from "../../../map/state/selectors";
+import { selectLocation } from "../../../map/state/selectors";
 import * as fromUnitSearch from "../../state/search/selectors";
 import * as fromUnit from "../../state/selectors";
 import { SortKeys, Unit } from "../../unitConstants";
@@ -63,7 +63,7 @@ function useUnitSearchResults({ leafletMap }: Options) {
   const isSearching = useSelector<AppState, boolean>(
     fromUnitSearch.getIsFetching,
   );
-  const position = useSelector<AppState, LatLngTuple>(fromMap.getLocation);
+  const position = useSelector<AppState, LatLngTuple>(selectLocation);
 
   if (isLoading || isSearching) {
     return { totalUnits: units.length, results: null };

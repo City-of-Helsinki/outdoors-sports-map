@@ -6,8 +6,8 @@ import { bindActionCreators, Dispatch } from "redux";
 
 import AriaHiddenIcon from "./MapAriaHiddenIcon";
 import { latLngToArray } from "./mapHelpers";
-import { setLocation as setLocationActionFactory } from "./state/actions";
-import { getLocation } from "./state/selectors";
+import { setLocation as setLocationActionFactory } from "./mapSlice";
+import { selectLocation } from "./state/selectors";
 import { AppState } from "../app/appConstants";
 import iconUrl from "../assets/markers/location.png";
 import iconRetinaUrl from "../assets/markers/location@2x.png";
@@ -61,7 +61,7 @@ class MapUserLocationMarker extends Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  position: getLocation(state),
+  position: selectLocation(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

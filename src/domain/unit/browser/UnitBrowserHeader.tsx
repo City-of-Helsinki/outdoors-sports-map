@@ -1,17 +1,16 @@
 import { IconMap, IconMenuHamburger } from "hds-react";
 import { pick } from "lodash";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router";
 
 import useDoSearch from "../../../common/hooks/useDoSearch";
 import useLanguage from "../../../common/hooks/useLanguage";
-import { AppState } from "../../app/appConstants";
 import routerPaths from "../../app/appRoutes";
 import useAppSearch from "../../app/useAppSearch";
 import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
-import { setLocation } from "../../map/state/actions";
+import { setLocation, useLazyGetAddressQuery } from "../../map/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
 import * as unitSearchActions from "../state/search/actions";
 import * as unitSearchSelectors from "../state/search/selectors";
@@ -40,35 +39,6 @@ function ActionButton({ action, icon, isActive, name }: ActionButtonProps) {
   );
 }
 
-const suggestionsSelectorFactory =
-  (search: string, language: string) => (state: AppState) => {
-    const unitResults = unitSearchSelectors
-      .getUnitSuggestions(state)
-      .filter(function (unit) {
-        return unit !== undefined;
-      });
-    const addressesResults = unitSearchSelectors.getAddresses(state);
-    const unitSuggestions = unitResults.map((unit) => ({
-      type: "searchable" as const,
-      label: getAttr(unit.name, language),
-      unit,
-      to: {
-        pathname: `/unit/${unit.id}`,
-        state: {
-          search,
-        },
-      },
-    }));
-    const addressSuggestions = addressesResults.map((address) => ({
-      type: "loose" as const,
-      label: address.properties.label,
-      icon: addressIcon,
-      coordinates: address.geometry.coordinates.slice().reverse(),
-    }));
-
-    return [...unitSuggestions, ...addressSuggestions];
-  };
-
 type Props = {
   onViewChange: (coordinates: [number, number]) => void;
 };
@@ -82,18 +52,44 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   const history = useHistory();
   const { q, ...appSearch } = useAppSearch();
   const doSearch = useDoSearch();
-  const suggestions = useSelector(
-    suggestionsSelectorFactory(searchString, language),
-  );
+  
+  const unitResults = useSelector(unitSearchSelectors.getUnitSuggestions);
+  const addressesResults = useSelector(unitSearchSelectors.getAddresses);
   const disabled = useSelector(unitSelectors.getIsLoading);
   const isActive = useSelector(unitSearchSelectors.getIsActive);
+  const [triggerGetAddress] = useLazyGetAddressQuery();
+
+  // Memoize suggestions to avoid creating new arrays on every render
+  const suggestions = useMemo(() => {
+    const filteredUnits = unitResults.filter(unit => unit !== undefined);
+    const unitSuggestions = filteredUnits.map((unit) => ({
+      type: "searchable" as const,
+      label: getAttr(unit.name, language),
+      unit,
+      to: {
+        pathname: `/unit/${unit.id}`,
+        state: {
+          search: searchString,
+        },
+      },
+    }));
+    const addressSuggestions = addressesResults.map((address) => ({
+      type: "loose" as const,
+      label: address.properties.label,
+      icon: addressIcon,
+      coordinates: address.geometry.coordinates.slice().reverse(),
+    }));
+
+    return [...unitSuggestions, ...addressSuggestions];
+  }, [unitResults, addressesResults, language, searchString]);
 
   const handleAddressClick = useCallback(
     (coordinates: [number, number]) => {
       dispatch(setLocation(coordinates));
+      triggerGetAddress({ lat: coordinates[0], lon: coordinates[1] });
       onViewChange(coordinates);
     },
-    [dispatch, onViewChange],
+    [dispatch, triggerGetAddress, onViewChange],
   );
 
   const handleOnFindSuggestions = useCallback(

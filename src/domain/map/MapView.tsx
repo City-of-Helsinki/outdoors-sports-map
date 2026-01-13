@@ -25,7 +25,7 @@ type Props = WithTranslation & {
   onCenterMapToUnit: (unit: Unit, map: L.Map) => void;
   activeLanguage: string;
   openUnit: (unitId: string, unitName?: string) => void;
-  setLocation: (coordinates: number[]) => void;
+  setLocation: (coordinates: [number, number]) => void;
   leafletElementRef: MutableRefObject<L.Map | null>;
   position: LatLngTuple;
   units: Unit[];
