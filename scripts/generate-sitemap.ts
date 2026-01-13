@@ -1,23 +1,24 @@
 #!/usr/bin/env ts-node
 
-import fs from "fs";
-import prettier from "prettier";
 import axios from "axios";
-import get from "lodash/get";
 import dotenv from "dotenv";
+import fs from "fs";
+import get from "lodash/get";
+import prettier from "prettier";
+
+// Find configuration values from the application code to decrease the chance
+// of them going out of sync.
+import { API_BASE_URL } from "../src/domain/app/appConstants";
+import { SUPPORTED_LANGUAGES } from "../src/domain/i18n/i18nConstants";
+import { UnitServices } from "../src/domain/service/serviceConstants";
 
 // Find environment variables from a dotenv if available. Helps in debugging
 // locally.
 dotenv.config();
 
-// Find configuration values from the application code to decrease the chance
-// of them going out of sync.
-import { API_BASE_URL } from "../src/domain/app/appConstants";
-import { UnitServices } from "../src/domain/service/serviceConstants";
-import { SUPPORTED_LANGUAGES } from "../src/domain/i18n/i18nConstants";
-
 const productionAddress = "https://ulkoliikunta.fi";
 const LANGUAGES = Object.values(SUPPORTED_LANGUAGES);
+const UNITS_PAGE_SIZE = 100;
 
 function getLanguageVariants(path: string) {
   return LANGUAGES.map((language) => `${language}/${path}`);
@@ -27,17 +28,32 @@ function addDomain(...paths: string[]) {
   return paths.map((path) => `${productionAddress}/${path}`);
 }
 
-async function getUnitPaths() {
+async function getAllUnits() {
   const parameters = new URLSearchParams({
     service: Object.values(UnitServices).join(","),
     only: "id,name",
-    page_size: "1000",
+    page_size: UNITS_PAGE_SIZE.toString(),
   });
-  const unitRequest = await axios({
-    url: `${API_BASE_URL}/unit?${parameters.toString()}`,
-    headers: { "Content-Type": "application/json" },
-  });
-  const units = unitRequest.data.results;
+
+  let url = `${API_BASE_URL}/unit?${parameters.toString()}`;
+  let allUnits: any[] = [];
+
+  while (url) {
+    const response = await axios.get(url, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = response.data;
+    allUnits = allUnits.concat(data.results);
+    url = data.next; // follow pagination
+  }
+
+  return allUnits;
+}
+
+
+async function getUnitPaths() {
+  const units = await getAllUnits();
 
   return units.reduce(
     (acc: [string, string, string][], unit: Record<string, unknown>) => {
