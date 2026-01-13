@@ -40,6 +40,11 @@ const createStore = (preloadedState?: RootState) => {
         serializableCheck: {
           ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
         },
+        immutableCheck: {
+          // Ignore large state paths that are managed by RTK Query
+          ignoredPaths: ["api.queries", "api.mutations", "unit.byId"],
+          warnAfter: 128, // Increase threshold from 32ms to 128ms
+        },
       }).concat(apiSlice.middleware, sagaMiddleware) as any,
     preloadedState,
   });

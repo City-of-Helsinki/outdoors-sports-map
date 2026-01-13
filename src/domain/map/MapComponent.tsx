@@ -1,11 +1,9 @@
 import { RefObject, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import { bindActionCreators } from "redux";
 
 import MapView from "./MapView";
-import { setLocation } from "./state/actions";
-import * as fromMap from "./state/selectors";
+import { setLocation, useLazyGetAddressQuery, selectLocation } from "./mapSlice";
 import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
 import { AppState } from "../app/appConstants";
@@ -41,14 +39,17 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
       id: unitDetailsMatch?.params?.unitId,
     })
   );
-  const position = useSelector(fromMap.getLocation);
+  const position = useSelector(selectLocation);
   const initialPosition = useRef(position);
+  const [triggerGetAddress] = useLazyGetAddressQuery();
 
-  const actions = bindActionCreators(
-    {
-      setLocation,
+  const handleSetLocation = useCallback(
+    (coordinates: [number, number]) => {
+      dispatch(setLocation(coordinates));
+      // Trigger reverse geocoding
+      triggerGetAddress({ lat: coordinates[0], lon: coordinates[1] });
     },
-    dispatch
+    [dispatch, triggerGetAddress]
   );
 
   const openUnit = useCallback(
@@ -93,7 +94,7 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
     <MapView
       selectedUnit={selectedUnit}
       activeLanguage={language}
-      setLocation={actions.setLocation}
+      setLocation={handleSetLocation}
       leafletElementRef={leafletElementRef}
       position={initialPosition.current}
       units={unitData}
