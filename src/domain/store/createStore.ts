@@ -1,11 +1,11 @@
-import { applyMiddleware, createStore as rawCreateStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore as rawConfigureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 
 import createRootReducer from "./createRootReducer";
 import rootSaga from "./rootSaga";
+import { apiSlice } from "../api/apiSlice";
 import { APP_NAME } from "../app/appConstants";
 
 export type RootState = ReturnType<ReturnType<typeof createRootReducer>>;
@@ -16,26 +16,25 @@ const createStore = (preloadedState?: RootState) => {
     key: "primary",
     storage,
     whitelist: ["map"],
-    blacklist: [],
+    blacklist: ["api"], // Don't persist RTK Query cache
     keyPrefix: `${APP_NAME}:`,
   };
 
   const rootReducer = createRootReducer();
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-  const middlewares = [];
   const sagaMiddleware = createSagaMiddleware();
 
-  middlewares.push(sagaMiddleware);
-
-  const composedEnhancers = composeWithDevTools(
-    applyMiddleware(...middlewares),
-  );
-
-  const store = rawCreateStore(
-    persistedReducer,
+  const store = rawConfigureStore({
+    reducer: persistedReducer as any,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+        },
+      }).concat(apiSlice.middleware, sagaMiddleware) as any,
     preloadedState,
-    composedEnhancers,
-  );
+  });
+
   const persistor = persistStore(store);
 
   sagaMiddleware.run(rootSaga);

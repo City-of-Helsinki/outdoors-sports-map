@@ -1,10 +1,8 @@
 import { Notification, NotificationSize } from "hds-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 
-import { fetchAppWideNotifications } from "./actions";
-import { getData } from "./selectors";
+import { useGetAppWideNotificationsQuery } from "./appWideNotificationSlice";
 
 const IS_OPEN_KEY = "ulkoliikunta:isAppWideNotificationOpen";
 
@@ -13,13 +11,7 @@ type NotificationProps = {
 };
 
 export function AppWideNotification({initialState}: NotificationProps) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchAppWideNotifications({}));
-  }, [dispatch])
-
-  const data = useSelector(getData);
+  const { data } = useGetAppWideNotificationsQuery();
   const notification = data && data[0];
   
   const notificationContentTranslations: Record<string, string | undefined> = {
@@ -38,7 +30,7 @@ export function AppWideNotification({initialState}: NotificationProps) {
   const [isOpen, setOpen] = useState(initialState);
 
   useEffect(() => {
-    if (isNotificationEnabled && sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString()) {
+    if (isNotificationEnabled && notification && sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString()) {
       setOpen(true); 
     }
   }, [isNotificationEnabled, notification])
@@ -58,7 +50,9 @@ export function AppWideNotification({initialState}: NotificationProps) {
 
   const handleClose = () => {
     setOpen(false);
-    sessionStorage.setItem(IS_OPEN_KEY, notification.id.toString());
+    if (notification) {
+      sessionStorage.setItem(IS_OPEN_KEY, notification.id.toString());
+    }
   };
 
   return isOpen ? (
