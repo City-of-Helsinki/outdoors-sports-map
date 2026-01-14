@@ -3,23 +3,24 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import moment from "moment";
 import { initReactI18next } from "react-i18next";
 
+// Import JSON files as modules
 import { SUPPORTED_LANGUAGES } from "./i18nConstants";
+import enTranslations from "./locales/en.json";
+import fiTranslations from "./locales/fi.json";
+import svTranslations from "./locales/sv.json";
 import { replaceLanguageInPath } from "../../common/utils/pathUtils";
 import { DEFAULT_LANG } from "../app/appConstants";
 import history from "../app/appHistory";
 
 const getTranslations = () => ({
   fi: {
-    // eslint-disable-next-line global-require
-    translation: require("./locales/fi.json"),
+    translation: fiTranslations,
   },
   sv: {
-    // eslint-disable-next-line global-require
-    translation: require("./locales/sv.json"),
+    translation: svTranslations,
   },
   en: {
-    // eslint-disable-next-line global-require
-    translation: require("./locales/en.json"),
+    translation: enTranslations,
   },
 });
 

@@ -1,3 +1,5 @@
+import userEvent from "@testing-library/user-event";
+
 import { render, screen } from "../../../../testingLibraryUtils";
 import * as unitHelpers from "../../../unitHelpers";
 import UnitBrowserResultList from "../UnitBrowserResultList";
@@ -153,7 +155,7 @@ describe("<UnitBrowserResultList />", () => {
       ).not.toBeInTheDocument();
 
       const showMoreLink = getShowMoreLink();
-      const user = require("@testing-library/user-event").default.setup();
+      const user = userEvent.setup();
       await user.click(showMoreLink);
 
       expect(screen.getByText("Mustavuoren latu 2,1 km")).toBeInTheDocument();
@@ -191,7 +193,7 @@ describe("<UnitBrowserResultList />", () => {
       renderComponent();
 
       // First, change sort to favorites
-      const user = require("@testing-library/user-event").default.setup();
+      const user = userEvent.setup();
       const sortButton = await screen.findByText("Paras kunto ensin");
       await user.click(sortButton);
 
@@ -213,7 +215,7 @@ describe("<UnitBrowserResultList />", () => {
       renderComponent();
 
       // Change sort to favorites
-      const user = require("@testing-library/user-event").default.setup();
+      const user = userEvent.setup();
       const sortButton = await screen.findByText("Paras kunto ensin");
       await user.click(sortButton);
 
