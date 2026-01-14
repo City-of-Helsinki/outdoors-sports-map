@@ -4,30 +4,30 @@ import { render, screen } from "../../testingLibraryUtils";
 import HomeContainer from "../HomeContainer";
 
 // Mock the complex dependencies
-jest.mock("../useFetchInitialData", () => jest.fn());
-jest.mock("../../map/MapComponent", () => {
-  return function MockMapComponent() {
+vi.mock("../useFetchInitialData", () => ({ default: vi.fn() }));
+vi.mock("../../map/MapComponent", () => ({
+  default: function MockMapComponent() {
     return <div data-testid="map-component">Map Component</div>;
-  };
-});
-jest.mock("../../unit/browser/UnitBrowser", () => {
-  return function MockUnitBrowser() {
+  },
+}));
+vi.mock("../../unit/browser/UnitBrowser", () => ({
+  default: function MockUnitBrowser() {
     return <div data-testid="unit-browser">Unit Browser</div>;
-  };
-});
-jest.mock("../../unit/details/UnitDetails", () => {
-  return function MockUnitDetails() {
+  },
+}));
+vi.mock("../../unit/details/UnitDetails", () => ({
+  default: function MockUnitDetails() {
     return <div data-testid="unit-details">Unit Details</div>;
-  };
-});
-jest.mock("../../app/CookieConsent", () => {
-  return function MockCookieConsent() {
+  },
+}));
+vi.mock("../../app/CookieConsent", () => ({
+  default: function MockCookieConsent() {
     return null;
-  };
-});
+  },
+}));
 
 // Mock hooks to avoid complex setup
-jest.mock("../../../common/hooks/useIsMobile", () => jest.fn(() => false));
+vi.mock("../../../common/hooks/useIsMobile", () => ({ default: vi.fn(() => false) }));
 
 const renderWithRoute = (initialEntries: string[]) => {
   return render(

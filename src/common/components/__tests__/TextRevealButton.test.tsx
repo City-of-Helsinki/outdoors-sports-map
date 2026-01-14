@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import userEvent from "@testing-library/user-event";
 
 import TextRevealButton from "../TextRevealButton";
@@ -12,11 +12,11 @@ describe("TextRevealButton", () => {
   const defaultProps = {
     icon: <MockIcon />,
     text: "Test Button Text",
-    onClick: jest.fn(),
+    onClick: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -78,7 +78,7 @@ describe("TextRevealButton", () => {
 
   describe("interaction", () => {
     it("calls onClick handler when clicked", async () => {
-      const mockOnClick = jest.fn();
+      const mockOnClick = vi.fn();
       render(<TextRevealButton {...defaultProps} onClick={mockOnClick} />);
 
       const button = screen.getByRole("button");
@@ -90,7 +90,7 @@ describe("TextRevealButton", () => {
 
     it("is keyboard accessible", async () => {
       const user = userEvent.setup();
-      const mockOnClick = jest.fn();
+      const mockOnClick = vi.fn();
       render(<TextRevealButton {...defaultProps} onClick={mockOnClick} />);
 
       const button = screen.getByRole("button");
@@ -110,7 +110,7 @@ describe("TextRevealButton", () => {
 
   describe("HTML attributes", () => {
     it("does not call onClick when button is disabled", async () => {
-      const mockOnClick = jest.fn();
+      const mockOnClick = vi.fn();
       render(
         <TextRevealButton {...defaultProps} onClick={mockOnClick} disabled />,
       );

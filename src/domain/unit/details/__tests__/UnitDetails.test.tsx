@@ -1,8 +1,19 @@
 import moment from "moment";
-import ReactRouter from "react-router";
 
 import { render, screen, within } from "../../../testingLibraryUtils";
 import UnitDetails from "../UnitDetails";
+
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
+
+  return {
+    ...actual,
+    useParams: () => ({ unitId: "40142" }),
+  };
+});
+
 
 const temperatureDataObservation = {
   unit: 40142,
@@ -285,9 +296,6 @@ const defaultProps = {
 };
 
 const renderComponent = (props?: any, modifiedUnit?: any) => {
-  jest.spyOn(ReactRouter, "useParams").mockReturnValue({
-    unitId: "40142",
-  });
 
   return render(<UnitDetails {...defaultProps} {...props} />, undefined, {
     unit: {

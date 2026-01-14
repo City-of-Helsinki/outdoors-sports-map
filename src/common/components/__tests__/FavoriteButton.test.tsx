@@ -1,17 +1,17 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import FavoriteButton from "../FavoriteButton";
 
 describe("FavoriteButton", () => {
   const defaultProps = {
     addFavoriteText: "Add to favorites",
     removeFavoriteText: "Remove from favorites",
-    onClick: jest.fn(),
+    onClick: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -61,7 +61,7 @@ describe("FavoriteButton", () => {
 
   describe("interaction", () => {
     it("calls onClick handler when clicked", async () => {
-      const mockOnClick = jest.fn();
+      const mockOnClick = vi.fn();
       render(<FavoriteButton {...defaultProps} onClick={mockOnClick} />);
 
       const button = screen.getByTestId("favorite-button");

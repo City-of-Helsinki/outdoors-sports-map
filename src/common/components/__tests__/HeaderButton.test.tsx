@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import HeaderButton from "../HeaderButton";
 
 
@@ -40,7 +40,7 @@ describe("HeaderButton", () => {
 
   describe("interaction", () => {
     it("calls onClick handler when clicked", async () => {
-      const mockOnClick = jest.fn();
+      const mockOnClick = vi.fn();
       render(<HeaderButton {...defaultProps} onClick={mockOnClick} />);
 
       const button = screen.getByRole("button");
@@ -51,7 +51,7 @@ describe("HeaderButton", () => {
     });
 
     it("does not call onClick when button is disabled", async() => {
-      const mockOnClick = jest.fn();
+      const mockOnClick = vi.fn();
       render(<HeaderButton {...defaultProps} onClick={mockOnClick} disabled />);
 
       const button = screen.getByRole("button");

@@ -4,16 +4,16 @@ import UnitBrowserFilterButton from "../UnitBrowserFilterButton";
 const defaultProps = {
   message: "Swimming",
   filterName: "swimming",
-  onClick: jest.fn(),
+  onClick: vi.fn(),
   showDropdownIndicator: false,
   isActive: false,
 };
 
 describe("UnitBrowserFilterButton", () => {
-  let mockOnClick: jest.Mock;
+  let mockOnClick: any;
 
   beforeEach(() => {
-    mockOnClick = jest.fn();
+    mockOnClick = vi.fn();
   });
 
   describe("when showDropdownIndicator is true", () => {

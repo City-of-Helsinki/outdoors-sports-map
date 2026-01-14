@@ -2,29 +2,29 @@ import { render, screen } from "../../../testingLibraryUtils";
 import UnitBrowser from "../UnitBrowser";
 
 // Mock child components to focus on the loading logic
-jest.mock("../UnitBrowserHeader", () => {
-  return function MockUnitBrowserHeader() {
+vi.mock("../UnitBrowserHeader", () => ({
+  default: function MockUnitBrowserHeader() {
     return <div data-testid="unit-browser-header">Header</div>;
-  };
-});
+  },
+}));
 
-jest.mock("../UnitBrowserFilterSection", () => {
-  return function MockUnitBrowserFilterSection() {
+vi.mock("../UnitBrowserFilterSection", () => ({
+  default: function MockUnitBrowserFilterSection() {
     return <div data-testid="unit-browser-filter-section">Filter Section</div>;
-  };
-});
+  },
+}));
 
-jest.mock("../resultList/UnitBrowserResultList", () => {
-  return function MockUnitBrowserResultList() {
+vi.mock("../resultList/UnitBrowserResultList", () => ({
+  default: function MockUnitBrowserResultList() {
     return <div data-testid="unit-browser-result-list">Result List</div>;
-  };
-});
+  },
+}));
 
 describe("UnitBrowser", () => {
-  const mockOnViewChange = jest.fn();
+  const mockOnViewChange = vi.fn();
 
   beforeEach(() => {
-    mockOnViewChange.mockClear();
+    vi.clearAllMocks();
   });
 
   it("renders filter section in default state", () => {

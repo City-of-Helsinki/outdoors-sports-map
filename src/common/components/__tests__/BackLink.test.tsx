@@ -1,17 +1,17 @@
-import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import BackLink from "../BackLink";
 
 // Mock the useLanguage hook
-jest.mock("../../hooks/useLanguage", () => ({
+vi.mock("../../hooks/useLanguage", () => ({
   __esModule: true,
   default: () => "fi",
 }));
 
 // Mock HDS IconArrowLeft
-jest.mock("hds-react", () => ({
+vi.mock("hds-react", () => ({
   IconArrowLeft: function MockIconArrowLeft(props: any) {
     return (
       <span data-testid="arrow-left-icon" {...props}>

@@ -2,40 +2,40 @@ import { render, screen, userEvent } from "../../../testingLibraryUtils";
 import UnitBrowserFilterSection from "../UnitBrowserFilterSection";
 
 // Mock the hooks
-const mockDoSearch = jest.fn();
-const mockUseAppSearch = jest.fn();
+const mockDoSearch = vi.fn();
+const mockUseAppSearch = vi.fn();
 
-jest.mock("../../../../common/hooks/useDoSearch", () => ({
+vi.mock("../../../../common/hooks/useDoSearch", () => ({
   __esModule: true,
   default: () => mockDoSearch,
 }));
 
-jest.mock("../../../app/useAppSearch", () => ({
+vi.mock("../../../app/useAppSearch", () => ({
   __esModule: true,
   default: () => mockUseAppSearch(),
 }));
 
 // Mock child components with simple implementations
-jest.mock("../UnitBrowserAddressBar", () => {
-  return function MockUnitBrowserAddressBar() {
+vi.mock("../UnitBrowserAddressBar", () => ({
+  default: function MockUnitBrowserAddressBar() {
     return <div data-testid="unit-browser-address-bar">Address Bar</div>;
-  };
-});
+  },
+}));
 
-jest.mock("../filter/UnitBrowserFilter", () => {
-  return function MockUnitBrowserFilters() {
+vi.mock("../filter/UnitBrowserFilter", () => ({
+  default: function MockUnitBrowserFilters() {
     return <div data-testid="unit-browser-filters">Main Filters</div>;
-  };
-});
+  },
+}));
 
-jest.mock("../filter/UnitBrowserToggleFilters", () => {
-  return function MockUnitBrowserToggleFilters({ name }: any) {
+vi.mock("../filter/UnitBrowserToggleFilters", () => ({
+  default: function MockUnitBrowserToggleFilters({ name }: any) {
     return <div data-testid={`toggle-filters-${name}`}>Toggle Filters</div>;
-  };
-});
+  },
+}));
 
-jest.mock("../filter/supportingServices/HikingFilter", () => {
-  return function MockHikingFilter({ handleHikingSelect, isSelected }: any) {
+vi.mock("../filter/supportingServices/HikingFilter", () => ({
+  default: function MockHikingFilter({ handleHikingSelect, isSelected }: any) {
     return (
       <div data-testid="hiking-filter">
         <button
@@ -46,11 +46,11 @@ jest.mock("../filter/supportingServices/HikingFilter", () => {
         </button>
       </div>
     );
-  };
-});
+  },
+}));
 
 // Mock unit helpers with simple return values
-jest.mock("../../unitHelpers", () => ({
+vi.mock("../../unitHelpers", () => ({
   getOnSeasonSportFilters: () => [{ value: "skiing", label: "Skiing" }],
   getSportSpecificationFilters: () => [
     { value: "cross-country", label: "Cross Country" },
@@ -58,7 +58,7 @@ jest.mock("../../unitHelpers", () => ({
 }));
 
 describe("UnitBrowserFilterSection", () => {
-  const mockOnViewChange = jest.fn();
+  const mockOnViewChange = vi.fn();
   const defaultAddress = {
     location: {
       coordinates: [60.1699, 24.9384] as [number, number],
@@ -66,7 +66,7 @@ describe("UnitBrowserFilterSection", () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseAppSearch.mockReturnValue({
       sport: null,
       status: null,
