@@ -22,7 +22,7 @@ type Props = {
   handleAddressClick: (coordinates: [number, number]) => void;
   suggestions: Suggestion[];
   menuPosition: { top: number };
-  preventBlurClose: MutableRefObject<boolean>;
+  preventBlurCloseRef: MutableRefObject<boolean>;
 };
 
 function SearchSuggestions({
@@ -30,7 +30,7 @@ function SearchSuggestions({
   handleAddressClick,
   suggestions,
   menuPosition,
-  preventBlurClose,
+  preventBlurCloseRef,
 }: Props) {
   const { t } = useTranslation();
 
@@ -50,10 +50,10 @@ function SearchSuggestions({
         zIndex: 799,
       }}
       onMouseDown={() => {
-        preventBlurClose.current = true;
+        preventBlurCloseRef.current = true;
       }}
       onTouchStart={() => {
-        preventBlurClose.current = true;
+        preventBlurCloseRef.current = true;
       }}
     >
       {suggestionCount > 0 ? (

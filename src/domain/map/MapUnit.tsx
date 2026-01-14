@@ -36,7 +36,7 @@ class MapUnit extends Component<Props> {
     const { unit, openUnit, i18n } = this.props;
 
     L.DomEvent.stopPropagation(e);
-    // @ts-ignore
+    // @ts-expect-error - unit.name[language] may not exist but we handle the undefined case
     openUnit(unit.id, unit.name[i18n?.languages[0]]);
   }
 

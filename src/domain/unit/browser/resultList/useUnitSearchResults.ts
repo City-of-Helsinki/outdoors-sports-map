@@ -36,7 +36,7 @@ function sortUnits({ units, position, leafletMap, sortKey }: SortOptions) {
       break;
 
     case SortKeys.DISTANCE:
-      // @ts-ignore
+      // @ts-expect-error - sortByDistance function expects specific parameters that may have type conflicts
       sortedUnits = sortByDistance(units, position, leafletMap);
       break;
 

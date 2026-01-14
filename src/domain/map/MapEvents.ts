@@ -1,7 +1,9 @@
 import { useMapEvents } from "react-leaflet";
 
 type MapEventsProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleMapClick: (event: Record<string, any>) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setLocation: (event: Record<string, any>) => void;
 };
 

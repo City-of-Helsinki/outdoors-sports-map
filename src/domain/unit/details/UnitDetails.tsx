@@ -31,7 +31,7 @@ import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
 import { selectIsLoading } from "../../app/state/appSelectors";
 import getServiceName from "../../service/serviceHelpers";
-import { selectServicesObject } from "../../service/serviceSlice";
+import { selectServicesObject, Service } from "../../service/serviceSlice";
 import UnitIcon from "../UnitIcon";
 import UnitObservationStatus, {
   StatusUpdated,
@@ -51,7 +51,7 @@ import {
 
 type HeaderProps = {
   unit?: Unit;
-  services: Record<string, any>;
+  services: Record<string, unknown>;
   isLoading: boolean;
 };
 
@@ -96,11 +96,11 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
         <div className="unit-container-header-description">
           <UnitIcon
             unit={unit}
-            alt={getServiceName(unit.services, services, language)}
+            alt={getServiceName(unit.services, services as Record<string, Service>, language)}
           />
           <div className="unit-container-header-description-text-content">
             <p className="unit-container-header-service-name">
-              {getServiceName(unit.services, services, language)}
+              {getServiceName(unit.services, services as Record<string, Service>, language)}
             </p>
             <p>
               {unitAddress ? `${unitAddress}, ` : ""}
@@ -435,12 +435,13 @@ function NoticeInfo({ unit }: NoticeInfoProps) {
     <BodyBox title={t("UNIT_BROWSER.NOTICE")}>
       <StatusUpdated time={getObservationTime(notice)} />
       <ReactMarkdown
-        children={getAttr(notice.value as Translatable<string>, language)}
         // Insert a break for each newline character
         // https://github.com/rexxars/react-markdown/issues/105#issuecomment-346103734
         remarkPlugins={[breaks]}
         allowedElements={["text", "p", "br"]}
-      />
+      >
+        {getAttr(notice.value as Translatable<string>, language)}
+      </ReactMarkdown>
     </BodyBox>
   ) : null;
 }
@@ -506,12 +507,12 @@ function LocationOpeningHours({ unit }: LocationOpeningHoursProps) {
 }
 
 type LocationTemperatureProps = {
-  observation: Record<string, any>;
+  observation: Record<string, unknown>;
 };
 
 function LocationTemperature({ observation }: LocationTemperatureProps) {
   const { t } = useTranslation();
-  const temperature = get(observation, "name.fi");
+  const temperature = get(observation, "name.fi") as string;
   const observationTime = getObservationTime(observation);
 
   return (
@@ -523,7 +524,7 @@ function LocationTemperature({ observation }: LocationTemperatureProps) {
 }
 
 type LiveLocationTemperatureProps = {
-  observation: Record<string, any>;
+  observation: Record<string, unknown>;
 };
 
 function LiveLocationTemperature({
@@ -545,7 +546,7 @@ function LiveLocationTemperature({
 }
 
 type LiveWaterQualityProps = {
-  observation: Record<string, any>;
+  observation: Record<string, unknown>;
 };
 
 function LiveWaterQuality({ observation }: Readonly<LiveWaterQualityProps>) {
@@ -597,11 +598,11 @@ function BodyBoxIconAndValue({
 type SingleUnitBodyProps = {
   currentUnit?: Unit;
   isLoading: boolean;
-  liveTemperatureObservation: Record<string, any> | null | undefined;
+  liveTemperatureObservation: Record<string, unknown> | null | undefined;
   routeUrl?: string;
-  temperatureObservation: Record<string, any> | null | undefined;
+  temperatureObservation: Record<string, unknown> | null | undefined;
   palvelukarttaUrl?: string;
-  liveWaterQualityObservation: Record<string, any> | null | undefined;
+  liveWaterQualityObservation: Record<string, unknown> | null | undefined;
 };
 
 export function SingleUnitBody({
@@ -621,7 +622,7 @@ export function SingleUnitBody({
     let otherInfo = unitConnections.find((connection) => {
       return connection.section_type === "OTHER_INFO";
     });
-    extraUrl = otherInfo?.www?.fi!;
+    extraUrl = otherInfo?.www?.fi as string;
   }
 
   return currentUnit && !isLoading ? (
@@ -655,7 +656,7 @@ export function SingleUnitBody({
 
 function findAlternatePathname(pathname: string, unit: Unit, language: string) {
   const base = `${globalThis.location.origin}/${language}/unit/${unit.id}`;
-  // @ts-ignore
+  // @ts-expect-error - unit.name[language] may not exist but we handle the undefined case
   const unitName = unit.name[language];
 
   if (unitName) {

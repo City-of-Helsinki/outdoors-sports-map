@@ -25,7 +25,7 @@ const createMapControl = (props: Props) => {
       .on(link, "click", L.DomEvent.stop)
       .on(link, "click", (event: Event) => {
         L.DomEvent.stopPropagation(event);
-        handleClick && handleClick(event);
+        handleClick?.(event);
       });
 
     // Render React element into the control

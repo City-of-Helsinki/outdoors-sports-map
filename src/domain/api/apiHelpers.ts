@@ -9,13 +9,13 @@ import {
 export const normalizeEntityResults = <
   T,
   E = { [key: string]: { [key: string]: T } | undefined },
-  R = any,
+  R = string | number,
 >(
-  results: any,
+  results: unknown,
   schema: Schema<T>,
 ) => normalize<T, E, R>(results, schema);
 
-export const stringifyQuery = (query: Record<string, any>): string =>
+export const stringifyQuery = (query: Record<string, string | number>): string =>
   Object.keys(query)
     .map((key) => [key, query[key]].map((v) => encodeURIComponent(v)).join("="))
     .join("&");
@@ -23,7 +23,7 @@ export const stringifyQuery = (query: Record<string, any>): string =>
 export const createRequest = (url: string, init?: RequestInit): Request =>
   new Request(url, init);
 
-export const createUrl = (url: string, params: Record<string, any>): string =>
+export const createUrl = (url: string, params: Record<string, string | number>): string =>
   `${API_BASE_URL || ""}/${url}${params ? `?${stringifyQuery(params)}` : ""}`;
 
 export const digitransitApiHeaders = () => ({
@@ -33,7 +33,7 @@ export const digitransitApiHeaders = () => ({
 
 export const createDigitransitUrl = (
   url: string,
-  params: Record<string, any>,
+  params: Record<string, string | number>,
 ): string =>
   `${DIGITRANSIT_API_BASE_URL || ""}/${url}${
     params ? `?${stringifyQuery(params)}` : ""

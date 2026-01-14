@@ -1,6 +1,7 @@
 import { apiSlice } from "../../api/apiSlice";
 
 // Helper to convert object to URL-encoded form data
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stringifyQuery = (params: Record<string, any>): string => {
   return Object.keys(params)
     .filter((key) => params[key] !== undefined)
@@ -12,6 +13,7 @@ export const appApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     sendFeedback: builder.mutation<void, { feedback: string; email?: string | null }>({
       query: ({ feedback, email }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const params: Record<string, any> = {
           description: feedback,
           service_request_type: "OTHER",

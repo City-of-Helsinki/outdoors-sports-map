@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { configureStore as rawConfigureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -20,6 +21,7 @@ const createStore = (preloadedState?: RootState) => {
     migrate: (state: any) => {
       // Remove old "service" key from persisted state
       if (state && state.service) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { service, ...rest } = state;
         return Promise.resolve(rest);
       }

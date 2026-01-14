@@ -23,8 +23,7 @@ const defaultProps = {
   handleAddressClick: vi.fn(),
   suggestions: [] as Suggestion[],
   menuPosition: { top: 100 },
-  preventBlurClose: mockPreventBlurClose,
-};
+  preventBlurClose: mockPreventBlurClose,  preventBlurCloseRef: mockPreventBlurClose,};
 
 const mockUnit: Unit = {
   id: "123",

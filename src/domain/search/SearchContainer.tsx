@@ -112,7 +112,7 @@ function SearchContainer({
     }
   }, [searchPhrase, onFindSuggestions, preventFocusOpen, updateMenuPosition]);
 
-  const handleBlur = useCallback((event: React.FocusEvent) => {
+  const handleBlur = useCallback(() => {
     // Don't close if we're preventing blur (e.g., clicking on suggestions)
     if (preventBlurClose.current) {
       preventBlurClose.current = false;
@@ -183,7 +183,7 @@ function SearchContainer({
           suggestions={suggestions}
           handleAddressClick={handleAddressClick}
           menuPosition={menuPosition}
-          preventBlurClose={preventBlurClose}
+          preventBlurCloseRef={preventBlurClose}
         />
       )}
     </div>

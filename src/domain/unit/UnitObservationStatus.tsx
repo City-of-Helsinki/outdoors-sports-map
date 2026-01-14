@@ -58,6 +58,7 @@ export function StatusUpdatedAgo({
 }
 
 type MaintenanceUpdatedProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   name: Record<string, any>;
   time: Date;
 };

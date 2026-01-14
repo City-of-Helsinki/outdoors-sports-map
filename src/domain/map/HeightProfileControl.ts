@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { Position } from "geojson";
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import "leaflet.heightgraph";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useMap } from "react-leaflet";
 
@@ -11,6 +12,7 @@ import { Unit } from "../unit/unitConstants";
 // Extend L.control to include heightgraph
 declare module "leaflet" {
   namespace control {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function heightgraph(options: any): any;
   }
 }
@@ -24,16 +26,23 @@ function HeightProfileControl({ unit }: Props) {
   const { t } = useTranslation();
   const map = useMap();
   const [geometryIndex, setGeometryIndex] = useState(0);
-  const [geometry, setGeometry] = useState<Position[] | null>(null);
+  const [currentUnitId, setCurrentUnitId] = useState(unit.id);
 
-  useEffect(() => {
-    const getUnitGeometry = (unitData: Unit) => {
+  // Reset geometry index when unit changes using state comparison
+  if (currentUnitId !== unit.id) {
+    setCurrentUnitId(unit.id);
+    setGeometryIndex(0);
+  }
+
+  // Compute geometry using useMemo to avoid setState in effect
+  const geometry = useMemo(() => {
+    const getUnitGeometry = (unitData: Unit, index: number): Position[] | null => {
       const { geometry_3d } = unitData;
       if (geometry_3d) {
         const coordinates = geometry_3d?.coordinates;
         if (coordinates) {
           if (geometry_3d.type === "MultiLineString") {
-            const lineString = coordinates && coordinates[geometryIndex];
+            const lineString = coordinates && coordinates[index];
             return lineString;
           } else if (geometry_3d.type === "LineString") {
             return coordinates as unknown as Position[];
@@ -42,12 +51,11 @@ function HeightProfileControl({ unit }: Props) {
       }
       return null;
     };
-    setGeometry(getUnitGeometry(unit));
+    return getUnitGeometry(unit, geometryIndex);
   }, [unit, geometryIndex]);
 
   useEffect(() => {
     if (!geometry) {
-      setGeometryIndex(0);
       return;
     }
     function constructProfileGeoJson(coordinates: Position[]) {
@@ -75,10 +83,10 @@ function HeightProfileControl({ unit }: Props) {
     }
     const geoJson = constructProfileGeoJson(geometry);
 
-    const onRoute = (event: any) => {
+    const onRoute = (event: LeafletMouseEvent) => {
       control.mapMousemoveHandler(event, { showMapMarker: true });
     };
-    const outRoute = (event: any) => {
+    const outRoute = () => {
       control.mapMouseoutHandler(2000);
     };
 
@@ -166,7 +174,7 @@ function HeightProfileControl({ unit }: Props) {
       prevButton,
       "mousedown dblclick",
       L.DomEvent.stopPropagation,
-    ).on(prevButton, "click", (event: Event) => {
+    ).on(prevButton, "click", () => {
       if (geometryIndex > 0) {
         setGeometryIndex(geometryIndex - 1);
       }
@@ -176,7 +184,7 @@ function HeightProfileControl({ unit }: Props) {
       nextButton,
       "mousedown dblclick",
       L.DomEvent.stopPropagation,
-    ).on(nextButton, "click", (event: Event) => {
+    ).on(nextButton, "click", () => {
       if (
         unit.geometry_3d &&
         geometryIndex < unit.geometry_3d.coordinates.length - 1

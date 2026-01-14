@@ -14,42 +14,6 @@
     "flow": "flow",
     "lint": "eslint ./src"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ],
-    "rules": {
-      "import/order": [
-        "error",
-        {
-          "groups": [
-            [
-              "builtin",
-              "external"
-            ],
-            [
-              "internal",
-              "parent",
-              "index",
-              "sibling",
-              "object"
-            ]
-          ],
-          "newlines-between": "always",
-          "alphabetize": {
-            "order": "asc"
-          }
-        }
-      ],
-      "react/function-component-definition": [
-        "error",
-        {
-          "namedComponents": "function-declaration"
-        }
-      ],
-      "react/destructuring-assignment": "error"
-    }
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
@@ -103,7 +67,6 @@
     "react-redux": "^9.2.0",
     "react-router": "5.3.4",
     "react-router-dom": "5.3.4",
-    "react-scripts": "5.0.1",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "regenerator-runtime": "^0.14.1",
@@ -117,11 +80,19 @@
     "whatwg-fetch": "^3.6.20"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "4.0.17",
     "@vitest/ui": "^4.0.17",
     "cross-env": "^7.0.3",
     "dotenv": "^17.2.3",
+    "eslint": "^9.39.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.0.0",
     "jsdom": "^27.4.0",
     "prettier": "^3.3.2",
     "vite": "^7.3.1",

@@ -7,6 +7,7 @@ type FormatTimeOptions = {
   months?: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const formatTime = (time: Date, t: (...args: Array<any>) => any) => {
   const endOfToday = moment().endOf("day");
   let lookup = "TIME.";

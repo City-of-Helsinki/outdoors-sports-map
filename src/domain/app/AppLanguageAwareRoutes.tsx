@@ -6,6 +6,7 @@ import useLanguage from "../../common/hooks/useLanguage";
 import HomeContainer from "../home/HomeContainer";
 import { languageParam } from "../i18n/i18nConstants";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getRouteLanguage(match: Record<string, any> | null | undefined) {
   if (!match) {
     return null;

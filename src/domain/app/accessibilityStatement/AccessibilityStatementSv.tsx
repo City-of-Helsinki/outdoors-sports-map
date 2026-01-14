@@ -89,9 +89,9 @@ export default function AccessibilityStatementSv() {
       <h3>Begäran om uppgifter i tillgänglig form</h3>
       <p>
         Om användaren upplever att hen inte får webbplatsens innehåll i
-        tillgängligt format, kan informationen begäras med responsformuläret 
+        tillgängligt format, kan informationen begäras med responsformuläret
         <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>
-        . Staden strävar efter att besvara förfrågningar inom rimlig tid.
+        . Staden strävar efter att besvara förfrågningar inom rimlig tid.
       </p>
       <p>
         <Link href="https://palautteet.hel.fi">
@@ -117,7 +117,7 @@ export default function AccessibilityStatementSv() {
       <p>
         Telefonväxel <PhoneNumber>0295 016 000</PhoneNumber>
       </p>
-      <p>Öppettider: må–fr kl. 8.00–16.15</p> 
+      <p>Öppettider: må–fr kl. 8.00–16.15</p>
       <h3>Helsingfors stad och tillgänglighet</h3>
       <p>
         Helsingfors stad har som mål att vara en tillgänglig stad för alla.

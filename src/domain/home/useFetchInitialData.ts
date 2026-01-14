@@ -8,7 +8,7 @@ import { useLazySearchUnitsQuery } from "../unit/state/searchSlice";
 import { useGetUnitsQuery } from "../unit/state/unitSlice";
 
 function useFetchInitialData() {
-  const isFirstRender = useRef<Boolean>(true);
+  const isFirstRender = useRef<boolean>(true);
   const search = useSearch<AppSearch>();
   const isUnitSearchOpen = useIsUnitBrowserSearchView();
   const [triggerSearchUnits] = useLazySearchUnitsQuery();

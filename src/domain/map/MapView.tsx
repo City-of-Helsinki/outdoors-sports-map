@@ -62,6 +62,7 @@ class MapView extends Component<Props, State> {
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleMapClick = (event: Record<string, any>) => {
     // Click events from info menu and language changer hit this. Don't
     // do anything for those events.
@@ -70,8 +71,10 @@ class MapView extends Component<Props, State> {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setLocation = (event: Record<string, any>) => {
     const { setLocation } = this.props;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setLocation((latLngToArray(event.latlng) as any) as [number, number]);
   };
 

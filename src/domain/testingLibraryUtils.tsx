@@ -15,8 +15,7 @@ type Props = {
 };
 
 export function TestProviders({ preloadedState, children }: Props) {
-  // @ts-ignore
-  const { store } = createStore(preloadedState);
+  const { store } = createStore(preloadedState as AppState);
 
   return (
     <Provider store={store}>
@@ -35,7 +34,7 @@ const customRender = (
   preloadedState?: Partial<AppState>
 ) =>
   render(ui, {
-    wrapper: ({ children }: any) => (
+    wrapper: ({ children }: React.PropsWithChildren) => (
       <TestProviders preloadedState={preloadedState}>{children}</TestProviders>
     ),
     ...options,

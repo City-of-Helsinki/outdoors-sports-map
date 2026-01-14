@@ -17,7 +17,7 @@ type Props = {
 };
 
 const createIcon = () =>
-  // @ts-ignore
+  // @ts-expect-error - AriaHiddenIcon constructor may have type conflicts with Leaflet types
   new AriaHiddenIcon({
     iconUrl,
     iconRetinaUrl,
@@ -74,4 +74,5 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 )(MapUserLocationMarker as any);

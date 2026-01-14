@@ -32,7 +32,7 @@ export default function AccessibilityStatementFi() {
         saavutettavuusvaatimukset WCAG v2.1 -tason AA mukaisesti.
       </p>
       <h3>Saavutettavuusselosteen laatiminen</h3>
-      <p>Tämä seloste on laadittu 13.8.2021.</p>
+      <p>Tämä seloste on laadittu 13.8.2021.</p>
       <h3>Saavutettavuuden arviointi</h3>
       <p>
         Saavutettavuuden arvioinnissa on noudatettu Helsingin kaupungin
@@ -88,9 +88,9 @@ export default function AccessibilityStatementFi() {
       <h3>Tietojen pyytäminen saavutettavassa muodossa</h3>
       <p>
         Jos käyttäjä ei koe saavansa sivuston sisältöä saavutettavassa
-        muodossa,&nbsp;voi käyttäjä pyytää näitä tietoja palautelomakkeella&nbsp;
+        muodossa, voi käyttäjä pyytää näitä tietoja palautelomakkeella 
         <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>
-        .&nbsp;Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
+        . Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
       </p>
       <p>
         <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute">
@@ -115,13 +115,13 @@ export default function AccessibilityStatementFi() {
       <p>
         Puhelinvaihde: <PhoneNumber>0295 016 000</PhoneNumber>
       </p>
-      <p>Avoinna: ma–pe klo 8.00–16.15</p> 
+      <p>Avoinna: ma–pe klo 8.00–16.15</p>
       <h3>Helsingin kaupunki ja saavutettavuus</h3>
       <p>
         Helsingin kaupungin tavoitteena on olla kaikille esteetön ja
         saavutettava kaupunki. Kaupungin tavoitteena on, että Helsingissä on
-        kaikkien kaupunkilaisten mahdollisimman helppo liikkua ja toimia, ja
-        että kaikki sisältö ja palvelut olisivat kaikkien saavutettavissa.
+        kaikkien kaupunkilaisten mahdollisimman helppo liikkua ja toimia, ja
+        että kaikki sisältö ja palvelut olisivat kaikkien saavutettavissa.
       </p>
       <p>
         Kaupunki edistää digitaalisten palveluiden saavutettavuutta
@@ -129,9 +129,9 @@ export default function AccessibilityStatementFi() {
         keskittyvää koulutusta henkilökunnalleen.
       </p>
       <p>
-        Sivustojen saavutettavuuden tasoa seurataan jatkuvasti sivustoja
+        Sivustojen saavutettavuuden tasoa seurataan jatkuvasti sivustoja
         ylläpidettäessä. Havaittuihin
-        puutteisiin reagoidaan välittömästi. Tarvittavat muutokset pyritään
+        puutteisiin reagoidaan välittömästi. Tarvittavat muutokset pyritään
         suorittamaan mahdollisimman nopeasti.
       </p>
       <h3>Vammaiset ja avustavien teknologioiden käyttäjät</h3>
@@ -147,7 +147,7 @@ export default function AccessibilityStatementFi() {
       </p>
       <h3>Saavutettavuusselosteen hyväksyntä</h3>
       <p>
-        Tämän selosteen on hyväksynyt 1.10.2021
+        Tämän selosteen on hyväksynyt 1.10.2021
         <br />
         Kulttuurin ja vapaa-ajan toimiala
         <br />

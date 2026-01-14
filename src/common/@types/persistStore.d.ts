@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Fixes persistor typings
 declare module "redux-persist/es/persistStore" {
   import { Store, Action, AnyAction } from "redux";

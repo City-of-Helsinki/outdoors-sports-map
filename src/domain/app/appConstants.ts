@@ -18,12 +18,14 @@ export const mobileBreakpoint = 768;
 
 export type Action = {
   type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: Record<string, any>;
 };
 
 export type FetchAction = {
   type: string;
   payload: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     params: Record<string, any>;
   };
 };
@@ -31,6 +33,7 @@ export type FetchAction = {
 export type PositionAction = {
   type: string;
   payload: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     position: Record<string, any>;
   };
 };
@@ -38,6 +41,7 @@ export type PositionAction = {
 export type EntityAction = {
   type: string;
   payload: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     entities: Record<string, any>;
     result: string[];
   };
