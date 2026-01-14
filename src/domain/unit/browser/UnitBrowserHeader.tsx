@@ -9,7 +9,7 @@ import useDoSearch from "../../../common/hooks/useDoSearch";
 import useLanguage from "../../../common/hooks/useLanguage";
 import routerPaths from "../../app/appRoutes";
 import useAppSearch from "../../app/useAppSearch";
-import addressIcon from "../../assets/markers/unknown-satisfactory-off.png";
+import addressIcon from "/assets/markers/unknown-satisfactory-off.png?url";
 import { setLocation, useLazyGetAddressQuery } from "../../map/state/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
 import {
