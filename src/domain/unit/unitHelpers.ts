@@ -220,10 +220,8 @@ export const getUnitIconURL = (
   const onOff = selected ? "on" : "off";
   const resolution = retina ? "@2x" : "";
 
-  // For Vite, we use import.meta.url to get the base URL and construct the path
-  const path = `../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`;
-  // Using new URL() with import.meta.url for Vite compatibility
-  return new URL(path, import.meta.url).href;
+  // Reference assets from public directory
+  return `/assets/markers/${sport}-${quality}-${onOff}${resolution}.png`;
 };
 
 export const getUnitIconHeight = (unit: Unit) =>
