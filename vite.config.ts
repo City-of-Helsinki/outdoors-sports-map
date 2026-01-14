@@ -4,6 +4,13 @@ import eslint from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern' as const,
+      },
+    },
+  },
   plugins: [
     react(),
     // Only run ESLint in development mode
