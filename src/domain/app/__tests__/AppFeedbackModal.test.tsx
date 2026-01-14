@@ -7,16 +7,16 @@ import {
 import AppFeedbackModal from "../AppFeedbackModal";
 
 // Mock the RTK Query mutation hook
-const mockSendFeedback = jest.fn();
-jest.mock("../state/appSlice", () => ({
+const mockSendFeedback = vi.fn();
+vi.mock("../state/appSlice", () => ({
   useSendFeedbackMutation: () => [mockSendFeedback, {}],
 }));
 
 describe("<AppFeedbackModal />", () => {
-  const onClose = jest.fn();
+  const onClose = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const getFeedbackTextarea = () =>
@@ -40,17 +40,20 @@ describe("<AppFeedbackModal />", () => {
   });
 
   it("does not submit if feedback is empty", async () => {
-    console.error = jest.fn(); // Suppress expected error output
     render(<AppFeedbackModal show={true} onClose={onClose} />);
     const user = userEvent.setup();
-    // Do not type anything in feedback
+    
+    // Try to submit with empty feedback
     await user.click(getSubmitButton());
-
-    expect(console.error).toHaveBeenCalledWith(
-      "User attempted to send feedback without providing feedback",
-    );
+    
+    // Check that form validation prevents submission
+    const textarea = getFeedbackTextarea();
+    expect(textarea).toBeInvalid(); // HTML5 validation should mark it as invalid
     expect(mockSendFeedback).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
+    
+    // Form should still be visible
+    expect(getFeedbackTextarea()).toBeInTheDocument();
   });
 
   it("email input is invalid with empty value", async () => {

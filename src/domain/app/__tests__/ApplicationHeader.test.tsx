@@ -2,13 +2,13 @@ import { render, screen, userEvent, within } from "../../testingLibraryUtils";
 import ApplicationHeader from "../AppHeader";
 
 const defaultProps = {
-  onHeaderHeightChange: jest.fn(),
+  onHeaderHeightChange: vi.fn(),
 };
 const renderComponent = () => render(<ApplicationHeader {...defaultProps} />);
 
 describe("<ApplicationHeader />", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("skip link", () => {

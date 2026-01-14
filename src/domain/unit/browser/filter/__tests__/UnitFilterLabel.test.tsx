@@ -1,5 +1,4 @@
-import {render} from "@testing-library/react";
-
+import {render} from "../../../../testingLibraryUtils";
 import UnitFilterLabel from "../UnitBrowserFilterLabel";
 
 it("renders snapshot correctly", () => {

@@ -4,23 +4,23 @@ import { render, screen } from "../../testingLibraryUtils";
 import { Unit } from "../../unit/unitConstants";
 import SearchSuggestions, { Suggestion } from "../SearchSuggestions";
 
-jest.mock("../../unit/UnitIcon", () => {
-  return function MockUnitIcon({ unit }: any) {
+vi.mock("../../unit/UnitIcon", () => ({
+  default: function MockUnitIcon({ unit }: any) {
     return <div data-testid="unit-icon">{unit?.name || "Unit Icon"}</div>;
-  };
-});
+  },
+}));
 
-jest.mock("../../unit/UnitObservationStatus", () => {
-  return function MockObservationStatus({ unit }: any) {
+vi.mock("../../unit/UnitObservationStatus", () => ({
+  default: function MockObservationStatus({ unit }: any) {
     return <div data-testid="observation-status">{unit?.name} Status</div>;
-  };
-});
+  },
+}));
 
 const mockPreventBlurClose = { current: false };
 
 const defaultProps = {
-  openAllResults: jest.fn(),
-  handleAddressClick: jest.fn(),
+  openAllResults: vi.fn(),
+  handleAddressClick: vi.fn(),
   suggestions: [] as Suggestion[],
   menuPosition: { top: 100 },
   preventBlurClose: mockPreventBlurClose,
@@ -73,7 +73,7 @@ const renderComponent = (props = {}) =>
 
 describe("<SearchSuggestions />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockPreventBlurClose.current = false;
   });
 
@@ -130,7 +130,7 @@ describe("<SearchSuggestions />", () => {
     });
 
     it("should call openAllResults when 'show all results' button is clicked", async () => {
-      const openAllResults = jest.fn();
+      const openAllResults = vi.fn();
       const searchableSuggestions = mockSuggestions.filter(
         (s) => s.type === "searchable",
       );
@@ -198,7 +198,7 @@ describe("<SearchSuggestions />", () => {
 
   describe("address click handling", () => {
     it("should call handleAddressClick when suggestion with coordinates is clicked", async () => {
-      const handleAddressClick = jest.fn();
+      const handleAddressClick = vi.fn();
       renderComponent({
         suggestions: [mockSuggestions[0]], // Helsinki with coordinates
         handleAddressClick,
@@ -211,14 +211,14 @@ describe("<SearchSuggestions />", () => {
     });
 
     it("should prevent default navigation when suggestion with coordinates is clicked", async () => {
-      const handleAddressClick = jest.fn();
+      const handleAddressClick = vi.fn();
       renderComponent({
         suggestions: [mockSuggestions[0]], // Helsinki with coordinates
         handleAddressClick,
       });
 
       const helsinkiLink = screen.getByRole("link", { name: /Helsinki/i });
-      const preventDefaultSpy = jest.fn();
+      const preventDefaultSpy = vi.fn();
 
       helsinkiLink.addEventListener("click", (e) => {
         e.preventDefault = preventDefaultSpy;
@@ -230,7 +230,7 @@ describe("<SearchSuggestions />", () => {
     });
 
     it("should not call handleAddressClick when suggestion without coordinates is clicked", async () => {
-      const handleAddressClick = jest.fn();
+      const handleAddressClick = vi.fn();
       const unitSuggestion = { ...mockSuggestions[2] };
       delete unitSuggestion.coordinates;
 

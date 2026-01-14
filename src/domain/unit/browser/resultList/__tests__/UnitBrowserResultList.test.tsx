@@ -4,10 +4,13 @@ import { render, screen } from "../../../../testingLibraryUtils";
 import * as unitHelpers from "../../../unitHelpers";
 import UnitBrowserResultList from "../UnitBrowserResultList";
 
-jest.mock("../../../unitConstants", () => ({
-  ...jest.requireActual("../../../unitConstants"),
-  UNIT_BATCH_SIZE: 1,
-}));
+vi.mock("../../../unitConstants", async (importOriginal) => {
+  const actual: any = await importOriginal();
+  return {
+    ...actual,
+    UNIT_BATCH_SIZE: 1,
+  };
+});
 
 const units = {
   "53916": {
@@ -127,13 +130,13 @@ const renderComponent = (props?: any, customState?: any) =>
 
 beforeEach(() => {
   // Mock getDefaultSportFilter to always return the default winter sport ski
-  jest
+  vi
     .spyOn(unitHelpers, "getDefaultSportFilter")
     .mockImplementation(() => "ski");
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe("<UnitBrowserResultList />", () => {

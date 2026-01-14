@@ -2,8 +2,8 @@ import { render, screen, userEvent, act } from "../../testingLibraryUtils";
 import SearchContainer from "../SearchContainer";
 
 // Mock SearchBar to keep tests focused on SearchContainer
-jest.mock("../SearchBar", () => {
-  return function MockSearchBar({
+vi.mock("../SearchBar", () => ({
+  default: function MockSearchBar({
     input,
     onInput,
     onSubmit,
@@ -36,18 +36,18 @@ jest.mock("../SearchBar", () => {
         <div data-testid="search-disabled">{disabled.toString()}</div>
       </div>
     );
-  };
-});
+  },
+}));
 
 const defaultProps = {
   search: "",
   disabled: false,
   suggestions: [],
   isActive: false,
-  onFindSuggestions: jest.fn(),
-  onSearch: jest.fn(),
-  onClear: jest.fn(),
-  onAddressClick: jest.fn(),
+  onFindSuggestions: vi.fn(),
+  onSearch: vi.fn(),
+  onClear: vi.fn(),
+  onAddressClick: vi.fn(),
 };
 
 const mockSuggestions = [
@@ -94,7 +94,7 @@ const expectSearchInputToBeEmpty = () => {
 
 describe("<SearchContainer />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -123,7 +123,7 @@ describe("<SearchContainer />", () => {
 
   describe("search functionality", () => {
     it("should update search phrase when input changes", async () => {
-      const onFindSuggestions = jest.fn();
+      const onFindSuggestions = vi.fn();
       renderComponent({ onFindSuggestions });
 
       const input = screen.getByTestId("search-input");
@@ -149,7 +149,7 @@ describe("<SearchContainer />", () => {
     });
 
     it("should call onSearch when search is submitted", async () => {
-      const onSearch = jest.fn();
+      const onSearch = vi.fn();
       renderComponent({ onSearch });
 
       const input = screen.getByTestId("search-input");
@@ -178,7 +178,7 @@ describe("<SearchContainer />", () => {
 
   describe("clear functionality", () => {
     it("should clear search phrase and call onClear", async () => {
-      const onClear = jest.fn();
+      const onClear = vi.fn();
       renderComponent({ onClear, suggestions: mockSuggestions });
 
       const input = screen.getByTestId("search-input");
@@ -197,7 +197,7 @@ describe("<SearchContainer />", () => {
 
   describe("focus handling", () => {
     it("should show suggestions on focus if there is text", async () => {
-      const onFindSuggestions = jest.fn();
+      const onFindSuggestions = vi.fn();
       renderComponent({
         search: "Helsinki",
         suggestions: mockSuggestions,
@@ -254,8 +254,8 @@ describe("<SearchContainer />", () => {
 
   describe("preventBlurClose logic", () => {
     it("should allow clicking on suggestion links", async () => {
-      const onAddressClick = jest.fn();
-      const onClear = jest.fn();
+      const onAddressClick = vi.fn();
+      const onClear = vi.fn();
       renderComponent({
         search: "Helsinki",
         suggestions: mockSuggestions,
@@ -287,7 +287,7 @@ describe("<SearchContainer />", () => {
     });
 
     it("should allow clicking on 'show all results' button", async () => {
-      const onSearch = jest.fn();
+      const onSearch = vi.fn();
       renderComponent({
         search: "Helsinki",
         suggestions: mockSuggestions,
@@ -384,7 +384,7 @@ describe("<SearchContainer />", () => {
     });
 
     it("should open suggestions on arrow keys if there is text", async () => {
-      const onFindSuggestions = jest.fn();
+      const onFindSuggestions = vi.fn();
       renderComponent({
         search: "Helsinki",
         suggestions: mockSuggestions,
@@ -402,7 +402,7 @@ describe("<SearchContainer />", () => {
     });
 
     it("should open suggestions on arrow up key if there is text", async () => {
-      const onFindSuggestions = jest.fn();
+      const onFindSuggestions = vi.fn();
       renderComponent({
         search: "Helsinki",
         suggestions: mockSuggestions,
@@ -420,7 +420,7 @@ describe("<SearchContainer />", () => {
     });
 
     it("should not open suggestions on arrow keys if there is no text", async () => {
-      const onFindSuggestions = jest.fn();
+      const onFindSuggestions = vi.fn();
       renderComponent({
         search: "",
         suggestions: mockSuggestions,
@@ -440,8 +440,8 @@ describe("<SearchContainer />", () => {
 
   describe("address selection", () => {
     it("should handle address click and clear search", async () => {
-      const onAddressClick = jest.fn();
-      const onClear = jest.fn();
+      const onAddressClick = vi.fn();
+      const onClear = vi.fn();
       renderComponent({
         suggestions: mockSuggestions,
         onAddressClick,

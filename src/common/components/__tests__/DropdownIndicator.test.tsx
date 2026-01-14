@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-
+import { render, screen } from "../../../domain/testingLibraryUtils";
 import DropdownIndicator from "../DropdownIndicator";
 
 describe("DropdownIndicator", () => {

@@ -2,11 +2,11 @@ import { render, screen, userEvent } from "../../testingLibraryUtils";
 import NotFound from "../NotFound";
 
 // Mock the history hook
-const mockPush = jest.fn();
-const mockGoBack = jest.fn();
+const mockPush = vi.fn();
+const mockGoBack = vi.fn();
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", async () => ({
+  ...await vi.importActual("react-router-dom"),
   useHistory: () => ({
     push: mockPush,
     goBack: mockGoBack,
@@ -14,8 +14,8 @@ jest.mock("react-router-dom", () => ({
 }));
 
 // Mock the useLanguage hook
-const mockUseLanguage = jest.fn();
-jest.mock("../../../common/hooks/useLanguage", () => ({
+const mockUseLanguage = vi.fn();
+vi.mock("../../../common/hooks/useLanguage", () => ({
   __esModule: true,
   default: () => mockUseLanguage(),
 }));
@@ -23,12 +23,11 @@ jest.mock("../../../common/hooks/useLanguage", () => ({
 describe("<NotFound />", () => {
   beforeEach(() => {
     mockUseLanguage.mockReturnValue("fi");
-    mockPush.mockClear();
-    mockGoBack.mockClear();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("content rendering", () => {

@@ -2,8 +2,8 @@ import { render, screen, userEvent } from "../../../../testingLibraryUtils";
 import UnitBrowserFilter, { filterEquals } from "../UnitBrowserFilter";
 
 // Mock child components with simple implementations
-jest.mock("../UnitBrowserFilterButton", () => {
-  return function MockUnitFilterButton({
+vi.mock("../UnitBrowserFilterButton", () => ({
+  default: function MockUnitFilterButton({
     filterName,
     isActive,
     onClick,
@@ -18,11 +18,11 @@ jest.mock("../UnitBrowserFilterButton", () => {
         {message}
       </button>
     );
-  };
-});
+  },
+}));
 
-jest.mock("../UnitBrowserFilterLabelButton", () => {
-  return function MockUnitFilterLabelButton({
+vi.mock("../UnitBrowserFilterLabelButton", () => ({
+  default: function MockUnitFilterLabelButton({
     filter,
     onAction,
     isActive,
@@ -38,21 +38,21 @@ jest.mock("../UnitBrowserFilterLabelButton", () => {
         {filter.name} ({filter.active || "none"})
       </button>
     );
-  };
-});
+  },
+}));
 
-jest.mock("../UnitBrowserFilterOptionsWrapper", () => {
-  return function MockUnitFilterOptionsWrapper({ children, ...props }: any) {
+vi.mock("../UnitBrowserFilterOptionsWrapper", () => ({
+  default: function MockUnitFilterOptionsWrapper({ children, ...props }: any) {
     return (
       <div data-testid="filter-options-wrapper" {...props}>
         {children}
       </div>
     );
-  };
-});
+  },
+}));
 
 describe("UnitBrowserFilter", () => {
-  const mockUpdateFilter = jest.fn();
+  const mockUpdateFilter = vi.fn();
   const defaultFilters = [
     {
       name: "sport",
@@ -67,7 +67,7 @@ describe("UnitBrowserFilter", () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders filter buttons for each filter", () => {

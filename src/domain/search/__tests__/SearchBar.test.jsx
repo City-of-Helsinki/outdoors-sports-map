@@ -1,3 +1,4 @@
+import React from "react";
 import {
   fireEvent,
   render,
@@ -11,7 +12,7 @@ const renderComponent = (props) => render(<SearchBar {...props} />);
 describe("<SearchBar />", () => {
   it("should have an input for making a search", () => {
     const value = "Test value";
-    const onInput = jest.fn();
+    const onInput = vi.fn();
     renderComponent({ onInput });
     const input = screen.getByRole("textbox", { name: "Etsi" });
 
@@ -24,7 +25,7 @@ describe("<SearchBar />", () => {
   });
 
   it("should have a submit button", async () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     renderComponent({ onSubmit });
     const submitButton = screen.getByRole("button", { name: "Etsi" });
 
