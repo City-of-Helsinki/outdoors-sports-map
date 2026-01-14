@@ -8,3 +8,5 @@
 !*yarn*
 !tsconfig.json
 !scripts/
+!index.html
+!vite.config.ts
