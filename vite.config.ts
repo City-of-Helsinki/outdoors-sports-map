@@ -3,8 +3,12 @@ import { defineConfig } from 'vite'
 import eslint from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), eslint()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    // Only run ESLint in development mode
+    ...(mode === 'development' ? [eslint()] : [])
+  ],
   server: {
     port: 3000,
     open: true
@@ -23,4 +27,4 @@ export default defineConfig({
   },
   // Environment variables prefix (keep REACT_APP_ for compatibility)
   envPrefix: 'REACT_APP_'
-})
+}))
