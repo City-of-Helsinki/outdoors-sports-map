@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { normalize, schema } from "normalizr";
 
+import { selectUnitById } from "./unitSlice";
 import { digitransitApiHeaders } from "../../api/apiHelpers";
 import { apiSlice } from "../../api/apiSlice";
 import type { AppState } from "../../app/appConstants";
@@ -244,7 +245,6 @@ const selectUnitSuggestionIds = (state: AppState) => state.search.unitSuggestion
 export const selectUnitSuggestions = createSelector(
   [selectUnitSuggestionIds, (state: AppState) => state],
   (unitSuggestions, state): Unit[] => {
-    const { selectUnitById } = require("./unitSlice");
     return unitSuggestions.map((id) =>
       selectUnitById(state, {
         id,

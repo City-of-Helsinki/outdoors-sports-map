@@ -1,6 +1,12 @@
 import "regenerator-runtime/runtime";
 import "whatwg-fetch";
 
+// CSS imports
+import "leaflet/dist/leaflet.css";
+import "leaflet.heightgraph/dist/L.Control.Heightgraph.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.scss";
+
 import React from "react";
 import { createRoot } from 'react-dom/client';
 

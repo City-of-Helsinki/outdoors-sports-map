@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon-16x16.png"
+      sizes="16x16"
+    />
+    <link
+      rel="mask-icon"
+      href="/safari-pinned-tab.svg"
+      color="#006aa1"
+    />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#006aa1" />
+    <meta
+      name="description"
+      content="Ulkoliikuntakartta on digitaalinen karttapalvelu, josta löytyvät pääkaupunkiseudun ladut ja latutiedot, luistelukentät ja tekojäät, sekä uimarannat ja maauimalat. Palvelun ulkoliikuntatiedot tuottavat Helsinki, Espoo, Vantaa ja Kirkkonummi."
+      data-rh="true"
+    />
+    <meta property="og:title" content="Ulkoliikuntakartta" data-rh="true" />
+    <meta
+      property="og:description"
+      content="Ulkoliikuntakartta on digitaalinen karttapalvelu, josta löytyvät pääkaupunkiseudun ladut ja latutiedot, luistelukentät ja tekojäät, sekä uimarannat ja maauimalat. Palvelun ulkoliikuntatiedot tuottavat Helsinki, Espoo, Vantaa ja Kirkkonummi."
+      data-rh="true"
+    />
+
+    <meta name="apple-mobile-web-app-title" content="Ulkoliikuntakartta" />
+    <meta name="application-name" content="Ulkoliikuntakartta" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Ulkoliikuntakartta</title>
+
+    <!-- Matomo -->
+    <script>
+      var _paq = window._paq = window._paq || [];
+      _paq.push(['requireCookieConsent']);
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//webanalytics.digiaiiris.com/js/";
+        _paq.push(['setTrackerUrl', u+'tracker.php']);
+        _paq.push(['setSiteId', '711']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'piwik.min.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+  <!-- End Matomo Code -->
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+    <div id="modals"></div>
+  </body>
+</html>

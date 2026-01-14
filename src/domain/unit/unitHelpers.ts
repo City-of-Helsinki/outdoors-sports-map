@@ -219,11 +219,10 @@ export const getUnitIconURL = (
   const onOff = selected ? "on" : "off";
   const resolution = retina ? "@2x" : "";
 
-  const imported = require(
-    `../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`,
-  );
-  // Webpack 5 may or may not use .default depending on config
-  return imported.default || imported;
+  // For Vite, we use import.meta.url to get the base URL and construct the path
+  const path = `../assets/markers/${sport}-${quality}-${onOff}${resolution}.png`;
+  // Using new URL() with import.meta.url for Vite compatibility
+  return new URL(path, import.meta.url).href;
 };
 
 export const getUnitIconHeight = (unit: Unit) =>
@@ -241,9 +240,9 @@ export const getUnitIcon = (
 });
 
 export const getFilterIconURL = (
-  filter: string, // eslint-disable-next-line global-require, import/no-dynamic-require
+  filter: string,
 ) =>
-  filter ? require(`../assets/icons/icon-white-${filter}@2x.png`).default : "";
+  filter ? new URL(`../assets/icons/icon-white-${filter}@2x.png`, import.meta.url).href : "";
 
 /**
  * FILTERZ

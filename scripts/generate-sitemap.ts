@@ -13,10 +13,10 @@ dotenv.config();
 
 // Find configuration values from the application code to decrease the chance
 // of them going out of sync.
-import { API_BASE_URL } from "../src/domain/app/appConstants";
 import { SUPPORTED_LANGUAGES } from "../src/domain/i18n/i18nConstants";
 import { UnitServices } from "../src/domain/service/serviceConstants";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 const productionAddress = "https://ulkoliikunta.fi";
 const LANGUAGES = Object.values(SUPPORTED_LANGUAGES);
 const UNITS_PAGE_SIZE = 100;
