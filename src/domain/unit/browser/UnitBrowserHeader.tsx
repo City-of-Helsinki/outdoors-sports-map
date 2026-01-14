@@ -9,8 +9,7 @@ import useDoSearch from "../../../common/hooks/useDoSearch";
 import useLanguage from "../../../common/hooks/useLanguage";
 import routerPaths from "../../app/appRoutes";
 import useAppSearch from "../../app/useAppSearch";
-// eslint-disable-next-line sonar/no-absolute-import
-import addressIcon from "/assets/markers/unknown-satisfactory-off.png?url";
+import addressIcon from "/assets/markers/unknown-satisfactory-off.png?url"; // NOSONAR
 import { setLocation, useLazyGetAddressQuery } from "../../map/state/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
 import {
