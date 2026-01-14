@@ -10,7 +10,6 @@ import "./index.scss";
 import React from "react";
 import { createRoot } from 'react-dom/client';
 
-import "./index.scss";
 import Root from "./domain/app/AppRoot";
 import history from "./domain/app/appHistory";
 import reportWebVitals from "./reportWebVitals";

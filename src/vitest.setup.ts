@@ -33,10 +33,10 @@ globalThis.localStorage ??= Object.create(localStorageMock);
 
 // Mock ResizeObserver
 globalThis.ResizeObserver = class ResizeObserver {
-  constructor() {}
+  constructor() {} // NOSONAR - Empty constructor required for ResizeObserver mock
   observe = vi.fn()
   unobserve = vi.fn()
   disconnect = vi.fn()
 };
 
-vi.spyOn(window.navigator, "languages", "get").mockReturnValue(["fi"]);
+vi.spyOn(globalThis.navigator, "languages", "get").mockReturnValue(["fi"]);

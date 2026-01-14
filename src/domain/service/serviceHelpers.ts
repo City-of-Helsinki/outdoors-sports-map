@@ -18,7 +18,7 @@ const getServiceName = (
   for (const id of unitServices) {
     const service = services[id];
 
-    if (service && typeof service.name !== "undefined") {
+    if (service?.name !== undefined) {
       return getAttr(services[id].name, language);
     }
   }
@@ -30,8 +30,7 @@ export const getOnSeasonServices = (
   date: SeasonDelimiter = getToday(),
 ): number[] => {
   return Seasons.filter((season) => isOnSeason(date, season))
-    .map(({ services }) => services)
-    .reduce((flattened, services) => [...flattened, ...services], []);
+    .flatMap(({ services }) => services);
 };
 
 export default getServiceName;
