@@ -42,7 +42,7 @@ function HeightProfileControl({ unit }: Props) {
         const coordinates = geometry_3d?.coordinates;
         if (coordinates) {
           if (geometry_3d.type === "MultiLineString") {
-            const lineString = coordinates && coordinates[index];
+            const lineString = coordinates?.[index];
             return lineString;
           } else if (geometry_3d.type === "LineString") {
             return coordinates as unknown as Position[];

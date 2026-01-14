@@ -33,7 +33,7 @@ export const { useGetAddressQuery, useLazyGetAddressQuery } = mapApi;
 const mapSlice = createSlice({
   name: "map",
   initialState: {
-    location: locations.HELSINKI as LatLngTuple,
+    location: locations.HELSINKI,
   },
   reducers: {
     setLocation: (state, action: PayloadAction<LatLngTuple>) => {

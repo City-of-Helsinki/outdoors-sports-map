@@ -52,7 +52,7 @@ export const searchApi = apiSlice.injectEndpoints({
         };
 
         // Make search request only when there's input
-        if (input && input.length) {
+        if (input?.length) {
           request = {
             url: "search/",
             params: combinedParams,
@@ -99,7 +99,7 @@ export const searchApi = apiSlice.injectEndpoints({
         let addressData: DigitransitFeature[] = [];
 
         // Make search request only when there's input
-        if (input && input.length) {
+        if (input?.length) {
           // Fetch unit suggestions
           const unitResponse = await fetchWithBQ({
             url: "search/",
@@ -146,7 +146,7 @@ export const searchApi = apiSlice.injectEndpoints({
             ) as NormalizedUnitSchema;
           }
 
-          if (addressBodyAsJson && addressBodyAsJson.features) {
+          if (addressBodyAsJson?.features) {
             // Filter out stops and deduplicate by label
             const filtered = addressBodyAsJson.features.filter(
               (feature) => feature.properties.layer !== "stop",
@@ -202,7 +202,7 @@ const searchSlice = createSlice({
       state.addressSuggestions = [];
     },
     setUnitSuggestions: (state, action: PayloadAction<NormalizedUnitSchema>) => {
-      state.unitSuggestions = (action.payload.result as number[]).map(String);
+      state.unitSuggestions = action.payload.result.map(String);
     },
     setAddressSuggestions: (state, action: PayloadAction<DigitransitFeature[]>) => {
       state.addressSuggestions = action.payload;
@@ -217,7 +217,7 @@ const searchSlice = createSlice({
       .addMatcher(searchApi.endpoints.searchUnits.matchFulfilled, (state, action) => {
         state.isFetching = false;
         state.isActive = true;
-        state.unitResults = (action.payload.result as number[]).map(String);
+        state.unitResults = action.payload.result.map(String);
         // Clear suggestions when performing actual search
         state.unitSuggestions = [];
       })
@@ -226,7 +226,7 @@ const searchSlice = createSlice({
       })
       // Handle searchSuggestions query
       .addMatcher(searchApi.endpoints.searchSuggestions.matchFulfilled, (state, action) => {
-        state.unitSuggestions = (action.payload.units.result as number[]).map(String);
+        state.unitSuggestions = action.payload.units.result.map(String);
         state.addressSuggestions = action.payload.addresses;
       });
   },

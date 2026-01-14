@@ -20,8 +20,7 @@ import {
   selectAddresses,
   selectIsActive,
 } from "../state/searchSlice";
-import { selectIsUnitLoading } from "../state/unitSlice";
-import { receiveUnits } from "../state/unitSlice";
+import { selectIsUnitLoading, receiveUnits } from "../state/unitSlice";
 import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
 

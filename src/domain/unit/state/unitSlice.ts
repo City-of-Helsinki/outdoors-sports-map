@@ -76,7 +76,7 @@ export const { useGetUnitsQuery, useLazyGetUnitsQuery } = unitApi;
 interface UnitState {
   isFetching: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fetchError: any | null;
+  fetchError: any;
   byId: Record<string, Unit>;
   all: string[];
   iceskate: string[];
@@ -114,48 +114,48 @@ const unitSlice = createSlice({
       // Update byId with condition handling
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       state.byId = handleUnitConditionUpdates(entities.unit as any);
-      state.all = (result as number[]).map(String);
+      state.all = result.map(String);
 
       // Filter units by service type
       state.iceskate = keys(entities.unit).filter((id) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
-          (unitService: number) => IceSkatingServices.indexOf(unitService) !== -1,
+          (unitService: number) => IceSkatingServices.includes(unitService),
         ),
       );
 
       state.ski = keys(entities.unit).filter((id) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
-          (unitService: number) => SkiingServices.indexOf(unitService) !== -1,
+          (unitService: number) => SkiingServices.includes(unitService),
         ),
       );
 
       state.swim = keys(entities.unit).filter((id) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
-          (unitService: number) => SwimmingServices.indexOf(unitService) !== -1,
+          (unitService: number) => SwimmingServices.includes(unitService),
         ),
       );
 
       state.iceswim = keys(entities.unit).filter((id) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
-          (unitService: number) => IceSwimmingServices.indexOf(unitService) !== -1,
+          (unitService: number) => IceSwimmingServices.includes(unitService),
         ),
       );
 
       state.sledding = keys(entities.unit).filter((id) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
-          (unitService: number) => SleddingServices.indexOf(unitService) !== -1,
+          (unitService: number) => SleddingServices.includes(unitService),
         ),
       );
 
       state.hike = keys(entities.unit).filter((id) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
-          (unitService: number) => SupportingServices.indexOf(unitService) !== -1,
+          (unitService: number) => SupportingServices.includes(unitService),
         ),
       );
 
@@ -218,7 +218,7 @@ export const selectVisibleUnits = createSelector(
       state: AppState,
       sport: SportFilter = getDefaultSportFilter(),
       status: UnitFilterValues = getDefaultStatusFilter(),
-      sportSpecification: string,
+      sportSpecification: string = "",
     ) => sportSpecification,
     (state: AppState) => selectIsActive(state),
     (state: AppState) => selectUnitResultIDs(state),

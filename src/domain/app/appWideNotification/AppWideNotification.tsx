@@ -12,7 +12,7 @@ type NotificationProps = {
 
 export function AppWideNotification({initialState}: NotificationProps) {
   const { data } = useGetAppWideNotificationsQuery();
-  const notification = data && data[0];
+  const notification = data?.[0];
   
   const notificationContentTranslations: Record<string, string | undefined> = {
     fi: notification ? notification.content.fi : '',
@@ -32,7 +32,7 @@ export function AppWideNotification({initialState}: NotificationProps) {
     notification && 
     sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString();
 
-  const [isOpen, setOpen] = useState(initialState ?? shouldBeOpen);
+  const [isOpen, setIsOpen] = useState(initialState ?? shouldBeOpen);
 
   const {
     t,
@@ -48,7 +48,7 @@ export function AppWideNotification({initialState}: NotificationProps) {
   }
 
   const handleClose = () => {
-    setOpen(false);
+    setIsOpen(false);
     if (notification) {
       sessionStorage.setItem(IS_OPEN_KEY, notification.id.toString());
     }

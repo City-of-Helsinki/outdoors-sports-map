@@ -68,7 +68,7 @@ i18n
 // Replace language only when it is changed, not on initialization.
 i18n.on("languageChanged", (nextLanguage) => {
   // If necessary, change language in pathname
-  const { pathname, ...rest } = window.location;
+  const { pathname, ...rest } = globalThis.location;
 
   const containsLanguage = supportedLanguages.reduce(
     (contains, language) => contains || pathname.includes(`/${language}/`),
@@ -88,4 +88,4 @@ i18n.on("languageChanged", (nextLanguage) => {
 // Auto-detected language generally has a country code. Ignore it.
 export const getCurrentLanguage = () => i18n.language.split("-")[0];
 
-export default i18n;
+export default i18n; // NOSONAR - This is not a re-export, it's exporting the configured i18n instance

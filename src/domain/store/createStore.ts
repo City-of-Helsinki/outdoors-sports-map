@@ -20,7 +20,7 @@ const createStore = (preloadedState?: RootState) => {
     version: 1, // Increment version to clear old persisted state with "service" key
     migrate: (state: any) => {
       // Remove old "service" key from persisted state
-      if (state && state.service) {
+      if (state?.service) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { service, ...rest } = state;
         return Promise.resolve(rest);
