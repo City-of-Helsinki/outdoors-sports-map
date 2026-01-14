@@ -1,10 +1,10 @@
 import { useLocation } from "react-router";
 
 function getAllSearchParamsAsObject<
-  Params extends { [K in keyof Params]?: string } = {},
+  Params extends { [K in keyof Params]?: string } = Record<string, string>,
 >(search: string): Params {
   const searchParams = new URLSearchParams(search);
-  const params: any = {};
+  const params: Record<string, string> = {};
 
   for (const [key, value] of searchParams.entries()) {
     params[key] = value;
@@ -14,7 +14,7 @@ function getAllSearchParamsAsObject<
 }
 
 function useSearch<
-  Params extends { [K in keyof Params]?: string } = {},
+  Params extends { [K in keyof Params]?: string } = Record<string, string>,
 >(): Params {
   const { search } = useLocation();
 

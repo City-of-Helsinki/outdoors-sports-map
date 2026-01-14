@@ -43,6 +43,7 @@ class MapUnitMarker extends Component<Props> {
   getIconWidth = (zoomLevel: number) =>
     (zoomLevel / MAX_ZOOM) * UNIT_ICON_WIDTH;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getIconHeight = (icon: Record<string, any>, zoomLevel: number) =>
     (zoomLevel / MAX_ZOOM) * icon.height;
 
@@ -65,7 +66,7 @@ class MapUnitMarker extends Component<Props> {
     const iconHeight = this.getIconHeight(icon, zoomLevel);
     const anchorHeight = this._getAnchorHeight(iconHeight, unit);
 
-    // @ts-ignore
+    // @ts-expect-error - AriaHiddenIcon constructor may have type conflicts with Leaflet types
     return new AriaHiddenIcon({
       iconUrl: icon.url,
       iconRetinaUrl: icon.retinaUrl,

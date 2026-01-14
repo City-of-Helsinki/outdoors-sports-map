@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { union } from "lodash";
 import intersection from "lodash/intersection";
@@ -48,6 +49,7 @@ import {
 // RTK Query endpoint for fetching units
 export const unitApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getUnits: builder.query<NormalizedUnitSchema, Record<string, any> | void>({
       query: (params = {}) => ({
         url: "unit/",
@@ -73,6 +75,7 @@ export const { useGetUnitsQuery, useLazyGetUnitsQuery } = unitApi;
 // Regular slice for unit state management
 interface UnitState {
   isFetching: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fetchError: any | null;
   byId: Record<string, Unit>;
   all: string[];
@@ -109,41 +112,48 @@ const unitSlice = createSlice({
       if (!entities.unit) return;
 
       // Update byId with condition handling
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       state.byId = handleUnitConditionUpdates(entities.unit as any);
       state.all = (result as number[]).map(String);
 
       // Filter units by service type
       state.iceskate = keys(entities.unit).filter((id) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
           (unitService: number) => IceSkatingServices.indexOf(unitService) !== -1,
         ),
       );
 
       state.ski = keys(entities.unit).filter((id) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
           (unitService: number) => SkiingServices.indexOf(unitService) !== -1,
         ),
       );
 
       state.swim = keys(entities.unit).filter((id) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
           (unitService: number) => SwimmingServices.indexOf(unitService) !== -1,
         ),
       );
 
       state.iceswim = keys(entities.unit).filter((id) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
           (unitService: number) => IceSwimmingServices.indexOf(unitService) !== -1,
         ),
       );
 
       state.sledding = keys(entities.unit).filter((id) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
           (unitService: number) => SleddingServices.indexOf(unitService) !== -1,
         ),
       );
 
       state.hike = keys(entities.unit).filter((id) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entities.unit as any)[id].services.some(
           (unitService: number) => SupportingServices.indexOf(unitService) !== -1,
         ),
@@ -151,10 +161,12 @@ const unitSlice = createSlice({
 
       state.status_ok = keys(entities.unit).filter(
         (id) =>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           enumerableQuality(getUnitQuality((entities.unit as any)[id])) <=
           QualityEnum.satisfactory,
       );
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setFetchError: (state, action: PayloadAction<any>) => {
       state.fetchError = action.payload;
       state.isFetching = false;
@@ -182,6 +194,7 @@ export const { receiveUnits, setFetchError } = unitSlice.actions;
 export default unitSlice.reducer;
 
 // Selectors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const selectUnitById = (state: AppState, props: Record<string, any>) =>
   state.unit.byId[props.id];
 
@@ -235,7 +248,7 @@ export const selectVisibleUnits = createSelector(
       );
     }
 
-    if (!!sportSpecification) {
+    if (sportSpecification) {
       if (hasHikingSportSpecification) {
         visibleUnits = union(
           hasSkiSportSpecification

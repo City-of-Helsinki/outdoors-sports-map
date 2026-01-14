@@ -115,9 +115,9 @@ export default function AccessibilityStatementEn() {
         <Email>saavutettavuus@avi.fi</Email>
       </p>
       <p>
-        Telephone exchange <PhoneNumber>+358 295 016 000</PhoneNumber>
+        Telephone exchange <PhoneNumber>+358 295 016 000</PhoneNumber>
       </p>
-      <p>Open: Mon-Fri at 8:00–16:15</p> 
+      <p>Open: Mon-Fri at 8:00–16:15</p>
       <h3>The City of Helsinki and accessibility</h3>
       <p>
         The objective of the city of Helsinki is to be an accessible city to
@@ -143,7 +143,7 @@ export default function AccessibilityStatementEn() {
       </p>
       <p>
         <Link href="https://www.hel.fi/helsinki/en/administration/administration/communication">
-          Go to the City's guidance site
+          Go to the City&apos;s guidance site
         </Link>
       </p>
       <h3>Approval of the accessibility statement</h3>

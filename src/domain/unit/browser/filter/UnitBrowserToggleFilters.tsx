@@ -46,7 +46,7 @@ type UnitFiltersProps = {
 function UnitBrowserToggleFilters(props: UnitFiltersProps): JSX.Element {
   const { activeFilters, filters, name, updateFilter } = props;
   const { t } = useTranslation();
-  const active = !!activeFilters.length ? activeFilters.split(',') : [];
+  const active = activeFilters.length ? activeFilters.split(',') : [];
   const onToggle = (filterName: string, wasChecked: boolean): void => {
     let newFilters = [...active].filter((f) => f !== filterName);
     if (!wasChecked) {

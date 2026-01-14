@@ -2,7 +2,7 @@ import L from "leaflet";
 
 const MapAriaHiddenIcon = L.Icon.extend({
   _setIconStyles(img: HTMLImageElement, name: string) {
-    // @ts-ignore
+    // @ts-expect-error - Ignore type conflict with Leaflet types
     L.Icon.prototype._setIconStyles.call(this, img, name);
 
     img.setAttribute("aria-hidden", "true");

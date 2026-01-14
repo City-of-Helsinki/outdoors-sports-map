@@ -46,6 +46,7 @@ function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
         sendFeedback({ feedback, email });
         onClose();
       } else {
+        // eslint-disable-next-line no-console
         console.error(
           `User attempted to send feedback without providing feedback`,
         );

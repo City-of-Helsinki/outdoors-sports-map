@@ -19,7 +19,7 @@ function useSyncUnitNameWithLanguage(unit?: Unit) {
   useEffect(() => {
     if (unit) {
       let nextPathname = `/${language}/unit/${unit.id}`;
-      // @ts-ignore
+      // @ts-expect-error - unit.name[language] may not exist but we handle the undefined case
       const unitNameInLanguage = unit.name[language];
 
       // If the unit has a name in the current language, add it into the slug

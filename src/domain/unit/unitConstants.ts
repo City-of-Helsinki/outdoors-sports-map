@@ -151,7 +151,7 @@ export type Season = {
   start: SeasonDelimiter;
   end: SeasonDelimiter;
   filters: SportFilter[];
-  services: Number[];
+  services: number[];
   hikeFilters: HikingFilter[];
 };
 
@@ -308,7 +308,7 @@ export const UnitActions = {
 
 export type UnitState = {
   isFetching: boolean;
-  byId: Record<string, any>;
+  byId: Record<string, Unit>;
   // Filtered arrays of ids
   all: Array<string>;
   skating: Array<string>;
@@ -341,6 +341,7 @@ export type UnitSearchState = {
   // Filtered arrays of unit ids
   unitSuggestions: Array<string>;
   unitResults: Array<string>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addressSuggestions: Array<Record<string, any>>; // TODO: Filtered arrays of streets / address search
 };
 

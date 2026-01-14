@@ -46,6 +46,7 @@ import {
 } from "../service/serviceConstants";
 
 export const getAttr = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attr: Record<string, any>,
   lang: string = DEFAULT_LANG,
 ) => {
@@ -107,7 +108,6 @@ export const createPalvelukarttaUrl = (unit: Unit, lang: string) =>
 
 export const getUnitSport = (unit: Unit) => {
   if (unit.services && unit.services.length) {
-    // eslint-disable-next-line no-restricted-syntax
     for (const service of unit.services) {
       if (IceSkatingServices.includes(service)) {
         return UnitFilters.ICE_SKATING;
@@ -191,6 +191,7 @@ export const getOpeningHours = (unit: Unit, activeLang: string): string[] => {
     .filter((result) => result !== "");
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getObservationTime = (observation: Record<string, any>) =>
   moment((observation && observation.time) || 0).toDate();
 
@@ -369,6 +370,7 @@ export const sortByFavorites = (units: Unit[]): Unit[] => {
 };
 
 export const getAddressToDisplay = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   address: Record<string, any>,
   activeLang: string,
 ) => {
@@ -500,7 +502,7 @@ export const getFilteredUnitsBySportSpecification = (
         const connectionsWithDogSkijoring = u.connections.filter((c) =>
           c.tags.includes(UnitConnectionTags.DOG_SKIJORING_TRACK),
         );
-        return !!connectionsWithDogSkijoring.length ? u : null;
+        return connectionsWithDogSkijoring.length ? u : null;
       })
       .map((u) => u.id.toString());
   };

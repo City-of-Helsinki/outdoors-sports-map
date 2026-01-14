@@ -66,5 +66,6 @@ export const selectServicesObject = createSelector(
 
 export const selectIsFetchingService = createSelector(
   [selectServicesQueryResult],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (queryResult) => queryResult.isLoading || (queryResult as any).isFetching || false
 );

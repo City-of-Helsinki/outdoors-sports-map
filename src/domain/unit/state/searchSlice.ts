@@ -38,6 +38,7 @@ export const searchApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     searchUnits: builder.query<
       NormalizedUnitSchema,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { input: string; params?: Record<string, any> }
     >({
       async queryFn({ input, params = {} }, _api, _extraOptions, fetchWithBQ) {
@@ -256,5 +257,5 @@ export const selectUnitSuggestions = createSelector(
 export const selectUnitResultIDs = (state: AppState): string[] =>
   state.search.unitResults;
 
-export const selectAddresses = (state: AppState): Record<string, any>[] =>
+export const selectAddresses = (state: AppState): DigitransitFeature[] =>
   state.search.addressSuggestions;

@@ -108,6 +108,7 @@ export function FilterOption({
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const filterEquals = (a: any, b: any) => {
   // Checks if a and b are the same by comparing their names.
   if (a && b) {

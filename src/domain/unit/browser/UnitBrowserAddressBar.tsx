@@ -1,4 +1,4 @@
-import { IconLocation, Tag } from "hds-react";
+import { IconLocation, Tag, TagTheme } from "hds-react";
 
 import useLanguage from "../../../common/hooks/useLanguage";
 import { Address } from "../../app/appConstants";
@@ -28,7 +28,7 @@ function UnitBrowserAddressBarProps({ address, handleClick }: Props) {
         '--color': 'var(--color-white)',
         "--border-color": 'var(--color-coat-of-arms)',
         "--border-color-hover": 'var(--color-coat-of-arms-dark)',
-      } as any}
+      } as TagTheme}
     >
       {addressText}
     </Tag>

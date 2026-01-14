@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LatLngTuple } from "leaflet";
 
 import { apiSlice } from "../../api/apiSlice";
-import { Address } from "../../app/appConstants";
+import { Address, AppState } from "../../app/appConstants";
 import { locations } from "../../home/homeConstants";
 
 // RTK Query endpoint for reverse geocoding
@@ -45,7 +45,7 @@ const mapSlice = createSlice({
 export const { setLocation } = mapSlice.actions;
 
 // Selectors
-const selectMapState = (state: any) => state.map;
+const selectMapState = (state: AppState) => state.map;
 
 export const selectLocation = createSelector(
   [selectMapState],
@@ -56,14 +56,14 @@ export const selectLocation = createSelector(
 const selectAddressQueryResult = (lat: number, lon: number) => 
   mapApi.endpoints.getAddress.select({ lat, lon });
 
-export const selectAddressByCoordinates = (state: any, lat: number, lon: number) => {
+export const selectAddressByCoordinates = (state: AppState, lat: number, lon: number) => {
   const queryResult = selectAddressQueryResult(lat, lon)(state);
   return queryResult.data || null;
 };
 
 // Selector for address based on current location
 export const selectAddress = createSelector(
-  [selectLocation, (state: any) => state],
+  [selectLocation, (state: AppState) => state],
   (location, state) => {
     if (!location) return null;
     const [lat, lon] = location;

@@ -51,6 +51,7 @@ function UnitBrowser({ onViewChange, leafletMap }: Props) {
       {hasTmpMessage && (
         <div
           className="unit-browser__tmp_msg"
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: t("UNIT_DETAILS.TMP_MESSAGE"),
           }}

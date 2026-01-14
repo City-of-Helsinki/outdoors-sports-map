@@ -19,10 +19,10 @@ function HikingFilter({
   handleHikingSelect,
   isSelected,
 }: Readonly<UnitFiltersProps>) {
-  const [expandedFilter, setExpandedFilter] = useState<{} | null>(null);
+  const [expandedFilter, setExpandedFilter] = useState<UnitFilterProps | null>(null);
 
   const onMenuSelect = useCallback(
-    (key: string, value: string): void => {
+    (): void => {
       setExpandedFilter(null);
       handleHikingSelect(!isSelected);
     },
@@ -30,7 +30,7 @@ function HikingFilter({
   );
 
   const toggleExpandedFilter = useCallback(
-    (filter: Record<string, any>) => {
+    (filter: UnitFilterProps) => {
       const isFilterActive = filterEquals(filter, expandedFilter);
       setExpandedFilter(isFilterActive ? null : filter);
     },

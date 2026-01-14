@@ -64,7 +64,7 @@ function ApplicationHeader({
   const [modal, setModal] = useState<ModalType | null>(null);
 
   const createMenuLinkClickHandler = useCallback(
-    (modal: any): MouseEventHandler<HTMLElement> =>
+    (modal: ModalType): MouseEventHandler<HTMLElement> =>
       (event) => {
         // Set the element that opened the dialog, so focus can be returned to it
         // when the dialog is closed.
@@ -205,8 +205,8 @@ function ApplicationHeader({
               <Header.ActionBarSubItem
                 label={osmLinkLabel}
                 href="https://osm.org/copyright"
-                // @ts-ignore
-                target="_blank" // HDS types do not include target prop, so ignore ts error
+                // @ts-expect-error - HDS types do not include target prop, so ignore ts error
+                target="_blank"
                 rel="noopener"
                 aria-label={osmLinkLabelAria}
                 external

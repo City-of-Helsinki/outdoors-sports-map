@@ -1,5 +1,5 @@
 import { Notification, NotificationSize } from "hds-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useGetAppWideNotificationsQuery } from "../state/appWideNotificationSlice";
@@ -27,13 +27,12 @@ export function AppWideNotification({initialState}: NotificationProps) {
 
   const isNotificationEnabled = notification ? true : false;
 
-  const [isOpen, setOpen] = useState(initialState);
+  // Compute whether notification should be open based on sessionStorage and notification state
+  const shouldBeOpen = isNotificationEnabled && 
+    notification && 
+    sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString();
 
-  useEffect(() => {
-    if (isNotificationEnabled && notification && sessionStorage.getItem(IS_OPEN_KEY) !== notification.id.toString()) {
-      setOpen(true); 
-    }
-  }, [isNotificationEnabled, notification])
+  const [isOpen, setOpen] = useState(initialState ?? shouldBeOpen);
 
   const {
     t,

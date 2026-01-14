@@ -93,7 +93,7 @@ function UnitBrowserHeader({ onViewChange }: Props) {
       type: "loose" as const,
       label: address.properties.label,
       icon: addressIcon,
-      coordinates: address.geometry.coordinates.slice().reverse(),
+      coordinates: address.geometry.coordinates.slice().reverse() as [number, number],
     }));
 
     return [...unitSuggestions, ...addressSuggestions];

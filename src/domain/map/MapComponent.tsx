@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useRef } from "react";
+import { RefObject, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 
@@ -40,7 +40,6 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
     })
   );
   const position = useSelector(selectLocation);
-  const initialPosition = useRef(position);
   const [triggerGetAddress] = useLazyGetAddressQuery();
 
   const handleSetLocation = useCallback(
@@ -96,7 +95,7 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
       activeLanguage={language}
       setLocation={handleSetLocation}
       leafletElementRef={leafletElementRef}
-      position={initialPosition.current}
+      position={position}
       units={unitData}
       openUnit={openUnit}
       onCenterMapToUnit={onCenterMapToUnit}

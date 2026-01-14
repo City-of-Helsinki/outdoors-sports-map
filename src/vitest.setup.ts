@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { vi } from 'vitest';
 import '@testing-library/jest-dom';
 
@@ -27,12 +29,10 @@ const localStorageMock = {
   clear: vi.fn(),
 };
 
-// eslint-disable-next-line no-undef
-global.localStorage ??= Object.create(localStorageMock);
+globalThis.localStorage ??= Object.create(localStorageMock);
 
 // Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+globalThis.ResizeObserver = class ResizeObserver {
   constructor() {}
   observe = vi.fn()
   unobserve = vi.fn()
