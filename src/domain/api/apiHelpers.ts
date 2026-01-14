@@ -1,7 +1,5 @@
 import { normalize, Schema } from "normalizr";
-import { call } from "redux-saga/effects";
 
-import type { ApiResponse } from "./apiConstants";
 import {
   API_BASE_URL,
   DIGITRANSIT_API_BASE_URL,
@@ -16,28 +14,6 @@ export const normalizeEntityResults = <
   results: any,
   schema: Schema<T>,
 ) => normalize<T, E, R>(results, schema);
-
-export function* callApi(request: Request): Generator<any, ApiResponse, any> {
-  const response: Record<string, any> = yield call(fetch, request);
-
-  if (response.status === 404) {
-    const bodyAsJson = {
-      results: "Error, 404 not found",
-    };
-
-    return {
-      response,
-      bodyAsJson,
-    };
-  }
-
-  const bodyAsJson = yield call([response, response.json]);
-
-  return {
-    response,
-    bodyAsJson,
-  };
-}
 
 export const stringifyQuery = (query: Record<string, any>): string =>
   Object.keys(query)
