@@ -2,6 +2,16 @@ body {
   font-size: 14px;
 }
 
+// Override Bootstrap container max-width constraints
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+  max-width: none !important;
+}
+
 .custom-control {
   padding-left: 0;
 }
