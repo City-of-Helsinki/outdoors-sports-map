@@ -6,7 +6,7 @@ import UnitBrowserFilters from "./filter/UnitBrowserFilter";
 import UnitBrowserToggleFilters from "./filter/UnitBrowserToggleFilters";
 import HikingFilter from "./filter/supportingServices/HikingFilter";
 import useDoSearch from "../../../common/hooks/useDoSearch";
-import { Address } from "../../app/appConstants";
+import { Address } from "../../app/types";
 import useAppSearch from "../../app/useAppSearch";
 import { StatusFilters, UnitFilters } from "../unitConstants";
 import {

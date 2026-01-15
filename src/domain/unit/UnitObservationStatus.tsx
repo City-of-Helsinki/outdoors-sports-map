@@ -1,7 +1,7 @@
 import { Tag, TagSize } from "hds-react";
 import { useTranslation } from "react-i18next";
 
-import { Unit } from "./unitConstants";
+import { Unit } from "./types";
 import {
   getAttr,
   getCondition,

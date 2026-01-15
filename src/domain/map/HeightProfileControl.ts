@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useMap } from "react-leaflet";
 
 import useIsMobile from "../../common/hooks/useIsMobile";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 
 // Extend L.control to include heightgraph
 declare module "leaflet" {

@@ -4,7 +4,7 @@ import { WithTranslationProps, withTranslation } from "react-i18next";
 
 import UnitGeometry from "./MapGeometry";
 import UnitMarker from "./MapUnitMarker";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 import { getUnitQuality } from "../unit/unitHelpers";
 
 type Props = WithTranslationProps & {

@@ -7,9 +7,9 @@ import UnitBrowserFilterSection from "./UnitBrowserFilterSection";
 import UnitBrowserHeader from "./UnitBrowserHeader";
 import UnitBrowserResultList from "./resultList/UnitBrowserResultList";
 import Page from "../../../common/a11y/Page";
-import { Address, AppState } from "../../app/appConstants";
 import routerPaths from "../../app/appRoutes";
 import { selectIsLoading } from "../../app/state/appSelectors";
+import { Address, AppState } from "../../app/types";
 import { selectAddress } from "../../map/state/mapSlice";
 
 type Props = {

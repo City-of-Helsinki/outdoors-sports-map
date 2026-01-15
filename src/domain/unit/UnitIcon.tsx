@@ -1,4 +1,5 @@
-import { Unit, UnitFilters } from "./unitConstants";
+import { Unit } from "./types";
+import { UnitFilters } from "./unitConstants";
 import { getUnitSport } from "./unitHelpers";
 import OSMIcon from "../../common/components/OSMIcon";
 

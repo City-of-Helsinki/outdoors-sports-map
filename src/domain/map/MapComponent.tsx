@@ -6,12 +6,11 @@ import MapView from "./MapView";
 import { setLocation, useLazyGetAddressQuery, selectLocation } from "./state/mapSlice";
 import useLanguage from "../../common/hooks/useLanguage";
 import * as PathUtils from "../../common/utils/pathUtils";
-import { AppState } from "../app/appConstants";
-import { AppSearchLocationState } from "../app/appConstants";
 import routerPaths from "../app/appRoutes";
+import { AppState, AppSearchLocationState } from "../app/types";
 import useAppSearch from "../app/useAppSearch";
 import { selectVisibleUnits, selectUnitById } from "../unit/state/unitSlice";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 
 type Props = {
   onCenterMapToUnit: (unit: Unit, map: L.Map) => void;

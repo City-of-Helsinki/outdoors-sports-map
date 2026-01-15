@@ -16,7 +16,8 @@ import useAppSearch from "../../../app/useAppSearch";
 import UnitIcon from "../../UnitIcon";
 import ObservationStatus from "../../UnitObservationStatus";
 import { View } from "../../UnitView";
-import { SortKeys, Unit, UNIT_BATCH_SIZE } from "../../unitConstants";
+import { Unit } from "../../types";
+import { SortKeys, UNIT_BATCH_SIZE } from "../../unitConstants";
 import * as unitHelpers from "../../unitHelpers";
 
 type UnitListItemProps = {

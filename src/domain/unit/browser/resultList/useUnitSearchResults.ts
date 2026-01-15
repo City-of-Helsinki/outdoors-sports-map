@@ -2,13 +2,14 @@ import L, { LatLngTuple } from "leaflet";
 import { RefObject } from "react";
 import { useSelector } from "react-redux";
 
-import { AppState } from "../../../app/appConstants";
 import { selectIsLoading } from "../../../app/state/appSelectors";
+import { AppState } from "../../../app/types";
 import useAppSearch from "../../../app/useAppSearch";
 import { selectLocation } from "../../../map/state/mapSlice";
 import { selectIsFetching } from "../../state/searchSlice";
 import { selectVisibleUnits } from "../../state/unitSlice";
-import { SortKeys, Unit } from "../../unitConstants";
+import { Unit } from "../../types";
+import { SortKeys } from "../../unitConstants";
 import {
   sortByName,
   sortByCondition,

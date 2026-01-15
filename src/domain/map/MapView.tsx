@@ -17,7 +17,7 @@ import {
 import { getMapUrl, latLngToArray } from "./mapHelpers";
 import OSMIcon from "../../common/components/OSMIcon";
 import { View } from "../unit/UnitView";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 import { isRetina } from "../utils";
 
 type Props = WithTranslation & {

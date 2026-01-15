@@ -1,5 +1,4 @@
-import { Geometry, MultiLineString } from "geojson";
-import { NormalizedSchema, schema } from "normalizr";
+import { schema } from "normalizr";
 
 import {
   IceSkatingServices,
@@ -11,6 +10,10 @@ import {
   SleddingServices,
 } from "../service/serviceConstants";
 import { normalizeActionName } from "../utils";
+import {
+  Unit,
+  Season,
+} from "./types";
 
 export const UNIT_PIN_HEIGHT = 40;
 
@@ -44,8 +47,6 @@ export const StatusFilters = [
   UnitFilters.STATUS_OK,
 ] as const;
 
-export type StatusFilter = (typeof StatusFilters)[number];
-
 export const SportFilters = [
   UnitFilters.SKIING,
   UnitFilters.ICE_SKATING,
@@ -55,15 +56,11 @@ export const SportFilters = [
   UnitFilters.SLEDDING,
 ] as const;
 
-export type SportFilter = (typeof SportFilters)[number];
-
 export const SkiingFilters = [
   UnitFilters.SKIING_FREESTYLE,
   UnitFilters.SKIING_TRADITIONAL,
   UnitFilters.SKIING_DOG_SKIJORING_TRACK,
 ] as const;
-
-export type SkiingFilter = (typeof SkiingFilters)[number];
 
 export const HikingFilters = [
   UnitFilters.CAMPING,
@@ -72,14 +69,6 @@ export const HikingFilters = [
   UnitFilters.INFORMATION_POINT,
   UnitFilters.SKI_LODGE,
 ] as const;
-
-export type HikingFilter = (typeof HikingFilters)[number];
-
-export type Translatable<T = string> = {
-  fi: T;
-  sv: T;
-  en: T;
-};
 
 export const UnitConnectionTags = {
   CONTROL: "#valvonta",
@@ -91,69 +80,6 @@ export const UnitConnectionTags = {
   OTHER_SERVICES: "#muut_palvelut",
   MORE_INFO: "#lisätietoja",
 } as const;
-
-export type UnitConnection = {
-  section_type: string;
-  name: Translatable<string>;
-  www: Translatable<string>;
-  tags: Array<string>;
-};
-
-export type Unit = {
-  id: string;
-  name: Translatable<string>;
-  description: Translatable<string>;
-  extensions?: {
-    lighting?: Translatable<string>;
-    skiing_technique?: string;
-    // This field name may misguide you
-    length?: number;
-  };
-  phone?: string;
-  url?: string;
-  geometry: Geometry;
-  geometry_3d?: MultiLineString;
-  location: {
-    coordinates: [number, number];
-  };
-  street_address: Translatable<string>;
-  address_zip?: string;
-  municipality?: string;
-  services: number[];
-  observations: Array<{
-    property: string[];
-    primary: boolean;
-    quality: string;
-    name: Translatable<string>;
-    value: string | Translatable<string>;
-    time: string;
-  }>;
-  www: Translatable<string>;
-  connections: Array<UnitConnection>;
-  picture_url?: string;
-  extra: Record<string, string | number>;
-};
-
-export type NormalizedUnit = {
-  unit: {
-    [id: number]: NormalizedSchema<Unit, number>;
-  };
-};
-
-export type NormalizedUnitSchema = NormalizedSchema<NormalizedUnit, number[]>;
-
-export type SeasonDelimiter = {
-  day: number;
-  month: number; // 0-11, Jan = 0 & Dec = 11
-};
-
-export type Season = {
-  start: SeasonDelimiter;
-  end: SeasonDelimiter;
-  filters: SportFilter[];
-  services: number[];
-  hikeFilters: HikingFilter[];
-};
 
 export const SummerSeason: Season = {
   start: {
@@ -219,8 +145,6 @@ export const SortKeys = {
   CONDITION: "condition",
   FAVORITES: "favorites",
 } as const;
-
-export type SortKey = (typeof SortKeys)[keyof typeof SortKeys];
 
 export const UNIT_BATCH_SIZE = 20;
 
@@ -306,16 +230,6 @@ export const UnitActions = {
   ),
 };
 
-export type UnitState = {
-  isFetching: boolean;
-  byId: Record<string, Unit>;
-  // Filtered arrays of ids
-  all: Array<string>;
-  skating: Array<string>;
-  skiing: Array<string>;
-  searchResults: Array<string>;
-};
-
 export const unitSchema = new schema.Entity<Unit>("unit", undefined, {
   idAttribute: (value) => value.id.toString(),
 });
@@ -333,16 +247,6 @@ export const UnitSearchActions = {
   RECEIVE_ADDRESS_SUGGESTIONS: normalizeActionName(
     "unit/search/RECEIVE_ADDRESS_SUGGESTIONS",
   ),
-};
-
-export type UnitSearchState = {
-  isFetching: boolean;
-  isActive: boolean;
-  // Filtered arrays of unit ids
-  unitSuggestions: Array<string>;
-  unitResults: Array<string>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  addressSuggestions: Array<Record<string, any>>; // TODO: Filtered arrays of streets / address search
 };
 
 export const MAX_SUGGESTION_COUNT = 5;

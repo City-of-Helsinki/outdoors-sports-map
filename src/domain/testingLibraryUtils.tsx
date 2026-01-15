@@ -5,7 +5,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 
-import { AppState } from "./app/appConstants";
+import { AppState } from "./app/types";
 import TranslationProvider from "./i18n/I18nTranslationProvider";
 import createStore from "./store/createStore";
 

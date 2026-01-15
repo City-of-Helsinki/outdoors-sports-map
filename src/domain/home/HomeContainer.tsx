@@ -17,7 +17,7 @@ import MapComponent from "../map/MapComponent";
 import { DETAIL_ZOOM_IN } from "../map/mapConstants";
 import UnitBrowser from "../unit/browser/UnitBrowser";
 import UnitDetails from "../unit/details/UnitDetails";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 import { getUnitPosition } from "../unit/unitHelpers";
 
 const PANEL_ID = "map-foreground-panel";

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Popup } from "react-leaflet";
 
 import useLanguage from "../../common/hooks/useLanguage";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 import { getAttr, getCondition, getUnitQuality } from "../unit/unitHelpers";
 
 type Props = {

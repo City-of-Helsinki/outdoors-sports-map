@@ -1,7 +1,7 @@
 import getDate from "date-fns/getDate";
 import getMonth from "date-fns/getMonth";
 
-import { Season, SeasonDelimiter } from "./unitConstants";
+import { Season, SeasonDelimiter } from "./types";
 
 export const isBefore = (
   date: SeasonDelimiter,

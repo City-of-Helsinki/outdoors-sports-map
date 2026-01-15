@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LatLngTuple } from "leaflet";
 
 import { apiSlice } from "../../api/apiSlice";
-import { Address, AppState } from "../../app/appConstants";
+import { Address, AppState } from "../../app/types";
 import { locations } from "../../home/homeConstants";
 
 // RTK Query endpoint for reverse geocoding
