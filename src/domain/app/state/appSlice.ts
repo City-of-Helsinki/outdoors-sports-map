@@ -2,7 +2,7 @@ import { apiSlice } from "../../api/apiSlice";
 
 // Helper to convert object to URL-encoded form data
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const stringifyQuery = (params: Record<string, any>): string => {
+export const stringifyQuery = (params: Record<string, any>): string => {
   return Object.keys(params)
     .filter((key) => params[key] !== undefined)
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)

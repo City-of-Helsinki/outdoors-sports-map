@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { normalize, schema } from "normalizr";
 
-import { getOnSeasonServices } from "./serviceHelpers";
-import { apiSlice } from "../api/apiSlice";
+import { apiSlice } from "../../api/apiSlice";
+import { getOnSeasonServices } from "../serviceHelpers";
 
 export type Service = {
   id: number;
@@ -18,7 +18,7 @@ export type NormalizedServicesState = {
   all: string[];
 };
 
-const serviceSchema = new schema.Entity<Service>("service", undefined, {
+export const serviceSchema = new schema.Entity<Service>("service", undefined, {
   idAttribute: (value) => value.id.toString(),
 });
 

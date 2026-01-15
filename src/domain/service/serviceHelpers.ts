@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty";
 
-import { Service } from "./serviceSlice";
+import { Service } from "./state/serviceSlice";
 import { DEFAULT_LANG } from "../app/appConstants";
 import { getToday, isOnSeason } from "../unit/seasons";
 import { SeasonDelimiter, Seasons } from "../unit/unitConstants";

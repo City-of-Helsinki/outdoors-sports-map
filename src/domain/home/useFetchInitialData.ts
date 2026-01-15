@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import useSearch from "../../common/hooks/useSearch";
 import { AppSearch } from "../app/appConstants";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
-import { useGetServicesQuery } from "../service/serviceSlice";
+import { useGetServicesQuery } from "../service/state/serviceSlice";
 import { useLazySearchUnitsQuery } from "../unit/state/searchSlice";
 import { useGetUnitsQuery } from "../unit/state/unitSlice";
 

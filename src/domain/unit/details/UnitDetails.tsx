@@ -31,7 +31,7 @@ import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
 import { selectIsLoading } from "../../app/state/appSelectors";
 import getServiceName from "../../service/serviceHelpers";
-import { selectServicesObject, Service } from "../../service/serviceSlice";
+import { selectServicesObject, Service } from "../../service/state/serviceSlice";
 import UnitIcon from "../UnitIcon";
 import UnitObservationStatus, {
   StatusUpdated,
