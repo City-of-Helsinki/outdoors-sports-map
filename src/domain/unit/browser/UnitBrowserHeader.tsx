@@ -12,15 +12,15 @@ import useAppSearch from "../../app/useAppSearch";
 import addressIcon from "/assets/markers/unknown-satisfactory-off.png?url"; // NOSONAR
 import { setLocation, useLazyGetAddressQuery } from "../../map/state/mapSlice";
 import SearchContainer from "../../search/SearchContainer";
+import { useSearchSuggestions } from "../hooks/useSearchSuggestions";
 import {
   useLazySearchUnitsQuery,
-  useLazySearchSuggestionsQuery,
   clearSearch,
   selectUnitSuggestions,
   selectAddresses,
   selectIsActive,
 } from "../state/searchSlice";
-import { selectIsUnitLoading, receiveUnits } from "../state/unitSlice";
+import { selectIsSearchLoading, receiveUnits } from "../state/unitSlice";
 import { UNIT_BATCH_SIZE } from "../unitConstants";
 import { getAttr } from "../unitHelpers";
 
@@ -60,10 +60,10 @@ function UnitBrowserHeader({ onViewChange }: Props) {
   const doSearch = useDoSearch();
   
   const [triggerSearchUnits, searchUnitsResult] = useLazySearchUnitsQuery();
-  const [triggerSearchSuggestions] = useLazySearchSuggestionsQuery();
+  const { searchSuggestions } = useSearchSuggestions();
   const unitResults = useSelector(selectUnitSuggestions);
   const addressesResults = useSelector(selectAddresses);
-  const disabled = useSelector(selectIsUnitLoading);
+  const disabled = useSelector(selectIsSearchLoading);
   const isActive = useSelector(selectIsActive);
   const [triggerGetAddress] = useLazyGetAddressQuery();
 
@@ -109,9 +109,9 @@ function UnitBrowserHeader({ onViewChange }: Props) {
 
   const handleOnFindSuggestions = useCallback(
     (input: string) => {
-      triggerSearchSuggestions(input);
+      searchSuggestions(input);
     },
-    [triggerSearchSuggestions],
+    [searchSuggestions],
   );
 
   const handleOnSearch = useCallback(

@@ -4,11 +4,13 @@ import { normalize, schema } from "normalizr";
 import { selectUnitById } from "./unitSlice";
 import { digitransitApiHeaders } from "../../api/apiHelpers";
 import { apiSlice } from "../../api/apiSlice";
-import type { AppState } from "../../app/appConstants";
+import type { AppState } from "../../app/types";
 import { getOnSeasonServices } from "../../service/serviceHelpers";
 import {
   Unit,
   NormalizedUnitSchema,
+} from "../types";
+import {
   unitSchema,
   MAX_SUGGESTION_COUNT,
 } from "../unitConstants";
@@ -44,11 +46,16 @@ export const searchApi = apiSlice.injectEndpoints({
       async queryFn({ input, params = {} }, _api, _extraOptions, fetchWithBQ) {
         let request;
 
+        // For search, always use ALL seasonal services regardless of current filter selection
+        // Remove any service parameter from params to prevent filtering by current sport
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { service, ...filteredParams } = params;
+        
         const combinedParams = {
           input,
           service: getOnSeasonServices().join(","),
           type: "unit",
-          ...params,
+          ...filteredParams,
         };
 
         // Make search request only when there's input
@@ -183,7 +190,7 @@ interface SearchState {
   addressSuggestions: DigitransitFeature[];
 }
 
-const initialState: SearchState = {
+export const initialSearchState: SearchState = {
   isFetching: false,
   isActive: false,
   unitResults: [],
@@ -193,7 +200,7 @@ const initialState: SearchState = {
 
 const searchSlice = createSlice({
   name: "search",
-  initialState,
+  initialState: initialSearchState,
   reducers: {
     clearSearch: (state) => {
       state.isActive = false;
@@ -223,11 +230,6 @@ const searchSlice = createSlice({
       })
       .addMatcher(searchApi.endpoints.searchUnits.matchRejected, (state) => {
         state.isFetching = false;
-      })
-      // Handle searchSuggestions query
-      .addMatcher(searchApi.endpoints.searchSuggestions.matchFulfilled, (state, action) => {
-        state.unitSuggestions = action.payload.units.result.map(String);
-        state.addressSuggestions = action.payload.addresses;
       });
   },
 });

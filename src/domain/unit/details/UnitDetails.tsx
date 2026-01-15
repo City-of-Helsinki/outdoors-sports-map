@@ -27,9 +27,9 @@ import {
 } from "../../../common/components/CustomIcons";
 import FavoriteButton from "../../../common/components/FavoriteButton";
 import useLanguage from "../../../common/hooks/useLanguage";
-import { AppState } from "../../app/appConstants";
 import { UnitDetailsParams } from "../../app/appRoutes";
 import { selectIsLoading } from "../../app/state/appSelectors";
+import { AppState } from "../../app/types";
 import getServiceName from "../../service/serviceHelpers";
 import { selectServicesObject, Service } from "../../service/state/serviceSlice";
 import UnitIcon from "../UnitIcon";
@@ -38,7 +38,8 @@ import UnitObservationStatus, {
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
 import { selectUnitById } from "../state/unitSlice";
-import { Translatable, Unit, UnitConnectionTags } from "../unitConstants";
+import { Translatable, Unit } from "../types";
+import { UnitConnectionTags } from "../unitConstants";
 import {
   createPalvelukarttaUrl,
   createReittiopasUrl,

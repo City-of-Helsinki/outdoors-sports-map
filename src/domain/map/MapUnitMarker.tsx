@@ -5,7 +5,8 @@ import { Marker } from "react-leaflet";
 import AriaHiddenIcon from "./MapAriaHiddenIcon";
 import MapUnitPopup from "./MapUnitPopup";
 import { MAX_ZOOM } from "./mapConstants";
-import { UNIT_ICON_WIDTH, UnitFilters, Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
+import { UNIT_ICON_WIDTH, UnitFilters } from "../unit/unitConstants";
 import {
   getUnitIcon,
   getUnitPosition,

@@ -37,6 +37,7 @@ export default defineConfig({
         'src/domain/assets/**',
         'src/domain/i18n/**',
         'src/domain/store/**',
+        'src/tests/**',
         '**/__tests__/**',
         '**/*.test.ts',
         '**/*.test.tsx',

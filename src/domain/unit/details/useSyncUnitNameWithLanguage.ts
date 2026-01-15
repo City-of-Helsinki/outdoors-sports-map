@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 
 import useLanguage from "../../../common/hooks/useLanguage";
-import { Unit } from "../unitConstants";
+import { Unit } from "../types";
 
 // If a user receives a link without the language parameter, but with the slug,
 // the slug can end up being in the wrong language.

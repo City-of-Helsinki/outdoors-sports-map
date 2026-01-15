@@ -13,6 +13,15 @@ import moment from "moment";
 
 import { getToday, isOnSeason } from "./seasons";
 import {
+  Unit,
+  SportFilter,
+  StatusFilter,
+  UnitConnection,
+  SkiingFilter,
+  HikingFilter,
+  SeasonDelimiter,
+} from "./types";
+import {
   DEFAULT_STATUS_FILTER,
   QualityEnum,
   Seasons,
@@ -20,30 +29,22 @@ import {
   UNIT_PIN_HEIGHT,
   UnitFilters,
   UnitQuality,
-  Unit,
-  SportFilter,
-  StatusFilter,
   SportFilters,
-  SeasonDelimiter,
-  UnitConnection,
-  SkiingFilter,
   SkiingFilters,
   UnitAutomaticConditionChangeDays,
   UnitConnectionTags,
   UnitQualityConst,
-  HikingFilter,
 } from "./unitConstants";
-import { AppState, DEFAULT_LANG } from "../app/appConstants";
+import { DEFAULT_LANG } from "../app/appConstants";
+import { AppState } from "../app/types";
 import i18n from "../i18n/i18n";
 import {
   IceSkatingServices,
   SkiingServices,
-  SwimmingServices,
   UnitServices,
-  IceSwimmingServices,
   SupportingServices,
-  SleddingServices,
 } from "../service/serviceConstants";
+import { getServicesForSport, getServicesBySport, getOnSeasonSportFilters, getOnSeasonHikeFilters } from "../service/serviceHelpers";
 
 export const getAttr = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -108,45 +109,30 @@ export const createPalvelukarttaUrl = (unit: Unit, lang: string) =>
 
 export const getUnitSport = (unit: Unit) => {
   if (unit.services && unit.services.length) {
-    for (const service of unit.services) {
-      if (IceSkatingServices.includes(service)) {
-        return UnitFilters.ICE_SKATING;
-      }
-
-      if (SkiingServices.includes(service)) {
-        return UnitFilters.SKIING;
-      }
-
-      if (SwimmingServices.includes(service)) {
-        return UnitFilters.SWIMMING;
-      }
-
-      if (IceSwimmingServices.includes(service)) {
-        return UnitFilters.ICE_SWIMMING;
-      }
-      if (SleddingServices.includes(service)) {
-        return UnitFilters.SLEDDING;
-      }
-      if (SupportingServices.includes(service)) {
-        switch (service) {
-          case UnitServices.COOKING_FACILITY:
-            return UnitFilters.COOKING_FACILITY;
-
-          case UnitServices.CAMPING:
-            return UnitFilters.CAMPING;
-
-          case UnitServices.SKI_LODGE:
-            return UnitFilters.SKI_LODGE;
-
-          case UnitServices.INFORMATION_POINT:
-            return UnitFilters.INFORMATION_POINT;
-
-          case UnitServices.LEAN_TO:
-            return UnitFilters.LEAN_TO;
-
-          default:
-            return "unknown";
+    const servicesBySport = getServicesBySport();
+    
+    // Check each sport's services to see if any match the unit's services
+    for (const [sport, sportServices] of Object.entries(servicesBySport)) {
+      if (unit.services.some(service => sportServices.includes(service))) {
+        // Handle special cases for supporting services
+        if (sport === UnitFilters.HIKING) {
+          // Return specific service type for supporting services
+          for (const service of unit.services) {
+            switch (service) {
+              case UnitServices.COOKING_FACILITY:
+                return UnitFilters.COOKING_FACILITY;
+              case UnitServices.CAMPING:
+                return UnitFilters.CAMPING;
+              case UnitServices.SKI_LODGE:
+                return UnitFilters.SKI_LODGE;
+              case UnitServices.INFORMATION_POINT:
+                return UnitFilters.INFORMATION_POINT;
+              case UnitServices.LEAN_TO:
+                return UnitFilters.LEAN_TO;
+            }
+          }
         }
+        return sport as SportFilter;
       }
     }
   }
@@ -246,12 +232,9 @@ export const getFilterIconURL = (
 /**
  * FILTERZ
  */
-export const getOnSeasonSportFilters = (
-  date: SeasonDelimiter = getToday(),
-): SportFilter[] =>
-  Seasons.filter((season) => isOnSeason(date, season))
-    .map(({ filters }) => filters)
-    .reduce((flattened, filters) => [...flattened, ...filters], []);
+// These functions are now centralized in serviceHelpers.ts
+// Keeping these exports for backward compatibility
+export { getOnSeasonSportFilters, getOnSeasonHikeFilters } from "../service/serviceHelpers";
 
 export const getOffSeasonSportFilters = (
   date: SeasonDelimiter = getToday(),
@@ -274,13 +257,6 @@ export const getDefaultFilters = () => ({
   status: getDefaultStatusFilter(),
   sport: getDefaultSportFilter(),
 });
-
-export const getOnSeasonHikeFilters = (
-  date: SeasonDelimiter = getToday(),
-): HikingFilter[] =>
-  Seasons.filter((season) => isOnSeason(date, season))
-    .map(({ hikeFilters }) => hikeFilters)
-    .reduce((flattened, filters) => [...flattened, ...filters], []);
 
 export const getSportSpecificationFilters = (
   sport: SportFilter,
@@ -389,21 +365,14 @@ export const getAllSportServices = () => {
 
 export const getOnSeasonSportServices = () => {
   const sportFilters = getOnSeasonSportFilters();
-  if (
-    sportFilters &&
-    sportFilters[0] &&
-    sportFilters[0] === UnitFilters.SWIMMING
-  ) {
-    return SwimmingServices.join(",");
-  } else if (
-    sportFilters &&
-    sportFilters[0] &&
-    sportFilters[0] === UnitFilters.ICE_SWIMMING
-  ) {
-    return IceSwimmingServices.join(",");
-  } else {
-    return SkiingServices.concat(IceSkatingServices).join(",");
+  const primarySport = sportFilters?.[0];
+  
+  if (primarySport) {
+    return getServicesForSport(primarySport).join(",");
   }
+  
+  // Fallback to winter sports if no specific sport is on season
+  return SkiingServices.concat(IceSkatingServices).join(",");
 };
 
 export const getNoneHikingUnit = (
@@ -604,6 +573,11 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
 
   const { observations } = updatedUnit;
 
+  // Safety check - ensure observations exists and is an array
+  if (!observations || !Array.isArray(observations)) {
+    return updatedUnit;
+  }
+
   // Get latest primary observation
   const primaryObservation = observations.find((obs) => obs.primary) || null;
 
@@ -614,10 +588,13 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
   const getMinimumDaysToHandleConditionUpdates = (): number => {
     if (sport === "unknown") return 0;
 
+    // Check if sport exists in UnitAutomaticConditionChangeDays
+    if (!(sport in UnitAutomaticConditionChangeDays)) return 0;
+
     // Get satisfactory and unknown days based on sport
     const satisfactoryDays =
-      UnitAutomaticConditionChangeDays[sport].satisfactory;
-    const unknownDays = UnitAutomaticConditionChangeDays[sport].unknown;
+      UnitAutomaticConditionChangeDays[sport as keyof typeof UnitAutomaticConditionChangeDays].satisfactory;
+    const unknownDays = UnitAutomaticConditionChangeDays[sport as keyof typeof UnitAutomaticConditionChangeDays].unknown;
 
     // Use satisfactory days if it exists
     if (satisfactoryDays !== undefined) {
@@ -669,7 +646,8 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
   // satisfactory value for it (which should be a smaller number than unknown)
   const isSatisfactory: boolean =
     sport !== "unknown" &&
-    daysFromLastUpdate < UnitAutomaticConditionChangeDays[sport].unknown;
+    sport in UnitAutomaticConditionChangeDays &&
+    daysFromLastUpdate < UnitAutomaticConditionChangeDays[sport as keyof typeof UnitAutomaticConditionChangeDays].unknown;
 
   // Set new observation copy as the first observation in unit's observations list
   // Return a new unit object instead of mutating the original

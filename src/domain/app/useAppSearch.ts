@@ -1,8 +1,9 @@
 import { useLocation } from "react-router";
 
+import { AppSearch, AppSearchLocationState } from "./types";
 import useSearch from "../../common/hooks/useSearch";
-import { AppSearch, AppSearchLocationState } from "../app/appConstants";
-import { SortKeys, Unit, UNIT_BATCH_SIZE } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
+import { SortKeys, UNIT_BATCH_SIZE } from "../unit/unitConstants";
 import {
   getDefaultSportFilter,
   getDefaultStatusFilter,

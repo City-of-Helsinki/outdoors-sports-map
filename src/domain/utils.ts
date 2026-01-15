@@ -1,11 +1,12 @@
-import { APP_NAME, QueryValue } from "./app/appConstants";
+import { APP_NAME } from "./app/appConstants";
+import { QueryValue } from "./app/types";
 
 export const normalizeActionName = (name: string): string =>
   `${APP_NAME || ""}/${name}`;
 
 export const arrayifyQueryValue = (queryValue: QueryValue): Array<string> => {
   // Handle undefined
-  if (typeof queryValue === "undefined") {
+  if (queryValue === undefined) {
     return [];
   }
 
@@ -19,8 +20,7 @@ export const arrayifyQueryValue = (queryValue: QueryValue): Array<string> => {
 };
 
 export const isRetina = () =>
-  window.devicePixelRatio > 1 ||
-  (window.matchMedia &&
-    window.matchMedia(
-      "(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)",
-    ).matches);
+  globalThis.devicePixelRatio > 1 ||
+  globalThis.matchMedia?.(
+    "(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)",
+  ).matches;

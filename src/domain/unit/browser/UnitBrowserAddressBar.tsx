@@ -1,7 +1,7 @@
 import { IconLocation, Tag, TagTheme } from "hds-react";
 
 import useLanguage from "../../../common/hooks/useLanguage";
-import { Address } from "../../app/appConstants";
+import { Address } from "../../app/types";
 import { getAddressToDisplay } from "../unitHelpers";
 
 type Props = {

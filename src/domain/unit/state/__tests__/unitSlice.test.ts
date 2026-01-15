@@ -2,15 +2,32 @@ import { vi, describe, expect, it, beforeEach } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import unitReducer, {
   receiveUnits,
+  receiveSeasonalUnits,
   selectUnitById,
   selectAllUnits,
   selectVisibleUnits,
   selectIsUnitLoading,
+  selectIsSearchLoading,
   unitApi,
 } from '../unitSlice';
-import type { AppState } from '../../../app/appConstants';
-import type { Unit, NormalizedUnitSchema } from '../../unitConstants';
 import { UnitFilters } from '../../unitConstants';
+import { handleUnitConditionUpdates } from '../../unitHelpers';
+import { AppState } from '../../../app/types';
+import { NormalizedUnitSchema } from '../../types';
+import {
+  TEST_COORDINATES,
+  TEST_SERVICES,
+  createInitialReducerState,
+  createInitialSearchState,
+  createApiTestStore,
+  createMockResponse,
+  createTranslatableString,
+  createMockUnit,
+  createMockSchema,
+  createBasicMockUnits,
+  createMockAppState,
+  createTestStoreState,
+} from '../../../../tests/testUtils';
 
 // Mock fetch for testing API calls
 const mockFetch = vi.fn();
@@ -32,69 +49,12 @@ vi.mock('../../unitHelpers', async (importOriginal) => {
   };
 });
 
-import { getOnSeasonServices } from '../../service/serviceHelpers';
-import { handleUnitConditionUpdates } from '../../unitHelpers';
-
 describe('unitSlice', () => {
-  // Helper function to create initial reducer state
-  const createInitialReducerState = (overrides = {}) => ({
-    isFetching: false,
-    fetchError: null,
-    byId: {},
-    all: [],
-    iceskate: [],
-    ski: [],
-    swim: [],
-    iceswim: [],
-    sledding: [],
-    status_ok: [],
-    hike: [],
-    ...overrides,
-  });
-
-  // Helper function to create initial search state
-  const createInitialSearchState = (overrides = {}) => ({
-    isFetching: false,
-    isActive: false,
-    unitResults: [],
-    unitSuggestions: [],
-    addressSuggestions: [],
-    ...overrides,
-  });
+  const mockUnits = createBasicMockUnits();
 
   beforeEach(() => {
     mockFetch.mockClear();
   });
-
-  // Helper functions for API testing
-  const createApiTestStore = () => configureStore({
-    reducer: {
-      [unitApi.reducerPath]: unitApi.reducer,
-      unit: unitReducer,
-    },
-    middleware: (gDM) => gDM().concat(unitApi.middleware),
-  });
-
-  const createMockResponse = (data: any, status = 200) => new Response(JSON.stringify(data), {
-    status,
-    statusText: status === 200 ? 'OK' : 'Error',
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  const mockUnits: Unit[] = [
-    {
-      id: 1,
-      name: { fi: 'Test Unit 1' },
-      location: { coordinates: [24.94, 60.17] },
-      services: [102, 103],
-    },
-    {
-      id: 2, 
-      name: { fi: 'Test Unit 2' },
-      location: { coordinates: [24.95, 60.18] },
-      services: [103, 105],
-    },
-  ] as Unit[];
 
   describe('API endpoints', () => {
     describe('getUnits', () => {
@@ -125,12 +85,50 @@ describe('unitSlice', () => {
         mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));
 
         const store = createApiTestStore();
-        const customParams = { municipality: 'Helsinki', page_size: 500 };
+        const customParams = { municipality: 'Helsinki', page_size: 500 } as any;
         await store.dispatch(unitApi.endpoints.getUnits.initiate(customParams));
 
         const [request] = mockFetch.mock.calls[0];
         expect(request.url).toContain('municipality=Helsinki');
         expect(request.url).toContain('page_size=500'); // Custom param should override default
+      });
+
+      it('should use provided services when services array has length > 0', async () => {
+        const mockResponse = { results: mockUnits };
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));
+
+        const store = createApiTestStore();
+        const customServices = [191, 730]; // SKI_TRACK and SWIMMING_PLACE
+        await store.dispatch(unitApi.endpoints.getUnits.initiate({ services: customServices }));
+
+        const [request] = mockFetch.mock.calls[0];
+        expect(request.url).toContain('service=191%2C730'); // URL encoded comma
+      });
+
+      it('should use getOnSeasonServices when services is empty array', async () => {
+        const mockResponse = { results: mockUnits };
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));
+
+        const store = createApiTestStore();
+        await store.dispatch(unitApi.endpoints.getUnits.initiate({ services: [] }));
+
+        const [request] = mockFetch.mock.calls[0];
+        // Should use on-season services since empty array was provided
+        expect(request.url).toContain('service=');
+        expect(request.url).not.toContain('service=%2C'); // Should not be just commas
+      });
+
+      it('should use getOnSeasonServices when services is undefined', async () => {
+        const mockResponse = { results: mockUnits };
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));
+
+        const store = createApiTestStore();
+        await store.dispatch(unitApi.endpoints.getUnits.initiate({ services: undefined }));
+
+        const [request] = mockFetch.mock.calls[0];
+        // Should use on-season services since undefined was provided
+        expect(request.url).toContain('service=');
+        expect(request.url).not.toContain('service=%2C'); // Should not be just commas
       });
 
       it('should handle empty results', async () => {
@@ -156,7 +154,7 @@ describe('unitSlice', () => {
         mockFetch.mockResolvedValueOnce(response);
 
         const store = createApiTestStore();
-        const result = await store.dispatch(unitApi.endpoints.getUnits.initiate());
+        const result = await store.dispatch(unitApi.endpoints.getUnits.initiate()) as any;
 
         expect(result.error).toBeDefined();
         expect(result.error?.status).toBe(404);
@@ -200,6 +198,43 @@ describe('unitSlice', () => {
         expect(state.unit.fetchError).toBeDefined();
       });
     });
+
+    describe('getAllSeasonalUnits', () => {
+      it('should store seasonal units when getAllSeasonalUnits.matchFulfilled', async () => {
+        const mockSeasonalUnits = [
+          createMockUnit(501, { services: [TEST_SERVICES.SKIING] }),
+          createMockUnit(502, { 
+            location: { coordinates: TEST_COORDINATES.ESPOO },
+            services: [TEST_SERVICES.SWIMMING]
+          }),
+        ];
+
+        const mockResponse = { results: mockSeasonalUnits };
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));
+
+        const store = createApiTestStore();
+        const result = await store.dispatch(unitApi.endpoints.getAllSeasonalUnits.initiate());
+
+        // Verify the query was successful and seasonal data was stored
+        expect(result.data?.entities.unit).toBeDefined();
+        expect(result.data?.result).toEqual(['501', '502']);
+
+        const state = store.getState();
+        // Verify seasonal units are stored via the matchFulfilled matcher
+        expect(state.unit.seasonalById['501']).toBeDefined();
+        expect(state.unit.seasonalById['502']).toBeDefined();
+        expect(state.unit.seasonalAll).toEqual(['501', '502']);
+        expect(state.unit.seasonalSki).toContain('501');
+        expect(state.unit.seasonalSwim).toContain('502');
+
+        // Verify the fetch was called with correct parameters
+        expect(mockFetch).toHaveBeenCalledTimes(1);
+        const [request] = mockFetch.mock.calls[0];
+        expect(request.url).toContain('unit/');
+        expect(request.url).toContain('service='); // Should include on-season services
+        expect(request.method).toBe('GET');
+      });
+    });
   });
 
   describe('reducers', () => {
@@ -207,50 +242,35 @@ describe('unitSlice', () => {
 
     describe('receiveUnits', () => {
       beforeEach(() => {
-        // Mock handleUnitConditionUpdates to return units as-is
         vi.mocked(handleUnitConditionUpdates).mockImplementation((units) => units);
       });
 
-      const mockUnit: Unit = {
-        id: 123,
-        name: { fi: 'Test Unit', en: 'Test Unit EN' },
-        services: [456, 789],
-        location: { coordinates: [24.945, 60.175] },
-        extensions: { opening_hours: { status: 'open' } },
-        street_address: { fi: 'Test Street 1' },
-      };
-
-      const mockNormalizedSchema: NormalizedUnitSchema = {
-        entities: {
-          unit: {
-            '123': mockUnit,
-            '456': {
-              id: 456,
-              name: { fi: 'Another Unit' },
-              services: [111],
-              location: { coordinates: [25.0, 60.2] },
-            },
-          },
-        },
-        result: [123, 456],
-      };
+      const testUnits = [
+        createMockUnit(123, {
+          name: createTranslatableString('Test Unit'),
+          services: [456, 789],
+          extensions: {},
+          street_address: createTranslatableString('Test Street 1'),
+        }),
+        createMockUnit(456, {
+          name: createTranslatableString('Another Unit'),
+          services: [111],
+          location: { coordinates: TEST_COORDINATES.VANTAA },
+        }),
+      ];
+      const mockNormalizedSchema = createMockSchema(testUnits);
 
       it('should add units to state', () => {
         const result = unitReducer(initialState, receiveUnits(mockNormalizedSchema));
 
-        expect(result.byId['123']).toEqual(mockUnit);
-        expect(result.byId['456']).toEqual({
-          id: 456,
-          name: { fi: 'Another Unit' },
-          services: [111],
-          location: { coordinates: [25.0, 60.2] },
-        });
+        expect(result.byId['123']).toEqual(testUnits[0]);
+        expect(result.byId['456']).toEqual(testUnits[1]);
       });
 
       it('should replace existing units', () => {
         const stateWithUnits = createInitialReducerState({
           byId: {
-            '999': { id: 999, name: { fi: 'Existing Unit' } },
+            '999': createMockUnit(999, { name: createTranslatableString('Existing Unit') }),
           },
           all: ['999'],
         });
@@ -259,7 +279,7 @@ describe('unitSlice', () => {
 
         // receiveUnits replaces the entire byId, doesn't merge
         expect(result.byId['999']).toBeUndefined(); // Old unit is gone
-        expect(result.byId['123']).toEqual(mockUnit);
+        expect(result.byId['123']).toEqual(testUnits[0]);
         expect(result.byId['456']).toBeDefined();
       });
 
@@ -277,7 +297,7 @@ describe('unitSlice', () => {
       it('should overwrite existing units with same ID', () => {
         const stateWithUnits = {
           byId: {
-            '123': { id: 123, name: { fi: 'Old Name' } },
+            '123': createMockUnit(123, { name: createTranslatableString('Old Name') }),
           },
         };
 
@@ -308,29 +328,135 @@ describe('unitSlice', () => {
         expect(newState.isFetching).toBe(false);
       });
     });
+
+    describe('receiveSeasonalUnits', () => {
+      beforeEach(() => {
+        vi.mocked(handleUnitConditionUpdates).mockImplementation((units) => units);
+      });
+
+      const seasonalUnits = [
+        createMockUnit(789, {
+          name: createTranslatableString('Seasonal Unit'),
+          services: [102, 103],
+          extensions: {},
+          street_address: createTranslatableString('Seasonal Street 1'),
+        }),
+        createMockUnit(890, {
+          name: createTranslatableString('Another Seasonal Unit'),
+          services: [201],
+          location: { coordinates: TEST_COORDINATES.VANTAA },
+        }),
+      ];
+      const mockSeasonalSchema = createMockSchema(seasonalUnits);
+
+      it('should add seasonal units to state', () => {
+        const result = unitReducer(initialState, receiveSeasonalUnits(mockSeasonalSchema));
+
+        expect(result.seasonalById['789']).toEqual(seasonalUnits[0]);
+        expect(result.seasonalById['890']).toEqual(seasonalUnits[1]);
+        expect(result.seasonalAll).toEqual(['789', '890']);
+      });
+
+      it('should replace existing seasonal units', () => {
+        const stateWithSeasonalUnits = createInitialReducerState({
+          seasonalById: {
+            '999': createMockUnit(999, { name: createTranslatableString('Existing Seasonal Unit') }),
+          },
+          seasonalAll: ['999'],
+        });
+
+        const result = unitReducer(stateWithSeasonalUnits as any, receiveSeasonalUnits(mockSeasonalSchema));
+
+        // receiveSeasonalUnits replaces the entire seasonalById, doesn't merge
+        expect(result.seasonalById['999']).toBeUndefined(); // Old unit is gone
+        expect(result.seasonalById['789']).toEqual(seasonalUnits[0]);
+        expect(result.seasonalById['890']).toBeDefined();
+        expect(result.seasonalAll).toEqual(['789', '890']);
+      });
+
+      it('should handle empty normalized schema for seasonal units', () => {
+        const emptySchema: NormalizedUnitSchema = {
+          entities: { unit: {} },
+          result: [],
+        };
+
+        const result = unitReducer(initialState, receiveSeasonalUnits(emptySchema));
+
+        expect(result.seasonalById).toEqual({});
+        expect(result.seasonalAll).toEqual([]);
+      });
+
+      it('should return early if no entities.unit in payload', () => {
+        const schemaWithoutUnits = {
+          entities: {},
+          result: [123],
+        } as NormalizedUnitSchema;
+
+        const result = unitReducer(initialState, receiveSeasonalUnits(schemaWithoutUnits));
+
+        // State should remain unchanged
+        expect(result).toEqual(initialState);
+      });
+
+      it('should call handleUnitConditionUpdates for seasonal units', () => {
+        const mockHandleUnitConditionUpdates = vi.mocked(handleUnitConditionUpdates);
+        mockHandleUnitConditionUpdates.mockReturnValue({ '789': seasonalUnits[0] });
+
+        unitReducer(initialState, receiveSeasonalUnits(mockSeasonalSchema));
+
+        expect(mockHandleUnitConditionUpdates).toHaveBeenCalledWith({
+          789: seasonalUnits[0],
+          890: seasonalUnits[1],
+        });
+      });
+
+      it('should convert result IDs to strings', () => {
+        const schemaWithNumberIds = {
+          entities: {
+            unit: {
+              123: createMockUnit(123, { 
+                name: createTranslatableString('Unit 123'), 
+                services: [102] 
+              }),
+            },
+          },
+          result: [123], // number ID
+        } as unknown as NormalizedUnitSchema;
+
+        const result = unitReducer(initialState, receiveSeasonalUnits(schemaWithNumberIds));
+
+        expect(result.seasonalAll).toEqual(['123']); // Should be converted to string
+      });
+
+      it('should update seasonal filtered arrays based on services', () => {
+        const mixedServiceUnits = [
+          createMockUnit(100, { services: [TEST_SERVICES.SKIING] }),
+          createMockUnit(200, { services: [TEST_SERVICES.SWIMMING] }),
+        ];
+        const schemaWithMixedServices = createMockSchema(mixedServiceUnits);
+
+        const result = unitReducer(initialState, receiveSeasonalUnits(schemaWithMixedServices));
+
+        // Should have populated seasonal arrays based on services
+        expect(result.seasonalSki).toContain('100');
+        expect(result.seasonalSwim).toContain('200');
+      });
+    });
   });
 
   describe('selectors', () => {
-    const createMockState = (units: Record<string, Unit> = {}): AppState => ({
-      unit: createInitialReducerState({
-        byId: units,
-        all: Object.keys(units),
-      }),
-      search: createInitialSearchState(),
-    }) as AppState;
-
     describe('selectUnitById', () => {
       it('should return unit by ID', () => {
-        const unit = { id: 123, name: { fi: 'Test Unit' } };
-        const state = createMockState({ '123': unit as Unit });
+        const testUnit = createMockUnit(123, { name: createTranslatableString('Test Unit') });
+        const state = createMockAppState({ byId: { '123': testUnit }, all: ['123'] });
 
         const result = selectUnitById(state, { id: '123' });
 
-        expect(result).toEqual(unit);
+        expect(result).toEqual(testUnit);
       });
 
       it('should return undefined for non-existent ID', () => {
-        const state = createMockState({});
+        const state = createMockAppState();
 
         const result = selectUnitById(state, { id: '999' });
 
@@ -338,32 +464,35 @@ describe('unitSlice', () => {
       });
 
       it('should handle numeric ID parameter', () => {
-        const unit = { id: 123, name: { fi: 'Test Unit' } };
-        const state = createMockState({ '123': unit as Unit });
+        const testUnit = createMockUnit(123, { name: createTranslatableString('Test Unit') });
+        const state = createMockAppState({ byId: { '123': testUnit }, all: ['123'] });
 
         const result = selectUnitById(state, { id: 123 });
 
-        expect(result).toEqual(unit);
+        expect(result).toEqual(testUnit);
       });
     });
 
     describe('selectAllUnits', () => {
       it('should return all units as array', () => {
-        const units = {
-          '123': { id: 123, name: { fi: 'Unit 1' } },
-          '456': { id: 456, name: { fi: 'Unit 2' } },
+        const testUnits = {
+          '123': createMockUnit(123, { name: createTranslatableString('Unit 1') }),
+          '456': createMockUnit(456, { name: createTranslatableString('Unit 2') }),
         };
-        const state = createMockState(units as Record<string, Unit>);
+        const state = createMockAppState({ 
+          byId: testUnits, 
+          all: Object.keys(testUnits) 
+        });
 
         const result = selectAllUnits(state);
 
         expect(result).toHaveLength(2);
-        expect(result[0]).toEqual(units['123']);
-        expect(result[1]).toEqual(units['456']);
+        expect(result[0]).toEqual(testUnits['123']);
+        expect(result[1]).toEqual(testUnits['456']);
       });
 
       it('should return empty array when no units', () => {
-        const state = createMockState({});
+        const state = createMockAppState();
 
         const result = selectAllUnits(state);
 
@@ -379,7 +508,7 @@ describe('unitSlice', () => {
             byId: {},
             all: [],
           },
-        } as AppState;
+        } as unknown as AppState;
 
         const result = selectIsUnitLoading(state);
 
@@ -393,7 +522,7 @@ describe('unitSlice', () => {
             byId: {},
             all: [],
           },
-        } as AppState;
+        } as unknown as AppState;
 
         const result = selectIsUnitLoading(state);
 
@@ -407,7 +536,7 @@ describe('unitSlice', () => {
             byId: { '123': { id: 123 } },
             all: ['123'],
           },
-        } as AppState;
+        } as unknown as AppState;
 
         const result = selectIsUnitLoading(state);
 
@@ -420,7 +549,10 @@ describe('unitSlice', () => {
       const mockUnitsById = Object.fromEntries(
         Array.from({ length: 25 }, (_, i) => [
           String(i + 1),
-          { id: i + 1, name: { fi: `Unit ${i + 1}` }, services: [100 + i + 1] }
+          createMockUnit(i + 1, { 
+            name: createTranslatableString(`Unit ${i + 1}`), 
+            services: [100 + i + 1] 
+          })
         ])
       );
 
@@ -430,7 +562,7 @@ describe('unitSlice', () => {
           ...units,
         },
         search: createInitialSearchState(searchOverrides),
-      }) as AppState;
+      }) as unknown as AppState;
 
       const expectVisibleUnits = (result: any[], expectedIds: number[]) => {
         expect(result).toHaveLength(expectedIds.length);
@@ -488,6 +620,63 @@ describe('unitSlice', () => {
         );
         const result = selectVisibleUnits(state, UnitFilters.SWIMMING, UnitFilters.STATUS_ALL, '');
         expectVisibleUnits(result, [10, 12]);
+      });
+    });
+
+    describe('selectIsSearchLoading', () => {
+      // Helper to create a proper store with initial state
+      const createTestStore = (apiState = {}) => {
+        const store = configureStore({
+          reducer: {
+            api: unitApi.reducer,
+            unit: unitReducer,
+            map: () => ({}),
+            search: () => ({ isActive: false, unitResults: [], query: '' }),
+          },
+          preloadedState: createTestStoreState(apiState),
+        });
+        return store.getState() as unknown as AppState;
+      };
+
+      it('should return true when getAllSeasonalUnits query is loading', () => {
+        const state = createTestStore({
+          queries: {
+            'getAllSeasonalUnits(undefined)': {
+              status: 'pending',
+              endpointName: 'getAllSeasonalUnits',
+              requestId: 'test-id',
+            },
+          },
+        });
+
+        const result = selectIsSearchLoading(state);
+
+        expect(result).toBe(true);
+      });
+
+      it('should return false when getAllSeasonalUnits query is not loading', () => {
+        const state = createTestStore({
+          queries: {
+            'getAllSeasonalUnits(undefined)': {
+              status: 'fulfilled',
+              endpointName: 'getAllSeasonalUnits',
+              requestId: 'test-id',
+              data: { entities: {}, result: [] },
+            },
+          },
+        });
+
+        const result = selectIsSearchLoading(state);
+
+        expect(result).toBe(false);
+      });
+
+      it('should return false when getAllSeasonalUnits query does not exist', () => {
+        const state = createTestStore(); // Uses default empty queries
+
+        const result = selectIsSearchLoading(state);
+
+        expect(result).toBe(false);
       });
     });
   });

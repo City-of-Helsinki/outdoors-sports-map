@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import Link from "../../common/components/Link";
 import UnitIcon from "../unit/UnitIcon";
 import ObservationStatus from "../unit/UnitObservationStatus";
-import { Unit } from "../unit/unitConstants";
+import { Unit } from "../unit/types";
 
 export type Suggestion = {
   type: "searchable" | "loose";
