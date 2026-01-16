@@ -220,6 +220,34 @@ describe("<SearchContainer />", () => {
       expectSuggestionsToBeHidden();
     });
 
+    it("should hide suggestions when search query is cleared to empty", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+
+      const input = screen.getByTestId("search-input");
+      
+      // First type to show suggestions
+      await userEvent.type(input, "Helsinki");
+      await expectSuggestionsToAppear();
+
+      // Then clear the input
+      await userEvent.clear(input);
+
+      // Suggestions should be hidden
+      expectSuggestionsToBeHidden();
+    });
+
+    it("should not show suggestions when typing only whitespace", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+
+      const input = screen.getByTestId("search-input");
+      
+      // Type only spaces
+      await userEvent.type(input, "   ");
+
+      // Suggestions should remain hidden
+      expectSuggestionsToBeHidden();
+    });
+
     it("should hide suggestions when focus leaves the container", async () => {
       renderComponent({ suggestions: mockSuggestions });
 

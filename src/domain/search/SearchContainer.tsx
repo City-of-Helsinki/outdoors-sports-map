@@ -68,10 +68,16 @@ function SearchContainer({
   const onInputChange = useCallback(
     (value: string): void => {
       setSearchPhrase(value);
-      setShowSuggestions(true);
-      onFindSuggestions(value);
-      // Update position when opening suggestions
-      setTimeout(updateMenuPosition, 0);
+      
+      // Only show suggestions if there's actual search text
+      if (value && value.trim().length > 0) {
+        setShowSuggestions(true);
+        onFindSuggestions(value);
+        // Update position when opening suggestions
+        setTimeout(updateMenuPosition, 0);
+      } else {
+        setShowSuggestions(false);
+      }
     },
     [onFindSuggestions, updateMenuPosition],
   );
@@ -177,7 +183,7 @@ function SearchContainer({
         searchActive={isActive}
         disabled={disabled}
       />
-      {showSuggestions && (
+      {showSuggestions && searchPhrase && searchPhrase.trim().length > 0 && (
         <SearchSuggestions
           openAllResults={handleSearch}
           suggestions={suggestions}
