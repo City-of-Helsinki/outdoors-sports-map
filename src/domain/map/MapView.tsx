@@ -15,6 +15,7 @@ import {
   MIN_ZOOM,
 } from "./mapConstants";
 import { getMapUrl, latLngToArray } from "./mapHelpers";
+import Loading from "../../common/components/Loading";
 import OSMIcon from "../../common/components/OSMIcon";
 import { View } from "../unit/UnitView";
 import { Unit } from "../unit/types";
@@ -29,6 +30,7 @@ type MapViewProps = {
   leafletElementRef: MutableRefObject<L.Map | null>;
   position: LatLngTuple;
   units: Unit[];
+  isLoading: boolean;
 };
 
 function MapView(props: Readonly<MapViewProps>) {
@@ -39,6 +41,7 @@ function MapView(props: Readonly<MapViewProps>) {
     units,
     openUnit,
     leafletElementRef,
+    isLoading,
   } = props;
 
   const leafletElement = leafletElementRef.current;
@@ -124,6 +127,13 @@ function MapView(props: Readonly<MapViewProps>) {
           <HeightProfileControl unit={selectedUnit} />
         )}
       </MapContainer>
+      {isLoading && !selectedUnit && (
+        <div className="map-view-loading-overlay">
+          <div className="map-view-loading-container">
+            <Loading />
+          </div>
+        </div>
+      )}
     </View>
   );
 }

@@ -149,9 +149,13 @@ export const getObservation = (unit: Unit, matchProperty: string) => {
 };
 
 export const getCondition = (unit: Unit) => {
+  // Safely check if unit and observations exist before destructuring
+  if (!unit?.observations) {
+    return null;
+  }
+  
   const { observations } = unit;
-
-  return observations ? observations.find((obs) => obs.primary) : null;
+  return observations.find((obs) => obs.primary) || null;
 };
 
 export const getUnitQuality = (unit: Unit): string => {
@@ -179,7 +183,7 @@ export const getOpeningHours = (unit: Unit, activeLang: string): string[] => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getObservationTime = (observation: Record<string, any>) => {
-  const timeValue = (observation && observation.time) || 0;
+  const timeValue = observation?.time || 0;
   
   if (timeValue === 0) {
     return new Date(0); // Return epoch date for falsy values
@@ -222,7 +226,8 @@ export const getUnitIconURL = (
   selected: boolean | null | undefined = false,
   retina: boolean | null | undefined = true,
 ) => {
-  const quality = getUnitQuality(unit);
+  // Use safe quality assessment with fallback for units without observations
+  const quality = unit?.observations ? getUnitQuality(unit) : 'unknown';
   const sport = getUnitSport(unit);
   const onOff = selected ? "on" : "off";
   const resolution = retina ? "@2x" : "";
@@ -343,8 +348,18 @@ export const sortByName = (units: Unit[], lang?: string) =>
 
 export const sortByCondition = (units: Unit[]) =>
   sortBy(units, [
-    (unit) => enumerableQuality(getUnitQuality(unit)),
     (unit) => {
+      // Ensure unit has required properties for quality assessment
+      if (!unit?.observations) {
+        return QualityEnum.unknown; // Return lowest priority for units without observations
+      }
+      return enumerableQuality(getUnitQuality(unit));
+    },
+    (unit) => {
+      // Ensure unit has observations before calling getCondition
+      if (!unit?.observations) {
+        return Number.MAX_SAFE_INTEGER; // Return maximum time difference for units without observations
+      }
       const observation = getCondition(unit);
 
       const observationTime =

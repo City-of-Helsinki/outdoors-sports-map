@@ -6,8 +6,9 @@ import useAppSearch from "../app/useAppSearch";
 import useIsUnitBrowserSearchView from "../app/useIsUnitBrowserSearchView";
 import { getServicesForSport, getOnSeasonServices } from "../service/serviceHelpers";
 import { useGetServicesQuery } from "../service/state/serviceSlice";
+import { useUnitsWithState } from "../unit/hooks/useUnitsWithState";
 import { useLazySearchUnitsQuery } from "../unit/state/searchSlice";
-import { useGetUnitsQuery, useGetAllSeasonalUnitsQuery } from "../unit/state/unitSlice";
+import { useGetAllSeasonalUnitsQuery } from "../unit/state/unitSlice";
 import { UnitFilters } from "../unit/unitConstants";
 
 function useFetchInitialData() {
@@ -44,11 +45,11 @@ function useFetchInitialData() {
   // Fetch ALL seasonal units (for search suggestions)
   useGetAllSeasonalUnitsQuery();
   
-  // Fetch units for current sport selection (for map display)
-  useGetUnitsQuery(
-    queryParams,
-    { skip: Object.keys(queryParams).length === 0 }
-  );
+  // Fetch units for current sport selection (for map display) and update Redux state
+  useUnitsWithState({
+    services: queryParams.services,
+    skip: Object.keys(queryParams).length === 0
+  });
 
   useEffect(() => {
     if (isFirstRender.current) {

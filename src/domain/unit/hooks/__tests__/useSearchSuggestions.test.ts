@@ -5,151 +5,151 @@ import { useSearchSuggestions } from '../useSearchSuggestions';
 
 // Mock dependencies
 const mockDispatch = vi.fn();
-const mockTriggerSearchSuggestions = vi.fn();
+const mockQueryResult = { 
+  data: null, 
+  isLoading: false 
+};
 
 vi.mock('react-redux', () => ({
   useDispatch: () => mockDispatch,
 }));
 
 vi.mock('../../state/searchSlice', () => ({
-  useLazySearchSuggestionsQuery: () => [mockTriggerSearchSuggestions],
+  useSearchSuggestionsQuery: vi.fn(() => mockQueryResult),
   setUnitSuggestions: vi.fn((data) => ({ type: 'setUnitSuggestions', payload: data })),
   setAddressSuggestions: vi.fn((data) => ({ type: 'setAddressSuggestions', payload: data })),
 }));
 
+import { useSearchSuggestionsQuery } from '../../state/searchSlice';
+const mockUseSearchSuggestionsQuery = useSearchSuggestionsQuery as any;
+
 describe('useSearchSuggestions', () => {
-  // Test helpers
-  const createMockResponse = (units = { result: [] }, addresses = []) => ({
-    data: { units, addresses }
-  });
-
-  const renderHookAndGetSearchFn = () => {
-    const { result, unmount } = renderHook(() => useSearchSuggestions());
-    return { searchSuggestions: result.current.searchSuggestions, result, unmount };
-  };
-
-  const triggerSearchWithDelay = (searchFn: (input: string) => void, input: string) => {
-    act(() => {
-      searchFn(input);
-    });
-    act(() => {
-      vi.advanceTimersByTime(300);
-    });
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
+    mockUseSearchSuggestionsQuery.mockReturnValue({
+      data: null,
+      isLoading: false
+    });
   });
 
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  it('should return searchSuggestions function', () => {
-    const { searchSuggestions } = renderHookAndGetSearchFn();
+  it('should return searchSuggestions function and isLoading state', () => {
+    const { result } = renderHook(() => useSearchSuggestions());
     
-    expect(searchSuggestions).toBeTypeOf('function');
+    expect(result.current.searchSuggestions).toBeTypeOf('function');
+    expect(result.current.isLoading).toBe(false);
   });
 
-  it('should debounce search calls by 300ms', async () => {
-    mockTriggerSearchSuggestions.mockResolvedValue(createMockResponse());
-
-    const { searchSuggestions } = renderHookAndGetSearchFn();
+  it('should debounce input and call query with debounced value', () => {
+    const { result } = renderHook(() => useSearchSuggestions());
     
     // Make multiple rapid calls
     act(() => {
-      searchSuggestions('test1');
-      searchSuggestions('test2');
-      searchSuggestions('test3');
+      result.current.searchSuggestions('test1');
+      result.current.searchSuggestions('test2');
+      result.current.searchSuggestions('test3');
     });
 
-    // Should not have called the API yet
-    expect(mockTriggerSearchSuggestions).not.toHaveBeenCalled();
+    // Should not have called with any value yet
+    expect(mockUseSearchSuggestionsQuery).toHaveBeenLastCalledWith('', { skip: true });
 
     // Fast forward 300ms
     act(() => {
       vi.advanceTimersByTime(300);
     });
 
-    // Should only call once with the last search term
-    await vi.waitFor(() => {
-      expect(mockTriggerSearchSuggestions).toHaveBeenCalledTimes(1);
-      expect(mockTriggerSearchSuggestions).toHaveBeenCalledWith('test3');
-    });
+    // Should call with the last search term
+    expect(mockUseSearchSuggestionsQuery).toHaveBeenLastCalledWith('test3', { skip: false });
   });
 
-  it('should dispatch Redux actions when search completes with matching term', async () => {
+  it('should skip query for empty input', () => {
+    const { result } = renderHook(() => useSearchSuggestions());
+    
+    act(() => {
+      result.current.searchSuggestions('');
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+
+    // Should skip query for empty input
+    expect(mockUseSearchSuggestionsQuery).toHaveBeenLastCalledWith('', { skip: true });
+  });
+
+  it('should dispatch Redux actions when search completes with data', () => {
     const mockUnits = { result: ['unit1', 'unit2'] };
     const mockAddresses = [{ properties: { label: 'Address 1' } }];
     
-    mockTriggerSearchSuggestions.mockResolvedValue(createMockResponse(mockUnits, mockAddresses));
-
-    const { searchSuggestions } = renderHookAndGetSearchFn();
-    
-    triggerSearchWithDelay(searchSuggestions, 'helsinki');
-
-    await vi.waitFor(() => {
-      expect(mockDispatch).toHaveBeenCalledWith({ 
-        type: 'setUnitSuggestions', 
-        payload: mockUnits 
-      });
-      expect(mockDispatch).toHaveBeenCalledWith({ 
-        type: 'setAddressSuggestions', 
-        payload: mockAddresses 
-      });
+    mockUseSearchSuggestionsQuery.mockReturnValue({
+      data: { units: mockUnits, addresses: mockAddresses },
+      isLoading: false
     });
-  });
 
-  it('should not dispatch when search term changes during request', async () => {
-    mockTriggerSearchSuggestions.mockImplementation(() => 
-      new Promise(resolve => 
-        setTimeout(() => resolve(createMockResponse()), 100)
-      )
-    );
-
-    const { searchSuggestions } = renderHookAndGetSearchFn();
+    const { result } = renderHook(() => useSearchSuggestions());
     
-    // Start search for 'old'
-    triggerSearchWithDelay(searchSuggestions, 'old');
-
-    // Change search term before first request completes
-    triggerSearchWithDelay(searchSuggestions, 'new');
-
-    // Complete both requests
     act(() => {
-      vi.advanceTimersByTime(100);
+      result.current.searchSuggestions('helsinki');
     });
 
-    await vi.waitFor(() => {
-      // Should only dispatch for the 'new' search, not 'old'
-      expect(mockDispatch).toHaveBeenCalledTimes(2); // once for units, once for addresses
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+
+    // Should dispatch actions with the received data
+    expect(mockDispatch).toHaveBeenCalledWith({ 
+      type: 'setUnitSuggestions', 
+      payload: mockUnits 
+    });
+    expect(mockDispatch).toHaveBeenCalledWith({ 
+      type: 'setAddressSuggestions', 
+      payload: mockAddresses 
     });
   });
 
-  it('should not dispatch when API returns no data', async () => {
-    mockTriggerSearchSuggestions.mockResolvedValue({ data: null });
+  it('should not dispatch when query returns no data', () => {
+    mockUseSearchSuggestionsQuery.mockReturnValue({
+      data: null,
+      isLoading: false
+    });
 
-    const { searchSuggestions } = renderHookAndGetSearchFn();
+    const { result } = renderHook(() => useSearchSuggestions());
     
-    triggerSearchWithDelay(searchSuggestions, 'test');
+    act(() => {
+      result.current.searchSuggestions('test');
+    });
 
-    await vi.waitFor(() => {
-      expect(mockTriggerSearchSuggestions).toHaveBeenCalled();
+    act(() => {
+      vi.advanceTimersByTime(300);
     });
 
     // Should not dispatch when no data
     expect(mockDispatch).not.toHaveBeenCalled();
   });
 
+  it('should return isLoading state from query', () => {
+    mockUseSearchSuggestionsQuery.mockReturnValue({
+      data: null,
+      isLoading: true
+    });
+
+    const { result } = renderHook(() => useSearchSuggestions());
+    
+    expect(result.current.isLoading).toBe(true);
+  });
+
   it('should cleanup timeout on unmount', () => {
     const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout');
     
-    const { searchSuggestions, unmount } = renderHookAndGetSearchFn();
+    const { result, unmount } = renderHook(() => useSearchSuggestions());
     
     // Start a search to create a timeout
     act(() => {
-      searchSuggestions('test');
+      result.current.searchSuggestions('test');
     });
 
     // Unmount the hook

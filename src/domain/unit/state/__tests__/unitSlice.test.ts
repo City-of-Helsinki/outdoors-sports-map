@@ -3,11 +3,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import unitReducer, {
   receiveUnits,
   receiveSeasonalUnits,
+  setIsFetching,
   selectUnitById,
-  selectAllUnits,
   selectVisibleUnits,
   selectIsUnitLoading,
   selectIsSearchLoading,
+  selectIsMapLoading,
   unitApi,
 } from '../unitSlice';
 import { UnitFilters } from '../../unitConstants';
@@ -43,11 +44,32 @@ vi.mock('../../unitHelpers', async (importOriginal) => {
   return {
     ...actual,
     handleUnitConditionUpdates: vi.fn((units) => units),
-    enumerableQuality: vi.fn(() => 1),
-    getUnitQuality: vi.fn(() => ({})),
     getFilteredUnitsBySportSpecification: vi.fn((visibleUnits) => visibleUnits.slice(0, -1)), // Remove last unit for testing intersection
   };
 });
+
+// Test helper functions
+const createErrorResponse = (status: number, statusText: string, error: string) =>
+  new Response(JSON.stringify({ error }), {
+    status,
+    statusText,
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+const expectApiCall = (mockFetch: any, expectedUrl: string, method = 'GET') => {
+  expect(mockFetch).toHaveBeenCalledTimes(1);
+  const [request] = mockFetch.mock.calls[0];
+  expect(request.url).toContain(expectedUrl);
+  expect(request.method).toBe(method);
+  return request;
+};
+
+const expectUnitApiParams = (request: any) => {
+  expect(request.url).toContain('only=id%2Cname%2Clocation%2Cstreet_address%2Caddress_zip%2Cextensions%2Cservices%2Cmunicipality%2Cphone%2Cwww%2Cdescription%2Cpicture_url%2Cextra');
+  expect(request.url).toContain('include=observations%2Cconnections');
+  expect(request.url).toContain('geometry=true');
+  expect(request.url).toContain('page_size=1000');
+};
 
 describe('unitSlice', () => {
   const mockUnits = createBasicMockUnits();
@@ -178,7 +200,6 @@ describe('unitSlice', () => {
         // After completion, check fulfilled state
         state = store.getState();
         expect(state.unit.isFetching).toBe(false);
-        expect(state.unit.fetchError).toBeNull();
       });
 
       it('should handle rejected matcher', async () => {
@@ -195,7 +216,6 @@ describe('unitSlice', () => {
 
         const state = store.getState();
         expect(state.unit.isFetching).toBe(false);
-        expect(state.unit.fetchError).toBeDefined();
       });
     });
 
@@ -235,30 +255,157 @@ describe('unitSlice', () => {
         expect(request.method).toBe('GET');
       });
     });
+
+    describe('getUnitById', () => {
+      it('should make correct API request for single unit', async () => {
+        const unitId = '123';
+        const mockUnit = createMockUnit(123, { 
+          name: createTranslatableString('Test Unit'),
+          services: [191] // SKI_TRACK
+        });
+        
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockUnit));
+
+        const store = createApiTestStore();
+        const result = await store.dispatch(unitApi.endpoints.getUnitById.initiate(unitId));
+
+        expect(result.data).toEqual(mockUnit);
+        const request = expectApiCall(mockFetch, `unit/${unitId}/`);
+        expectUnitApiParams(request);
+        expect(request.url).toContain('geometry_3d=true');
+      });
+
+      it('should handle API error response for single unit', async () => {
+        const unitId = '999';
+        mockFetch.mockResolvedValueOnce(createErrorResponse(404, 'Not Found', 'Unit not found'));
+
+        const store = createApiTestStore();
+        const result = await store.dispatch(unitApi.endpoints.getUnitById.initiate(unitId)) as any;
+
+        expect(result.error).toBeDefined();
+        expect(result.error?.status).toBe(404);
+      });
+
+      it('should cache unit data for 5 minutes', async () => {
+        const unitId = '456';
+        const mockUnit = createMockUnit(456);
+        
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockUnit));
+        const store = createApiTestStore();
+        
+        // First and second calls should use cache
+        const result1 = await store.dispatch(unitApi.endpoints.getUnitById.initiate(unitId));
+        const result2 = await store.dispatch(unitApi.endpoints.getUnitById.initiate(unitId));
+        
+        expect(result1.data).toEqual(mockUnit);
+        expect(result2.data).toEqual(mockUnit);
+        expect(mockFetch).toHaveBeenCalledTimes(1); // Only one API call due to caching
+      });
+    });
   });
 
   describe('reducers', () => {
     const initialState = createInitialUnitState();
+    
+    // Shared test data
+    const testUnits = [
+      createMockUnit(123, {
+        name: createTranslatableString('Test Unit'),
+        services: [456, 789],
+        extensions: {},
+        street_address: createTranslatableString('Test Street 1'),
+      }),
+      createMockUnit(456, {
+        name: createTranslatableString('Another Unit'),
+        services: [111],
+        location: { coordinates: TEST_COORDINATES.VANTAA },
+      }),
+    ];
+    const mockNormalizedSchema = createMockSchema(testUnits);
+
+    const seasonalUnits = [
+      createMockUnit(789, {
+        name: createTranslatableString('Seasonal Unit'),
+        services: [102, 103],
+        extensions: {},
+        street_address: createTranslatableString('Seasonal Street 1'),
+      }),
+      createMockUnit(890, {
+        name: createTranslatableString('Another Seasonal Unit'),
+        services: [201],
+        location: { coordinates: TEST_COORDINATES.VANTAA },
+      }),
+    ];
+    const mockSeasonalSchema = createMockSchema(seasonalUnits);
+
+    // Shared helper to create units with different quality scenarios
+    const createQualityTestUnit = ({
+      id,
+      scenario,
+      quality,
+      primary = true,
+      hasObservations = true,
+      isSeasonal = false,
+    }: {
+      id: number;
+      scenario: string;
+      quality?: string;
+      primary?: boolean;
+      hasObservations?: boolean;
+      isSeasonal?: boolean;
+    }) => {
+      const baseUnit = {
+        name: createTranslatableString(`${isSeasonal ? 'Seasonal ' : ''}${scenario} Quality Unit`),
+        ...(isSeasonal && { services: [id % 2 === 0 ? TEST_SERVICES.SKIING : TEST_SERVICES.SWIMMING] }),
+        ...(hasObservations && {
+          observations: [{
+            property: 'kunto',
+            value: quality === 'good' ? 'hyvä' : quality === 'satisfactory' ? 'tyydyttävä' : quality === 'unusable' ? 'huono' : 'tuntematon',
+            quality,
+            primary,
+            time: '2024-01-01T10:00:00Z'
+          }]
+        })
+      };
+      return createMockUnit(id, baseUnit);
+    };
+
+    // Shared test scenarios for quality filtering
+    const qualityFilteringScenarios = [
+      { scenario: 'Good', quality: 'good', shouldInclude: true, description: 'QualityEnum.good = 1 <= 2' },
+      { scenario: 'Satisfactory', quality: 'satisfactory', shouldInclude: true, description: 'QualityEnum.satisfactory = 2 <= 2' },
+      { scenario: 'Unusable', quality: 'unusable', shouldInclude: false, description: 'QualityEnum.unusable = 3 > 2' },
+      { scenario: 'Unknown', quality: 'unknown', shouldInclude: false, description: 'QualityEnum.unknown = 4 > 2' },
+      { scenario: 'No Observations', hasObservations: false, shouldInclude: false, description: 'unit?.observations check fails' },
+      { scenario: 'Non-primary Observation', quality: 'good', primary: false, shouldInclude: false, description: 'getCondition returns null' },
+    ];
+
+    // Shared function to test quality filtering logic
+    const testQualityFiltering = (
+      actionCreator: typeof receiveUnits | typeof receiveSeasonalUnits,
+      statusField: 'status_ok' | 'seasonalStatusOk',
+      baseId: number,
+      isSeasonal = false
+    ) => {
+      qualityFilteringScenarios.forEach(({ scenario, quality, shouldInclude, primary = true, hasObservations = true }, index) => {
+        const id = baseId + index;
+        const testUnits = [createQualityTestUnit({ id, scenario, quality, primary, hasObservations, isSeasonal })];
+        const schema = createMockSchema(testUnits);
+        const result = unitReducer(initialState, actionCreator(schema));
+        
+        if (shouldInclude) {
+          expect(result[statusField]).toContain(String(id));
+        } else {
+          expect(result[statusField]).not.toContain(String(id));
+        }
+      });
+    };
+
+    beforeEach(() => {
+      vi.mocked(handleUnitConditionUpdates).mockImplementation((units) => units);
+    });
 
     describe('receiveUnits', () => {
-      beforeEach(() => {
-        vi.mocked(handleUnitConditionUpdates).mockImplementation((units) => units);
-      });
-
-      const testUnits = [
-        createMockUnit(123, {
-          name: createTranslatableString('Test Unit'),
-          services: [456, 789],
-          extensions: {},
-          street_address: createTranslatableString('Test Street 1'),
-        }),
-        createMockUnit(456, {
-          name: createTranslatableString('Another Unit'),
-          services: [111],
-          location: { coordinates: TEST_COORDINATES.VANTAA },
-        }),
-      ];
-      const mockNormalizedSchema = createMockSchema(testUnits);
 
       it('should add units to state', () => {
         const result = unitReducer(initialState, receiveUnits(mockNormalizedSchema));
@@ -305,49 +452,31 @@ describe('unitSlice', () => {
 
         expect(result.byId['123'].name.fi).toBe('Test Unit');
       });
-    });
 
-    describe('setFetchError', () => {
-      it('should set fetch error and stop fetching', () => {
-        const initialState = createInitialUnitState({ isFetching: true });
-        const errorMessage = 'Network error occurred';
-        const action = { type: 'unit/setFetchError', payload: errorMessage };
-        const newState = unitReducer(initialState, action);
+      it.each(qualityFilteringScenarios.map((scenario, index) => ({ ...scenario, id: 100 + index })))(
+        'should filter units by status_ok: $scenario ($description)', 
+        ({ id, scenario, quality, shouldInclude, primary = true, hasObservations = true }) => {
+          testQualityFiltering(receiveUnits, 'status_ok', 100);
+        }
+      );
 
-        expect(newState.fetchError).toBe(errorMessage);
-        expect(newState.isFetching).toBe(false);
-      });
-
-      it('should handle different error types', () => {
-        const initialState = createInitialUnitState({ isFetching: true });
-        const errorObject = { message: 'API Error', code: 500 };
-        const action = { type: 'unit/setFetchError', payload: errorObject };
-        const newState = unitReducer(initialState, action);
-
-        expect(newState.fetchError).toEqual(errorObject);
-        expect(newState.isFetching).toBe(false);
+      it('should filter all quality types correctly in status_ok', () => {
+        const allQualityUnits = [
+          createQualityTestUnit({ id: 100, scenario: 'Good', quality: 'good' }),
+          createQualityTestUnit({ id: 101, scenario: 'Satisfactory', quality: 'satisfactory' }),
+          createQualityTestUnit({ id: 102, scenario: 'Unusable', quality: 'unusable' }),
+          createQualityTestUnit({ id: 103, scenario: 'Unknown', quality: 'unknown' }),
+          createQualityTestUnit({ id: 104, scenario: 'No Observations', hasObservations: false }),
+          createQualityTestUnit({ id: 105, scenario: 'Non-primary', quality: 'good', primary: false }),
+        ];
+        const schema = createMockSchema(allQualityUnits);
+        const result = unitReducer(initialState, receiveUnits(schema));
+        
+        expect(result.status_ok).toEqual(['100', '101']); // Only good and satisfactory
       });
     });
 
     describe('receiveSeasonalUnits', () => {
-      beforeEach(() => {
-        vi.mocked(handleUnitConditionUpdates).mockImplementation((units) => units);
-      });
-
-      const seasonalUnits = [
-        createMockUnit(789, {
-          name: createTranslatableString('Seasonal Unit'),
-          services: [102, 103],
-          extensions: {},
-          street_address: createTranslatableString('Seasonal Street 1'),
-        }),
-        createMockUnit(890, {
-          name: createTranslatableString('Another Seasonal Unit'),
-          services: [201],
-          location: { coordinates: TEST_COORDINATES.VANTAA },
-        }),
-      ];
-      const mockSeasonalSchema = createMockSchema(seasonalUnits);
 
       it('should add seasonal units to state', () => {
         const result = unitReducer(initialState, receiveSeasonalUnits(mockSeasonalSchema));
@@ -441,6 +570,63 @@ describe('unitSlice', () => {
         expect(result.seasonalSki).toContain('100');
         expect(result.seasonalSwim).toContain('200');
       });
+
+      it.each(qualityFilteringScenarios.map((scenario, index) => ({ ...scenario, id: 300 + index })))(
+        'should filter seasonal units by seasonalStatusOk: $scenario ($description)', 
+        ({ id, scenario, quality, shouldInclude, primary = true, hasObservations = true }) => {
+          testQualityFiltering(receiveSeasonalUnits, 'seasonalStatusOk', 300, true);
+        }
+      );
+
+      it('should filter all seasonal quality types correctly in seasonalStatusOk', () => {
+        const allSeasonalQualityUnits = [
+          createQualityTestUnit({ id: 300, scenario: 'Good', quality: 'good', isSeasonal: true }),
+          createQualityTestUnit({ id: 301, scenario: 'Satisfactory', quality: 'satisfactory', isSeasonal: true }),
+          createQualityTestUnit({ id: 302, scenario: 'Unusable', quality: 'unusable', isSeasonal: true }),
+          createQualityTestUnit({ id: 303, scenario: 'Unknown', quality: 'unknown', isSeasonal: true }),
+          createQualityTestUnit({ id: 304, scenario: 'No Observations', hasObservations: false, isSeasonal: true }),
+          createQualityTestUnit({ id: 305, scenario: 'Non-primary', quality: 'good', primary: false, isSeasonal: true }),
+        ];
+        const schema = createMockSchema(allSeasonalQualityUnits);
+        const result = unitReducer(initialState, receiveSeasonalUnits(schema));
+        
+        expect(result.seasonalStatusOk).toEqual(['300', '301']); // Only good and satisfactory
+      });
+    });
+
+    describe('setIsFetching', () => {
+      const initialStateWithUnit = {
+        ...initialState,
+        byId: { '123': createMockUnit(123) },
+        all: ['123'],
+      }
+
+      it.each([
+        {
+          description: 'should set isFetching to true',
+          newValue: true,
+          initialState: {
+            ...initialStateWithUnit,
+            isFetching: false,
+          },
+          expectedValue: true,
+        },
+        {
+          description: 'should set isFetching to false',
+          newValue: false,
+          initialState: {
+            ...initialStateWithUnit,
+            isFetching: true,
+          },
+          expectedValue: false,
+        },
+      ])('$description', ({ newValue, initialState: testState, expectedValue }) => {
+        const result = unitReducer(testState, setIsFetching(newValue));
+        
+        expect(result.isFetching).toBe(expectedValue);
+        expect(result.byId).toEqual(testState.byId);
+        expect(result.all).toEqual(testState.all);
+      });
     });
   });
 
@@ -470,33 +656,6 @@ describe('unitSlice', () => {
         const result = selectUnitById(state, { id: 123 });
 
         expect(result).toEqual(testUnit);
-      });
-    });
-
-    describe('selectAllUnits', () => {
-      it('should return all units as array', () => {
-        const testUnits = {
-          '123': createMockUnit(123, { name: createTranslatableString('Unit 1') }),
-          '456': createMockUnit(456, { name: createTranslatableString('Unit 2') }),
-        };
-        const state = createMockAppState({ 
-          byId: testUnits, 
-          all: Object.keys(testUnits) 
-        });
-
-        const result = selectAllUnits(state);
-
-        expect(result).toHaveLength(2);
-        expect(result[0]).toEqual(testUnits['123']);
-        expect(result[1]).toEqual(testUnits['456']);
-      });
-
-      it('should return empty array when no units', () => {
-        const state = createMockAppState();
-
-        const result = selectAllUnits(state);
-
-        expect(result).toEqual([]);
       });
     });
 
@@ -606,6 +765,42 @@ describe('unitSlice', () => {
         expectVisibleUnits(result, [10, 11, 12]);
       });
 
+      it('should prioritize seasonal status_ok over regular status_ok in selector', () => {
+        // Test the getDataForSport logic that prioritizes seasonal over regular status_ok data
+        // Need to create seasonal units in seasonalById for this test to work
+        const seasonalUnitsById = {
+          '20': createMockUnit(20, { name: createTranslatableString('Seasonal Unit 20'), services: [105] }),
+          '21': createMockUnit(21, { name: createTranslatableString('Seasonal Unit 21'), services: [105] }),
+          '22': createMockUnit(22, { name: createTranslatableString('Seasonal Unit 22'), services: [105] }),
+        };
+        
+        const state = createMockUnitState({ 
+          swim: ['10', '11', '12'], 
+          seasonalSwim: ['20', '21', '22'],
+          status_ok: ['10', '12'], 
+          seasonalStatusOk: ['20', '22']
+        });
+        
+        // Manually add seasonal units to seasonalById
+        state.unit.seasonalById = seasonalUnitsById;
+        
+        // When both regular and seasonal status_ok exist, selector should use seasonal
+        const result = selectVisibleUnits(state, UnitFilters.SWIMMING, UnitFilters.STATUS_OK, '');
+        expectVisibleUnits(result, [20, 22]); // Should return seasonal units, not regular ones
+      });
+
+      it('should fall back to regular status_ok when seasonal is empty', () => {
+        // Test fallback when seasonal data is empty
+        const state = createMockUnitState({ 
+          swim: ['10', '11', '12'], 
+          status_ok: ['10', '12'], 
+          seasonalStatusOk: [] // Empty seasonal data
+        });
+        
+        const result = selectVisibleUnits(state, UnitFilters.SWIMMING, UnitFilters.STATUS_OK, '');
+        expectVisibleUnits(result, [10, 12]); // Should fall back to regular status_ok
+      });
+
       it('should apply sport specification filtering for non-hiking specifications', () => {
         const state = createMockUnitState({ ski: ['1', '2', '3'], hike: ['4', '5'] });
         const result = selectVisibleUnits(state, UnitFilters.SKIING, UnitFilters.STATUS_ALL, UnitFilters.SKIING_FREESTYLE);
@@ -637,47 +832,73 @@ describe('unitSlice', () => {
         });
         return store.getState() as unknown as AppState;
       };
-
-      it('should return true when getAllSeasonalUnits query is loading', () => {
-        const state = createTestStore({
+      
+      const createSeasonalQueryState = (status: string, extraProps = {}) => 
+        createTestStore({
           queries: {
             'getAllSeasonalUnits(undefined)': {
-              status: 'pending',
+              status,
               endpointName: 'getAllSeasonalUnits',
               requestId: 'test-id',
+              ...extraProps
             },
           },
         });
 
-        const result = selectIsSearchLoading(state);
-
-        expect(result).toBe(true);
+      it('should return true when getAllSeasonalUnits query is loading', () => {
+        const state = createSeasonalQueryState('pending');
+        expect(selectIsSearchLoading(state)).toBe(true);
       });
 
       it('should return false when getAllSeasonalUnits query is not loading', () => {
-        const state = createTestStore({
-          queries: {
-            'getAllSeasonalUnits(undefined)': {
-              status: 'fulfilled',
-              endpointName: 'getAllSeasonalUnits',
-              requestId: 'test-id',
-              data: { entities: {}, result: [] },
-            },
-          },
-        });
-
-        const result = selectIsSearchLoading(state);
-
-        expect(result).toBe(false);
+        const state = createSeasonalQueryState('fulfilled', { data: { entities: {}, result: [] } });
+        expect(selectIsSearchLoading(state)).toBe(false);
       });
 
       it('should return false when getAllSeasonalUnits query does not exist', () => {
         const state = createTestStore(); // Uses default empty queries
-
-        const result = selectIsSearchLoading(state);
-
-        expect(result).toBe(false);
+        expect(selectIsSearchLoading(state)).toBe(false);
       });
+    });
+
+    describe('selectIsMapLoading', () => {
+      // Helper to create state with specific loading and data conditions
+      const createMapLoadingState = (
+        seasonalAll: string[] = [],
+        all: string[] = [],
+        isFetching: boolean = false,
+        isSeasonalLoading: boolean = false,
+      ) => {
+        const apiState = isSeasonalLoading
+          ? { queries: { 'getAllSeasonalUnits(undefined)': { status: 'pending', isLoading: true } } }
+          : { queries: {} };
+
+        return {
+          unit: { ...createInitialUnitState(), seasonalAll, all, isFetching },
+          api: apiState,
+        } as AppState;
+      };
+
+      it.each([
+        // [hasSeasonalData, hasSpecificData, isFetching, isSeasonalLoading, expected, description]
+        [false, false, false, true, true, 'no data available and seasonal units are loading'],
+        [false, false, true, false, true, 'no data available and specific units are fetching'],
+        [false, false, true, true, true, 'no data available and both are loading'],
+        [false, false, false, false, false, 'no data available but nothing is loading'],
+        [true, false, true, true, false, 'seasonal data is available even if loading'],
+        [false, true, true, true, false, 'specific data is available even if loading'],
+        [true, true, false, false, false, 'both types of data are available'],
+        [true, true, true, true, false, 'both types of data are available even if loading'],
+      ])(
+        'should return %s when %s',
+        (hasSeasonalData, hasSpecificData, isFetching, isSeasonalLoading, expected, description) => {
+          const seasonalAll = hasSeasonalData ? ['1', '2'] : [];
+          const all = hasSpecificData ? ['3', '4'] : [];
+          const state = createMapLoadingState(seasonalAll, all, isFetching, isSeasonalLoading);
+          
+          expect(selectIsMapLoading(state)).toBe(expected);
+        }
+      );
     });
   });
 });

@@ -67,6 +67,7 @@ vi.mock('../state/mapSlice', () => ({
 vi.mock('../../unit/state/unitSlice', () => ({
   selectVisibleUnits: () => [],
   selectUnitById: () => undefined,
+  selectIsMapLoading: () => false,
   useGetUnitByIdQuery: mockUseGetUnitByIdQuery,
 }));
 
@@ -98,7 +99,11 @@ describe('MapComponent', () => {
     });
     mockUseLanguage.mockReturnValue('en');
     mockUseAppSearch.mockReturnValue({ sport: null, status: null, sportSpecification: null, ...searchParams });
-    mockUseSelector.mockReturnValueOnce(unitData).mockReturnValueOnce(selectedUnit).mockReturnValue([60.1699, 24.9384]);
+    mockUseSelector
+      .mockReturnValueOnce(unitData) // unitData (selectVisibleUnits)
+      .mockReturnValueOnce(false) // isMapLoading (selectIsMapLoading)  
+      .mockReturnValueOnce(selectedUnit) // basicSelectedUnit (selectUnitById)
+      .mockReturnValue([60.1699, 24.9384]); // position (selectLocation)
     mockUseGetUnitByIdQuery.mockReturnValue({ data: undefined, isLoading: false, error: null });
   };
 
