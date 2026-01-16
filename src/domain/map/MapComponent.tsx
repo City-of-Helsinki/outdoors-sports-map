@@ -1,4 +1,4 @@
-import { RefObject, useCallback } from "react";
+import { RefObject, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import * as PathUtils from "../../common/utils/pathUtils";
 import routerPaths from "../app/appRoutes";
 import { AppState, AppSearchLocationState } from "../app/types";
 import useAppSearch from "../app/useAppSearch";
-import { selectVisibleUnits, selectUnitById } from "../unit/state/unitSlice";
+import { selectVisibleUnits, selectUnitById, useGetUnitByIdQuery } from "../unit/state/unitSlice";
 import { Unit } from "../unit/types";
 
 type Props = {
@@ -33,11 +33,35 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
   const unitData = useSelector<AppState, Unit[]>((state) =>
     selectVisibleUnits(state, appSearch.sport, appSearch.status, appSearch.sportSpecification)
   );
-  const selectedUnit = useSelector<AppState, Unit>((state) =>
+  
+  // Get the basic unit from the regular units array
+  const basicSelectedUnit = useSelector<AppState, Unit>((state) =>
     selectUnitById(state, {
       id: unitDetailsMatch?.params?.unitId,
     })
   );
+  
+  // Get detailed unit data with 3D geometry if we have a unit selected
+  const { data: detailedSelectedUnit } = useGetUnitByIdQuery(unitDetailsMatch?.params?.unitId || "", {
+    skip: !unitDetailsMatch?.params?.unitId,
+  });
+  
+  // Only set selectedUnit when on unit details page
+  const selectedUnit = unitDetailsMatch?.params?.unitId 
+    ? (detailedSelectedUnit || basicSelectedUnit)
+    : undefined;
+  
+  // Use unitData if available, otherwise show selectedUnit as backup only when on unit details page
+  const unitsToShow = useMemo(() => {
+    if (unitData.length) {
+      return unitData;
+    }
+    if (selectedUnit) {
+      return [selectedUnit];
+    }
+    return [];
+  }, [unitData, selectedUnit]);
+  
   const position = useSelector(selectLocation);
   const [triggerGetAddress] = useLazyGetAddressQuery();
 
@@ -60,7 +84,7 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
 
       // If the user opens an unit while an unit is already open, inherit the
       // location state from search
-      if (selectedUnit?.id) {
+      if (unitDetailsMatch?.params?.unitId) {
         state = {
           previous: locationState?.previous,
           search: locationState?.search,
@@ -84,7 +108,7 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
       pathname,
       appSearch,
       locationState,
-      selectedUnit?.id,
+      unitDetailsMatch?.params?.unitId,
     ]
   );
 
@@ -95,7 +119,7 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
       setLocation={handleSetLocation}
       leafletElementRef={leafletElementRef}
       position={position}
-      units={unitData}
+      units={unitsToShow}
       openUnit={openUnit}
       onCenterMapToUnit={onCenterMapToUnit}
     />

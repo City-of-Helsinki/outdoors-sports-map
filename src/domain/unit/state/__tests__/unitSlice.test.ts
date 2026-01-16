@@ -17,7 +17,7 @@ import { NormalizedUnitSchema } from '../../types';
 import {
   TEST_COORDINATES,
   TEST_SERVICES,
-  createInitialReducerState,
+  createInitialUnitState,
   createInitialSearchState,
   createApiTestStore,
   createMockResponse,
@@ -238,7 +238,7 @@ describe('unitSlice', () => {
   });
 
   describe('reducers', () => {
-    const initialState = createInitialReducerState();
+    const initialState = createInitialUnitState();
 
     describe('receiveUnits', () => {
       beforeEach(() => {
@@ -268,7 +268,7 @@ describe('unitSlice', () => {
       });
 
       it('should replace existing units', () => {
-        const stateWithUnits = createInitialReducerState({
+        const stateWithUnits = createInitialUnitState({
           byId: {
             '999': createMockUnit(999, { name: createTranslatableString('Existing Unit') }),
           },
@@ -309,7 +309,7 @@ describe('unitSlice', () => {
 
     describe('setFetchError', () => {
       it('should set fetch error and stop fetching', () => {
-        const initialState = createInitialReducerState({ isFetching: true });
+        const initialState = createInitialUnitState({ isFetching: true });
         const errorMessage = 'Network error occurred';
         const action = { type: 'unit/setFetchError', payload: errorMessage };
         const newState = unitReducer(initialState, action);
@@ -319,7 +319,7 @@ describe('unitSlice', () => {
       });
 
       it('should handle different error types', () => {
-        const initialState = createInitialReducerState({ isFetching: true });
+        const initialState = createInitialUnitState({ isFetching: true });
         const errorObject = { message: 'API Error', code: 500 };
         const action = { type: 'unit/setFetchError', payload: errorObject };
         const newState = unitReducer(initialState, action);
@@ -358,7 +358,7 @@ describe('unitSlice', () => {
       });
 
       it('should replace existing seasonal units', () => {
-        const stateWithSeasonalUnits = createInitialReducerState({
+        const stateWithSeasonalUnits = createInitialUnitState({
           seasonalById: {
             '999': createMockUnit(999, { name: createTranslatableString('Existing Seasonal Unit') }),
           },
@@ -558,7 +558,7 @@ describe('unitSlice', () => {
 
       const createMockUnitState = (units: Record<string, string[]>, searchOverrides = {}) => ({
         unit: {
-          ...createInitialReducerState({ byId: mockUnitsById }),
+          ...createInitialUnitState({ byId: mockUnitsById }),
           ...units,
         },
         search: createInitialSearchState(searchOverrides),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { configureStore } from '@reduxjs/toolkit';
 import { expect } from 'vitest';
 
@@ -104,7 +105,7 @@ export const TEST_SERVICES = {
 };
 
 // Helper functions
-export const createInitialReducerState = (overrides = {}): UnitState => ({
+export const createInitialUnitState = (overrides = {}): UnitState => ({
   ...initialUnitState,
   ...overrides,
 });
@@ -148,7 +149,7 @@ export const createBasicMockUnits = (): Unit[] => [
 
 // Helper for creating app state for selector tests
 export const createMockAppState = (unitOverrides = {}, searchOverrides = {}) => ({
-  unit: createInitialReducerState({
+  unit: createInitialUnitState({
     byId: {},
     all: [],
     ...unitOverrides,

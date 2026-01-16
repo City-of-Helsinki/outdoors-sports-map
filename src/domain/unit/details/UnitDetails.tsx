@@ -28,7 +28,6 @@ import {
 import FavoriteButton from "../../../common/components/FavoriteButton";
 import useLanguage from "../../../common/hooks/useLanguage";
 import { UnitDetailsParams } from "../../app/appRoutes";
-import { selectIsLoading } from "../../app/state/appSelectors";
 import { AppState } from "../../app/types";
 import getServiceName from "../../service/serviceHelpers";
 import { selectServicesObject, Service } from "../../service/state/serviceSlice";
@@ -37,7 +36,7 @@ import UnitObservationStatus, {
   StatusUpdated,
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
-import { selectUnitById } from "../state/unitSlice";
+import { selectUnitById, useGetUnitByIdQuery } from "../state/unitSlice";
 import { Translatable, Unit } from "../types";
 import { UnitConnectionTags } from "../unitConstants";
 import {
@@ -52,7 +51,7 @@ import {
 
 type HeaderProps = {
   unit?: Unit;
-  services: Record<string, unknown>;
+  services: Record<string, Service>;
   isLoading: boolean;
 };
 
@@ -674,6 +673,50 @@ type Props = {
   toggleIsExpanded: () => void;
 };
 
+// Helper function to extract observations from unit
+function getUnitObservations(unit: Unit | undefined) {
+  if (!unit || !has(unit, "observations")) {
+    return {
+      temperatureObservation: null,
+      liveTemperatureObservation: null,
+      liveWaterQualityObservation: null,
+    };
+  }
+
+  return {
+    temperatureObservation: getObservation(unit, "swimming_water_temperature"),
+    liveTemperatureObservation: getObservation(unit, "live_swimming_water_temperature"),
+    liveWaterQualityObservation: getObservation(unit, "live_swimming_water_quality"),
+  };
+}
+
+type UnitNotFoundProps = {
+  headerHeight: number;
+  footerHeight: number;
+  services: Record<string, Service>;
+};
+
+// Helper function to handle not found case
+function UnitNotFound({ headerHeight, footerHeight, services }: Readonly<UnitNotFoundProps>) {
+  const { t } = useTranslation();
+  
+  return (
+    <Page
+      title={t("APP.NAME")}
+      className="unit-container"
+      style={{
+        "--header-height": `${headerHeight}px`,
+        "--footer-height": `${footerHeight}px`,
+      } as React.CSSProperties}
+    >
+      <Header unit={undefined} services={services} isLoading={false} />
+      <div className="unit-container-body">
+        <p>{t("UNIT_BROWSER.NOT_FOUND")}</p>
+      </div>
+    </Page>
+  );
+}
+
 function UnitDetails({
   headerHeight,
   onCenterMapToUnit,
@@ -685,36 +728,58 @@ function UnitDetails({
   const { pathname } = useLocation();
   const { unitId } = useParams<UnitDetailsParams>();
   const services = useSelector(selectServicesObject);
-  const unit = useSelector<AppState, Unit | undefined>((state) =>
+  
+  // Use the new unit by ID query instead of getting from existing state
+  const { 
+    data: unit, 
+    isLoading: unitIsLoading, 
+    error: unitError
+  } = useGetUnitByIdQuery(unitId || '', {
+    skip: !unitId,
+    // Keep data fresh for 5 minutes
+    refetchOnMountOrArgChange: 300,
+    // Show cached data while refetching
+    refetchOnFocus: true,
+  });
+  
+  // Fallback to existing state if unit not found via API (for backwards compatibility)
+  const fallbackUnit = useSelector<AppState, Unit | undefined>((state) =>
     selectUnitById(state, {
       id: unitId,
     }),
   );
+  
+  // Start with list unit for immediate display, upgrade to API unit for enhanced data (3D geometry, etc.)
+  // Only use unit data if it matches the current unitId to prevent showing stale cached data
+  const validUnit = String(unit?.id) === unitId ? unit : undefined;
+  const validFallbackUnit = String(fallbackUnit?.id) === unitId ? fallbackUnit : undefined;
+  const currentUnit = validUnit || validFallbackUnit;
+  
   const [footerHeight, setFooterHeight] = useState<number>(0);
-  const isLoading = useSelector(selectIsLoading);
+  
+  // Dedicated loading states
+  const isUnitLoading = unitIsLoading && !currentUnit; // Show loading only if we don't have any unit data
 
   useEffect(() => {
-    if (unit) {
+    if (currentUnit) {
       // Center map on the unit
-      onCenterMapToUnit(unit, null);
+      onCenterMapToUnit(currentUnit, null);
     }
-  }, [unit, onCenterMapToUnit]);
-  useSyncUnitNameWithLanguage(unit);
+  }, [currentUnit, onCenterMapToUnit]);
+  
+  useSyncUnitNameWithLanguage(currentUnit);
 
-  const temperatureObservation =
-    unit && has(unit, "observations")
-      ? getObservation(unit, "swimming_water_temperature")
-      : null;
-  const liveTemperatureObservation =
-    unit && has(unit, "observations")
-      ? getObservation(unit, "live_swimming_water_temperature")
-      : null;
-  const liveWaterQualityObservation =
-    unit && has(unit, "observations")
-      ? getObservation(unit, "live_swimming_water_quality")
-      : null;
-  const routeUrl = unit && createReittiopasUrl(unit, language);
-  const palvelukarttaUrl = unit && createPalvelukarttaUrl(unit, language);
+  // Handle unit not found case (only if no fallback data available)
+  if (unitError && !currentUnit && !unitIsLoading) {
+    return <UnitNotFound headerHeight={headerHeight} footerHeight={footerHeight} services={services} />;
+  }
+
+  // Extract observations using helper function
+  const { temperatureObservation, liveTemperatureObservation, liveWaterQualityObservation } = 
+    getUnitObservations(currentUnit);
+  
+  const routeUrl = currentUnit && createReittiopasUrl(currentUnit, language);
+  const palvelukarttaUrl = currentUnit && createPalvelukarttaUrl(currentUnit, language);
   const isOpen = !!unitId;
 
   if (!isOpen) {
@@ -723,35 +788,35 @@ function UnitDetails({
 
   return (
     <>
-      {unit && (
+      {currentUnit && (
         <Helmet>
           <link
             href="alternate"
             lang="fi"
-            hrefLang={findAlternatePathname(pathname, unit, "fi")}
+            hrefLang={findAlternatePathname(pathname, currentUnit, "fi")}
           />
           <link
             href="alternate"
             lang="sv"
-            hrefLang={findAlternatePathname(pathname, unit, "sv")}
+            hrefLang={findAlternatePathname(pathname, currentUnit, "sv")}
           />
           <link
             href="alternate"
             lang="en"
-            hrefLang={findAlternatePathname(pathname, unit, "en")}
+            hrefLang={findAlternatePathname(pathname, currentUnit, "en")}
           />
         </Helmet>
       )}
       <Page
         title={
-          unit?.name
-            ? `${getAttr(unit?.name, language) || ""} | ${t("APP.NAME")}`
+          currentUnit?.name
+            ? `${getAttr(currentUnit?.name, language) || ""} | ${t("APP.NAME")}`
             : t("APP.NAME")
         }
         description={
-          unit?.description ? getAttr(unit?.description, language) : undefined
+          currentUnit?.description ? getAttr(currentUnit?.description, language) : undefined
         }
-        image={unit?.picture_url}
+        image={currentUnit?.picture_url}
         className={isExpanded ? "unit-container expanded" : "unit-container"}
         style={
           {
@@ -760,10 +825,10 @@ function UnitDetails({
           } as React.CSSProperties
         }
       >
-        <Header unit={unit} services={services} isLoading={isLoading} />
+        <Header unit={currentUnit} services={services} isLoading={isUnitLoading} />
         <SingleUnitBody
-          currentUnit={unit}
-          isLoading={isLoading}
+          currentUnit={currentUnit}
+          isLoading={isUnitLoading}
           liveTemperatureObservation={liveTemperatureObservation}
           routeUrl={routeUrl}
           temperatureObservation={temperatureObservation}
