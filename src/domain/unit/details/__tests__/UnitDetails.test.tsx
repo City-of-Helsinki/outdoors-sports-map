@@ -1,7 +1,10 @@
 import moment from "moment";
+import userEvent from "@testing-library/user-event";
 
 import { render, screen, within } from "../../../testingLibraryUtils";
+import { createInitialUnitState } from "../../../../tests/testUtils";
 import UnitDetails from "../UnitDetails";
+import { useGetUnitByIdQuery } from "../../state/unitSlice";
 
 vi.mock("react-router", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>(
@@ -11,6 +14,15 @@ vi.mock("react-router", async () => {
   return {
     ...actual,
     useParams: () => ({ unitId: "40142" }),
+  };
+});
+
+// Mock the new RTK Query hook
+vi.mock("../../state/unitSlice", async () => {
+  const actual = await vi.importActual<typeof import("../../state/unitSlice")>("../../state/unitSlice");
+  return {
+    ...actual,
+    useGetUnitByIdQuery: vi.fn(),
   };
 });
 
@@ -296,22 +308,27 @@ const defaultProps = {
 };
 
 const renderComponent = (props?: any, modifiedUnit?: any) => {
+  // Mock the RTK Query hook to return the unit data
+  const mockUseGetUnitByIdQuery = useGetUnitByIdQuery as any;
+  mockUseGetUnitByIdQuery.mockReturnValue({
+    data: {
+      ...unit,
+      ...modifiedUnit,
+    },
+    isLoading: false,
+    error: null,
+  });
 
   return render(<UnitDetails {...defaultProps} {...props} />, undefined, {
     unit: {
+      ...createInitialUnitState(),
       byId: {
         "40142": {
           ...unit,
           ...modifiedUnit,
         },
       },
-      isFetching: false,
-      fetchError: null,
       all: ["40142"],
-      iceskate: [],
-      ski: [],
-      swim: [],
-      status_ok: [],
     } as any,
   });
 };
@@ -384,6 +401,102 @@ describe("<UnitDetails />", () => {
 
         expect(screen.getByText("kaksi tuntia sitten")).toBeInTheDocument();
       });
+    });
+  });
+
+  describe("when regular temperature data is available (no live temperature)", () => {
+    const renderWrapperWithRegularTemperatureOnly = (props?: any, unit?: any) =>
+      renderComponent(props, {
+        ...unit,
+        observations: [temperatureDataObservation], // Only regular temperature, no live temperature
+      });
+
+    it("should display regular temperature when live temperature is not available", () => {
+      renderWrapperWithRegularTemperatureOnly();
+      const regularTemperature = `${temperatureDataObservation.name.fi}`;
+
+      expect(screen.getByText(regularTemperature)).toBeInTheDocument();
+    });
+
+    it("should display temperature title", () => {
+      renderWrapperWithRegularTemperatureOnly();
+      
+      expect(screen.getByText("Lämpötila")).toBeInTheDocument();
+    });
+
+    it("should display StatusUpdated component", () => {
+      renderWrapperWithRegularTemperatureOnly();
+      
+      // Check that the StatusUpdated component is rendered (looks for "Päivitetty" text)
+      expect(screen.getByText("Päivitetty")).toBeInTheDocument();
+    });
+
+    it("should not be displayed when live temperature is available", () => {
+      // This is testing the conditional logic in the main component
+      renderComponent(); // Uses default unit with both temperature types
+      const regularTemperature = `${temperatureDataObservation.name.fi}`;
+
+      expect(screen.queryByText(regularTemperature)).toBeNull();
+    });
+  });
+
+  describe("LocationOpeningHours component", () => {
+    it("should not display opening hours when unit doesn't have MECHANICALLY_FROZEN_ICE service", () => {
+      // Our default test unit has service 731, not 695 (MECHANICALLY_FROZEN_ICE)
+      renderComponent();
+      
+      expect(screen.queryByText("Aukioloajat")).not.toBeInTheDocument();
+    });
+
+    it("should not display opening hours when no opening hours data is available", () => {
+      renderComponent({}, {
+        connections: unit.connections.filter((con) => con.section_type !== "OPENING_HOURS"),
+      });
+      
+      expect(screen.queryByText("Aukioloajat")).not.toBeInTheDocument();
+    });
+
+    it("should display opening hours for units with MECHANICALLY_FROZEN_ICE service", () => {
+      const iceRinkUnit = {
+        ...unit,
+        services: [695], // MECHANICALLY_FROZEN_ICE service
+        connections: [
+          {
+            id: 1,
+            section_type: "OPENING_HOURS",
+            name: {
+              fi: "Ma-Pe 06:00-22:00",
+              sv: "Mån-Fre 06:00-22:00", 
+              en: "Mon-Fri 06:00-22:00",
+            },
+            www: null,
+            email: null,
+            phone: null,
+            contact_person: null,
+            unit: 40142,
+          },
+          {
+            id: 2,
+            section_type: "OPENING_HOURS",
+            name: {
+              fi: "La-Su 08:00-20:00",
+              sv: "Lör-Sön 08:00-20:00",
+              en: "Sat-Sun 08:00-20:00", 
+            },
+            www: null,
+            email: null,
+            phone: null,
+            contact_person: null,
+            unit: 40142,
+          }
+        ]
+      };
+
+      renderComponent({}, iceRinkUnit);
+      
+      expect(screen.getByText("Aukioloajat")).toBeInTheDocument();
+      expect(screen.getByText("Ma-Pe 06:00-22:00")).toBeInTheDocument();
+      expect(screen.getByText("La-Su 08:00-20:00")).toBeInTheDocument();
     });
   });
 
@@ -592,4 +705,167 @@ it("should render 'Poista suosikeista' button if unit is already in favourites",
 
   // Clean up local storage
   localStorage.removeItem("favouriteUnits");
+});
+
+describe("toggleFavourite functionality", () => {
+  beforeEach(() => {
+    // Clear localStorage before each test
+    localStorage.removeItem("favouriteUnits");
+  });
+
+  afterEach(() => {
+    // Clean up after each test
+    localStorage.removeItem("favouriteUnits");
+  });
+
+  it("should add unit to favourites when clicking 'Lisää suosikiksi' button", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+    
+    const addButton = screen.getByText("Lisää suosikiksi");
+    expect(addButton).toBeInTheDocument();
+    
+    // Click the add to favourites button
+    await user.click(addButton);
+    
+    // Check localStorage was updated
+    const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+    expect(favourites).toHaveLength(1);
+    expect(favourites[0].id).toBe(unit.id);
+  });
+
+  it("should remove unit from favourites when clicking 'Poista suosikeista' button", async () => {
+    const user = userEvent.setup();
+    
+    // Pre-populate localStorage with the unit
+    localStorage.setItem("favouriteUnits", JSON.stringify([unit]));
+    
+    renderComponent();
+    
+    const removeButton = screen.getByText("Poista suosikeista");
+    expect(removeButton).toBeInTheDocument();
+    
+    // Click the remove from favourites button
+    await user.click(removeButton);
+    
+    // Check localStorage was cleared
+    const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+    expect(favourites).toHaveLength(0);
+  });
+
+  it("should handle adding unit when favourites list already contains other units", async () => {
+    const user = userEvent.setup();
+    const otherUnit = { ...unit, id: 999, name: { fi: "Other Unit" } };
+    
+    // Pre-populate with another unit
+    localStorage.setItem("favouriteUnits", JSON.stringify([otherUnit]));
+    
+    renderComponent();
+    
+    const addButton = screen.getByText("Lisää suosikiksi");
+    await user.click(addButton);
+    
+    const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+    expect(favourites).toHaveLength(2);
+    expect(favourites.find((f: any) => f.id === unit.id)).toBeDefined();
+    expect(favourites.find((f: any) => f.id === otherUnit.id)).toBeDefined();
+  });
+
+  it("should handle removing unit when favourites list contains multiple units", async () => {
+    const user = userEvent.setup();
+    const otherUnit = { ...unit, id: 999, name: { fi: "Other Unit" } };
+    
+    // Pre-populate with both units
+    localStorage.setItem("favouriteUnits", JSON.stringify([unit, otherUnit]));
+    
+    renderComponent();
+    
+    const removeButton = screen.getByText("Poista suosikeista");
+    await user.click(removeButton);
+    
+    const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+    expect(favourites).toHaveLength(1);
+    expect(favourites[0].id).toBe(otherUnit.id);
+    expect(favourites.find((f: any) => f.id === unit.id)).toBeUndefined();
+  });
+
+  it("should handle empty localStorage gracefully", async () => {
+    const user = userEvent.setup();
+    
+    // Ensure localStorage is completely empty
+    localStorage.removeItem("favouriteUnits");
+    
+    renderComponent();
+    
+    const addButton = screen.getByText("Lisää suosikiksi");
+    await user.click(addButton);
+    
+    const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+    expect(favourites).toHaveLength(1);
+    expect(favourites[0].id).toBe(unit.id);
+  });
+});
+
+describe("error handling", () => {
+  it("should display not found message when unit fetch fails", () => {
+    // Mock error scenario: unitError && !currentUnit && !unitIsLoading
+    const mockUseGetUnitByIdQuery = useGetUnitByIdQuery as any;
+    mockUseGetUnitByIdQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: { message: 'Unit not found', status: 404 }
+    });
+
+    // Render with no unit data in Redux state
+    render(<UnitDetails {...defaultProps} />, undefined, {
+      unit: createInitialUnitState() // No unit data
+    });
+
+    expect(screen.getAllByText("Pahoittelut, kohdetta ei löytynyt :(")).toHaveLength(2);
+    // Should have the error message in both header and body
+    expect(screen.getByRole('main')).toHaveTextContent("Pahoittelut, kohdetta ei löytynyt :(");
+  });
+
+  it("should not display error when unit is still loading", () => {
+    // Mock loading scenario
+    const mockUseGetUnitByIdQuery = useGetUnitByIdQuery as any;
+    mockUseGetUnitByIdQuery.mockReturnValue({
+      data: undefined,
+      isLoading: true, // Still loading
+      error: { message: 'Unit not found' }
+    });
+
+    render(<UnitDetails {...defaultProps} />, undefined, {
+      unit: createInitialUnitState()
+    });
+
+    // Should not show error when still loading
+    expect(screen.queryByText("Pahoittelut, kohdetta ei löytynyt :(")).not.toBeInTheDocument();
+  });
+
+  it("should not display error when fallback unit exists in Redux state", () => {
+    // Mock error with fallback unit available
+    const mockUseGetUnitByIdQuery = useGetUnitByIdQuery as any;
+    mockUseGetUnitByIdQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: { message: 'Unit not found' }
+    });
+
+    // Render with fallback unit in Redux state
+    render(<UnitDetails {...defaultProps} />, undefined, {
+      unit: {
+        ...createInitialUnitState(),
+        byId: {
+          "40142": unit, // Fallback unit exists
+        },
+        all: ["40142"],
+      }
+    });
+
+    // Should not show error when fallback unit exists
+    expect(screen.queryByText("Pahoittelut, kohdetta ei löytynyt :(")).not.toBeInTheDocument();
+    // Should show the unit name instead
+    expect(screen.getByText("Hietarannan uimaranta")).toBeInTheDocument();
+  });
 });

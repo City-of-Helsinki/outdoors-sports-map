@@ -6,7 +6,7 @@ import { getUnitQuality, sortByCondition } from "../unit/unitHelpers";
 
 type Props = {
   units: Unit[];
-  selectedUnit: Unit;
+  selectedUnit: Unit | undefined;
   openUnit: (unitId: string, unitName?: string) => void;
   zoomLevel: number;
 };

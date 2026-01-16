@@ -1,6 +1,6 @@
 import { LatLngTuple } from "leaflet";
-import { Component, MutableRefObject } from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { MutableRefObject } from "react";
+import { useTranslation } from "react-i18next";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 
 import HeightProfileControl from "./HeightProfileControl";
@@ -20,8 +20,8 @@ import { View } from "../unit/UnitView";
 import { Unit } from "../unit/types";
 import { isRetina } from "../utils";
 
-type Props = WithTranslation & {
-  selectedUnit: Unit;
+type MapViewProps = {
+  selectedUnit: Unit | undefined;
   onCenterMapToUnit: (unit: Unit, map: L.Map) => void;
   activeLanguage: string;
   openUnit: (unitId: string, unitName?: string) => void;
@@ -31,130 +31,101 @@ type Props = WithTranslation & {
   units: Unit[];
 };
 
-type State = {
-  zoomLevel: number;
-  leafletElement: L.Map | null;
-};
+function MapView(props: Readonly<MapViewProps>) {
+  const { t, i18n } = useTranslation();
+  const {
+    position,
+    selectedUnit,
+    units,
+    openUnit,
+    leafletElementRef,
+  } = props;
 
-class MapView extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      zoomLevel: DEFAULT_ZOOM,
-      leafletElement: null,
-    };
-  }
+  const leafletElement = leafletElementRef.current;
 
-  get leafletElement() {
-    const { leafletElementRef } = this.props;
-    return leafletElementRef.current;
-  }
-
-  handleZoom = () => {
-    this.setState({
-      zoomLevel: this.leafletElement?.getZoom() || DEFAULT_ZOOM,
-    });
-  };
-
-  locateUser = () => {
-    this.leafletElement?.locate({
+  const locateUser = () => {
+    leafletElement?.locate({
       setView: true,
     });
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleMapClick = (event: Record<string, any>) => {
+  const handleMapClick = (event: Record<string, any>) => {
     // Click events from info menu and language changer hit this. Don't
     // do anything for those events.
     if (event.originalEvent.target.localName !== "path" && event.originalEvent.target.className.includes("leaflet")) {
-      this.setLocation(event);
+      setLocation(event);
     }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setLocation = (event: Record<string, any>) => {
-    const { setLocation } = this.props;
+  const setLocation = (event: Record<string, any>) => {
+    const { setLocation } = props;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setLocation((latLngToArray(event.latlng) as any) as [number, number]);
   };
 
-  render() {
-    const {
-      position,
-      selectedUnit,
-      units,
-      openUnit,
-      t,
-      i18n: {
-        languages: [language],
-      },
-    } = this.props;
+  const unitHasLineString3dGeometry = (u: Unit) => u?.geometry_3d;
+  const language = i18n.languages[0] || "fi";
 
-    const { zoomLevel } = this.state;
-
-    const unitHasLineString3dGeometry = (u: Unit) => u?.geometry_3d;
-
-    return (
-      <View
-        id="map-view"
-        className="map-view"
-        // Hide tha map from screen readers
-        aria-label={t("MAP.ACCESSIBILITY_NOTICE")}
-        aria-hidden="false"
-        tabIndex={-1}
+  return (
+    <View
+      id="map-view"
+      className="map-view"
+      // Hide tha map from screen readers
+      aria-label={t("MAP.ACCESSIBILITY_NOTICE")}
+      aria-hidden="false"
+      tabIndex={-1}
+    >
+      <MapContainer
+        zoomControl={false}
+        attributionControl={false}
+        center={position}
+        maxBounds={BOUNDARIES}
+        zoom={DEFAULT_ZOOM}
+        minZoom={MIN_ZOOM}
+        maxZoom={MAX_ZOOM}
+        ref={(map) => {
+          if(!leafletElementRef.current) {
+            leafletElementRef.current = map;
+          }
+        }}
       >
-        <MapContainer
-          zoomControl={false}
-          attributionControl={false}
-          center={position}
-          maxBounds={BOUNDARIES}
-          zoom={DEFAULT_ZOOM}
-          minZoom={MIN_ZOOM}
-          maxZoom={MAX_ZOOM}
-          ref={(map) => {
-            const { leafletElementRef } = this.props;
-            if(!leafletElementRef.current) {
-              leafletElementRef.current = map;
-            }
-          }}
+        <TileLayer
+          url={
+            getMapUrl(language, isRetina() ? "@3x" : "")
+          }
+          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <MapEvents
+          handleMapClick={handleMapClick}
+          setLocation={setLocation}
+        />
+        <MapUserLocationMarker/>
+        <MapUnitsOnMap
+          units={units}
+          zoomLevel={DEFAULT_ZOOM}
+          selectedUnit={selectedUnit}
+          openUnit={openUnit}
+        />
+        <ZoomControl
+          position="bottomright"
+          zoomInTitle={t("MAP.ZOOM_IN")}
+          zoomOutTitle={t("MAP.ZOOM_OUT")}
+        />
+        <Control
+          handleClick={locateUser}
+          className="leaflet-control-locate"
+          position="bottomright"
         >
-          <TileLayer
-            url={
-              getMapUrl(language || "fi", isRetina() ? "@3x" : "")
-            }
-            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <MapEvents
-            handleMapClick={this.handleMapClick}
-            setLocation={this.setLocation} />
-          <MapUserLocationMarker/>
-          <MapUnitsOnMap
-            units={units}
-            zoomLevel={zoomLevel}
-            selectedUnit={selectedUnit}
-            openUnit={openUnit}
-          />
-          <ZoomControl
-            position="bottomright"
-            zoomInTitle={t("MAP.ZOOM_IN")}
-            zoomOutTitle={t("MAP.ZOOM_OUT")}
-          />
-          <Control
-            handleClick={this.locateUser}
-            className="leaflet-control-locate"
-            position="bottomright"
-          >
-            <OSMIcon icon="locate" aria-label={t("MAP.LOCATE_USER")} />
-          </Control>
-          {selectedUnit && unitHasLineString3dGeometry(selectedUnit) && (
-            <HeightProfileControl unit={selectedUnit} />
-          )}
-        </MapContainer>
-      </View>
-    );
-  }
+          <OSMIcon icon="locate" aria-label={t("MAP.LOCATE_USER")} />
+        </Control>
+        {selectedUnit && unitHasLineString3dGeometry(selectedUnit) && (
+          <HeightProfileControl unit={selectedUnit} />
+        )}
+      </MapContainer>
+    </View>
+  );
 }
 
-export default withTranslation(undefined, {
-  withRef: true,
-})(MapView);
+export default MapView;

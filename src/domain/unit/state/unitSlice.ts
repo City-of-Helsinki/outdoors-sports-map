@@ -51,7 +51,6 @@ const UNIT_API_COMMON_PARAMS = {
   only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
   include: "observations,connections",
   geometry: "true",
-  geometry_3d: "true",
   page_size: 1000,
 } as const;
 
@@ -93,10 +92,23 @@ export const unitApi = apiSlice.injectEndpoints({
         return normalize(response.results, new schema.Array(unitSchema));
       },
     }),
+
+    // Query for getting a single unit by ID
+    getUnitById: builder.query<Unit, string>({
+      query: (unitId) => ({
+        url: `unit/${unitId}/`,
+        params: {
+          ...UNIT_API_COMMON_PARAMS,
+          geometry_3d: "true",
+        },
+      }),
+      // Cache for 5 minutes
+      keepUnusedDataFor: 300,
+    }),
   }),
 });
 
-export const { useGetUnitsQuery, useLazyGetUnitsQuery, useGetAllSeasonalUnitsQuery } = unitApi;
+export const { useGetUnitsQuery, useLazyGetUnitsQuery, useGetAllSeasonalUnitsQuery, useGetUnitByIdQuery } = unitApi;
 
 // Helper function to filter units by service types
 const filterUnitsByServices = (entities: Record<string, Unit>) => {
