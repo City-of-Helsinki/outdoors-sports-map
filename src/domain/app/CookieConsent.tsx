@@ -10,7 +10,11 @@ declare global {
 }
 
 function CookieConsent() {
-  const cookieConsentSettings =  useCookieConsentSettings(); 
+  const cookieConsentSettings = useCookieConsentSettings(); 
+  // Don't render until we're on the client side and settings are loaded
+  if (!cookieConsentSettings) {
+    return null;
+  }
 
   return (
     <CookieConsentContextProvider {...cookieConsentSettings}>
