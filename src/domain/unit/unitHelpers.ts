@@ -1,3 +1,4 @@
+import { parseISO, differenceInDays } from "date-fns";
 import L from "leaflet";
 import * as GeometryUtil from "leaflet-geometryutil";
 import { union } from "lodash";
@@ -9,7 +10,6 @@ import mapValues from "lodash/mapValues";
 import sortBy from "lodash/sortBy";
 import upperFirst from "lodash/upperFirst";
 import values from "lodash/values";
-import moment from "moment";
 
 import { getToday, isOnSeason } from "./seasons";
 import {
@@ -178,8 +178,29 @@ export const getOpeningHours = (unit: Unit, activeLang: string): string[] => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getObservationTime = (observation: Record<string, any>) =>
-  moment((observation && observation.time) || 0).toDate();
+export const getObservationTime = (observation: Record<string, any>) => {
+  const timeValue = (observation && observation.time) || 0;
+  
+  if (timeValue === 0) {
+    return new Date(0); // Return epoch date for falsy values
+  }
+  
+  // Handle ISO string format
+  if (typeof timeValue === 'string') {
+    try {
+      return parseISO(timeValue);
+    } catch {
+      return new Date('Invalid Date');
+    }
+  }
+  
+  // Handle numeric timestamp
+  if (typeof timeValue === 'number') {
+    return new Date(timeValue);
+  }
+  
+  return new Date('Invalid Date');
+};
 
 export const enumerableQuality = (quality: string): number =>
   QualityEnum[quality] ? QualityEnum[quality] : Number.MAX_VALUE;
@@ -581,9 +602,11 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
   // Get latest primary observation
   const primaryObservation = observations.find((obs) => obs.primary) || null;
 
-  const today = moment();
-  const lastObservation = moment(primaryObservation?.time);
-  const daysFromLastUpdate = today.diff(lastObservation, "d");
+  const today = new Date();
+  const lastObservation = primaryObservation 
+    ? getObservationTime(primaryObservation) 
+    : new Date(0); // Default to epoch if no observation
+  const daysFromLastUpdate = differenceInDays(today, lastObservation);
 
   const getMinimumDaysToHandleConditionUpdates = (): number => {
     if (sport === "unknown") return 0;

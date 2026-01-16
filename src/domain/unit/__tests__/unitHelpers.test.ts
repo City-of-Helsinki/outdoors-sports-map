@@ -7,10 +7,15 @@ import {
   getDefaultStatusFilter,
   getDefaultFilters,
   getSportSpecificationFilters,
+  handleUnitConditionUpdates,
+  getObservationTime,
 } from "../unitHelpers";
-import { UnitFilters, DEFAULT_STATUS_FILTER, SportFilters, SkiingFilters } from "../unitConstants";
+import { UnitFilters, DEFAULT_STATUS_FILTER, SportFilters, SkiingFilters, UnitQualityConst } from "../unitConstants";
 import { UnitServices } from "../../service/serviceConstants";
 import { createMockUnit } from "../../../tests/testUtils";
+import { subDays } from "date-fns";
+import { Unit } from "../types";
+import "../../i18n/i18n"; // Initialize i18n
 
 describe("getUnitSport", () => {
   beforeEach(() => {
@@ -220,5 +225,154 @@ describe("Season and filter utilities", () => {
         }
       });
     });
+  });
+});
+
+describe("handleUnitConditionUpdates", () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date("2023-05-15T12:00:00Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  const createObservation = (daysAgo: number, quality = UnitQualityConst.GOOD, primary = true) => ({
+    id: 1, unit: 1, property: "ski_track_condition", primary,
+    quality, value: quality, expiration_time: null,
+    time: subDays(new Date("2023-05-15T12:00:00Z"), daysAgo).toISOString(),
+    name: { fi: "Hyvä", sv: "Bra", en: "Good" },
+  });
+
+  const createUnit = (daysAgo: number, options: Partial<Unit> = {}) => ({
+    id: 1, name: { fi: "Test Unit", sv: "Test Unit", en: "Test Unit" },
+    services: [191], location: { coordinates: [24.0, 60.0] },
+    geometry: { type: "Point", coordinates: [24.0, 60.0] },
+    observations: [createObservation(daysAgo)],
+    ...options,
+  } as Unit);
+
+  const testCases = [
+    { desc: "recent unit (within threshold)", daysAgo: 1, expectedLength: 1, expectedQuality: UnitQualityConst.GOOD },
+    { desc: "moderately old ski track (7-10 days)", daysAgo: 8, expectedLength: 2, expectedQuality: UnitQualityConst.SATISFACTORY },
+    { desc: "very old ski track (>10 days)", daysAgo: 12, expectedLength: 2, expectedQuality: UnitQualityConst.UNKNOWN },
+  ];
+
+  testCases.forEach(({ desc, daysAgo, expectedLength, expectedQuality }) => {
+    it(`should handle ${desc}`, () => {
+      const unit = createUnit(daysAgo);
+      const result = handleUnitConditionUpdates({ 1: unit });
+      
+      expect(result[1].observations).toHaveLength(expectedLength);
+      expect(result[1].observations[0].quality).toBe(expectedQuality);
+    });
+  });
+
+  const edgeCases = [
+    {
+      desc: "closed units",
+      unit: createUnit(10, { observations: [{ ...createObservation(10), quality: "closed", value: "closed" }] }),
+      expectNoUpdate: true
+    },
+    {
+      desc: "units with no observations", 
+      unit: createUnit(0, { observations: [] }),
+      expectNoUpdate: true
+    },
+    {
+      desc: "units with no primary observation",
+      unit: createUnit(10, { observations: [createObservation(10, UnitQualityConst.GOOD, false)] }),
+      expectNoUpdate: true
+    }
+  ];
+
+  edgeCases.forEach(({ desc, unit, expectNoUpdate }) => {
+    it(`should not update ${desc}`, () => {
+      const result = handleUnitConditionUpdates({ 1: unit });
+      const originalLength = unit.observations.length;
+      
+      expect(result[1].observations).toHaveLength(originalLength);
+      if (expectNoUpdate && originalLength > 0) {
+        expect(result[1].observations[0].quality).toBe(unit.observations[0].quality);
+      }
+    });
+  });
+
+  it("should handle swimming places with different thresholds", () => {
+    const swimmingUnit = createUnit(10, { 
+      services: [730],
+      observations: [{ ...createObservation(10), property: "swimming_water_condition" }]
+    });
+    
+    const result = handleUnitConditionUpdates({ 1: swimmingUnit });
+    
+    expect(result[1].observations).toHaveLength(2);
+    expect(result[1].observations[0].quality).toBe(UnitQualityConst.UNKNOWN);
+  });
+
+  it("should preserve original observation and handle multiple units", () => {
+    const units = {
+      1: createUnit(12), // Old unit -> should update
+      2: createUnit(1),  // Recent unit -> should not update
+    };
+    
+    const result = handleUnitConditionUpdates(units);
+    
+    // Old unit: updated with new observation + original preserved
+    expect(result[1].observations).toHaveLength(2);
+    expect(result[1].observations[0].quality).toBe(UnitQualityConst.UNKNOWN); // New
+    expect(result[1].observations[1].quality).toBe(UnitQualityConst.GOOD);    // Original
+    
+    // Recent unit: no changes
+    expect(result[2].observations).toHaveLength(1);
+    expect(result[2].observations[0].quality).toBe(UnitQualityConst.GOOD);
+  });
+});
+
+describe("getObservationTime", () => {
+  const testCases = [
+    {
+      desc: "ISO string",
+      observation: { time: "2023-05-15T10:30:00Z" },
+      expected: "2023-05-15T10:30:00.000Z"
+    },
+    {
+      desc: "numeric timestamp", 
+      observation: { time: 1684148400000 },
+      expected: "2023-05-15T11:00:00.000Z"
+    },
+    {
+      desc: "ISO string with timezone",
+      observation: { time: "2023-05-15T12:30:00+02:00" },
+      expected: "2023-05-15T10:30:00.000Z"
+    }
+  ];
+
+  testCases.forEach(({ desc, observation, expected }) => {
+    it(`should convert ${desc} to Date object`, () => {
+      const result = getObservationTime(observation);
+      expect(result).toBeInstanceOf(Date);
+      expect(result.toISOString()).toBe(expected);
+    });
+  });
+
+  const nullishCases = [
+    { desc: "null observation", observation: null },
+    { desc: "observation with no time", observation: {} },
+    { desc: "observation with null time", observation: { time: null } }
+  ];
+
+  nullishCases.forEach(({ desc, observation }) => {
+    it(`should default to epoch time for ${desc}`, () => {
+      const result = getObservationTime(observation);
+      expect(result).toBeInstanceOf(Date);
+      expect(result.toISOString()).toBe("1970-01-01T00:00:00.000Z");
+    });
+  });
+
+  it("should handle invalid time string", () => {
+    const result = getObservationTime({ time: "invalid-date" });
+    expect(result).toBeInstanceOf(Date);
+    expect(result.toString()).toBe("Invalid Date");
   });
 });

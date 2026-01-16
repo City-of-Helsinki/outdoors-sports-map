@@ -1,6 +1,6 @@
+import { fi, sv, enUS } from "date-fns/locale";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import moment from "moment";
 import { initReactI18next } from "react-i18next";
 
 // Import JSON files as modules
@@ -31,10 +31,23 @@ function changeDocumentLanguage(nextLanguage: string) {
   document.documentElement.lang = nextLanguage;
 }
 
+// Auto-detected language generally has a country code. Ignore it.
+export const getCurrentLanguage = () => i18n.language.split("-")[0];
+
+// Get date-fns locale based on current language
+export const getDateFnsLocale = () => {
+  const language = getCurrentLanguage();
+  switch (language) {
+    case 'fi': return fi;
+    case 'sv': return sv;
+    case 'en': return enUS;
+    default: return fi; // Default to Finnish
+  }
+};
+
 // Configure language changed hook first so that it is fired on language
 // initialization as well.
 i18n.on("languageChanged", (nextLanguage) => {
-  moment.locale(nextLanguage);
   changeDocumentLanguage(nextLanguage);
 });
 
@@ -84,8 +97,5 @@ i18n.on("languageChanged", (nextLanguage) => {
     });
   }
 });
-
-// Auto-detected language generally has a country code. Ignore it.
-export const getCurrentLanguage = () => i18n.language.split("-")[0];
 
 export default i18n; // NOSONAR - This is not a re-export, it's exporting the configured i18n instance

@@ -40,3 +40,6 @@ globalThis.ResizeObserver = class ResizeObserver {
 };
 
 vi.spyOn(globalThis.navigator, "languages", "get").mockReturnValue(["fi"]);
+
+// Set UTC timezone for all tests to ensure consistent date/time behavior
+process.env.TZ = "UTC";
