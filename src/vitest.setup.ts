@@ -1,7 +1,15 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
 import { vi } from 'vitest';
 import '@testing-library/jest-dom';
+
+// Extend vitest expect with jest-dom matchers
+declare module 'vitest' {
+  interface Assertion<T = any> extends TestingLibraryMatchers<T, void> {}
+  interface AsymmetricMatchersContaining extends TestingLibraryMatchers<any, void> {}
+}
 
 // Suppress jsdom CSS parsing errors from hds-react
 const originalConsoleError = console.error;
