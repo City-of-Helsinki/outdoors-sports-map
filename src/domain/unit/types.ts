@@ -108,7 +108,6 @@ export type UnitState = {
   seasonalSledding: Array<string>;
   seasonalHike: Array<string>;
   seasonalStatusOk: Array<string>;
-  fetchError: unknown;
 };
 
 export type UnitSearchState = {

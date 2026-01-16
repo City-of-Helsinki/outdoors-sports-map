@@ -9,7 +9,7 @@ import * as PathUtils from "../../common/utils/pathUtils";
 import routerPaths from "../app/appRoutes";
 import { AppState, AppSearchLocationState } from "../app/types";
 import useAppSearch from "../app/useAppSearch";
-import { selectVisibleUnits, selectUnitById, useGetUnitByIdQuery } from "../unit/state/unitSlice";
+import { selectVisibleUnits, selectUnitById, selectIsMapLoading, useGetUnitByIdQuery } from "../unit/state/unitSlice";
 import { Unit } from "../unit/types";
 
 type Props = {
@@ -33,6 +33,8 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
   const unitData = useSelector<AppState, Unit[]>((state) =>
     selectVisibleUnits(state, appSearch.sport, appSearch.status, appSearch.sportSpecification)
   );
+  
+  const isMapLoading = useSelector(selectIsMapLoading);
   
   // Get the basic unit from the regular units array
   const basicSelectedUnit = useSelector<AppState, Unit>((state) =>
@@ -122,6 +124,7 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
       units={unitsToShow}
       openUnit={openUnit}
       onCenterMapToUnit={onCenterMapToUnit}
+      isLoading={isMapLoading}
     />
   );
 }

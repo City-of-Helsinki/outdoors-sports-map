@@ -40,7 +40,7 @@ vi.mock('../../service/serviceHelpers', () => ({
 // Mock the RTK Query hooks
 const mockUseGetServicesQuery = vi.fn();
 const mockUseGetAllSeasonalUnitsQuery = vi.fn();
-const mockUseGetUnitsQuery = vi.fn();
+const mockUseUnitsWithState = vi.fn();
 const mockUseLazySearchUnitsQuery = vi.fn();
 
 vi.mock('../../service/state/serviceSlice', async (importOriginal) => {
@@ -55,7 +55,6 @@ vi.mock('../../unit/state/unitSlice', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../../unit/state/unitSlice')>();
   return {
     ...actual,
-    useGetUnitsQuery: (...args: any[]) => mockUseGetUnitsQuery(...args),
     useGetAllSeasonalUnitsQuery: (...args: any[]) => mockUseGetAllSeasonalUnitsQuery(...args),
   };
 });
@@ -67,6 +66,10 @@ vi.mock('../../unit/state/searchSlice', async (importOriginal) => {
     useLazySearchUnitsQuery: () => mockUseLazySearchUnitsQuery(),
   };
 });
+
+vi.mock('../../unit/hooks/useUnitsWithState', () => ({
+  useUnitsWithState: (...args: any[]) => mockUseUnitsWithState(...args),
+}));
 
 describe('useFetchInitialData', () => {
   // Create a test store
@@ -107,7 +110,7 @@ describe('useFetchInitialData', () => {
     // Mock query hooks to return successful states
     mockUseGetServicesQuery.mockReturnValue({ data: {}, isLoading: false });
     mockUseGetAllSeasonalUnitsQuery.mockReturnValue({ data: {}, isLoading: false });
-    mockUseGetUnitsQuery.mockReturnValue({ data: {}, isLoading: false });
+    mockUseUnitsWithState.mockReturnValue({ data: {}, isLoading: false });
   });
 
   describe('Query execution', () => {
@@ -128,22 +131,22 @@ describe('useFetchInitialData', () => {
 
       renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith(
-        { services: [191, 318, 365, 586] }, // skiing + hiking services, filtered by on-season
-        { skip: false }
-      );
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({
+        services: [191, 318, 365, 586], // skiing + hiking services, filtered by on-season
+        skip: false
+      });
     });
 
-    it('should call useGetUnitsQuery with correct services for swimming', () => {
+    it('should call useUnitsWithState with correct services for swimming', () => {
       mockUseAppSearch.mockReturnValue({ sport: UnitFilters.SWIMMING });
       mockGetOnSeasonServices.mockReturnValue([730, 731, 365, 586]);
 
       renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith(
-        { services: [365, 586, 730, 731] }, // swimming + hiking services, sorted
-        { skip: false }
-      );
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({
+        services: [365, 586, 730, 731], // swimming + hiking services, sorted
+        skip: false
+      });
     });
 
     it('should skip useGetUnitsQuery when no services are available', () => {
@@ -151,10 +154,9 @@ describe('useFetchInitialData', () => {
 
       renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith(
-        {},
-        { skip: true }
-      );
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({
+        skip: true
+      });
     });
   });
 
@@ -180,10 +182,10 @@ describe('useFetchInitialData', () => {
 
       renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith(
-        { services: [191, 318, 365, 586] }, // 999 filtered out
-        { skip: false }
-      );
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({
+        services: [191, 318, 365, 586], // 999 filtered out
+        skip: false
+      });
     });
 
     it('should sort services consistently for caching', () => {
@@ -196,10 +198,10 @@ describe('useFetchInitialData', () => {
 
       renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith(
-        { services: [191, 318, 365, 586] }, // Sorted
-        { skip: false }
-      );
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({
+        services: [191, 318, 365, 586], // Sorted
+        skip: false
+      });
     });
   });
 
@@ -303,7 +305,7 @@ describe('useFetchInitialData', () => {
         renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
       }).not.toThrow();
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith({}, { skip: true });
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({ skip: true });
     });
 
     it('should handle when getOnSeasonServices returns empty array', () => {
@@ -318,7 +320,7 @@ describe('useFetchInitialData', () => {
         renderHook(() => useFetchInitialData(), { wrapper: createWrapper() });
       }).not.toThrow();
 
-      expect(mockUseGetUnitsQuery).toHaveBeenCalledWith({}, { skip: true });
+      expect(mockUseUnitsWithState).toHaveBeenCalledWith({ skip: true });
     });
   });
 

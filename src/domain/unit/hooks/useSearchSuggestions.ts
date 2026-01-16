@@ -1,42 +1,43 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { 
-  useLazySearchSuggestionsQuery,
+  useSearchSuggestionsQuery,
   setUnitSuggestions,
   setAddressSuggestions 
 } from '../state/searchSlice';
 
 export function useSearchSuggestions() {
   const dispatch = useDispatch();
-  const [triggerSearchSuggestions] = useLazySearchSuggestionsQuery();
-  
-  const currentSearchRef = useRef<string>('');
+  const [debouncedInput, setDebouncedInput] = useState('');
   const searchTimeoutRef = useRef<number | null>(null);
+
+  // Use regular query with debounced input - RTK Query handles caching automatically
+  const { data, isLoading } = useSearchSuggestionsQuery(debouncedInput, {
+    skip: !debouncedInput.trim(), // Skip query if input is empty
+  });
+
+  // Update Redux store when data changes
+  useEffect(() => {
+    if (data) {
+      dispatch(setUnitSuggestions(data.units));
+      dispatch(setAddressSuggestions(data.addresses));
+    }
+  }, [data, dispatch]);
 
   const searchSuggestions = useCallback(
     (input: string) => {
-      // Update current search term
-      currentSearchRef.current = input;
-      
-      // Cancel previous search timeout if it exists
+      // Cancel previous timeout if it exists
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
       }
       
-      // Debounce the search by 300ms to avoid too many rapid API calls
-      searchTimeoutRef.current = setTimeout(async () => {
-        // Start new search - let it complete for caching benefits
-        const result = await triggerSearchSuggestions(input);
-        
-        // Only update Redux if this result matches the current search term
-        if (input === currentSearchRef.current && result.data) {
-          dispatch(setUnitSuggestions(result.data.units));
-          dispatch(setAddressSuggestions(result.data.addresses));
-        }
+      // Debounce the input state update by 300ms
+      searchTimeoutRef.current = setTimeout(() => {
+        setDebouncedInput(input);
       }, 300);
     },
-    [dispatch, triggerSearchSuggestions],
+    [],
   );
 
   // Cleanup timeout on unmount to prevent memory leaks
@@ -48,5 +49,5 @@ export function useSearchSuggestions() {
     };
   }, []);
 
-  return { searchSuggestions };
+  return { searchSuggestions, isLoading };
 }

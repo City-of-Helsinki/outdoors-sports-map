@@ -96,11 +96,11 @@ export function Header({ unit, services, isLoading }: HeaderProps) {
         <div className="unit-container-header-description">
           <UnitIcon
             unit={unit}
-            alt={getServiceName(unit.services, services as Record<string, Service>, language)}
+            alt={getServiceName(unit.services, services, language)}
           />
           <div className="unit-container-header-description-text-content">
             <p className="unit-container-header-service-name">
-              {getServiceName(unit.services, services as Record<string, Service>, language)}
+              {getServiceName(unit.services, services, language)}
             </p>
             <p>
               {unitAddress ? `${unitAddress}, ` : ""}

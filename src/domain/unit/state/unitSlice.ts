@@ -113,44 +113,50 @@ export const { useGetUnitsQuery, useLazyGetUnitsQuery, useGetAllSeasonalUnitsQue
 // Helper function to filter units by service types
 const filterUnitsByServices = (entities: Record<string, Unit>) => {
   const iceskate = keys(entities).filter((id) =>
-    entities[id].services.some(
+    entities[id]?.services?.some(
       (unitService: number) => IceSkatingServices.includes(unitService),
     ),
   );
 
   const ski = keys(entities).filter((id) =>
-    entities[id].services.some(
+    entities[id]?.services?.some(
       (unitService: number) => SkiingServices.includes(unitService),
     ),
   );
 
   const swim = keys(entities).filter((id) =>
-    entities[id].services.some(
+    entities[id]?.services?.some(
       (unitService: number) => SwimmingServices.includes(unitService),
     ),
   );
 
   const iceswim = keys(entities).filter((id) =>
-    entities[id].services.some(
+    entities[id]?.services?.some(
       (unitService: number) => IceSwimmingServices.includes(unitService),
     ),
   );
 
   const sledding = keys(entities).filter((id) =>
-    entities[id].services.some(
+    entities[id]?.services?.some(
       (unitService: number) => SleddingServices.includes(unitService),
     ),
   );
 
   const hike = keys(entities).filter((id) =>
-    entities[id].services.some(
+    entities[id]?.services?.some(
       (unitService: number) => SupportingServices.includes(unitService),
     ),
   );
 
   const status_ok = keys(entities).filter(
-    (id) =>
-      enumerableQuality(getUnitQuality(entities[id])) <= QualityEnum.satisfactory,
+    (id) => {
+      const unit = entities[id];
+      // Ensure unit exists and has required properties for quality assessment
+      if (!unit?.observations) {
+        return false;
+      }
+      return enumerableQuality(getUnitQuality(unit)) <= QualityEnum.satisfactory;
+    },
   );
 
   return { iceskate, ski, swim, iceswim, sledding, hike, status_ok };
@@ -159,8 +165,6 @@ const filterUnitsByServices = (entities: Record<string, Unit>) => {
 // Regular slice for unit state management
 interface UnitState {
   isFetching: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fetchError: any;
   byId: Record<string, Unit>;
   all: string[];
   iceskate: string[];
@@ -184,7 +188,6 @@ interface UnitState {
 
 export const initialUnitState: UnitState = {
   isFetching: false,
-  fetchError: null,
   byId: {},
   all: [],
   iceskate: [],
@@ -210,6 +213,10 @@ const unitSlice = createSlice({
   name: "unit",
   initialState: initialUnitState,
   reducers: {
+    setIsFetching: (state, action: PayloadAction<boolean>) => {
+      state.isFetching = action.payload;
+    },
+    
     receiveUnits: (state, action: PayloadAction<NormalizedUnitSchema>) => {
       const { entities, result } = action.payload;
       
@@ -261,29 +268,9 @@ const unitSlice = createSlice({
       state.seasonalHike = filteredUnits.hike;
       state.seasonalStatusOk = filteredUnits.status_ok;
     },
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setFetchError: (state, action: PayloadAction<any>) => {
-      state.fetchError = action.payload;
-      state.isFetching = false;
-    },
   },
   extraReducers: (builder) => {
     builder
-      // Handle getUnits query
-      .addMatcher(unitApi.endpoints.getUnits.matchPending, (state) => {
-        state.isFetching = true;
-        state.fetchError = null;
-      })
-      .addMatcher(unitApi.endpoints.getUnits.matchFulfilled, (state, action) => {
-        state.isFetching = false;
-        // Automatically call receiveUnits when query succeeds
-        unitSlice.caseReducers.receiveUnits(state, action);
-      })
-      .addMatcher(unitApi.endpoints.getUnits.matchRejected, (state, action) => {
-        state.isFetching = false;
-        state.fetchError = action.error;
-      })
       // Handle getAllSeasonalUnits query
       .addMatcher(unitApi.endpoints.getAllSeasonalUnits.matchFulfilled, (state, action) => {
         // Store seasonal units as fallback
@@ -292,23 +279,16 @@ const unitSlice = createSlice({
   },
 });
 
-export const { receiveUnits, receiveSeasonalUnits, setFetchError } = unitSlice.actions;
+export const { setIsFetching, receiveUnits, receiveSeasonalUnits } = unitSlice.actions;
 export default unitSlice.reducer;
 
 // Selectors
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const selectUnitById = (state: AppState, props: Record<string, any>) => {
-  // Use specific units if available, otherwise fall back to seasonal units
-  const specificUnit = state.unit.byId?.[props.id];
-  return specificUnit || state.unit.seasonalById?.[props.id];
+  // Use seasonal units if available, otherwise fall back to specific units
+  const seasonalUnit = state.unit.seasonalById?.[props.id];
+  return seasonalUnit || state.unit.byId?.[props.id];
 };
-
-export const selectAllUnits = (state: AppState) =>
-  state.unit.all.map((id) =>
-    selectUnitById(state, {
-      id,
-    }),
-  );
 
 export const selectVisibleUnits = createSelector(
   [
@@ -329,15 +309,15 @@ export const selectVisibleUnits = createSelector(
     (state: AppState) => selectUnitResultIDs(state),
   ],
   (unitState, sport, status, sportSpecification, isSearchActive, unitResultIDs): Unit[] => {
-    // Smart fallback: use seasonal data for each sport individually if specific data is not available
+    // Smart fallback: use seasonal data as primary, specific data as backup
     const getDataForSport = (sportFilter: string) => {
-      const specificData = unitState[sportFilter as keyof typeof unitState] as string[] || [];
       const seasonalProperty = `seasonal${sportFilter.charAt(0).toUpperCase()}${sportFilter.slice(1)}` as keyof typeof unitState;
       const seasonalData = unitState[seasonalProperty] as string[] || [];
+      const specificData = unitState[sportFilter as keyof typeof unitState] as string[] || [];
       
-      // Use seasonal data if specific data is empty but seasonal data exists
-      return specificData.length > 0 ? { data: specificData, isFromSeasonal: false } 
-                                      : { data: seasonalData, isFromSeasonal: true };
+      // Use seasonal data if available, otherwise fall back to specific data
+      return seasonalData.length > 0 ? { data: seasonalData, isFromSeasonal: true } 
+                                     : { data: specificData, isFromSeasonal: false };
     };
 
     // Get data for current sport to determine which byId to use
@@ -355,9 +335,9 @@ export const selectVisibleUnits = createSelector(
       [UnitFilters.SLEDDING]: getDataForSport(UnitFilters.SLEDDING).data,
       [UnitFilters.HIKING]: getDataForSport(UnitFilters.HIKING).data,
       [UnitFilters.STATUS_OK]: (() => {
-        const specificStatus = unitState.status_ok || [];
         const seasonalStatus = unitState.seasonalStatusOk || [];
-        return specificStatus.length > 0 ? specificStatus : seasonalStatus;
+        const specificStatus = unitState.status_ok || [];
+        return seasonalStatus.length > 0 ? seasonalStatus : specificStatus;
       })(),
     };
 
@@ -422,7 +402,7 @@ export const selectVisibleUnits = createSelector(
       visibleUnits = intersection(visibleUnits, unitResultIDs);
     }
 
-    return visibleUnits.map((id: string) => currentById[id]);
+    return visibleUnits.map((id: string) => currentById[id]).filter(Boolean);
   },
 );
 
@@ -432,4 +412,15 @@ export const selectIsUnitLoading = (state: AppState) =>
 // Selector for search loading - tracks getAllSeasonalUnits query
 export const selectIsSearchLoading = (state: AppState) => {
   return unitApi.endpoints.getAllSeasonalUnits.select()(state).isLoading;
+};
+
+// Selector for map loading - shows when there's no data available and data is loading
+export const selectIsMapLoading = (state: AppState) => {
+  const hasSeasonalData = state.unit.seasonalAll.length > 0;
+  const hasSpecificData = state.unit.all.length > 0;
+  const isSeasonalLoading = unitApi.endpoints.getAllSeasonalUnits.select()(state).isLoading;
+  const isSpecificLoading = state.unit.isFetching;
+  
+  // Show loading when no data is available and some query is loading
+  return (!hasSeasonalData && !hasSpecificData) && (isSeasonalLoading || isSpecificLoading);
 };
