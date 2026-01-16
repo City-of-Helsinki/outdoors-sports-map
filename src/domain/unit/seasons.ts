@@ -1,5 +1,4 @@
-import getDate from "date-fns/getDate";
-import getMonth from "date-fns/getMonth";
+import { getDate, getMonth } from "date-fns";
 
 import { Season, SeasonDelimiter } from "./types";
 

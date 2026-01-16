@@ -26,6 +26,7 @@
   "include": ["src"],
   "exclude": [
     "src/**/__tests__/**/*",
-    "src/**/*.test.*"
+    "src/**/*.test.*",
+    "src/vitest.setup.ts"
   ]
 }

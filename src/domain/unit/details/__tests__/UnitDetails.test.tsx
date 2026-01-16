@@ -1,4 +1,4 @@
-import moment from "moment";
+import { subHours, subMinutes } from "date-fns";
 import userEvent from "@testing-library/user-event";
 
 import { render, screen, within } from "../../../testingLibraryUtils";
@@ -367,7 +367,7 @@ describe("<UnitDetails />", () => {
 
     describe("temperature measurement time", () => {
       it("when less than an hour has passed it should use minutes", () => {
-        const halfAnHourAgo = moment().subtract(0.5, "hours");
+        const halfAnHourAgo = subMinutes(new Date(), 30);
 
         renderWrapperWithLiveTemperatureData(
           {},
@@ -385,7 +385,7 @@ describe("<UnitDetails />", () => {
       });
 
       it("when at least an hour has passed it should use hours", () => {
-        const anHourAgo = moment().subtract(2, "hours");
+        const anHourAgo = subHours(new Date(), 2);
 
         renderWrapperWithLiveTemperatureData(
           {},
@@ -399,7 +399,7 @@ describe("<UnitDetails />", () => {
           },
         );
 
-        expect(screen.getByText("kaksi tuntia sitten")).toBeInTheDocument();
+        expect(screen.getByText("noin 2 tuntia sitten")).toBeInTheDocument();
       });
     });
   });
