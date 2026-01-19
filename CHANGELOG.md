@@ -4,6 +4,43 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.9.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.8.0...outdoors-sports-map-v2.9.0) (2026-01-19)
+
+
+### Features
+
+* Add ESLint integration to Vite development server ([28071fd](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/28071fd17be85ee47a266c61e8e8406877aee861))
+* Clean up unused dependencies and flow scripts ([5ec4b2b](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/5ec4b2bb34d5738ce9fdddc767bb9aae773c5e74))
+* Implement service-specific unit data architecture with loading states ([62f2a27](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/62f2a27f68c787fe08984613e8890b44ff0e7cc1))
+* Improve suggestion visibility logic in SearchContainer ([5ce1d8a](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/5ce1d8a6906b8c728c1030e71329be5b7fc60520))
+* Migrate from Create React App to Vite ([876c20f](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/876c20f2ee575e9bce5c0e8cb337a1555fb8f28a))
+* Migrate from react-scripts to custom ESLint config ([147a0be](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/147a0be3f869f99255fa74fb11c547510d61da56))
+* Modernize TypeScript configuration ([5c799db](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/5c799dbabfcc51917daab63dceec0f6f855756a8))
+* Replace moment.js with date-fns ([dea0390](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/dea0390b0e8078261d41b9ff705b6e1fd9ad559d))
+* Switch to SWC compiler for faster builds ([29bb7b9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/29bb7b93a79a1fdf2dd870781ec748cb51208470))
+
+
+### Bug Fixes
+
+* Add security vulnerability resolutions ([23a2b0f](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/23a2b0f054f970905dff4190355ebbe327f436c6))
+* Add TypeScript support for @testing-library/jest-dom matchers in Vitest ([db9e1c2](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/db9e1c2e1fe14bf39e49a41d3d7dc7eb8e3100bf))
+* Configure Vitest coverage for SonarQube integration ([0dbbcd2](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/0dbbcd223c7b50e2045d493b10dc3a969f4244a0))
+* Convert Vitest config from callback to static config ([9f74734](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/9f74734afef2e94ea228a4c7039013d1146ce365))
+* Disable ESLint plugin during production builds ([afecec9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/afecec966b2b0f7240673f1aea9c16fb66f1599c))
+* Load dotenv before importing app constants in sitemap script ([a6ca78f](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/a6ca78fdb49fe505309cdc155f741bb4a86d16b7))
+* Move marker assets from src to public directory for Vite builds ([0a9d9dd](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/0a9d9dd1a75911dc6b991abf15a6aae6405efd1c))
+* Prevent incognito mode crashes with dynamic loading ([92be6ae](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/92be6ae8d1c71f8a73f4014a54d38317502f3147))
+* Resolve SonarQube code quality issues ([3326ee4](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/3326ee431064f80474794b3c6749c732ba865160))
+* Resolve vite build issues in docker ([9c9ff94](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/9c9ff94fc40f0167c4615d067fcc888bb1631586))
+* Update references from master to main branch in review pipeline configuration ([3dcd20c](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/3dcd20c6b71b9cb2dfc9d9d74ea80cbe9b24a58c))
+
+
+### Performance Improvements
+
+* Enable modern Sass API for improved SCSS compilation ([0c5b0cb](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/0c5b0cb9b5da8019b7e6405f664d85655761cd63))
+* Implement service-specific unit fetching with seasonal fallback ([a645634](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/a6456342df6c388334a31ad7ce8a3209bb4470bc))
+* Optimize single unit data fetching with RTK Query ([e420e64](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/e420e64f07affc8b6fa0e77fec8542042a42b6a1))
+
 ## [2.8.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.7.0...outdoors-sports-map-v2.8.0) (2026-01-13)
 
 
