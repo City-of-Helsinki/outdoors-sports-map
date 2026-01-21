@@ -48,7 +48,7 @@
     "leaflet": "1.9.4",
     "leaflet-geometryutil": "^0.10.3",
     "leaflet.heightgraph": "^1.4.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "normalize.css": "^8.0.1",
     "normalizr": "^3.6.2",
     "react": "18.3.1",
