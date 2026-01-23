@@ -211,7 +211,7 @@ export const UnitAutomaticConditionChangeDays = {
   },
   [UnitFilters.SLEDDING]: {
     [UnitQualityConst.SATISFACTORY]: undefined,
-    [UnitQualityConst.UNKNOWN]: 10,
+    [UnitQualityConst.UNKNOWN]: undefined, // No automatic change for sledding units
   },
 };
 
