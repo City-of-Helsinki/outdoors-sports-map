@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { 
   getUnitSport, 
   getOffSeasonSportFilters,
@@ -374,5 +374,52 @@ describe("getObservationTime", () => {
     const result = getObservationTime({ time: "invalid-date" });
     expect(result).toBeInstanceOf(Date);
     expect(result.toString()).toBe("Invalid Date");
+  });
+});
+
+describe("sledding automatic condition updates", () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date("2023-05-15T12:00:00Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  const createSleddingObservation = (daysAgo: number, quality = UnitQualityConst.GOOD) => ({
+    id: 1, unit: 1, property: "sledding_condition", primary: true,
+    quality, value: quality, expiration_time: null,
+    time: subDays(new Date("2023-05-15T12:00:00Z"), daysAgo).toISOString(),
+    name: { fi: "Hyvä", sv: "Bra", en: "Good" },
+  });
+
+  const createSleddingUnit = (daysAgo: number, options: Partial<Unit> = {}) => ({
+    id: 1, name: { fi: "Test Sledding Hill", sv: "Test Sledding Hill", en: "Test Sledding Hill" },
+    services: [1083], // SLEDDING_HILL service
+    location: { coordinates: [24.0, 60.0] },
+    geometry: { type: "Point", coordinates: [24.0, 60.0] },
+    observations: [createSleddingObservation(daysAgo)],
+    connections: [],
+    ...options,
+  } as Unit);
+
+  const testCases = [
+    { desc: "1 day old sledding unit", daysAgo: 1 },
+    { desc: "30 days old sledding unit", daysAgo: 30 },
+    { desc: "100 days old sledding unit", daysAgo: 100 },
+    { desc: "365 days old sledding unit", daysAgo: 365 },
+    { desc: "1000 days old sledding unit", daysAgo: 1000 },
+  ];
+
+  testCases.forEach(({ desc, daysAgo }) => {
+    it(`should never automatically update ${desc} to unknown status`, () => {
+      const unit = createSleddingUnit(daysAgo);
+      const result = handleUnitConditionUpdates({ 1: unit });
+      
+      // Should preserve original observation and not add any automatic updates
+      expect(result[1].observations).toHaveLength(1);
+      expect(result[1].observations?.[0].quality).toBe(UnitQualityConst.GOOD);
+      expect(result[1].observations?.[0]?.property).toBe("sledding_condition");
+    });
   });
 });

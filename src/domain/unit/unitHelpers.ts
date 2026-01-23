@@ -639,7 +639,8 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
       return satisfactoryDays;
     }
 
-    return unknownDays;
+    // If unknownDays is undefined, return Infinity to disable automatic updates
+    return unknownDays ?? Infinity;
   };
 
   // Don't do anything if:
@@ -685,7 +686,7 @@ const handleSingleUnitConditionUpdate = (unit: Unit) => {
   const isSatisfactory: boolean =
     sport !== "unknown" &&
     sport in UnitAutomaticConditionChangeDays &&
-    daysFromLastUpdate < UnitAutomaticConditionChangeDays[sport as keyof typeof UnitAutomaticConditionChangeDays].unknown;
+    daysFromLastUpdate < (UnitAutomaticConditionChangeDays[sport as keyof typeof UnitAutomaticConditionChangeDays].unknown ?? Infinity);
 
   // Set new observation copy as the first observation in unit's observations list
   // Return a new unit object instead of mutating the original
