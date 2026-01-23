@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.10.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.9.0...outdoors-sports-map-v2.10.0) (2026-01-23)
+
+
+### Features
+
+* Disable automatic condition updates for sledding units ([3124d38](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/3124d38825dca8e0e3a9faa2fe7696a4ccdea5a6))
+
 ## [2.9.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.8.0...outdoors-sports-map-v2.9.0) (2026-01-19)
 
 
