@@ -588,7 +588,7 @@ export const getFilteredUnitsBySportSpecification = (
   return filteredUnits;
 };
 
-const handleSingleUnitConditionUpdate = (unit: Unit) => {
+export const handleSingleUnitConditionUpdate = (unit: Unit) => {
   const sport = getUnitSport(unit);
   const filters = [
     UnitFilters.COOKING_FACILITY,

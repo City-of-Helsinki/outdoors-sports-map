@@ -11,6 +11,7 @@ import { AppState, AppSearchLocationState } from "../app/types";
 import useAppSearch from "../app/useAppSearch";
 import { selectVisibleUnits, selectUnitById, selectIsMapLoading, useGetUnitByIdQuery } from "../unit/state/unitSlice";
 import { Unit } from "../unit/types";
+import { handleSingleUnitConditionUpdate } from "../unit/unitHelpers";
 
 type Props = {
   onCenterMapToUnit: (unit: Unit, map: L.Map) => void;
@@ -47,10 +48,17 @@ function MapComponent({ onCenterMapToUnit, leafletElementRef }: Props) {
   const { data: detailedSelectedUnit } = useGetUnitByIdQuery(unitDetailsMatch?.params?.unitId || "", {
     skip: !unitDetailsMatch?.params?.unitId,
   });
+
+  // Apply condition updates to detailed selected unit to keep it in sync with the units list
+  const selectedUnitWithUpdatedCondition = useMemo(() => 
+    detailedSelectedUnit 
+      ? handleSingleUnitConditionUpdate(detailedSelectedUnit) 
+      : null, 
+  [detailedSelectedUnit]);
   
   // Only set selectedUnit when on unit details page
   const selectedUnit = unitDetailsMatch?.params?.unitId 
-    ? (detailedSelectedUnit || basicSelectedUnit)
+    ? (selectedUnitWithUpdatedCondition || basicSelectedUnit)
     : undefined;
   
   // Use unitData if available, otherwise show selectedUnit as backup only when on unit details page

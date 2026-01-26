@@ -8,7 +8,7 @@ import {
 } from "hds-react";
 import get from "lodash/get";
 import has from "lodash/has";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -47,6 +47,7 @@ import {
   getObservation,
   getObservationTime,
   getOpeningHours,
+  handleSingleUnitConditionUpdate,
 } from "../unitHelpers";
 
 type HeaderProps = {
@@ -752,8 +753,15 @@ function UnitDetails({
   // Start with list unit for immediate display, upgrade to API unit for enhanced data (3D geometry, etc.)
   // Only use unit data if it matches the current unitId to prevent showing stale cached data
   const validUnit = String(unit?.id) === unitId ? unit : undefined;
+
+  // Apply condition updates to valid unit to keep it in sync with the units list
+  const unitWithUpdatedCondition = useMemo(() => 
+    validUnit 
+      ? handleSingleUnitConditionUpdate(validUnit) 
+      : undefined, 
+    [validUnit]);
   const validFallbackUnit = String(fallbackUnit?.id) === unitId ? fallbackUnit : undefined;
-  const currentUnit = validUnit || validFallbackUnit;
+  const currentUnit = unitWithUpdatedCondition || validFallbackUnit;
   
   const [footerHeight, setFooterHeight] = useState<number>(0);
   
