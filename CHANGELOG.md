@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.11.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.10.0...outdoors-sports-map-v2.11.0) (2026-01-27)
+
+
+### Features
+
+* Show valid condition label for selected unit ([ef20d42](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/ef20d42f69a44a59f3bd76b8ba15384e57da9aef))
+
 ## [2.10.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.9.0...outdoors-sports-map-v2.10.0) (2026-01-23)
 
 
