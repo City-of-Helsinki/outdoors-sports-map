@@ -44,10 +44,8 @@ function MapView(props: Readonly<MapViewProps>) {
     isLoading,
   } = props;
 
-  const leafletElement = leafletElementRef.current;
-
   const locateUser = () => {
-    leafletElement?.locate({
+    leafletElementRef.current?.locate({
       setView: true,
     });
   };
