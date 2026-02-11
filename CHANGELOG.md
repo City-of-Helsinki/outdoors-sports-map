@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.11.1](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.11.0...outdoors-sports-map-v2.11.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* Ensure locate button accesses current map ref ([6c0ea1d](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/6c0ea1d5e6719a8020370b410c46822f815a7e6f))
+
 ## [2.11.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.10.0...outdoors-sports-map-v2.11.0) (2026-01-27)
 
 
