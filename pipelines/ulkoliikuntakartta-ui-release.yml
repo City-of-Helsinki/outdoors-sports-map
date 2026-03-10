@@ -5,9 +5,6 @@ trigger:
   tags:
     include:
       - outdoors-sports-map-*
-  paths:
-    exclude:
-    - README.md
 
 # Pull request (PR) triggers cause a pipeline to run whenever a pull request is
 # opened with one of the specified target branches, or when updates are made to
