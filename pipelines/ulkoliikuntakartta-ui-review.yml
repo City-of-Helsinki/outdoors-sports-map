@@ -38,7 +38,6 @@ resources:
     # Azure DevOps repository
     - repository: ulkoliikuntakartta-pipelines
       type: git
-      ref: ansible_automation_update
       # Azure DevOps project/repository
       name: ulkoliikuntakartta/ulkoliikuntakartta-pipelines
 
