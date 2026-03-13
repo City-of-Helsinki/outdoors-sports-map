@@ -8,6 +8,8 @@ interface ImportMetaEnv {
   readonly REACT_APP_DIGITRANSIT_API_URL: string
   readonly REACT_APP_DIGITRANSIT_API_KEY: string
   readonly REACT_APP_APP_NAME: string
+  // Set to 'true' to disable season-based unit filtering (shows all seasons at once)
+  readonly REACT_APP_BYPASS_SEASON_FILTER?: string
   // Add other REACT_APP_ variables as needed
 }
 

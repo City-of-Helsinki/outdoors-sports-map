@@ -9,7 +9,7 @@ import {
   SupportingServices,
 } from "./serviceConstants";
 import { Service } from "./state/serviceSlice";
-import { DEFAULT_LANG } from "../app/appConstants";
+import { DEFAULT_LANG, BYPASS_SEASON_FILTER } from "../app/appConstants";
 import { getToday, isOnSeason } from "../unit/seasons";
 import { SportFilter, HikingFilter, SeasonDelimiter } from "../unit/types";
 import { UnitFilters, Seasons } from "../unit/unitConstants";
@@ -38,21 +38,21 @@ const getServiceName = (
 export const getOnSeasonServices = (
   date: SeasonDelimiter = getToday(),
 ): number[] => {
-  return Seasons.filter((season) => isOnSeason(date, season))
+  return Seasons.filter((season) => BYPASS_SEASON_FILTER || isOnSeason(date, season))
     .flatMap((season) => season.services);
 };
 
 export const getOnSeasonSportFilters = (
   date: SeasonDelimiter = getToday(),
 ): SportFilter[] => {
-  return Seasons.filter((season) => isOnSeason(date, season))
+  return Seasons.filter((season) => BYPASS_SEASON_FILTER || isOnSeason(date, season))
     .flatMap((season) => season.filters);
 };
 
 export const getOnSeasonHikeFilters = (
   date: SeasonDelimiter = getToday(),
 ): HikingFilter[] => {
-  return Seasons.filter((season) => isOnSeason(date, season))
+  return Seasons.filter((season) => BYPASS_SEASON_FILTER || isOnSeason(date, season))
     .flatMap((season) => season.hikeFilters);
 };
 
