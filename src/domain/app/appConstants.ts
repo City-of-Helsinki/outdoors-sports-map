@@ -9,6 +9,8 @@ export const DIGITRANSIT_API_KEY = import.meta.env.REACT_APP_DIGITRANSIT_API_KEY
 
 export const APP_NAME = import.meta.env.REACT_APP_APP_NAME;
 
+export const BYPASS_SEASON_FILTER = import.meta.env.REACT_APP_BYPASS_SEASON_FILTER === "true";
+
 export const DEFAULT_LANG = "fi";
 
 export const mobileBreakpoint = 768;
