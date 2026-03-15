@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.12.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.11.1...outdoors-sports-map-v2.12.0) (2026-03-15)
+
+
+### Features
+
+* Add env flag to bypass season filtering ([0198293](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/01982938e77ee92ee06463f043d484e8eb7f1b3e))
+
+
+### Bug Fixes
+
+* Pipeline refactor ([#312](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/312)) ([175aeba](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/175aebae2e2a726c941a24e68a26c4acb970ea1c))
+
 ## [2.11.1](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.11.0...outdoors-sports-map-v2.11.1) (2026-02-11)
 
 
