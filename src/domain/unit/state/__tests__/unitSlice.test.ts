@@ -1,6 +1,7 @@
 import { vi, describe, expect, it, beforeEach } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import unitReducer, {
+  fetchAllPaginatedResults,
   receiveUnits,
   receiveSeasonalUnits,
   setIsFetching,
@@ -68,7 +69,7 @@ const expectUnitApiParams = (request: any) => {
   expect(request.url).toContain('only=id%2Cname%2Clocation%2Cstreet_address%2Caddress_zip%2Cextensions%2Cservices%2Cmunicipality%2Cphone%2Cwww%2Cdescription%2Cpicture_url%2Cextra');
   expect(request.url).toContain('include=observations%2Cconnections');
   expect(request.url).toContain('geometry=true');
-  expect(request.url).toContain('page_size=1000');
+  expect(request.url).toContain('page_size=100');
 };
 
 describe('unitSlice', () => {
@@ -76,6 +77,86 @@ describe('unitSlice', () => {
 
   beforeEach(() => {
     mockFetch.mockClear();
+  });
+
+  describe('fetchAllPaginatedResults', () => {
+    it('should fetch all pages and normalize combined results', async () => {
+      const firstPageUnits = [
+        createMockUnit(1, { services: [TEST_SERVICES.SKIING] }),
+      ];
+      const secondPageUnits = [
+        createMockUnit(2, { services: [TEST_SERVICES.SWIMMING] }),
+      ];
+      const baseQuery = vi
+        .fn()
+        .mockResolvedValueOnce({
+          data: {
+            results: firstPageUnits,
+            next: 'https://api.hel.fi/servicemap/v2/unit/?page=2',
+          },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            results: secondPageUnits,
+            next: null,
+          },
+        });
+
+      const result = await fetchAllPaginatedResults(baseQuery, 'unit/', {
+        service: '191,730',
+        page_size: 100,
+        geometry: true,
+      });
+
+      expect(baseQuery).toHaveBeenCalledTimes(2);
+      expect(baseQuery).toHaveBeenNthCalledWith(1, {
+        url: 'unit/',
+        params: {
+          service: '191,730',
+          page_size: 100,
+          geometry: true,
+        },
+      });
+      expect(baseQuery).toHaveBeenNthCalledWith(
+        2,
+        'https://api.hel.fi/servicemap/v2/unit/?page=2',
+      );
+      expect(result.error).toBeUndefined();
+      expect(result.data?.result).toEqual(['1', '2']);
+      expect(result.data?.entities.unit?.['1']).toMatchObject({ id: 1 });
+      expect(result.data?.entities.unit?.['2']).toMatchObject({ id: 2 });
+    });
+
+    it('should return the first error and stop paging', async () => {
+      const error = { status: 500, data: 'Server error' };
+      const baseQuery = vi.fn().mockResolvedValueOnce({ error });
+
+      const result = await fetchAllPaginatedResults(baseQuery, 'unit/', {
+        service: '191,730',
+        page_size: 100,
+      });
+
+      expect(baseQuery).toHaveBeenCalledTimes(1);
+      expect(result).toEqual({ error });
+    });
+
+    it('should handle a single page response', async () => {
+      const baseQuery = vi.fn().mockResolvedValueOnce({
+        data: {
+          results: [createMockUnit(10, { services: [TEST_SERVICES.ICE_SKATING] })],
+          next: null,
+        },
+      });
+
+      const result = await fetchAllPaginatedResults(baseQuery, 'unit/', {
+        service: '365',
+        page_size: 100,
+      });
+
+      expect(baseQuery).toHaveBeenCalledTimes(1);
+      expect(result.data?.result).toEqual(['10']);
+      expect(result.data?.entities.unit?.['10']).toMatchObject({ id: 10 });
+    });
   });
 
   describe('API endpoints', () => {
@@ -97,7 +178,7 @@ describe('unitSlice', () => {
         
         expect(request.url).toContain('unit/');
         expect(request.url).toContain('service='); // Just check service param exists, values may vary
-        expect(request.url).toContain('page_size=1000');
+        expect(request.url).toContain('page_size=100');
         expect(request.url).toContain('geometry=true');
         expect(request.method).toBe('GET');
       });
