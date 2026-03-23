@@ -51,45 +51,74 @@ const UNIT_API_COMMON_PARAMS = {
   only: "id,name,location,street_address,address_zip,extensions,services,municipality,phone,www,description,picture_url,extra",
   include: "observations,connections",
   geometry: "true",
-  page_size: 1000,
+  page_size: 100,
 } as const;
+
+// Helper function to fetch all paginated results
+export const fetchAllPaginatedResults = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  baseQuery: any,
+  initialUrl: string,
+  initialParams: Record<string, string | number | boolean>,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<{ data?: NormalizedUnitSchema; error?: any }> => {
+  let allResults: Unit[] = [];
+  let nextUrl: string | null | undefined = initialUrl;
+
+  while (nextUrl) {
+    // Build params only for the first request; subsequent requests use the next URL
+    const isFirstRequest = nextUrl === initialUrl;
+    const result = await baseQuery(
+      isFirstRequest
+        ? {
+            url: nextUrl,
+            params: initialParams,
+          }
+        : nextUrl
+    );
+
+    if (result.error) {
+      return { error: result.error };
+    }
+
+    const responseData = result.data as { results: Unit[]; next?: string | null };
+    allResults = [...allResults, ...responseData.results];
+    
+    // Use the 'next' field from the API response for subsequent pages
+    nextUrl = responseData.next;
+  }
+
+  return {
+    data: normalize(allResults, new schema.Array(unitSchema)),
+  };
+};
 
 // RTK Query endpoint for fetching units
 export const unitApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Query for getting units based on specific services (for map display)
     getUnits: builder.query<NormalizedUnitSchema, { services?: number[] } | void>({
-      query: (params = {}) => {
+      queryFn: async (params, api, _options, baseQuery) => {
         const { services, ...otherParams } = params ?? {};
         const servicesToUse = services && services.length > 0 
           ? services 
           : getOnSeasonServices();
-          
-        return {
-          url: "unit/",
-          params: {
-            service: servicesToUse.join(","),
-            ...UNIT_API_COMMON_PARAMS,
-            ...otherParams,
-          },
-        };
-      },
-      transformResponse: (response: { results: Unit[] }) => {
-        return normalize(response.results, new schema.Array(unitSchema));
+
+        return fetchAllPaginatedResults(baseQuery, "unit/", {
+          service: servicesToUse.join(","),
+          ...UNIT_API_COMMON_PARAMS,
+          ...otherParams,
+        });
       },
     }),
 
     // Query for getting ALL seasonal units (for search suggestions)
     getAllSeasonalUnits: builder.query<NormalizedUnitSchema, void>({
-      query: () => ({
-        url: "unit/",
-        params: {
+      queryFn: async (params, api, _options, baseQuery) => {
+        return fetchAllPaginatedResults(baseQuery, "unit/", {
           service: getOnSeasonServices().join(","),
           ...UNIT_API_COMMON_PARAMS,
-        },
-      }),
-      transformResponse: (response: { results: Unit[] }) => {
-        return normalize(response.results, new schema.Array(unitSchema));
+        });
       },
     }),
 
