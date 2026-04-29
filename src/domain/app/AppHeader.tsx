@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 
 import AppAboutModal from "./AppAboutModal";
 import AppAccessibilityModal from "./AppAccessibilityModal";
@@ -48,12 +48,13 @@ function ApplicationHeader({
 }: Readonly<ApplicationHeaderProps>) {
   const { t } = useTranslation();
   const locale = useLocale();
+  const match = useRouteMatch<{ language: string }>();
+  const routeLanguage = match?.params?.language ?? locale;
   const isMobile = useIsMobile();
   const openInNewTabAriaLabel = t("OUTBOUND_LINK.OPEN_IN_NEW_TAB");
   const osmLinkLabel = t("APP.MAP_ATTRIBUTION");
   const osmLinkLabelAria = `${osmLinkLabel}. ${openInNewTabAriaLabel}`;
 
-  const history = useHistory();
   const { pathname } = useLocation();
 
   // Reference to the link which was clicked before opening a modal, to return
@@ -140,13 +141,13 @@ function ApplicationHeader({
     <>
       <Header
         id={HEADER_ID}
+        key={routeLanguage}
         lang={locale}
         className="app-header"
-        defaultLanguage={locale}
+        defaultLanguage={routeLanguage}
         languages={languages}
         onDidChangeLanguage={(lng) => {
-          const newPath = replaceLanguageInPath(pathname, lng);
-          history.push({ pathname: newPath });
+          globalThis.location.assign(replaceLanguageInPath(pathname, lng));
         }}
       >
         <Header.SkipLink

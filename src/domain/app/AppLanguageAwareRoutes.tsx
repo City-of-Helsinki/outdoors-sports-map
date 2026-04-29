@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { Route, useRouteMatch } from "react-router-dom";
 
 import useLanguage from "../../common/hooks/useLanguage";
+import { replaceLanguageInPath } from "../../common/utils/pathUtils";
 import HomeContainer from "../home/HomeContainer";
 import { languageParam } from "../i18n/i18nConstants";
 
@@ -16,18 +16,19 @@ function getRouteLanguage(match: Record<string, any> | null | undefined) {
 }
 
 function LanguageAwareRoutes() {
-  const { i18n } = useTranslation();
   const language = useLanguage();
 
   const match = useRouteMatch();
   const routeLanguage = getRouteLanguage(match);
 
   useEffect(() => {
-    // Sync language with i18next in case it is changed by changing the url
-    if (language !== routeLanguage) {
-      i18n.changeLanguage(routeLanguage);
+    // When the URL language differs from the active language (e.g. browser
+    // back/forward across language versions), do a full page reload so the
+    // browser receives the page with the correct lang attribute from the start.
+    if (routeLanguage && language !== routeLanguage) {
+      globalThis.location.replace(replaceLanguageInPath(globalThis.location.pathname, routeLanguage));
     }
-  }, [routeLanguage, language, i18n]);
+  }, [routeLanguage, language]);
 
   return <Route path={`/${languageParam}`} component={HomeContainer} />;
 }
