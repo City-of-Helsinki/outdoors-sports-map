@@ -88,6 +88,7 @@
     "FILTER_SPORT": "Choose Sport",
     "FILTER_STATUS": "Choose Condition",
     "SORT": {
+      "SORT_LABEL": "Sort order",
       "DEFAULT": "Default",
       "ALPHABETICAL": "Alphabetic",
       "CONDITION": "In best condition first",

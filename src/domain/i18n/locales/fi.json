@@ -89,6 +89,7 @@
     "FILTER_SPORT": "Valitse laji",
     "FILTER_STATUS": "Valitse kunto",
     "SORT": {
+      "SORT_LABEL": "Järjestys",
       "DEFAULT": "Oletus",
       "ALPHABETICAL": "Aakkosellinen",
       "CONDITION": "Paras kunto ensin",
