@@ -124,6 +124,8 @@
     "OPENING_HOURS": "Opening hours",
     "ROUTE_LENGTH": "Route length",
     "LIT_ROUTE_LENGTH": "Lit route length",
+    "HIGHEST_POINT": "Highest point",
+    "LOWEST_POINT": "Lowest point",
     "SKIING_TECHNIQUE": "Form of skiing",
     "SKIING_TECHNIQUE_FREESTYLE": "Freestyle",
     "SKIING_TECHNIQUE_TRADITIONAL": "Classic",

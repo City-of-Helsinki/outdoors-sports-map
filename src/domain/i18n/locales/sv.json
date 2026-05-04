@@ -124,6 +124,8 @@
     "OPENING_HOURS": "Öppettider",
     "ROUTE_LENGTH": "Spårets längd",
     "LIT_ROUTE_LENGTH": "Upplyst spårets längd",
+    "HIGHEST_POINT": "Högsta punkt",
+    "LOWEST_POINT": "Lägsta punkt",
     "SKIING_TECHNIQUE": "Åkstil",
     "SKIING_TECHNIQUE_FREESTYLE": "Fristil",
     "SKIING_TECHNIQUE_TRADITIONAL": "Klassisk",
