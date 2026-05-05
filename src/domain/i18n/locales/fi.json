@@ -61,6 +61,7 @@
     "BACK": "Takaisin",
     "FURTHER_INFO": "Lisää tietoa",
     "SHOW_MORE": "Näytä enemmän",
+    "RESULTS_LOADED": "Näytetään {{shown}} / {{total}} tulosta",
     "SHOW_LESS": "Näytä vähemmän",
     "NO_FAVORITES": "Ei suosikkeja",
     "NO_RESULTS": "Ei hakutuloksia",

@@ -133,6 +133,8 @@ beforeEach(() => {
   vi
     .spyOn(unitHelpers, "getDefaultSportFilter")
     .mockImplementation(() => "ski");
+  // jsdom does not implement scrollIntoView
+  window.HTMLElement.prototype.scrollIntoView = vi.fn();
 });
 
 afterEach(() => {
@@ -165,6 +167,41 @@ describe("<UnitBrowserResultList />", () => {
       expect(
         screen.getByText("Mustavuori-Talosaari latu 5,5 km"),
       ).toBeInTheDocument();
+    });
+    it("should move focus to the first new result after loading more", async () => {
+      renderComponent();
+
+      const user = userEvent.setup();
+      await user.click(screen.getByText("Näytä enemmän"));
+
+      const items = document.querySelectorAll(".list-view-item");
+      expect(document.activeElement).toBe(items[1]);
+    });
+    it("should scroll the first new result into view after loading more", async () => {
+      const scrollIntoView = vi.fn();
+      window.HTMLElement.prototype.scrollIntoView = scrollIntoView;
+
+      renderComponent();
+
+      const user = userEvent.setup();
+      await user.click(screen.getByText("Näytä enemmän"));
+
+      const items = document.querySelectorAll(".list-view-item");
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: "start",
+        behavior: "smooth",
+      });
+      // Verify it was called on the first new item (index 1)
+      expect(document.activeElement).toBe(items[1]);
+    });
+    it("should announce new results to screen readers after loading more", async () => {
+      renderComponent();
+
+      const user = userEvent.setup();
+      await user.click(screen.getByText("Näytä enemmän"));
+
+      const liveRegion = document.querySelector("[aria-live]");
+      expect(liveRegion).toHaveTextContent(/2.*2/);
     });
   });
 
