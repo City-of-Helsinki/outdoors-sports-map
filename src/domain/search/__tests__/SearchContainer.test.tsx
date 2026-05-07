@@ -13,18 +13,25 @@ vi.mock("../SearchBar", () => ({
     inputRef,
     searchActive,
     disabled,
+    ariaExpanded,
+    ariaControls,
+    ariaActiveDescendant,
   }: any) {
     return (
       <div data-testid="search-bar">
         <input
           ref={inputRef}
           data-testid="search-input"
+          role="combobox"
           value={input}
           onChange={(e) => onInput(e.target.value)}
           onFocus={onFocus}
           onKeyDown={onKeyDown}
           disabled={disabled}
           placeholder="Search..."
+          aria-expanded={ariaExpanded}
+          aria-controls={ariaControls}
+          aria-activedescendant={ariaActiveDescendant}
         />
         <button onClick={onSubmit} data-testid="search-submit">
           Search
@@ -519,6 +526,131 @@ describe("<SearchContainer />", () => {
 
       // The real SearchSuggestions component renders Link elements with the label text
       expectSuggestionsToBeVisible();
+    });
+  });
+
+  describe("combobox ARIA state", () => {
+    it("should set aria-expanded=false when suggestions are hidden", () => {
+      renderComponent();
+      const input = screen.getByTestId("search-input");
+      expect(input).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("should set aria-expanded=true when suggestions are shown", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+      await userEvent.type(input, "H");
+      await expectSuggestionsToAppear();
+      expect(input).toHaveAttribute("aria-expanded", "true");
+    });
+
+    it("should set aria-controls to the listbox id", () => {
+      renderComponent();
+      const input = screen.getByTestId("search-input");
+      expect(input).toHaveAttribute("aria-controls", "search-suggestions-listbox");
+    });
+
+    it("should not set aria-activedescendant when no option is active", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+      await userEvent.type(input, "H");
+      await expectSuggestionsToAppear();
+      // No arrow key pressed yet — no active option
+      expect(input).not.toHaveAttribute("aria-activedescendant");
+    });
+
+    it("should update aria-activedescendant when navigating with ArrowDown", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+
+      const user = userEvent.setup();
+      await user.type(input, "H");
+      await expectSuggestionsToAppear();
+
+      await user.keyboard("{ArrowDown}");
+      expect(input).toHaveAttribute("aria-activedescendant", "search-suggestion-0");
+
+      await user.keyboard("{ArrowDown}");
+      expect(input).toHaveAttribute("aria-activedescendant", "search-suggestion-1");
+    });
+
+    it("should update aria-activedescendant when navigating with ArrowUp", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+
+      const user = userEvent.setup();
+      await user.type(input, "H");
+      await expectSuggestionsToAppear();
+
+      // Go down to index 1, then up to index 0
+      await user.keyboard("{ArrowDown}");
+      await user.keyboard("{ArrowDown}");
+      await user.keyboard("{ArrowUp}");
+      expect(input).toHaveAttribute("aria-activedescendant", "search-suggestion-0");
+    });
+
+    it("should clear aria-activedescendant when ArrowUp is pressed on the first option", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+
+      const user = userEvent.setup();
+      await user.type(input, "H");
+      await expectSuggestionsToAppear();
+
+      await user.keyboard("{ArrowDown}");
+      expect(input).toHaveAttribute("aria-activedescendant", "search-suggestion-0");
+
+      await user.keyboard("{ArrowUp}");
+      expect(input).not.toHaveAttribute("aria-activedescendant");
+    });
+
+    it("should select highlighted address suggestion on Enter", async () => {
+      const onAddressClick = vi.fn();
+      const onClear = vi.fn();
+      renderComponent({ suggestions: mockSuggestions, onAddressClick, onClear });
+      const input = screen.getByTestId("search-input");
+
+      const user = userEvent.setup();
+      await user.type(input, "H");
+      await expectSuggestionsToAppear();
+
+      // Highlight first suggestion (Helsinki with coordinates [1,2])
+      await user.keyboard("{ArrowDown}");
+      await user.keyboard("{Enter}");
+
+      expect(onAddressClick).toHaveBeenCalledWith([1, 2]);
+      expectSuggestionsToBeHidden();
+    });
+
+    it("should reset activeIndex when suggestions are closed via Escape", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+
+      const user = userEvent.setup();
+      await user.type(input, "H");
+      await expectSuggestionsToAppear();
+
+      await user.keyboard("{ArrowDown}");
+      expect(input).toHaveAttribute("aria-activedescendant", "search-suggestion-0");
+
+      await user.keyboard("{Escape}");
+      expect(input).not.toHaveAttribute("aria-activedescendant");
+      expectSuggestionsToBeHidden();
+    });
+
+    it("should close suggestions and reset activeIndex on Tab", async () => {
+      renderComponent({ suggestions: mockSuggestions });
+      const input = screen.getByTestId("search-input");
+
+      const user = userEvent.setup();
+      await user.type(input, "H");
+      await expectSuggestionsToAppear();
+
+      await user.keyboard("{ArrowDown}");
+      await user.keyboard("{Tab}");
+
+      expectSuggestionsToBeHidden();
+      expect(input).not.toHaveAttribute("aria-activedescendant");
     });
   });
 });

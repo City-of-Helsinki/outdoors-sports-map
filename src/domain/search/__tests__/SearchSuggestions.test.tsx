@@ -23,7 +23,9 @@ const defaultProps = {
   handleAddressClick: vi.fn(),
   suggestions: [] as Suggestion[],
   menuPosition: { top: 100 },
-  preventBlurClose: mockPreventBlurClose,  preventBlurCloseRef: mockPreventBlurClose,};
+  preventBlurCloseRef: mockPreventBlurClose,
+  activeIndex: -1,
+};
 
 const mockUnit: Unit = {
   id: "123",
@@ -288,6 +290,64 @@ describe("<SearchSuggestions />", () => {
       expect(screen.getByText("Search 1")).toBeInTheDocument();
       expect(screen.getByText("Loose 1")).toBeInTheDocument();
       expect(screen.getByText("Search 2")).toBeInTheDocument();
+    });
+  });
+
+  describe("combobox ARIA roles", () => {
+    it("should render suggestions inside a listbox", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 2) });
+
+      const listbox = screen.getByRole("listbox");
+      expect(listbox).toBeInTheDocument();
+      expect(listbox).toHaveAttribute("id", "search-suggestions-listbox");
+    });
+
+    it("should render each suggestion as an option", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 2) });
+
+      const options = screen.getAllByRole("option");
+      expect(options).toHaveLength(2);
+    });
+
+    it("should set aria-selected=false on all options when activeIndex is -1", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 2), activeIndex: -1 });
+
+      const options = screen.getAllByRole("option");
+      options.forEach((opt) => {
+        expect(opt).toHaveAttribute("aria-selected", "false");
+      });
+    });
+
+    it("should set aria-selected=true on the active option", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 3), activeIndex: 1 });
+
+      const options = screen.getAllByRole("option");
+      expect(options[0]).toHaveAttribute("aria-selected", "false");
+      expect(options[1]).toHaveAttribute("aria-selected", "true");
+      expect(options[2]).toHaveAttribute("aria-selected", "false");
+    });
+
+    it("should assign unique ids to each option", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 3) });
+
+      const options = screen.getAllByRole("option");
+      expect(options[0]).toHaveAttribute("id", "search-suggestion-0");
+      expect(options[1]).toHaveAttribute("id", "search-suggestion-1");
+      expect(options[2]).toHaveAttribute("id", "search-suggestion-2");
+    });
+
+    it("should render suggestion links with tabIndex -1", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 1) });
+
+      const link = screen.getByRole("link", { name: /Helsinki/i });
+      expect(link).toHaveAttribute("tabindex", "-1");
+    });
+
+    it("should render 'show all results' button with tabIndex -1", () => {
+      renderComponent({ suggestions: mockSuggestions.slice(0, 1) });
+
+      const button = screen.getByRole("button", { name: "Näytä kaikki hakutulokset" });
+      expect(button).toHaveAttribute("tabindex", "-1");
     });
   });
 });

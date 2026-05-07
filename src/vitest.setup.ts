@@ -39,6 +39,9 @@ const localStorageMock = {
 
 globalThis.localStorage ??= Object.create(localStorageMock);
 
+// jsdom does not implement scrollIntoView
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
 // Mock ResizeObserver
 globalThis.ResizeObserver = class ResizeObserver {
   constructor() {} // NOSONAR - Empty constructor required for ResizeObserver mock

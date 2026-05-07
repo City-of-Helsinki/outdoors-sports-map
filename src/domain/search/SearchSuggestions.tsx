@@ -1,6 +1,6 @@
 import { Button, ButtonSize, ButtonVariant, IconSearch } from "hds-react";
 import { LocationDescriptor } from "history";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import Link from "../../common/components/Link";
@@ -23,6 +23,7 @@ type Props = {
   suggestions: Suggestion[];
   menuPosition: { top: number };
   preventBlurCloseRef: MutableRefObject<boolean>;
+  activeIndex: number;
 };
 
 function SearchSuggestions({
@@ -31,13 +32,26 @@ function SearchSuggestions({
   suggestions,
   menuPosition,
   preventBlurCloseRef,
+  activeIndex,
 }: Props) {
   const { t } = useTranslation();
+  const listboxRef = useRef<HTMLUListElement>(null);
 
   const suggestionCount = suggestions.length;
   const searchableSuggestionCount = suggestions.filter(
     ({ type }) => type === "searchable",
   ).length;
+
+  useEffect(() => {
+  if (activeIndex < 0 || activeIndex >= suggestions.length) {
+    return;
+  }
+
+  const activeOption = listboxRef.current?.querySelector<HTMLElement>(
+    `#search-suggestion-${activeIndex}`,
+  );
+  activeOption?.scrollIntoView({ block: "nearest" });
+}, [activeIndex, suggestions.length]);
 
   return (
     /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
@@ -69,40 +83,50 @@ function SearchSuggestions({
               variant={ButtonVariant.Supplementary}
               iconEnd={<IconSearch />}
               size={ButtonSize.Small}
+              tabIndex={-1}
             >
               {t("SEARCH.SHOW_ALL_RESULTS")}
             </Button>
           )}
-          {suggestions.map(({ icon, label, to, coordinates, unit }) => (
-            <Link
-              key={label}
-              to={to || "#"}
-              onClick={(e) => {
-                if (coordinates) {
-                  e.preventDefault();
-                  handleAddressClick(coordinates);
-                }
-              }}
-              className="search-suggestions__result"
-            >
-              {unit && (
-                <div className="search-suggestions__result-icon">
-                  <UnitIcon unit={unit} />
-                </div>
-              )}
-              {icon && (
-                <div className="search-suggestions__result-icon">
-                  <img src={icon} height="21px" alt="" />
-                </div>
-              )}
-              <div className="search-suggestions__result-details">
-                <div className="search-suggestions__result-details__name">
-                  {label}
-                </div>
-                {unit && <ObservationStatus unit={unit} />}
-              </div>
-            </Link>
-          ))}
+          <ul ref={listboxRef} role="listbox" id="search-suggestions-listbox" className="search-suggestions__options">
+            {suggestions.map(({ icon, label, to, coordinates, unit }, index) => (
+              <li
+                key={label}
+                role="option"
+                id={`search-suggestion-${index}`}
+                aria-selected={index === activeIndex}
+              >
+                <Link
+                  to={to || "#"}
+                  onClick={(e) => {
+                    if (coordinates) {
+                      e.preventDefault();
+                      handleAddressClick(coordinates);
+                    }
+                  }}
+                  className="search-suggestions__result"
+                  tabIndex={-1}
+                >
+                  {unit && (
+                    <div className="search-suggestions__result-icon">
+                      <UnitIcon unit={unit} />
+                    </div>
+                  )}
+                  {icon && (
+                    <div className="search-suggestions__result-icon">
+                      <img src={icon} height="21px" alt="" />
+                    </div>
+                  )}
+                  <div className="search-suggestions__result-details">
+                    <div className="search-suggestions__result-details__name">
+                      {label}
+                    </div>
+                    {unit && <ObservationStatus unit={unit} />}
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       ) : null}
     </div>

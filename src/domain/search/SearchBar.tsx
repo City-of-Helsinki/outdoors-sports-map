@@ -12,6 +12,9 @@ type Props = {
   inputRef?: RefObject<HTMLInputElement>;
   searchActive: boolean;
   disabled: boolean;
+  ariaExpanded: boolean;
+  ariaControls: string;
+  ariaActiveDescendant?: string;
 };
 
 function SearchBar({
@@ -24,6 +27,9 @@ function SearchBar({
   inputRef,
   searchActive,
   disabled,
+  ariaExpanded,
+  ariaControls,
+  ariaActiveDescendant,
 }: Props) {
   const { t } = useTranslation();
   const loaddingText = t("GENERAL.LOADING");
@@ -53,7 +59,13 @@ function SearchBar({
           ref={inputRef}
           name="search"
           id="search"
+          role="combobox"
           aria-label={t("SEARCH.SEARCH")}
+          aria-expanded={ariaExpanded}
+          aria-controls={ariaControls}
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
+          aria-activedescendant={ariaActiveDescendant}
           type="text"
           onChange={(e) => onInput(e.target.value)}
           onFocus={onFocus}

@@ -13,8 +13,12 @@ describe("<SearchBar />", () => {
   it("should have an input for making a search", () => {
     const value = "Test value";
     const onInput = vi.fn();
-    renderComponent({ onInput });
-    const input = screen.getByRole("textbox", { name: "Etsi" });
+    renderComponent({
+      onInput,
+      ariaExpanded: false,
+      ariaControls: "search-suggestions-listbox",
+    });
+    const input = screen.getByRole("combobox", { name: "Etsi" });
 
     expect(input).toBeInTheDocument();
 
@@ -24,9 +28,58 @@ describe("<SearchBar />", () => {
     expect(onInput).toHaveBeenCalledWith(value);
   });
 
+  it("should have the correct ARIA combobox attributes", () => {
+    renderComponent({
+      ariaExpanded: false,
+      ariaControls: "search-suggestions-listbox",
+    });
+    const input = screen.getByRole("combobox", { name: "Etsi" });
+
+    expect(input).toHaveAttribute("role", "combobox");
+    expect(input).toHaveAttribute("aria-expanded", "false");
+    expect(input).toHaveAttribute("aria-controls", "search-suggestions-listbox");
+    expect(input).toHaveAttribute("aria-autocomplete", "list");
+    expect(input).toHaveAttribute("aria-haspopup", "listbox");
+  });
+
+  it("should reflect aria-expanded when suggestions are open", () => {
+    renderComponent({
+      ariaExpanded: true,
+      ariaControls: "search-suggestions-listbox",
+    });
+    const input = screen.getByRole("combobox", { name: "Etsi" });
+
+    expect(input).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("should set aria-activedescendant when an option is active", () => {
+    renderComponent({
+      ariaExpanded: true,
+      ariaControls: "search-suggestions-listbox",
+      ariaActiveDescendant: "search-suggestion-2",
+    });
+    const input = screen.getByRole("combobox", { name: "Etsi" });
+
+    expect(input).toHaveAttribute("aria-activedescendant", "search-suggestion-2");
+  });
+
+  it("should not set aria-activedescendant when no option is active", () => {
+    renderComponent({
+      ariaExpanded: false,
+      ariaControls: "search-suggestions-listbox",
+    });
+    const input = screen.getByRole("combobox", { name: "Etsi" });
+
+    expect(input).not.toHaveAttribute("aria-activedescendant");
+  });
+
   it("should have a submit button", async () => {
     const onSubmit = vi.fn();
-    renderComponent({ onSubmit });
+    renderComponent({
+      onSubmit,
+      ariaExpanded: false,
+      ariaControls: "search-suggestions-listbox",
+    });
     const submitButton = screen.getByRole("button", { name: "Etsi" });
 
     expect(submitButton).toBeTruthy();
@@ -40,6 +93,8 @@ describe("<SearchBar />", () => {
     renderComponent({
       input: "Search",
       searchActive: true,
+      ariaExpanded: false,
+      ariaControls: "search-suggestions-listbox",
     });
 
     expect(
@@ -50,6 +105,8 @@ describe("<SearchBar />", () => {
   it("should show a loading indicator when disabled is true", () => {
     renderComponent({
       disabled: true,
+      ariaExpanded: false,
+      ariaControls: "search-suggestions-listbox",
     });
 
     const loadingSpinnerStatus = screen.getByRole("status");
