@@ -30,6 +30,7 @@
     },
     "FEEDBACK": {
       "FEEDBACK": "Palaute",
+      "REQUIRED_FIELDS": "Pakolliset kentät on merkitty *-merkillä",
       "WANT_ANSWER": "Haluan vastauksen sähköpostiini",
       "SEND": "Lähetä",
       "EMAIL": "Sähköposti"

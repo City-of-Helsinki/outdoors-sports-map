@@ -30,6 +30,7 @@
     },
     "FEEDBACK": {
       "FEEDBACK": "Feedback",
+      "REQUIRED_FIELDS": "Required fields are marked with *",
       "WANT_ANSWER": "I want a reply to my email",
       "SEND": "Send",
       "EMAIL": "Email"
