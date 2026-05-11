@@ -63,6 +63,8 @@
     "SHOW_LESS": "Näytä vähemmän",
     "NO_FAVORITES": "Ei suosikkeja",
     "NO_RESULTS": "Ei hakutuloksia",
+    "RESULT_COUNT": "1 hakutulos",
+    "RESULT_COUNT_plural": "{{count}} hakutulosta",
     "STATUS": "Kunto",
     "UNKNOWN": "Tuntematon",
     "SATISFACTORY": "Tyydyttävä",

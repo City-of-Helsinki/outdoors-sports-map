@@ -127,6 +127,9 @@ function UnitBrowserResultList({ leafletMap }: Props) {
                 </p>
               ) : (
                 <>
+                  <output className="list-view__results-count">
+                    {t("UNIT_DETAILS.RESULT_COUNT", { count: totalUnits })}
+                  </output>
                   {results.map((unit) => (
                     <UnitListItem key={unit.id} unit={unit} />
                   ))}

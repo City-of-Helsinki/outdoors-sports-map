@@ -63,6 +63,8 @@
     "SHOW_LESS": "Visa mindre",
     "NO_FAVORITES": "Inga favoriter",
     "NO_RESULTS": "Inga sökresultat",
+    "RESULT_COUNT": "1 sökresultat",
+    "RESULT_COUNT_plural": "{{count}} sökresultat",
     "STATUS": "Skick",
     "UNKNOWN": "Okänt",
     "SATISFACTORY": "Hyfsad",

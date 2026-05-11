@@ -63,6 +63,8 @@
     "SHOW_LESS": "Show less",
     "NO_FAVORITES": "No favorites",
     "NO_RESULTS": "No results found",
+    "RESULT_COUNT": "1 result found",
+    "RESULT_COUNT_plural": "{{count}} results found",
     "STATUS": "Condition",
     "UNKNOWN": "Unknown",
     "SATISFACTORY": "Decent",
