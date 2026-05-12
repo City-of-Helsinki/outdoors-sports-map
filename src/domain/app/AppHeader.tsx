@@ -166,7 +166,6 @@ function ApplicationHeader({
           {isMobile && (
             <HeaderButton
               id="action-bar-map-toggle"
-              aria-expanded={isExpanded}
               aria-controls={panelId}
               icon={<IconMap />}
               label={
