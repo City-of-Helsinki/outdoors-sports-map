@@ -58,7 +58,7 @@ function UnitBrowserFilterLabelButton({
         message={buttonMessage}
         aria-label={[buttonMessage, labelMessage].join(", ")}
         aria-expanded={isActive}
-        {...pick(rest, ["aria-haspopup", "aria-controls", "id"])}
+        {...pick(rest, ["aria-controls", "id"])}
       />
     </div>
   );
