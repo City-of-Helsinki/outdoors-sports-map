@@ -9,6 +9,7 @@ import {
   getSportSpecificationFilters,
   handleUnitConditionUpdates,
   getObservationTime,
+  handleSingleUnitConditionUpdate,
 } from "../unitHelpers";
 import { UnitFilters, DEFAULT_STATUS_FILTER, SportFilters, SkiingFilters, UnitQualityConst } from "../unitConstants";
 import { UnitServices } from "../../service/serviceConstants";
@@ -238,7 +239,7 @@ describe("handleUnitConditionUpdates", () => {
   });
 
   const createObservation = (daysAgo: number, quality = UnitQualityConst.GOOD, primary = true) => ({
-    id: 1, unit: 1, property: "ski_track_condition", primary,
+    id: 1, unit: 1, property: ["ski_track_condition"], primary,
     quality, value: quality, expiration_time: null,
     time: subDays(new Date("2023-05-15T12:00:00Z"), daysAgo).toISOString(),
     name: { fi: "Hyvä", sv: "Bra", en: "Good" },
@@ -264,7 +265,7 @@ describe("handleUnitConditionUpdates", () => {
       const result = handleUnitConditionUpdates({ 1: unit });
       
       expect(result[1].observations).toHaveLength(expectedLength);
-      expect(result[1].observations[0].quality).toBe(expectedQuality);
+      expect(result[1].observations?.[0].quality).toBe(expectedQuality);
     });
   });
 
@@ -289,11 +290,11 @@ describe("handleUnitConditionUpdates", () => {
   edgeCases.forEach(({ desc, unit, expectNoUpdate }) => {
     it(`should not update ${desc}`, () => {
       const result = handleUnitConditionUpdates({ 1: unit });
-      const originalLength = unit.observations.length;
+      const originalLength = unit.observations?.length ?? 0;
       
       expect(result[1].observations).toHaveLength(originalLength);
       if (expectNoUpdate && originalLength > 0) {
-        expect(result[1].observations[0].quality).toBe(unit.observations[0].quality);
+        expect(result[1].observations?.[0].quality).toBe(unit.observations?.[0].quality);
       }
     });
   });
@@ -301,13 +302,13 @@ describe("handleUnitConditionUpdates", () => {
   it("should handle swimming places with different thresholds", () => {
     const swimmingUnit = createUnit(10, { 
       services: [730],
-      observations: [{ ...createObservation(10), property: "swimming_water_condition" }]
+      observations: [{ ...createObservation(10), property: ["swimming_water_condition"] }]
     });
     
     const result = handleUnitConditionUpdates({ 1: swimmingUnit });
     
     expect(result[1].observations).toHaveLength(2);
-    expect(result[1].observations[0].quality).toBe(UnitQualityConst.UNKNOWN);
+    expect(result[1].observations?.[0].quality).toBe(UnitQualityConst.UNKNOWN);
   });
 
   it("should preserve original observation and handle multiple units", () => {
@@ -320,12 +321,12 @@ describe("handleUnitConditionUpdates", () => {
     
     // Old unit: updated with new observation + original preserved
     expect(result[1].observations).toHaveLength(2);
-    expect(result[1].observations[0].quality).toBe(UnitQualityConst.UNKNOWN); // New
-    expect(result[1].observations[1].quality).toBe(UnitQualityConst.GOOD);    // Original
+    expect(result[1].observations?.[0].quality).toBe(UnitQualityConst.UNKNOWN); // New
+    expect(result[1].observations?.[1].quality).toBe(UnitQualityConst.GOOD);    // Original
     
     // Recent unit: no changes
     expect(result[2].observations).toHaveLength(1);
-    expect(result[2].observations[0].quality).toBe(UnitQualityConst.GOOD);
+    expect(result[2].observations?.[0].quality).toBe(UnitQualityConst.GOOD);
   });
 });
 
@@ -357,7 +358,7 @@ describe("getObservationTime", () => {
   });
 
   const nullishCases = [
-    { desc: "null observation", observation: null },
+    { desc: "null observation", observation: null as unknown as Record<string, unknown> },
     { desc: "observation with no time", observation: {} },
     { desc: "observation with null time", observation: { time: null } }
   ];
@@ -387,7 +388,7 @@ describe("sledding automatic condition updates", () => {
   });
 
   const createSleddingObservation = (daysAgo: number, quality = UnitQualityConst.GOOD) => ({
-    id: 1, unit: 1, property: "sledding_condition", primary: true,
+    id: 1, unit: 1, property: ["sledding_condition"], primary: true,
     quality, value: quality, expiration_time: null,
     time: subDays(new Date("2023-05-15T12:00:00Z"), daysAgo).toISOString(),
     name: { fi: "Hyvä", sv: "Bra", en: "Good" },
@@ -419,7 +420,59 @@ describe("sledding automatic condition updates", () => {
       // Should preserve original observation and not add any automatic updates
       expect(result[1].observations).toHaveLength(1);
       expect(result[1].observations?.[0].quality).toBe(UnitQualityConst.GOOD);
-      expect(result[1].observations?.[0]?.property).toBe("sledding_condition");
+      expect(result[1].observations?.[0]?.property).toContain("sledding_condition");
     });
+  });
+});
+
+describe("normalizeKnownObservationNames", () => {
+  const createUnitWithObservation = (name: Record<string, string>) =>
+    ({
+      id: 1,
+      name: { fi: "Test", sv: "Test", en: "Test" },
+      services: [191],
+      location: { coordinates: [24.0, 60.0] },
+      geometry: { type: "Point", coordinates: [24.0, 60.0] },
+      connections: [],
+      observations: [{
+        id: 1, unit: 1, property: ["skiing_condition"], primary: true,
+        quality: UnitQualityConst.GOOD, value: UnitQualityConst.GOOD,
+        expiration_time: null,
+        time: new Date().toISOString(),
+        name,
+      }],
+    } as unknown as Unit);
+
+  it("should fill sv and en translations when only fi matches the known season-in-progress string", () => {
+    const unit = createUnitWithObservation({ fi: "Kausi on käynnissä" });
+    const result = handleSingleUnitConditionUpdate(unit);
+    const obs = result.observations?.find((o) => o.name.fi === "Kausi on käynnissä");
+
+    expect(obs).toBeDefined();
+    expect(obs!.name.sv).toBe("Säsongen är igång.");
+    expect(obs!.name.en).toBe("The season is underway.");
+  });
+
+  it("should not modify an observation that already has sv and en translations", () => {
+    const unit = createUnitWithObservation({
+      fi: "Kausi on käynnissä",
+      sv: "Säsongen är igång.",
+      en: "The season is underway.",
+    });
+    const result = handleSingleUnitConditionUpdate(unit);
+    const obs = result.observations?.find((o) => o.name.fi === "Kausi on käynnissä");
+
+    expect(obs!.name.sv).toBe("Säsongen är igång.");
+    expect(obs!.name.en).toBe("The season is underway.");
+  });
+
+  it("should not modify an observation whose Finnish text does not match the known string", () => {
+    const unit = createUnitWithObservation({ fi: "Jokin muu teksti" });
+    const result = handleSingleUnitConditionUpdate(unit);
+    const obs = result.observations?.find((o) => o.name.fi === "Jokin muu teksti");
+
+    expect(obs).toBeDefined();
+    expect(obs!.name.sv).toBeUndefined();
+    expect(obs!.name.en).toBeUndefined();
   });
 });

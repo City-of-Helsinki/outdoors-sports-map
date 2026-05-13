@@ -109,7 +109,8 @@
     "MORE_INFO": "Mer information",
     "SERVICE_CONDITION": {
       "DEFAULT": "Används under säsong"
-    }
+    },
+    "SEASON_IN_PROGRESS": "Säsongen är igång."
   },
   "UNIT_BROWSER": {
     "LOADING": "Laddar objekt",

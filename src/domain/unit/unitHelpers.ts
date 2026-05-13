@@ -588,8 +588,36 @@ export const getFilteredUnitsBySportSpecification = (
   return filteredUnits;
 };
 
+const normalizeKnownObservationNames = (unit: Unit): Unit => {
+  if (!unit.observations) return unit;
+
+  const seasonInProgressFi = i18n.t("UNIT_DETAILS.SEASON_IN_PROGRESS", { lng: "fi" });
+
+  const normalized = unit.observations.map((obs) => {
+    if (
+      obs.name &&
+      obs.name.fi === seasonInProgressFi &&
+      !obs.name.sv &&
+      !obs.name.en
+    ) {
+      return {
+        ...obs,
+        name: {
+          fi: i18n.t("UNIT_DETAILS.SEASON_IN_PROGRESS", { lng: "fi" }),
+          sv: i18n.t("UNIT_DETAILS.SEASON_IN_PROGRESS", { lng: "sv" }),
+          en: i18n.t("UNIT_DETAILS.SEASON_IN_PROGRESS", { lng: "en" }),
+        },
+      };
+    }
+    return obs;
+  });
+
+  return { ...unit, observations: normalized };
+};
+
 export const handleSingleUnitConditionUpdate = (unit: Unit) => {
-  const sport = getUnitSport(unit);
+  const unitNormalized = normalizeKnownObservationNames(unit);
+  const sport = getUnitSport(unitNormalized);
   const filters = [
     UnitFilters.COOKING_FACILITY,
     UnitFilters.CAMPING,
@@ -600,10 +628,10 @@ export const handleSingleUnitConditionUpdate = (unit: Unit) => {
   ] as string[];
 
   // Create a copy of the unit to avoid mutating frozen objects from RTK Query
-  let updatedUnit = { ...unit };
+  let updatedUnit = { ...unitNormalized };
 
   if (filters.includes(sport)) {
-    const defaultObservations = [getDefaultUnitObservation(unit)];
+    const defaultObservations = [getDefaultUnitObservation(unitNormalized)];
     updatedUnit = { ...updatedUnit, observations: defaultObservations };
   }
 

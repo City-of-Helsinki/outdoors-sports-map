@@ -110,7 +110,8 @@
     "MORE_INFO": "Lisätietoja",
     "SERVICE_CONDITION": {
       "DEFAULT": "Käytössä kauden aikana"
-    }
+    },
+    "SEASON_IN_PROGRESS": "Kausi on käynnissä"
   },
   "UNIT_BROWSER": {
     "LOADING": "Ladataan kohdetta",
