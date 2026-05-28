@@ -19,6 +19,7 @@ function UnitBrowserResultListSort({ active, values, onSelect }: Props) {
       onSelect={onSelect}
     >
       <Dropdown.Toggle>
+        <span className="visually-hidden">{t("UNIT_DETAILS.SORT.SORT_LABEL")}: </span>
         {t(`UNIT_DETAILS.SORT.${active.toUpperCase()}`)}
         <span className="custom-caret">
           <IconAngleDown

@@ -91,6 +91,7 @@
     "FILTER_SPORT": "Välj sportgren",
     "FILTER_STATUS": "Välj skick",
     "SORT": {
+      "SORT_LABEL": "Sorteringsordning",
       "DEFAULT": "Förinställt",
       "ALPHABETICAL": "Alfabetisk",
       "CONDITION": "I bästa skick först",

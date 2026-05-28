@@ -197,7 +197,7 @@ describe("<UnitBrowserResultList />", () => {
 
       // First, change sort to favorites
       const user = userEvent.setup();
-      const sortButton = await screen.findByText("Paras kunto ensin");
+      const sortButton = await screen.findByText(/Paras kunto ensin/);
       await user.click(sortButton);
 
       const favoritesOption = await screen.findByText("Suosikit");
@@ -219,7 +219,7 @@ describe("<UnitBrowserResultList />", () => {
 
       // Change sort to favorites
       const user = userEvent.setup();
-      const sortButton = await screen.findByText("Paras kunto ensin");
+      const sortButton = await screen.findByText(/Paras kunto ensin/);
       await user.click(sortButton);
 
       const favoritesOption = await screen.findByText("Suosikit");
@@ -326,7 +326,7 @@ describe("<UnitBrowserResultList />", () => {
 describe("<UnitBrowserResultListSort />", () => {
   it("should render sort by condition by default", async () => {
     renderComponent();
-    expect(await screen.findByText("Paras kunto ensin")).toBeInTheDocument();
+    expect(await screen.findByText(/Paras kunto ensin/)).toBeInTheDocument();
   });
 
   it("should render favorites by default if user has saved favorites", async () => {
@@ -351,7 +351,7 @@ describe("<UnitBrowserResultListSort />", () => {
     localStorage.setItem("favouriteUnits", JSON.stringify([favouriteUnit]));
 
     renderComponent();
-    expect(await screen.findByText("Paras kunto ensin")).toBeInTheDocument();
+    expect(await screen.findByText(/Paras kunto ensin/)).toBeInTheDocument();
 
     // Clean up
     localStorage.removeItem("favouriteUnits");
