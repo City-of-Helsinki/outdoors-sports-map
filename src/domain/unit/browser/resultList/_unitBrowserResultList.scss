@@ -4,6 +4,18 @@
   .list-view__container {
     margin: 0;
 
+    .list-view__results-heading {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .list-view__block {
       border-top: 1px solid $ui-content;
       padding: $gap 0;

@@ -1,7 +1,7 @@
 import { Button, ButtonVariant, IconArrowRight } from "hds-react";
 import L from "leaflet";
 import values from "lodash/values";
-import React, { RefObject, useCallback } from "react";
+import React, { RefObject, useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
@@ -72,14 +72,25 @@ type Props = {
 
 function UnitBrowserResultList({ leafletMap }: Props) {
   const { t } = useTranslation();
-  const { sortKey, maxUnitCount } = useAppSearch();
+  const { q, sortKey, maxUnitCount } = useAppSearch();
   const doSearch = useDoSearch();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const prevResultsNullRef = useRef(true);
 
   const { totalUnits, results } = useUnitSearchResults({
     sortKey,
     maxUnitCount: Number(maxUnitCount),
     leafletMap,
   });
+
+  useEffect(() => {
+    const wasLoading = prevResultsNullRef.current;
+    prevResultsNullRef.current = results === null;
+
+    if (wasLoading && results !== null && q) {
+      headingRef.current?.focus();
+    }
+  }, [results, q]);
 
   const handleOnSortKeySelect = useCallback(
     (nextSortKey: string | null) => {
@@ -108,6 +119,13 @@ function UnitBrowserResultList({ leafletMap }: Props) {
   return (
     <View id="list-view" className="list-view">
       <div className="list-view__container">
+        <h2
+          ref={headingRef}
+          className="list-view__results-heading"
+          tabIndex={-1}
+        >
+          {t("APP.SEARCH_RESULTS_PANEL")}
+        </h2>
         <div className="list-view__block">
           <UnitBrowserResultListSort
             values={values(SortKeys)}
