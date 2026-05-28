@@ -111,7 +111,6 @@ function MapLayout({
         {!isMobile && (
           <TextRevealButton
             aria-controls={PANEL_ID}
-            aria-expanded={isExpanded}
             className={className("map-collapse-button", {
               "panel-hidden": !isExpanded,
             })}
