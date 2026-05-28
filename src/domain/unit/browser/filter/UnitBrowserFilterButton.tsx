@@ -17,7 +17,6 @@ type Props = {
       | React.KeyboardEvent<HTMLElement>,
   ) => void;
   id?: string;
-  "aria-haspopup"?: boolean | "grid" | "listbox" | "menu" | "tree" | "dialog";
   "aria-controls"?: string;
   "aria-expanded"?: boolean;
   "aria-label"?: string;

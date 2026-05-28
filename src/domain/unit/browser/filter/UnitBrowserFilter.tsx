@@ -80,7 +80,6 @@ export function FilterOption({
         filter={filter}
         onAction={onToggle}
         isActive={isActive}
-        aria-haspopup="true"
         aria-controls={menuId}
         id={controlId}
       />
