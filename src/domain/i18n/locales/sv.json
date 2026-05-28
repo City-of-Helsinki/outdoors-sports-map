@@ -30,6 +30,7 @@
     },
     "FEEDBACK": {
       "FEEDBACK": "Respons",
+      "REQUIRED_FIELDS": "Obligatoriska fält är markerade med *",
       "WANT_ANSWER": "Jag vill ha ett svar till min e–post",
       "SEND": "Skicka",
       "EMAIL": "E–post"

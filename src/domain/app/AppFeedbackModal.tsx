@@ -71,6 +71,7 @@ function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
           iconStart={<IconInfoCircle />}
         />
         <Dialog.Content className="outdoor-exercise-map-modal-content">
+          <p>{t("APP.FEEDBACK.REQUIRED_FIELDS")}</p>
           <TextArea
             id="feedback"
             name="feedback"

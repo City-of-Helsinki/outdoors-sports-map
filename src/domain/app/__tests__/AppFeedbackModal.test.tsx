@@ -33,6 +33,24 @@ describe("<AppFeedbackModal />", () => {
     expect(getSubmitButton()).toBeInTheDocument();
   });
 
+  it("renders required fields note explaining the asterisk", () => {
+    render(<AppFeedbackModal show={true} onClose={onClose} />);
+
+    // The full Finnish translation (default language in tests)
+    const note = screen.getByText("Pakolliset kentät on merkitty *-merkillä");
+    expect(note).toBeInTheDocument();
+
+    // Must be a <p> tag and contain the asterisk character
+    expect(note.tagName).toBe("P");
+    expect(note.textContent).toContain("*");
+
+    // The note must appear before the feedback textarea in the DOM
+    const textarea = getFeedbackTextarea();
+    expect(
+      note.compareDocumentPosition(textarea) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
   it("shows email input when checkbox is checked", () => {
     render(<AppFeedbackModal show={true} onClose={onClose} />);
     fireEvent.click(getAnswerCheckbox());
@@ -89,5 +107,23 @@ describe("<AppFeedbackModal />", () => {
 
     // You can check that onClose was called
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("logs error when form is submitted with empty feedback bypassing HTML5 validation", () => {
+    render(<AppFeedbackModal show={true} onClose={onClose} />);
+    const consoleSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    // Bypass HTML5 required validation by submitting the form directly
+    const form = document.querySelector("form")!;
+    fireEvent.submit(form);
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "User attempted to send feedback without providing feedback",
+    );
+    expect(mockSendFeedback).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
+    consoleSpy.mockRestore();
   });
 });
