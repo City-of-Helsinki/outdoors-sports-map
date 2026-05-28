@@ -2,6 +2,18 @@
 <html lang="fi">
   <head>
     <meta charset="utf-8" />
+    <script>
+      // Set the correct lang attribute synchronously from the URL path before
+      // any JS bundle loads. This prevents screen readers from latching onto 
+      // the hard-coded "fi" default when the user loads a non-Finnish page directly. 
+      // Matches /fi/, /sv/, or /en/ path segments.
+      (function () {
+        var match = window.location.pathname.match(/^\/(fi|sv|en)(\/|$)/);
+        if (match) {
+          document.documentElement.lang = match[1];
+        }
+      })();
+    </script>
 
     <link rel="icon" href="/favicon.ico" />
     <link
