@@ -13,6 +13,12 @@
       background-color: var(--color-white);
       padding: $gap;
       min-height: 128px;
+
+      .list-view__results-count {
+        margin: 0 0 var(--spacing-s) 0;
+        font-size: var(--fontsize-body-m);
+        font-weight: bold;
+      }
     }
   }
 

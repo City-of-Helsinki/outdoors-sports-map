@@ -231,6 +231,96 @@ describe("<UnitBrowserResultList />", () => {
       localStorage.removeItem("favouriteUnits");
     });
   });
+
+  describe("result count", () => {
+    it("should display plural result count when multiple results exist", async () => {
+      renderComponent();
+      expect(await screen.findByRole("status")).toHaveTextContent(
+        "2 hakutulosta",
+      );
+    });
+
+    it("should display singular result count when one result exists", async () => {
+      renderComponent(
+        {},
+        {
+          unit: {
+            byId: { "53916": units["53916"] },
+            isFetching: false,
+            fetchError: null,
+            all: ["53916"],
+            iceskate: ["53916"],
+            ski: ["53916"],
+            swim: ["53916"],
+            status_ok: [],
+          } as any,
+        },
+      );
+      expect(await screen.findByRole("status")).toHaveTextContent(
+        "1 hakutulos",
+      );
+    });
+
+    it("should not display result count when there are no results", async () => {
+      renderComponent(
+        {},
+        {
+          unit: {
+            byId: {},
+            isFetching: false,
+            fetchError: null,
+            all: [],
+            iceskate: [],
+            ski: [],
+            swim: [],
+            status_ok: [],
+          } as any,
+        },
+      );
+      await screen.findByText("Ei hakutuloksia");
+      expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    });
+
+    it("should not display result count while loading", async () => {
+      renderComponent(
+        {},
+        {
+          unit: {
+            byId: units,
+            isFetching: false,
+            fetchError: null,
+            all: Object.keys(units),
+            iceskate: Object.keys(units),
+            ski: Object.keys(units),
+            swim: Object.keys(units),
+            status_ok: [],
+          } as any,
+          search: {
+            isFetching: true,
+            isActive: true,
+            unitResults: [],
+            unitSuggestions: [],
+            addressSuggestions: [],
+          } as any,
+        },
+      );
+      expect(
+        document.querySelector(".list-view__results-count"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("should display total count even when only one page is visible", async () => {
+      // UNIT_BATCH_SIZE is mocked to 1, so only 1 unit is shown initially
+      // but totalUnits should still be 2
+      renderComponent();
+      expect(await screen.findByRole("status")).toHaveTextContent(
+        "2 hakutulosta",
+      );
+      expect(
+        screen.queryByText("Mustavuoren latu 2,1 km"),
+      ).not.toBeInTheDocument();
+    });
+  });
 });
 
 describe("<UnitBrowserResultListSort />", () => {
