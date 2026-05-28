@@ -74,8 +74,6 @@ function UnitBrowserResultList({ leafletMap }: Props) {
   const { t } = useTranslation();
   const { q, sortKey, maxUnitCount } = useAppSearch();
   const doSearch = useDoSearch();
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const prevResultsNullRef = useRef(true);
 
   const { totalUnits, results } = useUnitSearchResults({
     sortKey,
@@ -83,14 +81,40 @@ function UnitBrowserResultList({ leafletMap }: Props) {
     leafletMap,
   });
 
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const prevResultsNullRef = useRef(true);
+  const listRef = useRef<HTMLDivElement>(null);
+  const announcementRef = useRef<HTMLDivElement>(null);
+  const firstNewItemIndexRef = useRef<number | null>(null);
+
   useEffect(() => {
     const wasLoading = prevResultsNullRef.current;
     prevResultsNullRef.current = results === null;
 
-    if (wasLoading && results !== null && q) {
+    if (
+      firstNewItemIndexRef.current !== null &&
+      Array.isArray(results) &&
+      results.length > firstNewItemIndexRef.current
+    ) {
+      const index = firstNewItemIndexRef.current;
+      firstNewItemIndexRef.current = null;
+
+      const items =
+        listRef.current?.querySelectorAll<HTMLElement>(".list-view-item");
+      const firstNewItem = items?.[index];
+      firstNewItem?.scrollIntoView({ block: "start", behavior: "smooth" });
+      firstNewItem?.focus({ preventScroll: true });
+
+      if (announcementRef.current) {
+        announcementRef.current.textContent = t("UNIT_DETAILS.RESULTS_LOADED", {
+          shown: results.length,
+          total: totalUnits,
+        });
+      }
+    } else if (wasLoading && results !== null && q) {
       headingRef.current?.focus();
     }
-  }, [results, q]);
+  }, [results, q, totalUnits, t]);
 
   const handleOnSortKeySelect = useCallback(
     (nextSortKey: string | null) => {
@@ -108,12 +132,14 @@ function UnitBrowserResultList({ leafletMap }: Props) {
     (e: React.SyntheticEvent<HTMLButtonElement>) => {
       e.preventDefault();
 
+      firstNewItemIndexRef.current = results?.length ?? 0;
+
       doSearch(
         "maxUnitCount",
         (Number(maxUnitCount) + UNIT_BATCH_SIZE).toString(),
       );
     },
-    [maxUnitCount, doSearch],
+    [maxUnitCount, doSearch, results],
   );
 
   return (
@@ -133,7 +159,8 @@ function UnitBrowserResultList({ leafletMap }: Props) {
             onSelect={handleOnSortKeySelect}
           />
         </div>
-        <div className="list-view__items-block">
+        <div ref={announcementRef} aria-live="polite" aria-atomic="true" className="sr-only" />
+        <div ref={listRef} className="list-view__items-block">
           {results === null && <Loading />}
           {Array.isArray(results) && (
             <>

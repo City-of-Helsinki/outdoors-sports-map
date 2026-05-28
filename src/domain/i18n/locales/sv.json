@@ -61,6 +61,7 @@
     "BACK": "Tillbaka",
     "FURTHER_INFO": "Ytterligare upplysningar",
     "SHOW_MORE": "Visa mer",
+    "RESULTS_LOADED": "Visar {{shown}} av {{total}} resultat",
     "SHOW_LESS": "Visa mindre",
     "NO_FAVORITES": "Inga favoriter",
     "NO_RESULTS": "Inga sökresultat",

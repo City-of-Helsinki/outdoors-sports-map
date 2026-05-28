@@ -61,6 +61,7 @@
     "BACK": "Back",
     "FURTHER_INFO": "Further information",
     "SHOW_MORE": "Show more",
+    "RESULTS_LOADED": "Showing {{shown}} of {{total}} results",
     "SHOW_LESS": "Show less",
     "NO_FAVORITES": "No favorites",
     "NO_RESULTS": "No results found",
