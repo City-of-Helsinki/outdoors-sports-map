@@ -1,7 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 
 import SearchBar from "./SearchBar";
 import SearchSuggestions, { Suggestion } from "./SearchSuggestions";
+import useLanguage from "../../common/hooks/useLanguage";
+import * as PathUtils from "../../common/utils/pathUtils";
+
+const LISTBOX_ID = "search-suggestions-listbox";
 
 type Props = {
   search?: string;
@@ -27,10 +32,13 @@ function SearchContainer({
   const [searchPhrase, setSearchPhrase] = useState(search);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0 });
+  const [activeIndex, setActiveIndex] = useState(-1);
   const preventFocusOpen = useRef(false);
   const preventBlurClose = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const history = useHistory();
+  const language = useLanguage();
 
   useEffect(() => {
     setSearchPhrase(search);
@@ -68,7 +76,8 @@ function SearchContainer({
   const onInputChange = useCallback(
     (value: string): void => {
       setSearchPhrase(value);
-      
+      setActiveIndex(-1);
+
       // Only show suggestions if there's actual search text
       if (value && value.trim().length > 0) {
         setShowSuggestions(true);
@@ -85,11 +94,13 @@ function SearchContainer({
   const handleSearch = useCallback(() => {
     onSearch(searchPhrase);
     setShowSuggestions(false);
+    setActiveIndex(-1);
   }, [onSearch, searchPhrase]);
 
   const clear = useCallback(() => {
     setSearchPhrase("");
     setShowSuggestions(false);
+    setActiveIndex(-1);
     onClear();
   }, [onClear]);
 
@@ -97,6 +108,7 @@ function SearchContainer({
     (coordinates: [number, number]) => {
       setSearchPhrase("");
       setShowSuggestions(false);
+      setActiveIndex(-1);
       onClear();
       onAddressClick(coordinates);
     },
@@ -141,6 +153,7 @@ function SearchContainer({
     if (event.key === "Escape") {
       preventFocusOpen.current = true;
       setShowSuggestions(false);
+      setActiveIndex(-1);
 
       // Focus the search input after closing suggestions
       if (searchInputRef.current) {
@@ -151,17 +164,55 @@ function SearchContainer({
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();
         if (!showSuggestions && searchPhrase && searchPhrase.length > 0) {
           setShowSuggestions(true);
+          setActiveIndex(-1);
           onFindSuggestions(searchPhrase);
-          // Update position when opening suggestions
           setTimeout(updateMenuPosition, 0);
+          return;
+        }
+        if (showSuggestions && suggestions.length > 0) {
+          setActiveIndex((prev) => {
+            if (event.key === "ArrowDown") {
+              return Math.min(prev + 1, suggestions.length - 1);
+            }
+            return Math.max(prev - 1, -1);
+          });
+        }
+      } else if (event.key === "Tab") {
+        setShowSuggestions(false);
+        setActiveIndex(-1);
+      } else if (event.key === "Enter") {
+        if (activeIndex >= 0 && activeIndex < suggestions.length) {
+          event.preventDefault();
+          const suggestion = suggestions[activeIndex];
+          if (suggestion.coordinates) {
+            handleAddressClick(suggestion.coordinates);
+          } else if (suggestion.to) {
+            const to =
+              typeof suggestion.to === "string"
+                ? PathUtils.getPathnameWithLanguage(suggestion.to, language)
+                : suggestion.to;
+            history.push(to as string);
+            setShowSuggestions(false);
+            setActiveIndex(-1);
+          }
         }
       }
     },
-    [showSuggestions, searchPhrase, onFindSuggestions, updateMenuPosition],
+    [
+      showSuggestions,
+      searchPhrase,
+      suggestions,
+      activeIndex,
+      onFindSuggestions,
+      updateMenuPosition,
+      handleAddressClick,
+      history,
+      language,
+    ],
   );
 
   return (
@@ -182,6 +233,11 @@ function SearchContainer({
         inputRef={searchInputRef}
         searchActive={isActive}
         disabled={disabled}
+        ariaExpanded={showSuggestions}
+        ariaControls={LISTBOX_ID}
+        ariaActiveDescendant={
+          activeIndex >= 0 ? `search-suggestion-${activeIndex}` : undefined
+        }
       />
       {showSuggestions && searchPhrase && searchPhrase.trim().length > 0 && (
         <SearchSuggestions
@@ -190,6 +246,7 @@ function SearchContainer({
           handleAddressClick={handleAddressClick}
           menuPosition={menuPosition}
           preventBlurCloseRef={preventBlurClose}
+          activeIndex={activeIndex}
         />
       )}
     </div>

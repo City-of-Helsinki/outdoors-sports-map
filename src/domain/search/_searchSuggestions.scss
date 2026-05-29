@@ -27,6 +27,16 @@
     }
   }
 
+  &__options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li[aria-selected="true"] .search-suggestions__result {
+      background-color: $list-view-item-hover;
+    }
+  }
+
   &__result {
     cursor: pointer;
     padding: $gap;
