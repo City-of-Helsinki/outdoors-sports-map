@@ -126,6 +126,8 @@ function HeightProfileControl({ unit }: Props) {
     const displayGroup = new L.LayerGroup();
     displayGroup.addTo(map);
     control.addTo(map);
+    // Set aria-hidden to true for the control container to hide it from screen readers
+    control.getContainer().setAttribute("aria-hidden", "true");
     control.addData(geoJson);
 
     const layer = L.geoJson(geoJson, {

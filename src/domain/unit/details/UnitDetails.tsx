@@ -7,7 +7,6 @@ import {
   Tag,
 } from "hds-react";
 import get from "lodash/get";
-import has from "lodash/has";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -40,6 +39,7 @@ import { selectUnitById, useGetUnitByIdQuery } from "../state/unitSlice";
 import { Translatable, Unit } from "../types";
 import { UnitConnectionTags } from "../unitConstants";
 import {
+  calculateElevationStats,
   createPalvelukarttaUrl,
   createReittiopasUrl,
   getAttr,
@@ -47,7 +47,10 @@ import {
   getObservation,
   getObservationTime,
   getOpeningHours,
+  getUnitObservations,
   handleSingleUnitConditionUpdate,
+  isUnitInFavourites,
+  toggleFavourite,
 } from "../unitHelpers";
 
 type HeaderProps = {
@@ -165,28 +168,6 @@ export function MobileFooter({
   );
 }
 
-function isUnitInFavourites(unit: Unit): boolean {
-  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
-  return favourites.some((favourite: Unit) => favourite.id === unit.id);
-}
-
-function toggleFavourite(unit: Unit) {
-  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
-  const unitIndex = favourites.findIndex(
-    (favourite: Unit) => favourite.id === unit.id,
-  );
-
-  if (unitIndex === -1) {
-    // Add the unit to favourites
-    favourites.push(unit);
-  } else {
-    // Remove the unit from favourites
-    favourites.splice(unitIndex, 1);
-  }
-
-  localStorage.setItem("favouriteUnits", JSON.stringify(favourites));
-}
-
 type AddFavoriteProps = {
   unit: Unit;
 };
@@ -258,6 +239,12 @@ function LocationInfo({ unit }: LocationInfoProps) {
     unit,
     ["extra", "lipas.skiTrackTraditional"],
     null,
+  );
+
+  // Calculate elevation stats if 3D geometry is available
+  const elevationStats = useMemo(
+    () => calculateElevationStats(unit.geometry_3d),
+    [unit.geometry_3d],
   );
 
   const hasExtras =
@@ -375,6 +362,19 @@ function LocationInfo({ unit }: LocationInfoProps) {
             <span>{value}km</span>
           </p>
         ))}
+      {/* Elevation stats */}
+      {elevationStats && (
+        <>
+          <p className="small-margin">
+            {`${t("UNIT_BROWSER.HIGHEST_POINT")}: `}
+            <span>{elevationStats.highest.toFixed(1)}m</span>
+          </p>
+          <p className="small-margin">
+            {`${t("UNIT_BROWSER.LOWEST_POINT")}: `}
+            <span>{elevationStats.lowest.toFixed(1)}m</span>
+          </p>
+        </>
+      )}
 
       {/* Connection details */}
       {[
@@ -673,23 +673,6 @@ type Props = {
   isExpanded: boolean;
   toggleIsExpanded: () => void;
 };
-
-// Helper function to extract observations from unit
-function getUnitObservations(unit: Unit | undefined) {
-  if (!unit || !has(unit, "observations")) {
-    return {
-      temperatureObservation: null,
-      liveTemperatureObservation: null,
-      liveWaterQualityObservation: null,
-    };
-  }
-
-  return {
-    temperatureObservation: getObservation(unit, "swimming_water_temperature"),
-    liveTemperatureObservation: getObservation(unit, "live_swimming_water_temperature"),
-    liveWaterQualityObservation: getObservation(unit, "live_swimming_water_quality"),
-  };
-}
 
 type UnitNotFoundProps = {
   headerHeight: number;

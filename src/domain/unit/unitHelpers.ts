@@ -720,3 +720,46 @@ export const getDefaultUnitObservation = (unit: Unit) => {
   };
   return observation;
 };
+
+export const calculateElevationStats = (
+  geometry_3d: Unit["geometry_3d"],
+): { highest: number; lowest: number } | null => {
+  if (!geometry_3d) return null;
+  const allElevations = geometry_3d.coordinates
+    .flat()
+    .map((pos) => pos[2])
+    .filter((e): e is number => e !== undefined && !isNaN(e));
+  if (allElevations.length === 0) return null;
+  return {
+    highest: Math.max(...allElevations),
+    lowest: Math.min(...allElevations),
+  };
+};
+
+export const getUnitObservations = (unit: Unit | undefined) => {
+  if (!unit || !has(unit, "observations")) {
+    return {
+      temperatureObservation: null,
+      liveTemperatureObservation: null,
+      liveWaterQualityObservation: null,
+    };
+  }
+  return {
+    temperatureObservation: getObservation(unit, "swimming_water_temperature"),
+    liveTemperatureObservation: getObservation(unit, "live_swimming_water_temperature"),
+    liveWaterQualityObservation: getObservation(unit, "live_swimming_water_quality"),
+  };
+};
+
+export const isUnitInFavourites = (unit: Unit): boolean => {
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") ?? "[]") as Unit[];
+  return favourites.some((favourite) => favourite.id === unit.id);
+};
+
+export const toggleFavourite = (unit: Unit): void => {
+  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") ?? "[]") as Unit[];
+  const updated = favourites.some((f) => f.id === unit.id)
+    ? favourites.filter((f) => f.id !== unit.id)
+    : [...favourites, unit];
+  localStorage.setItem("favouriteUnits", JSON.stringify(updated));
+};

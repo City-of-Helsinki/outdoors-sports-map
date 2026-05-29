@@ -688,6 +688,52 @@ describe("<UnitDetails />", () => {
     expect(screen.getByText("Vapaa")).toBeInTheDocument();
     expect(screen.getByText("Koiralatu")).toBeInTheDocument();
   });
+
+  describe("elevation stats", () => {
+    const geometry_3d = {
+      type: "MultiLineString",
+      coordinates: [
+        [
+          [24.9, 60.1, 10],
+          [24.91, 60.11, 25],
+        ],
+        [
+          [24.92, 60.12, 5],
+          [24.93, 60.13, 40],
+        ],
+      ],
+    };
+
+    it("should display highest and lowest elevation when geometry_3d is available", () => {
+      renderComponent({}, { geometry_3d });
+
+      const highestPoint = screen.getByText("Korkein kohta:");
+      expect(highestPoint).toBeInTheDocument();
+      expect(within(highestPoint).getByText("40.0m")).toBeInTheDocument();
+      const lowestPoint = screen.getByText("Matalin kohta:");
+      expect(lowestPoint).toBeInTheDocument();
+      expect(within(lowestPoint).getByText("5.0m")).toBeInTheDocument();
+    });
+
+    it("should not display elevation stats when geometry_3d is absent", () => {
+      renderComponent({}, { geometry_3d: undefined });
+
+      expect(screen.queryByText("Korkein kohta:")).not.toBeInTheDocument();
+      expect(screen.queryByText("Matalin kohta:")).not.toBeInTheDocument();
+    });
+
+    it("should not display elevation stats when geometry_3d has no z-coordinates", () => {
+      renderComponent({}, {
+        geometry_3d: {
+          type: "MultiLineString",
+          coordinates: [[[24.9, 60.1], [24.91, 60.11]]],
+        },
+      });
+
+      expect(screen.queryByText("Korkein kohta:")).not.toBeInTheDocument();
+      expect(screen.queryByText("Matalin kohta:")).not.toBeInTheDocument();
+    });
+  });
 });
 
 it("should render 'Lisää suosikiksi' button", () => {
