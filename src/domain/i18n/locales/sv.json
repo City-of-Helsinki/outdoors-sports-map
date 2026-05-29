@@ -33,7 +33,9 @@
       "REQUIRED_FIELDS": "Obligatoriska fält är markerade med *",
       "WANT_ANSWER": "Jag vill ha ett svar till min e–post",
       "SEND": "Skicka",
-      "EMAIL": "E–post"
+      "EMAIL": "E–post",
+      "SUCCESS": "Din feedback har skickats.",
+      "ERROR": "Det gick inte att skicka feedback. Försök igen senare."
     },
     "MAP_ATTRIBUTION": "OpenStreetMaps skapare",
     "NOTIFICATION_TITLE": "Annons",

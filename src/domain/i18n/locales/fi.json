@@ -33,7 +33,9 @@
       "REQUIRED_FIELDS": "Pakolliset kentät on merkitty *-merkillä",
       "WANT_ANSWER": "Haluan vastauksen sähköpostiini",
       "SEND": "Lähetä",
-      "EMAIL": "Sähköposti"
+      "EMAIL": "Sähköposti",
+      "SUCCESS": "Palautteesi lähetettiin onnistuneesti.",
+      "ERROR": "Palautteen lähetys epäonnistui. Yritä myöhemmin uudelleen."
     },
     "MAP_ATTRIBUTION": "OpenStreetMap tekijät",
     "NOTIFICATION_TITLE": "Ilmoitus",

@@ -33,7 +33,9 @@
       "REQUIRED_FIELDS": "Required fields are marked with *",
       "WANT_ANSWER": "I want a reply to my email",
       "SEND": "Send",
-      "EMAIL": "Email"
+      "EMAIL": "Email",
+      "SUCCESS": "Your feedback was sent successfully.",
+      "ERROR": "Sending feedback failed. Please try again later."
     },
     "MAP_ATTRIBUTION": "OpenStreetMap contributors",
     "NOTIFICATION_TITLE": "Notification",
