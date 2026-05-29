@@ -110,11 +110,13 @@ function MapView(props: Readonly<MapViewProps>) {
           openUnit={openUnit}
         />
         <ZoomControl
+          key={`zoom-${language}`}
           position="bottomright"
           zoomInTitle={t("MAP.ZOOM_IN")}
           zoomOutTitle={t("MAP.ZOOM_OUT")}
         />
         <Control
+          key={`locate-${language}`}
           handleClick={locateUser}
           className="leaflet-control-locate"
           position="bottomright"
