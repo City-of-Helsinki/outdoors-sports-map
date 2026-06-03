@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.13.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.12.0...outdoors-sports-map-v2.13.0) (2026-06-03)
+
+
+### Features
+
+* Add accessibility label to sort dropdown ([#324](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/324)) ([131d2f5](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/131d2f5ae6488ff50af3398356294b8d24c84f16))
+* Add elevation stats and improve height profile accessibility ([#323](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/323)) ([9b2eca7](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/9b2eca7847d0c0d6c6ba3a9fcc4310583f759130))
+* **search:** Improve keyboard navigation for search results ([#321](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/321)) ([b8e5665](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/b8e56653d76783350331bba6e7d52623b8f37962))
+* Show search result count above results list ([#330](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/330)) ([f32f718](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/f32f718fcb77dd309d1d063b504ad06791ab6ee5))
+* Show success and error notifications after feedback submission ([#331](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/331)) ([06b39b1](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/06b39b1d0e0f796dace3ace827729cd8a4814d8d))
+
+
+### Bug Fixes
+
+* **a11y:** Remove aria-haspopup from filter buttons (WCAG 1.3.1) ([#333](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/333)) ([a8f35f9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/a8f35f9807194be390834a078b73c087505a51fb))
+* **a11y:** Remove redundant aria-expanded from toggle buttons ([#332](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/332)) ([f1e212f](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/f1e212f6fbe617f8a1562bf01034c6bd973b01e6))
+* Clarify route guide link text to reference HSL route guide explicitly ([#334](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/334)) ([d6efd1f](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/d6efd1f8a0e0ad526e3bce997479c12a9cbdfa7d))
+* Explain asterisk meaning in feedback form (WCAG 3.3.2) ([#329](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/329)) ([54fd5e9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/54fd5e9c17dd7b4f00b77a0193010f379b10c5ce))
+* Move focus to search results heading after search ([#325](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/325)) ([516f850](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/516f8504063c669ca5082242f801cfbac39c3965))
+* Resolve yarn install invariant violation for vite/vitest ([e005b24](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/e005b2410041700c3c38d6bf7d23859d8a2744da))
+* **search:** Implement WCAG 4.1.2 combobox ARIA pattern for search field ([#326](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/326)) ([8b9f512](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/8b9f51274235a15e5452dfed8e4692252effe0f2))
+* Sync page language with active language for accessibility users ([#322](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/322)) ([2edcd67](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/2edcd6774056d70fa1c8e6c206910257a56a475a))
+* Update map control aria-labels on language change ([#328](https://github.com/City-of-Helsinki/outdoors-sports-map/issues/328)) ([41c11cc](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/41c11cc45c3ed67006b417338dc8135184bd5207))
+
 ## [2.12.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.11.1...outdoors-sports-map-v2.12.0) (2026-03-23)
 
 
