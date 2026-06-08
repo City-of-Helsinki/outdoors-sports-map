@@ -49,6 +49,17 @@ const liveTemperatureDataObservation = {
   },
 };
 
+const measuredTemperatureDataObservation = {
+  unit: 40142,
+  id: 18,
+  property: "measured_swimming_water_temperature",
+  time: "2020-08-21T14:04:49.387379+0300",
+  expiration_time: null,
+  value: {
+    fi: "34.1",
+  },
+};
+
 const liveWaterQualityObservation = {
   unit: 40386,
   id: 1406465,
@@ -347,62 +358,89 @@ describe("<UnitDetails />", () => {
     });
   });
 
-  describe("when live temperature data is available", () => {
-    const renderWrapperWithLiveTemperatureData = (props?: any, unit?: any) =>
-      renderComponent(props, unit);
+  const sensorTemperatureTimeCases = [
+    {
+      description: "when less than an hour has passed it should use minutes",
+      getTime: () => subMinutes(new Date(), 30).toISOString(),
+      expectedText: "30 minuuttia sitten",
+    },
+    {
+      description: "when at least an hour has passed it should use hours",
+      getTime: () => subHours(new Date(), 2).toISOString(),
+      expectedText: "noin 2 tuntia sitten",
+    },
+  ];
 
-    it("should be displayed", () => {
-      renderWrapperWithLiveTemperatureData();
-      const liveTemperature = `${liveTemperatureDataObservation.value.fi} °C`;
+  const sensorTemperatureCases = [
+    {
+      describeName: "when live temperature data is available",
+      primaryObservation: liveTemperatureDataObservation,
+      baseObservations: [liveTemperatureDataObservation, temperatureDataObservation],
+      hiddenValues: [`${temperatureDataObservation.name.fi}`],
+      hiddenLabels: ["regular temperature"],
+    },
+    {
+      describeName: "when measured temperature data is available",
+      primaryObservation: measuredTemperatureDataObservation,
+      baseObservations: [
+        measuredTemperatureDataObservation,
+        liveTemperatureDataObservation,
+        temperatureDataObservation,
+      ],
+      hiddenValues: [
+        `${liveTemperatureDataObservation.value.fi} °C`,
+        `${temperatureDataObservation.name.fi}`,
+      ],
+      hiddenLabels: ["live temperature", "regular temperature"],
+    },
+  ];
 
-      expect(screen.getByText(liveTemperature)).toBeInTheDocument();
-    });
+  sensorTemperatureCases.forEach(
+    ({
+      describeName,
+      primaryObservation,
+      baseObservations,
+      hiddenValues,
+      hiddenLabels,
+    }) => {
+      describe(describeName, () => {
+        const renderWithObservations = (observations = baseObservations) =>
+          renderComponent({}, { observations });
 
-    it("regular temperature should not be displayed", () => {
-      renderWrapperWithLiveTemperatureData();
-      const temperature = `${temperatureDataObservation.name.fi}`;
+        it("should be displayed", () => {
+          renderWithObservations();
+          const temperature = `${primaryObservation.value.fi} °C`;
 
-      expect(screen.queryByText(temperature)).toBeNull();
-    });
+          expect(screen.getByText(temperature)).toBeInTheDocument();
+        });
 
-    describe("temperature measurement time", () => {
-      it("when less than an hour has passed it should use minutes", () => {
-        const halfAnHourAgo = subMinutes(new Date(), 30);
+        hiddenValues.forEach((hiddenValue, index) => {
+          it(`${hiddenLabels[index]} should not be displayed`, () => {
+            renderWithObservations();
 
-        renderWrapperWithLiveTemperatureData(
-          {},
-          {
-            observations: [
-              {
-                ...liveTemperatureDataObservation,
-                time: halfAnHourAgo.toISOString(),
-              },
-            ],
-          },
-        );
+            expect(screen.queryByText(hiddenValue)).toBeNull();
+          });
+        });
 
-        expect(screen.getByText("30 minuuttia sitten")).toBeInTheDocument();
+        describe("temperature measurement time", () => {
+          sensorTemperatureTimeCases.forEach(
+            ({ description, getTime, expectedText }) => {
+              it(description, () => {
+                renderWithObservations([
+                  {
+                    ...primaryObservation,
+                    time: getTime(),
+                  },
+                ]);
+
+                expect(screen.getByText(expectedText)).toBeInTheDocument();
+              });
+            },
+          );
+        });
       });
-
-      it("when at least an hour has passed it should use hours", () => {
-        const anHourAgo = subHours(new Date(), 2);
-
-        renderWrapperWithLiveTemperatureData(
-          {},
-          {
-            observations: [
-              {
-                ...liveTemperatureDataObservation,
-                time: anHourAgo.toISOString(),
-              },
-            ],
-          },
-        );
-
-        expect(screen.getByText("noin 2 tuntia sitten")).toBeInTheDocument();
-      });
-    });
-  });
+    },
+  );
 
   describe("when regular temperature data is available (no live temperature)", () => {
     const renderWrapperWithRegularTemperatureOnly = (props?: any, unit?: any) =>
