@@ -36,7 +36,7 @@ import UnitObservationStatus, {
   StatusUpdatedAgo,
 } from "../UnitObservationStatus";
 import { selectUnitById, useGetUnitByIdQuery } from "../state/unitSlice";
-import { Translatable, Unit } from "../types";
+import { Observation, Translatable, Unit } from "../types";
 import { UnitConnectionTags } from "../unitConstants";
 import {
   calculateElevationStats,
@@ -526,10 +526,12 @@ function LocationTemperature({ observation }: LocationTemperatureProps) {
 
 type LiveLocationTemperatureProps = {
   observation: Record<string, unknown>;
+  sensorName?: string;
 };
 
 function LiveLocationTemperature({
   observation,
+  sensorName,
 }: LiveLocationTemperatureProps) {
   const { t } = useTranslation();
   const temperature = get(observation, "value.fi");
@@ -539,11 +541,39 @@ function LiveLocationTemperature({
     <BodyBox title={t("UNIT_BROWSER.WATER_TEMPERATURE")}>
       <StatusUpdatedAgo
         time={observationTime}
-        sensorName={t("UNIT_BROWSER.WATER_TEMPERATURE_SENSOR")}
+        sensorName={sensorName || t("UNIT_BROWSER.WATER_TEMPERATURE_SENSOR")}
       />
       {`${temperature} °C`}
     </BodyBox>
   );
+}
+
+type WaterTempearatureProps = {
+  liveTemperatureObservation: Observation | null | undefined;
+  measuredTemperatureObservation: Observation | null | undefined;
+  temperatureObservation: Observation | null | undefined;
+}
+
+function WaterTemperature({
+  liveTemperatureObservation,
+  measuredTemperatureObservation,
+  temperatureObservation,
+}: WaterTempearatureProps) {
+  if (measuredTemperatureObservation) { 
+    return (
+      <LiveLocationTemperature observation={measuredTemperatureObservation} />
+    );
+  } else if (liveTemperatureObservation) {
+    return (
+      <LiveLocationTemperature observation={liveTemperatureObservation} />
+    );
+  } else if (temperatureObservation) {
+    return (
+      <LocationTemperature observation={temperatureObservation} />
+    );
+  } else {
+    return null;
+  }
 }
 
 type LiveWaterQualityProps = {
@@ -599,11 +629,12 @@ function BodyBoxIconAndValue({
 type SingleUnitBodyProps = {
   currentUnit?: Unit;
   isLoading: boolean;
-  liveTemperatureObservation: Record<string, unknown> | null | undefined;
-  routeUrl?: string;
-  temperatureObservation: Record<string, unknown> | null | undefined;
+  liveTemperatureObservation: Observation | null | undefined;
+  liveWaterQualityObservation: Observation | null | undefined;
+  measuredTemperatureObservation: Observation | null | undefined;
   palvelukarttaUrl?: string;
-  liveWaterQualityObservation: Record<string, unknown> | null | undefined;
+  routeUrl?: string;
+  temperatureObservation: Observation | null | undefined;
 };
 
 export function SingleUnitBody({
@@ -614,6 +645,7 @@ export function SingleUnitBody({
   temperatureObservation,
   palvelukarttaUrl,
   liveWaterQualityObservation,
+  measuredTemperatureObservation,
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
@@ -631,12 +663,11 @@ export function SingleUnitBody({
       <LocationState unit={currentUnit} />
       <AddFavorite unit={currentUnit} />
       <NoticeInfo unit={currentUnit} />
-      {!liveTemperatureObservation && temperatureObservation && (
-        <LocationTemperature observation={temperatureObservation} />
-      )}
-      {liveTemperatureObservation && (
-        <LiveLocationTemperature observation={liveTemperatureObservation} />
-      )}
+      <WaterTemperature
+        liveTemperatureObservation={liveTemperatureObservation}
+        temperatureObservation={temperatureObservation}
+        measuredTemperatureObservation={measuredTemperatureObservation}
+      />
       {liveWaterQualityObservation && (
         <LiveWaterQuality observation={liveWaterQualityObservation} />
       )}
@@ -766,7 +797,7 @@ function UnitDetails({
   }
 
   // Extract observations using helper function
-  const { temperatureObservation, liveTemperatureObservation, liveWaterQualityObservation } = 
+  const { temperatureObservation, liveTemperatureObservation, measuredTemperatureObservation, liveWaterQualityObservation } = 
     getUnitObservations(currentUnit);
   
   const routeUrl = currentUnit && createReittiopasUrl(currentUnit, language);
@@ -824,6 +855,7 @@ function UnitDetails({
           routeUrl={routeUrl}
           temperatureObservation={temperatureObservation}
           liveWaterQualityObservation={liveWaterQualityObservation}
+          measuredTemperatureObservation={measuredTemperatureObservation}
           palvelukarttaUrl={palvelukarttaUrl}
         />
       </Page>
