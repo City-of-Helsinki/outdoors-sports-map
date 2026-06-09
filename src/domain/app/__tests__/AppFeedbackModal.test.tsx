@@ -50,6 +50,24 @@ describe("<AppFeedbackModal />", () => {
     expect(getSubmitButton()).not.toBeDisabled();
   });
 
+  it("renders required fields note explaining the asterisk", () => {
+    render(<AppFeedbackModal show={true} onClose={onClose} />);
+
+    // The full Finnish translation (default language in tests)
+    const note = screen.getByText("Pakolliset kentät on merkitty *-merkillä");
+    expect(note).toBeInTheDocument();
+
+    // Must be a <p> tag and contain the asterisk character
+    expect(note.tagName).toBe("P");
+    expect(note.textContent).toContain("*");
+
+    // The note must appear before the feedback textarea in the DOM
+    const textarea = getFeedbackTextarea();
+    expect(
+      note.compareDocumentPosition(textarea) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
   it("shows email input when checkbox is checked", async () => {
     const user = userEvent.setup();
     render(<AppFeedbackModal show={true} onClose={onClose} />);

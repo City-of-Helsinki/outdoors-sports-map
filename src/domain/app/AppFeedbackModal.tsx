@@ -101,6 +101,7 @@ function AppFeedbackModal({ focusAfterCloseRef, onClose, show }: Props) {
           </div>
           {submitStatus === "idle" && (
             <>
+              <p>{t("APP.FEEDBACK.REQUIRED_FIELDS")}</p>
               <TextArea
                 id="feedback"
                 name="feedback"
