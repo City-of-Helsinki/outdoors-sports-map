@@ -552,16 +552,22 @@ type WaterTempearatureProps = {
   liveTemperatureObservation: Observation | null | undefined;
   measuredTemperatureObservation: Observation | null | undefined;
   temperatureObservation: Observation | null | undefined;
+  uirasSwimmingWaterTemperature: Observation | null | undefined;
 }
 
 function WaterTemperature({
   liveTemperatureObservation,
   measuredTemperatureObservation,
   temperatureObservation,
-}: WaterTempearatureProps) {
+  uirasSwimmingWaterTemperature,
+}: Readonly<WaterTempearatureProps>) {
   if (measuredTemperatureObservation) { 
     return (
       <LiveLocationTemperature observation={measuredTemperatureObservation} />
+    );
+  } else if (uirasSwimmingWaterTemperature) {
+    return (
+      <LiveLocationTemperature observation={uirasSwimmingWaterTemperature} />
     );
   } else if (liveTemperatureObservation) {
     return (
@@ -635,17 +641,19 @@ type SingleUnitBodyProps = {
   palvelukarttaUrl?: string;
   routeUrl?: string;
   temperatureObservation: Observation | null | undefined;
+  uirasSwimmingWaterTemperature: Observation | null | undefined;
 };
 
 export function SingleUnitBody({
   currentUnit,
   isLoading,
   liveTemperatureObservation,
-  routeUrl,
-  temperatureObservation,
-  palvelukarttaUrl,
   liveWaterQualityObservation,
   measuredTemperatureObservation,
+  palvelukarttaUrl,
+  routeUrl,
+  temperatureObservation,
+  uirasSwimmingWaterTemperature,
 }: SingleUnitBodyProps) {
   const language = useLanguage();
 
@@ -665,8 +673,9 @@ export function SingleUnitBody({
       <NoticeInfo unit={currentUnit} />
       <WaterTemperature
         liveTemperatureObservation={liveTemperatureObservation}
-        temperatureObservation={temperatureObservation}
         measuredTemperatureObservation={measuredTemperatureObservation}
+        temperatureObservation={temperatureObservation}
+        uirasSwimmingWaterTemperature={uirasSwimmingWaterTemperature}
       />
       {liveWaterQualityObservation && (
         <LiveWaterQuality observation={liveWaterQualityObservation} />
@@ -797,8 +806,13 @@ function UnitDetails({
   }
 
   // Extract observations using helper function
-  const { temperatureObservation, liveTemperatureObservation, measuredTemperatureObservation, liveWaterQualityObservation } = 
-    getUnitObservations(currentUnit);
+  const { 
+    liveTemperatureObservation,
+    liveWaterQualityObservation,
+    measuredTemperatureObservation,
+    temperatureObservation,
+    uirasSwimmingWaterTemperature,
+  } = getUnitObservations(currentUnit);
   
   const routeUrl = currentUnit && createReittiopasUrl(currentUnit, language);
   const palvelukarttaUrl = currentUnit && createPalvelukarttaUrl(currentUnit, language);
@@ -852,11 +866,12 @@ function UnitDetails({
           currentUnit={currentUnit}
           isLoading={isUnitLoading}
           liveTemperatureObservation={liveTemperatureObservation}
-          routeUrl={routeUrl}
-          temperatureObservation={temperatureObservation}
           liveWaterQualityObservation={liveWaterQualityObservation}
           measuredTemperatureObservation={measuredTemperatureObservation}
           palvelukarttaUrl={palvelukarttaUrl}
+          routeUrl={routeUrl}
+          temperatureObservation={temperatureObservation}
+          uirasSwimmingWaterTemperature={uirasSwimmingWaterTemperature}
         />
       </Page>
       <MobileFooter

@@ -60,6 +60,17 @@ const measuredTemperatureDataObservation = {
   },
 };
 
+const uirasSwimmingWaterTemperatureObservation = {
+  unit: 40142,
+  id: 19,
+  property: "uiras_swimming_water_temperature",
+  time: "2020-08-21T14:04:49.387379+0300",
+  expiration_time: null,
+  value: {
+    fi: "27.1",
+  },
+};
+
 const liveWaterQualityObservation = {
   unit: 40386,
   id: 1406465,
@@ -380,18 +391,38 @@ describe("<UnitDetails />", () => {
       hiddenLabels: ["regular temperature"],
     },
     {
-      describeName: "when measured temperature data is available",
-      primaryObservation: measuredTemperatureDataObservation,
+      describeName: "when uiras swimming water temperature data is available",
+      primaryObservation: uirasSwimmingWaterTemperatureObservation,
       baseObservations: [
-        measuredTemperatureDataObservation,
         liveTemperatureDataObservation,
         temperatureDataObservation,
+        uirasSwimmingWaterTemperatureObservation,
       ],
       hiddenValues: [
         `${liveTemperatureDataObservation.value.fi} °C`,
         `${temperatureDataObservation.name.fi}`,
       ],
       hiddenLabels: ["live temperature", "regular temperature"],
+    },
+    {
+      describeName: "when measured temperature data is available",
+      primaryObservation: measuredTemperatureDataObservation,
+      baseObservations: [
+        liveTemperatureDataObservation,
+        measuredTemperatureDataObservation,
+        temperatureDataObservation,
+        uirasSwimmingWaterTemperatureObservation,
+      ],
+      hiddenValues: [
+        `${liveTemperatureDataObservation.value.fi} °C`,
+        `${temperatureDataObservation.name.fi}`,
+        `${uirasSwimmingWaterTemperatureObservation.value.fi} °C`,
+      ],
+      hiddenLabels: [
+        "live temperature", 
+        "regular temperature", 
+        "uiras temperature"
+      ],
     },
   ];
 
