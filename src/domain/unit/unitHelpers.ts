@@ -739,17 +739,19 @@ export const calculateElevationStats = (
 export const getUnitObservations = (unit: Unit | undefined) => {
   if (!unit || !has(unit, "observations")) {
     return {
-      temperatureObservation: null,
-      measuredTemperatureObservation: null,
       liveTemperatureObservation: null,
       liveWaterQualityObservation: null,
+      measuredTemperatureObservation: null,
+      temperatureObservation: null,
+      uirasSwimmingWaterTemperature: null,
     };
   }
   return {
-    temperatureObservation: getObservation(unit, "swimming_water_temperature"),
     liveTemperatureObservation: getObservation(unit, "live_swimming_water_temperature"),
-    measuredTemperatureObservation: getObservation(unit, "measured_swimming_water_temperature"),
     liveWaterQualityObservation: getObservation(unit, "live_swimming_water_quality"),
+    measuredTemperatureObservation: getObservation(unit, "measured_swimming_water_temperature"),
+    temperatureObservation: getObservation(unit, "swimming_water_temperature"),
+    uirasSwimmingWaterTemperature: getObservation(unit, "uiras_swimming_water_temperature"),
   };
 };
 
