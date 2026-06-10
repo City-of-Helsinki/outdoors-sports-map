@@ -11,148 +11,68 @@ export default function AccessibilityStatementFi() {
   return (
     <>
       <p>
-        Tämä saavutettavuusseloste koskee Helsingin kaupungin verkkosivustoa
-        ulkoliikunta.fi.
+        Tämä saavutettavuusseloste koskee Ulkoliikuntakartta-verkkosivustoa
+        osoitteessa <LinkWithoutLabel>https://ulkoliikunta.fi/fi/</LinkWithoutLabel>.
+        Verkkosivustosta vastaa Helsingin kaupunki. Tässä selosteessa kerrotaan,
+        kuinka saavutettava verkkosivusto on ja miten voit antaa meille
+        palautetta saavutettavuudesta.
       </p>
-      <h3>Sivustoa koskevat lain säädökset</h3>
+      <h3>Kuinka saavutettava tämä verkkosivusto on?</h3>
       <p>
-        Sivusto on julkaistu aiemmin kuin 23.9.2018. Sivuston tulee täyttää lain
-        edellyttämät saavutettavuuden vaatimukset 23.9.2020 päättyvän
-        siirtymäajan jälkeen.
+        Digitaalisten palveluiden tarjoamista koskevan lain mukaan julkisten
+        verkkosivustojen on oltava saavutettavia, eli kaikilla tulee olla
+        tasavertaiset mahdollisuudet käyttää niitä.
       </p>
-      <h3>Kaupungin tavoite</h3>
       <p>
-        Digitaalisten palveluiden saavutettavuudessa Helsingin tavoitteena on
-        pyrkiä vähintään WCAG ohjeiston mukaiseen AA- tai sitä parempaan tasoon,
-        mikäli se on kohtuudella mahdollista.
+        Tämä verkkosivusto täyttää kaikilta osin lain vaatimat
+        saavutettavuuskriteerit (WCAG-kriteeristö 2.1, A- ja AA-taso).
       </p>
-      <h3>Vaatimustenmukaisuustilanne</h3>
-      <p>
-        Tämä verkkosivusto täyttää lain asettamat kriittiset
-        saavutettavuusvaatimukset WCAG v2.1 -tason AA mukaisesti.
-      </p>
-      <h3>Saavutettavuusselosteen laatiminen</h3>
-      <p>Tämä seloste on laadittu 13.8.2021.</p>
       <h3>Saavutettavuuden arviointi</h3>
       <p>
         Saavutettavuuden arvioinnissa on noudatettu Helsingin kaupungin
-        työohjetta ja menetelmiä, jotka pyrkivät varmistamaan sivuston
+        työohjetta ja menetelmiä, jotka pyrkivät varmistamaan palvelun
         saavutettavuuden kaikissa työvaiheissa.
       </p>
       <p>
         Saavutettavuus on tarkistettu ulkopuolisen asiantuntijan suorittamana
-        auditointina sekä itsearviona. Ulkopuolisen asiantuntija-auditoinnin on
-        tehnyt Palvelukeskus Helsinki.
+        arviointina. Saavutettavuus on tarkistettu käyttäen ohjelmallista
+        saavutettavuustarkistusta sekä verkkosivuston ja sisällön manuaalista
+        tarkistusta.
       </p>
+      <h3>Huomasitko puutteita saavutettavuudessa?</h3>
       <p>
-        Saavutettavuus on tarkistettu käyttäen ohjelmallista
-        saavutettavuustarkistusta sekä sivuston manuaalista tarkistusta.
-        Testauksessa syntyneet toiminnalliset havainnot pätevät sekä työpöytä-
-        että mobiililaiteympäristöön.
+        Pyrimme jatkuvasti parantamaan verkkosivuston saavutettavuutta. Ota
+        meihin yhteyttä, jos löydät saavutettavuuspuutteita, joita ei ole
+        kuvattu tällä sivulla, tai tarvitsemasi aineisto ei ole saavutettavaa.
+        <Link href="https://palautteet.hel.fi/fi">Anna palautetta palautelomakkeella</Link>
       </p>
+      <h3>Saavutettavuuden valvonta</h3>
       <p>
-        Manuaalisessa testauksessa on käytetty Chrome- ja Firefox-selaimia,
-        niiden 200%-tiloja sekä tietoteknisiä apuvälineitä, kuten
-        ruudunlukuohjelmia, ohjaimia ja erikoisnäppäimistöjä. Mobiilitestaus
-        toteutettiin iOS- ja Android-käyttöjärjestelmillä ja niille
-        tarkoitetuilla ruudunlukuohjelmilla.
+        Liikenne- ja viestintävirasto Traficom valvoo
+        saavutettavuusvaatimusten toteutumista. Jos et ole tyytyväinen saamaasi
+        vastaukseen tai et saa vastausta lainkaan kahden viikon aikana, voit
+        tehdä ilmoituksen Traficomille. Traficomin sivulla kerrotaan tarkasti,
+        miten ilmoituksen voi tehdä ja miten asia käsitellään.
       </p>
-      <p>
-        Arviointityökalujen raportoimat sekä auditoinnin epäkohdat on
-        tarkastettu ja tarvittaessa korjattu.
-      </p>
-      <h3>Saavutettavuusselosteen päivittäminen</h3>
-      <p>
-        Sivuston saavutettavuudesta huolehditaan jatkuvalla valvonnalla
-        tekniikan tai sisällön muuttuessa, sekä määräajoin, kuitenkin vähintään
-        kerran vuodessa, suoritettavalla tarkistuksella. Tätä selostetta
-        päivitetään sivuston muutosten ja saavutettavuuden tarkistusten
-        yhteydessä.
-      </p>
-      <h3>Palaute ja yhteystiedot</h3>
-      <p>
-        Sivuston saavutettavuudesta vastaa kulttuurin ja vapaa-ajan toimialan
-        viestintä, puhelinvaihde <PhoneNumber>09 310 1060</PhoneNumber>.
-      </p>
-      <h3>Ilmoittaminen ei-saavutettavasta sisällöstä</h3>
-      <p>
-        Jos käyttäjä kokee, etteivät saavutettavuuden vaatimukset kuitenkaan
-        täyty, voi tästä tehdä ilmoituksen palautelomakkeella{" "}
-        <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>.
-      </p>
-      <p>
-        <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute">
-          Siirry palautelomakkeeseen
-        </Link>
-      </p>
-      <h3>Tietojen pyytäminen saavutettavassa muodossa</h3>
-      <p>
-        Jos käyttäjä ei koe saavansa sivuston sisältöä saavutettavassa
-        muodossa, voi käyttäjä pyytää näitä tietoja palautelomakkeella 
-        <LinkWithoutLabel>palautteet.hel.fi</LinkWithoutLabel>
-        . Tiedusteluun pyritään vastaamaan kohtuullisessa ajassa.
-      </p>
-      <p>
-        <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/osallistu-ja-vaikuta/palaute">
-          Siirry palautelomakkeeseen
-        </Link>
-      </p>
-      <h3>Saavutettavuuden oikeussuoja, Täytäntöönpanomenettely</h3>
-      <p>
-        Mikäli henkilö kokee, ettei hänen ilmoitukseensa tai tiedusteluunsa ole
-        vastattu tai vastaus ei ole tyydyttävä, voi asiasta tehdä ilmoituksen
-        Etelä-Suomen aluehallintovirastoon. Etelä-Suomen aluehallintoviraston
-        sivulla kerrotaan tarkasti, miten asia käsitellään.
-      </p>
-      <p>Etelä-Suomen aluehallintovirasto</p>
-      <p>Saavutettavuuden valvonnan yksikkö</p>
+      <p>Liikenne- ja viestintävirasto Traficom</p>
+      <p>Digitaalisen esteettömyyden ja saavutettavuuden valvontayksikkö</p>
       <p>
         <LinkWithoutLabel>www.saavutettavuusvaatimukset.fi</LinkWithoutLabel>
       </p>
       <p>
-        <Email>saavutettavuus@avi.fi</Email>
+        Sähköposti: <Email>saavutettavuus@traficom.fi</Email>
       </p>
       <p>
-        Puhelinvaihde: <PhoneNumber>0295 016 000</PhoneNumber>
+        Puhelinnumero vaihde: <PhoneNumber>029 534 5000</PhoneNumber>
       </p>
-      <p>Avoinna: ma–pe klo 8.00–16.15</p>
-      <h3>Helsingin kaupunki ja saavutettavuus</h3>
+      <h3>Saavutettavuusselosteen tiedot</h3>
+      <p>Verkkosivusto on julkaistu 15.12.2016.</p>
+      <p>Seloste on laadittu 24.03.2023.</p>
+      <p>Seloste on viimeksi päivitetty 10.06.2026.</p>
       <p>
-        Helsingin kaupungin tavoitteena on olla kaikille esteetön ja
-        saavutettava kaupunki. Kaupungin tavoitteena on, että Helsingissä on
-        kaikkien kaupunkilaisten mahdollisimman helppo liikkua ja toimia, ja
-        että kaikki sisältö ja palvelut olisivat kaikkien saavutettavissa.
-      </p>
-      <p>
-        Kaupunki edistää digitaalisten palveluiden saavutettavuutta
-        yhdenmukaistamalla julkaisutyötä ja järjestämällä saavutettavuuteen
-        keskittyvää koulutusta henkilökunnalleen.
-      </p>
-      <p>
-        Sivustojen saavutettavuuden tasoa seurataan jatkuvasti sivustoja
-        ylläpidettäessä. Havaittuihin
-        puutteisiin reagoidaan välittömästi. Tarvittavat muutokset pyritään
-        suorittamaan mahdollisimman nopeasti.
-      </p>
-      <h3>Vammaiset ja avustavien teknologioiden käyttäjät</h3>
-      <p>
-        Kaupunki tarjoaa neuvontaa ja tukea vammaisille ja avustavien
-        teknologioiden käyttäjille. Tukea on saatavilla kaupungin sivuilla
-        ilmoitetuilta neuvontasivuilta sekä puhelinneuvonnasta.
-      </p>
-      <p>
-        <Link href="https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/viestinta/viestinta-ja-neuvonta">
-          Siirry kaupungin neuvontasivuille
+        <Link href="https://www.finlex.fi/fi/laki/alkup/2019/20190306">
+          Laki digitaalisten palvelujen tarjoamisesta (306/2019)
         </Link>
-      </p>
-      <h3>Saavutettavuusselosteen hyväksyntä</h3>
-      <p>
-        Tämän selosteen on hyväksynyt 1.10.2021
-        <br />
-        Kulttuurin ja vapaa-ajan toimiala
-        <br />
-        Helsingin kaupunki
-        <br />
       </p>
     </>
   );
