@@ -534,7 +534,7 @@ function LiveLocationTemperature({
   sensorName,
 }: LiveLocationTemperatureProps) {
   const { t } = useTranslation();
-  const temperature = get(observation, "value.fi");
+  const temperature = get(observation, "value.fi") || get(observation, "value");
   const observationTime = getObservationTime(observation);
 
   return (

@@ -33,7 +33,7 @@ export type Observation = {
   primary: boolean;
   quality: string;
   name: Translatable<string>;
-  value: string | Translatable<string>;
+  value: string | number | Translatable<string>;
   time: string;
 };
 
