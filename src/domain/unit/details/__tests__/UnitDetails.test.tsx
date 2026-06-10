@@ -55,9 +55,7 @@ const measuredTemperatureDataObservation = {
   property: "measured_swimming_water_temperature",
   time: "2020-08-21T14:04:49.387379+0300",
   expiration_time: null,
-  value: {
-    fi: "34.1",
-  },
+  value: 34.1
 };
 
 const uirasSwimmingWaterTemperatureObservation = {
@@ -66,9 +64,7 @@ const uirasSwimmingWaterTemperatureObservation = {
   property: "uiras_swimming_water_temperature",
   time: "2020-08-21T14:04:49.387379+0300",
   expiration_time: null,
-  value: {
-    fi: "27.1",
-  },
+  value: 27.1,
 };
 
 const liveWaterQualityObservation = {
@@ -416,7 +412,7 @@ describe("<UnitDetails />", () => {
       hiddenValues: [
         `${liveTemperatureDataObservation.value.fi} °C`,
         `${temperatureDataObservation.name.fi}`,
-        `${uirasSwimmingWaterTemperatureObservation.value.fi} °C`,
+        `${uirasSwimmingWaterTemperatureObservation.value} °C`,
       ],
       hiddenLabels: [
         "live temperature", 
@@ -440,7 +436,11 @@ describe("<UnitDetails />", () => {
 
         it("should be displayed", () => {
           renderWithObservations();
-          const temperature = `${primaryObservation.value.fi} °C`;
+          const observationValue =
+            typeof primaryObservation.value === "object"
+              ? primaryObservation.value.fi
+              : primaryObservation.value;
+          const temperature = `${observationValue} °C`;
 
           expect(screen.getByText(temperature)).toBeInTheDocument();
         });
