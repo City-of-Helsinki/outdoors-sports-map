@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.14.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.13.0...outdoors-sports-map-v2.14.0) (2026-06-10)
+
+
+### Features
+
+* Support measured water temperature with sensor fallback ([a3ad41c](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/a3ad41c3fda777be9fae27cc374ca4a4b8d71720))
+* Support UIras water temperature fallback ([a5ccadf](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/a5ccadfa96aa189541ad452e0d2f19c8358f341c))
+
+
+### Bug Fixes
+
+* **feedback:** Re-add explanation for the asterisk (*) marker ([7db6df0](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/7db6df027282111252de0086d8bdfdad104367df))
+* Update map button text ([af549d9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/af549d9c91a2c7c2b1e7a78e476cc32f8f73d4a9))
+
 ## [2.13.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.12.0...outdoors-sports-map-v2.13.0) (2026-06-03)
 
 
