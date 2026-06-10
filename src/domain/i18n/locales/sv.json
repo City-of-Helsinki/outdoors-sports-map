@@ -15,8 +15,8 @@
     "HIDE_SIDEBAR": "Minska sidopanelen",
     "SHOW_SIDEBAR": "Utvidga sidopanelen",
     "MAP_BUTTON": {
-      "CLOSE": "Stäng Kartan",
-      "OPEN": "Öppna Kartan"
+      "CLOSE": "Stäng menyn",
+      "OPEN": "Öppna menyn"
     },    
     "NOT_FOUND": {
       "TITLE": "Sidan hittades inte",

@@ -15,8 +15,8 @@
     "HIDE_SIDEBAR": "Pienennä sivupaneeli",
     "SHOW_SIDEBAR": "Laajenna sivupaneeli",
     "MAP_BUTTON": {
-      "CLOSE": "Sulje Kartta",
-      "OPEN": "Avaa Kartta"
+      "CLOSE": "Sulje valikko",
+      "OPEN": "Avaa valikko"
     },
     "NOT_FOUND": {
       "TITLE": "Sivua ei löytynyt",

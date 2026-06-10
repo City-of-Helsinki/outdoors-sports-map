@@ -15,8 +15,8 @@
     "HIDE_SIDEBAR": "Hide sidebar",
     "SHOW_SIDEBAR": "Show sidebar",
     "MAP_BUTTON": {
-      "CLOSE": "Close Map",
-      "OPEN": "Open Map"
+      "CLOSE": "Close menu",
+      "OPEN": "Open menu"
     },
     "NOT_FOUND": {
       "TITLE": "Page not found",
