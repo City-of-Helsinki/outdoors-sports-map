@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.15.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.14.0...outdoors-sports-map-v2.15.0) (2026-06-10)
+
+
+### Features
+
+* Support numeric temperature observation values ([b140153](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/b1401537762272d5d804c220a17b9c9ed9fe5483))
+
 ## [2.14.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.13.0...outdoors-sports-map-v2.14.0) (2026-06-10)
 
 
