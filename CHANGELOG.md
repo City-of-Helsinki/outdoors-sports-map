@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.17.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.16.0...outdoors-sports-map-v2.17.0) (2026-06-12)
+
+
+### Features
+
+* Enhance accessibility statement links to open in new tab ([dbffdc9](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/dbffdc900861ef7d1df545b1dc7164e6d00b2019))
+
 ## [2.16.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.15.0...outdoors-sports-map-v2.16.0) (2026-06-12)
 
 
