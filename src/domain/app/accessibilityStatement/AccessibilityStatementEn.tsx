@@ -12,7 +12,7 @@ export default function AccessibilityStatementEn() {
     <>
       <p>
         This accessibility statement applies to the Outdoor Exercise Map
-        website at <LinkWithoutLabel>https://ulkoliikunta.fi/en/</LinkWithoutLabel>.
+        website at <LinkWithoutLabel openInNewTab>https://ulkoliikunta.fi/en/</LinkWithoutLabel>.
         The City of Helsinki is responsible for the website. This statement
         explains how accessible the website is and how you can give us feedback
         on accessibility.
@@ -46,7 +46,7 @@ export default function AccessibilityStatementEn() {
         on this page, or if the material you need is not accessible.
       </p>
       <p>
-        <Link href="https://palautteet.hel.fi/en">
+        <Link external openInNewTab href="https://palautteet.hel.fi/en">
           Please provide feedback using the feedback form
         </Link>
       </p>
@@ -61,7 +61,7 @@ export default function AccessibilityStatementEn() {
       <p>Finnish Transport and Communications Agency Traficom</p>
       <p>Digital Accessibility Supervision</p>
       <p>
-        <LinkWithoutLabel>www.saavutettavuusvaatimukset.fi/en</LinkWithoutLabel>
+        <LinkWithoutLabel external openInNewTab>www.saavutettavuusvaatimukset.fi/en</LinkWithoutLabel>
       </p>
       <p>
         Email: <Email>saavutettavuus@traficom.fi</Email>
@@ -74,7 +74,7 @@ export default function AccessibilityStatementEn() {
       <p>This statement was prepared on 24 March 2023.</p>
       <p>This statement was last updated on 10 June 2026.</p>
       <p>
-        <Link href="https://www.finlex.fi/fi/laki/alkup/2019/20190306">
+        <Link external openInNewTab href="https://www.finlex.fi/fi/laki/alkup/2019/20190306">
           Act on the Provision of Digital Services (in Finnish) (306/2019)
         </Link>
       </p>
