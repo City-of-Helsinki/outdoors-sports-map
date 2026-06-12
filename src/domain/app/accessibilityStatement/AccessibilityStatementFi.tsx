@@ -12,7 +12,7 @@ export default function AccessibilityStatementFi() {
     <>
       <p>
         Tämä saavutettavuusseloste koskee Ulkoliikuntakartta-verkkosivustoa
-        osoitteessa <LinkWithoutLabel>https://ulkoliikunta.fi/fi/</LinkWithoutLabel>.
+        osoitteessa <LinkWithoutLabel openInNewTab>https://ulkoliikunta.fi/fi/</LinkWithoutLabel>.
         Verkkosivustosta vastaa Helsingin kaupunki. Tässä selosteessa kerrotaan,
         kuinka saavutettava verkkosivusto on ja miten voit antaa meille
         palautetta saavutettavuudesta.
@@ -44,7 +44,7 @@ export default function AccessibilityStatementFi() {
         Pyrimme jatkuvasti parantamaan verkkosivuston saavutettavuutta. Ota
         meihin yhteyttä, jos löydät saavutettavuuspuutteita, joita ei ole
         kuvattu tällä sivulla, tai tarvitsemasi aineisto ei ole saavutettavaa.
-        <Link href="https://palautteet.hel.fi/fi">Anna palautetta palautelomakkeella</Link>
+        <Link external openInNewTab href="https://palautteet.hel.fi/fi">Anna palautetta palautelomakkeella</Link>
       </p>
       <h3>Saavutettavuuden valvonta</h3>
       <p>
@@ -57,7 +57,7 @@ export default function AccessibilityStatementFi() {
       <p>Liikenne- ja viestintävirasto Traficom</p>
       <p>Digitaalisen esteettömyyden ja saavutettavuuden valvontayksikkö</p>
       <p>
-        <LinkWithoutLabel>www.saavutettavuusvaatimukset.fi</LinkWithoutLabel>
+        <LinkWithoutLabel external openInNewTab>www.saavutettavuusvaatimukset.fi</LinkWithoutLabel>
       </p>
       <p>
         Sähköposti: <Email>saavutettavuus@traficom.fi</Email>
@@ -70,7 +70,7 @@ export default function AccessibilityStatementFi() {
       <p>Seloste on laadittu 24.03.2023.</p>
       <p>Seloste on viimeksi päivitetty 10.06.2026.</p>
       <p>
-        <Link href="https://www.finlex.fi/fi/laki/alkup/2019/20190306">
+        <Link external openInNewTab href="https://www.finlex.fi/fi/laki/alkup/2019/20190306">
           Laki digitaalisten palvelujen tarjoamisesta (306/2019)
         </Link>
       </p>
