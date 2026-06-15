@@ -171,8 +171,8 @@ function ApplicationHeader({
               icon={<IconMap />}
               label={
                 isExpanded
-                  ? t("APP.MAP_BUTTON.OPEN")
-                  : t("APP.MAP_BUTTON.CLOSE")
+                  ? t("APP.MAP_BUTTON.CLOSE")
+                  : t("APP.MAP_BUTTON.OPEN")
               }
               onClick={toggleIsExpanded}
             />
