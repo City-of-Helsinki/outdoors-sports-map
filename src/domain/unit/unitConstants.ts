@@ -15,6 +15,8 @@ import {
   Season,
 } from "./types";
 
+export const WATER_QUALITY_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+
 export const UNIT_PIN_HEIGHT = 40;
 
 export const UNIT_HANDLE_HEIGHT = 32;
