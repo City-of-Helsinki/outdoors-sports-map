@@ -1,4 +1,4 @@
-import { subHours, subMinutes } from "date-fns";
+import { subDays, subHours, subMinutes } from "date-fns";
 import userEvent from "@testing-library/user-event";
 
 import { render, screen, within } from "../../../testingLibraryUtils";
@@ -570,19 +570,31 @@ describe("<UnitDetails />", () => {
   });
 
   describe("when live water quality data is available", () => {
-    const renderWrapperWithLiveWaterQualityData = (props?: any, unit?: any) =>
-      renderComponent(props, unit);
     const waterQuality = {
       normal: "Tavanomainen",
       possibly_impaired: "Mahdollisesti heikentynyt",
       probably_impaired: "Mahdollisesti heikentynyt",
       error: "Ei arviota",
     };
-    it("should be displayed", () => {
-      renderWrapperWithLiveWaterQualityData();
-      const liveWaterQuality = waterQuality.possibly_impaired;
 
-      expect(screen.getByText(liveWaterQuality)).toBeInTheDocument();
+    it("should be displayed when observation is less than 1 day old", () => {
+      renderComponent({}, {
+        observations: [
+          { ...liveWaterQualityObservation, time: subHours(new Date(), 1).toISOString() },
+        ],
+      });
+
+      expect(screen.getByText(waterQuality.possibly_impaired)).toBeInTheDocument();
+    });
+
+    it("should not be displayed when observation is older than 1 day", () => {
+      renderComponent({}, {
+        observations: [
+          { ...liveWaterQualityObservation, time: subDays(new Date(), 2).toISOString() },
+        ],
+      });
+
+      expect(screen.queryByText(waterQuality.possibly_impaired)).not.toBeInTheDocument();
     });
   });
 

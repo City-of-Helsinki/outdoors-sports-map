@@ -37,7 +37,7 @@ import UnitObservationStatus, {
 } from "../UnitObservationStatus";
 import { selectUnitById, useGetUnitByIdQuery } from "../state/unitSlice";
 import { Observation, Translatable, Unit } from "../types";
-import { UnitConnectionTags } from "../unitConstants";
+import { UnitConnectionTags, WATER_QUALITY_MAX_AGE_MS } from "../unitConstants";
 import {
   calculateElevationStats,
   createPalvelukarttaUrl,
@@ -656,6 +656,7 @@ export function SingleUnitBody({
   uirasSwimmingWaterTemperature,
 }: SingleUnitBodyProps) {
   const language = useLanguage();
+  const [now] = useState(() => Date.now());
 
   let extraUrl: string = "";
   const unitConnections = currentUnit?.connections;
@@ -665,6 +666,12 @@ export function SingleUnitBody({
     });
     extraUrl = otherInfo?.www?.fi as string;
   }
+
+  const isWaterQualityFresh = useMemo(() => {
+    if (!liveWaterQualityObservation) return false;
+    const observationTime = getObservationTime(liveWaterQualityObservation);
+    return now - observationTime.getTime() < WATER_QUALITY_MAX_AGE_MS;
+  }, [liveWaterQualityObservation, now]);
 
   return currentUnit && !isLoading ? (
     <div className="unit-container-body">
@@ -677,9 +684,9 @@ export function SingleUnitBody({
         temperatureObservation={temperatureObservation}
         uirasSwimmingWaterTemperature={uirasSwimmingWaterTemperature}
       />
-      {liveWaterQualityObservation && (
-        <LiveWaterQuality observation={liveWaterQualityObservation} />
-      )}
+      {liveWaterQualityObservation && isWaterQualityFresh && (
+          <LiveWaterQuality observation={liveWaterQualityObservation} />
+        )}
       <LocationInfo unit={currentUnit} />
       {getOpeningHours(currentUnit, language) && (
         <LocationOpeningHours unit={currentUnit} />
