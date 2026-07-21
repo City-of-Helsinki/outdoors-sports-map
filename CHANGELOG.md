@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.18.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.17.0...outdoors-sports-map-v2.18.0) (2026-07-21)
+
+
+### Features
+
+* Show live water quality only when the data is fresh ([4f7bebf](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/4f7bebf63ca93d000a4b711fcc7376998af957dd))
+
+
+### Bug Fixes
+
+* Correct button label toggle logic in ApplicationHeader ([56f8d63](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/56f8d63de4f64788185a72ef2477a01d3686f006))
+
 ## [2.17.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.16.0...outdoors-sports-map-v2.17.0) (2026-06-12)
 
 
