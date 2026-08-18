@@ -3,6 +3,7 @@ import {
   screen,
   act,
   fireEvent,
+  waitFor,
   userEvent,
 } from "../../testingLibraryUtils";
 import AppFeedbackModal from "../AppFeedbackModal";

@@ -1,4 +1,4 @@
-import { Header, IconInfoCircle, IconMap } from "hds-react";
+import { Header, IconInfoCircle, IconLayers, IconMap } from "hds-react";
 import {
   MouseEventHandler,
   useCallback,
@@ -11,8 +11,10 @@ import { useLocation, useRouteMatch } from "react-router-dom";
 
 import AppAboutModal from "./AppAboutModal";
 import AppAccessibilityModal from "./AppAccessibilityModal";
+import AppEmbedToolModal from "./AppEmbedToolModal";
 import AppFeedbackModal from "./AppFeedbackModal";
 import AppInfoModal from "./AppInfoModal";
+import AppMapToolsPanel from "./AppMapToolsPanel";
 import HeaderButton from "../../common/components/HeaderButton";
 import { replaceLanguageInPath } from "../../common/utils/pathUtils";
 import { SUPPORTED_LANGUAGES } from "../i18n/i18nConstants";
@@ -31,7 +33,7 @@ const languages = Object.entries(SUPPORTED_LANGUAGES).map(
   }),
 );
 
-type ModalType = "about" | "feedback" | "accessibility" | "info";
+type ModalType = "about" | "feedback" | "accessibility" | "info" | "embed";
 
 type ApplicationHeaderProps = {
   isExpanded?: boolean;
@@ -63,6 +65,8 @@ function ApplicationHeader({
 
   // Opened modal state
   const [modal, setModal] = useState<ModalType | null>(null);
+  const [showMapTools, setShowMapTools] = useState(false);
+  const mapToolsButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const createMenuLinkClickHandler = useCallback(
     (modal: ModalType): MouseEventHandler<HTMLElement> =>
@@ -99,6 +103,35 @@ function ApplicationHeader({
       openDialogLinkRef.current?.focus();
     }, 100);
   }, [t]);
+
+  const handleMapToolsButtonClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (modal) return;
+      mapToolsButtonRef.current = e.currentTarget;
+      setShowMapTools((prev) => !prev);
+    },
+    [modal],
+  );
+
+  const handleMapToolsPanelClose = useCallback(() => {
+    // Focus restoration is handled by AppMapToolsPanel's own unmount effect.
+    setShowMapTools(false);
+  }, []);
+
+  const handleOpenEmbedTool = useCallback(() => {
+    // Close the panel directly (not via handleMapToolsPanelClose) so its delayed
+    // focus-restore doesn't steal focus back from the embed modal that's opening.
+    setShowMapTools(false);
+    openDialogLinkRef.current = mapToolsButtonRef.current;
+    setModal("embed");
+  }, []);
+
+  const handleEmbedModalClose = useCallback(() => {
+    setModal(null);
+    setTimeout(() => {
+      openDialogLinkRef.current?.focus();
+    }, 100);
+  }, []);
 
   // Measure header height and update when screen size changes
   useEffect(() => {
@@ -179,6 +212,16 @@ function ApplicationHeader({
           )}
 
           <Header.LanguageSelector />
+          <HeaderButton
+            id="app-map-tools-button"
+            className="header-button--inline"
+            icon={<IconLayers />}
+            label={t("MAP_TOOLS.TITLE")}
+            aria-haspopup="menu"
+            aria-controls="map-tools-menu"
+            aria-expanded={showMapTools}
+            onClick={handleMapToolsButtonClick}
+          />
           <Header.ActionBarItem
             id={DROPDOWN_ID}
             icon={<IconInfoCircle />}
@@ -217,6 +260,18 @@ function ApplicationHeader({
         </Header.ActionBar>
       </Header>
 
+      {showMapTools && (
+        <AppMapToolsPanel
+          onClose={handleMapToolsPanelClose}
+          onOpenEmbedTool={handleOpenEmbedTool}
+          focusAfterCloseRef={mapToolsButtonRef}
+        />
+      )}
+      <AppEmbedToolModal
+        focusAfterCloseRef={openDialogLinkRef}
+        show={modal === "embed"}
+        onClose={handleEmbedModalClose}
+      />
       <AppAboutModal
         focusAfterCloseRef={openDialogLinkRef}
         show={modal === "about"}
