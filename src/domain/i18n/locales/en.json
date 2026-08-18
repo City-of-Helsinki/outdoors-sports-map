@@ -182,5 +182,47 @@
   "COOKIES": {
     "MATOMO": "A cookie of the Matomo statistics system",
     "EXPIRATION_DAYS": "{{ days }} days"
+  },
+  "MAP_TOOLS": {
+    "TITLE": "Map Tools",
+    "EMBEDDING_TOOL": "Embedding tool",
+    "CLOSE": "Close"
+  },
+  "EMBED_TOOL": {
+    "TITLE": "Embedding tool",
+    "DESCRIPTION": "You can embed views of the Outdoor Exercise Map into any web page with the embedding tool.",
+    "LANGUAGE_LABEL": "Language of the embedding",
+    "LANGUAGE": {
+      "FI": "Finnish",
+      "SV": "Swedish",
+      "EN": "English"
+    },
+    "CONTENT_LABEL": "Show",
+    "CONTENT": {
+      "ALL": "Map is shown without filter",
+      "SPORT": "Specific sport type",
+      "UNIT": "Specific venue"
+    },
+    "SPORT_SELECT": "Select sport type",
+    "UNIT_ID_LABEL": "Venue ID",
+    "VENUE_SEARCH_LABEL": "Search venue",
+    "WIDTH_LABEL": "Width of the embedding",
+    "WIDTH_AUTO": "Automatic (fills container width)",
+    "WIDTH_FIXED": "Fixed width (pixels)",
+    "WIDTH": "Width",
+    "HEIGHT_LABEL": "Height of the embedding",
+    "HEIGHT_RELATIVE": "Relative (% of width)",
+    "HEIGHT_ABSOLUTE": "Absolute (pixels)",
+    "HEIGHT": "Height",
+    "PREVIEW_LABEL": "Map preview",
+    "URL_LABEL": "URL link",
+    "HTML_LABEL": "HTML code",
+    "COPY_URL": "Copy URL",
+    "COPY_HTML": "Copy HTML code",
+    "COPIED": "Copied!",
+    "SEASON_ENDED": "The season for this sport has ended.",
+    "SEASON_ENDED_DETAIL": "The map shows the venues from the last active season.",
+    "CLOSE_PANEL": "Close",
+    "CLOSE": "Close Embedding tool"
   }
 }

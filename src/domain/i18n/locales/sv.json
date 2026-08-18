@@ -178,6 +178,48 @@
     "probably_impaired": "Möjligen försämrad",
     "error": "Inget estimat"
   },
+  "MAP_TOOLS": {
+    "TITLE": "Kartverktyg",
+    "EMBEDDING_TOOL": "Inbäddningsverktyg",
+    "CLOSE": "Stäng"
+  },
+  "EMBED_TOOL": {
+    "TITLE": "Inbäddningsverktyg",
+    "DESCRIPTION": "Du kan bädda in vyer av Utemotionskartan på valfri webbplats med hjälp av inbäddningsverktyget.",
+    "LANGUAGE_LABEL": "Inbäddningens språk",
+    "LANGUAGE": {
+      "FI": "Finska",
+      "SV": "Svenska",
+      "EN": "Engelska"
+    },
+    "CONTENT_LABEL": "Visa",
+    "CONTENT": {
+      "ALL": "Kartan visas utan filter",
+      "SPORT": "Specifik idrottstyp",
+      "UNIT": "Specifik plats"
+    },
+    "SPORT_SELECT": "Välj idrottstyp",
+    "UNIT_ID_LABEL": "Plats-ID",
+    "VENUE_SEARCH_LABEL": "Sök plats",
+    "WIDTH_LABEL": "Inbäddningens bredd",
+    "WIDTH_AUTO": "Automatisk (fyller behållarens bredd)",
+    "WIDTH_FIXED": "Fast bredd (pixlar)",
+    "WIDTH": "Bredd",
+    "HEIGHT_LABEL": "Inbäddningens höjd",
+    "HEIGHT_RELATIVE": "Relativ (% av bredden)",
+    "HEIGHT_ABSOLUTE": "Absolut (pixlar)",
+    "HEIGHT": "Höjd",
+    "PREVIEW_LABEL": "Kartförhandsvisning",
+    "URL_LABEL": "URL-länk",
+    "HTML_LABEL": "HTML-kod",
+    "COPY_URL": "Kopiera URL",
+    "COPY_HTML": "Kopiera HTML-kod",
+    "COPIED": "Kopierad!",
+    "SEASON_ENDED": "Säsongen för denna sport har avslutats.",
+    "SEASON_ENDED_DETAIL": "Kartan visar platserna från den senaste aktiva säsongen.",
+    "CLOSE_PANEL": "Stäng",
+    "CLOSE": "Stäng inbäddningsverktyg"
+  },
   "COOKIES": {
     "MATOMO": "Kaka för statistiksystemet Matomo",
     "EXPIRATION_DAYS": "{{ days }} dagar"

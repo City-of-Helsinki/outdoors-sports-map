@@ -179,6 +179,48 @@
     "probably_impaired": "Mahdollisesti heikentynyt",
     "error": "Ei arviota"
   },
+  "MAP_TOOLS": {
+    "TITLE": "Karttatyökalut",
+    "EMBEDDING_TOOL": "Upotustyökalu",
+    "CLOSE": "Sulje"
+  },
+  "EMBED_TOOL": {
+    "TITLE": "Upotustyökalu",
+    "DESCRIPTION": "Voit upottaa Ulkoliikuntakartan näkymiä muille verkkosivuille upotustyökalun avulla.",
+    "LANGUAGE_LABEL": "Upotuksen kieli",
+    "LANGUAGE": {
+      "FI": "Suomi",
+      "SV": "Ruotsi",
+      "EN": "Englanti"
+    },
+    "CONTENT_LABEL": "Näytä",
+    "CONTENT": {
+      "ALL": "Kartta ilman suodatinta",
+      "SPORT": "Tietyn lajin kohteet",
+      "UNIT": "Yksittäinen kohde"
+    },
+    "SPORT_SELECT": "Valitse laji",
+    "UNIT_ID_LABEL": "Kohteen tunnus",
+    "VENUE_SEARCH_LABEL": "Hae kohdetta",
+    "WIDTH_LABEL": "Upotuksen leveys",
+    "WIDTH_AUTO": "Automaattinen (täyttää säiliön leveyden)",
+    "WIDTH_FIXED": "Kiinteä leveys (pikselit)",
+    "WIDTH": "Leveys",
+    "HEIGHT_LABEL": "Upotuksen korkeus",
+    "HEIGHT_RELATIVE": "Suhteellinen (% leveydestä)",
+    "HEIGHT_ABSOLUTE": "Absoluuttinen (pikselit)",
+    "HEIGHT": "Korkeus",
+    "PREVIEW_LABEL": "Kartan esikatselu",
+    "URL_LABEL": "URL-linkki",
+    "HTML_LABEL": "HTML-koodi",
+    "COPY_URL": "Kopioi URL",
+    "COPY_HTML": "Kopioi HTML-koodi",
+    "COPIED": "Kopioitu!",
+    "SEASON_ENDED": "Tämän lajin kausi on päättynyt.",
+    "SEASON_ENDED_DETAIL": "Kartalla näkyy viimeisen aktiivisen kauden kohteet.",
+    "CLOSE_PANEL": "Sulje",
+    "CLOSE": "Sulje upotustyökalu"
+  },
   "COOKIES": {
     "MATOMO": "Matomo-tilastointijärjestelmän eväste",
     "EXPIRATION_DAYS": "{{ days }} päivää"
