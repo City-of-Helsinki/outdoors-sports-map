@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { Route, useRouteMatch } from "react-router-dom";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 
+import routerPaths from "./appRoutes";
 import useLanguage from "../../common/hooks/useLanguage";
 import { replaceLanguageInPath } from "../../common/utils/pathUtils";
+import EmbedView from "../embed/EmbedView";
 import HomeContainer from "../home/HomeContainer";
 import { languageParam } from "../i18n/i18nConstants";
 
@@ -30,7 +32,12 @@ function LanguageAwareRoutes() {
     }
   }, [routeLanguage, language]);
 
-  return <Route path={`/${languageParam}`} component={HomeContainer} />;
+  return (
+    <Switch>
+      <Route exact path={routerPaths.embed} component={EmbedView} />
+      <Route path={`/${languageParam}`} component={HomeContainer} />
+    </Switch>
+  );
 }
 
 export default LanguageAwareRoutes;

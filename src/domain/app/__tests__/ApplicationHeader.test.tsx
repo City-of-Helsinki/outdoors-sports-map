@@ -108,4 +108,44 @@ describe("<ApplicationHeader />", () => {
       expect(openMapLink).toBeInTheDocument();
     });
   });
+
+  describe("map tools panel", () => {
+    it("renders the map tools button", () => {
+      renderComponent();
+      expect(
+        screen.getByRole("button", { name: "Karttatyökalut" })
+      ).toBeInTheDocument();
+    });
+
+    it("shows the map tools panel when the button is clicked", async () => {
+      renderComponent();
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button", { name: "Karttatyökalut" }));
+      expect(
+        screen.getByRole("menu", { name: /kartta/i })
+      ).toBeInTheDocument();
+    });
+
+    it("does not open the map tools panel when the embed tool is active", async () => {
+      renderComponent();
+      const user = userEvent.setup();
+      const mapToolsBtn = screen.getByRole("button", { name: "Karttatyökalut" });
+      // Open panel then launch embed tool from within it
+      await user.click(mapToolsBtn);
+      await user.click(screen.getByRole("menuitem", { name: "Upotustyökalu" }));
+      // Embed tool is now open; map tools button must be a no-op
+      await user.click(mapToolsBtn);
+      expect(
+        screen.queryByRole("menu", { name: /kartta/i })
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("onHeaderHeightChange", () => {
+    it("calls onHeaderHeightChange with a number on mount", () => {
+      const onHeaderHeightChange = vi.fn();
+      render(<ApplicationHeader onHeaderHeightChange={onHeaderHeightChange} />);
+      expect(onHeaderHeightChange).toHaveBeenCalledWith(expect.any(Number));
+    });
+  });
 });

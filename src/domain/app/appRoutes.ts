@@ -4,6 +4,7 @@ const routerPaths = {
   unitDetails: `/${languageParam}/unit/:unitId([^-]+):delimiter([$-])?:unitName?`,
   unitBrowser: `/${languageParam}`,
   unitBrowserSearch: `/${languageParam}/search`,
+  embed: `/${languageParam}/embed`,
 };
 
 export type UnitDetailsParams = {
