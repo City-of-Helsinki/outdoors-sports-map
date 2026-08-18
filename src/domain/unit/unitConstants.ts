@@ -6,6 +6,7 @@ import {
   SwimmingServices,
   IceSwimmingServices,
   SummerSupportingServices,
+  SupportingServices,
   YearRoundSupportingServices,
   SleddingServices,
 } from "../service/serviceConstants";
@@ -57,6 +58,15 @@ export const SportFilters = [
   UnitFilters.HIKING,
   UnitFilters.SLEDDING,
 ] as const;
+
+export const SportServices: Partial<Record<string, number[]>> = {
+  [UnitFilters.SKIING]: SkiingServices,
+  [UnitFilters.ICE_SKATING]: IceSkatingServices,
+  [UnitFilters.SWIMMING]: SwimmingServices,
+  [UnitFilters.ICE_SWIMMING]: IceSwimmingServices,
+  [UnitFilters.SLEDDING]: SleddingServices,
+  [UnitFilters.HIKING]: SupportingServices,
+};
 
 export const SkiingFilters = [
   UnitFilters.SKIING_FREESTYLE,
