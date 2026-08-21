@@ -9,7 +9,7 @@ Follow the instructions to set up local development environment. Alternatively, 
 ### Prerequisites
 
 -   Preferably use current Node.js LTS
--   Install [NPM](https://www.npmjs.com/) and [Yarn](https://yarnpkg.com)
+-   Install [pnpm](https://pnpm.io/installation)
 
 ### Setup
 
@@ -24,10 +24,22 @@ cp .env.example .env
 To start development server, run:
 
 ```
-yarn start
+pnpm start
 ```
 
 The application is now available at [http://localhost:3000](http://localhost:3000/).
+
+### Available commands
+
+| Command | Description |
+|---------|------------|
+| `pnpm start` | Start the development server |
+| `pnpm build` | Generate sitemap, type-check, and build for production |
+| `pnpm preview` | Preview the production build locally |
+| `pnpm test` | Run tests in watch mode |
+| `pnpm test:ui` | Run tests with Vitest UI |
+| `pnpm test:coverage` | Run tests with coverage report |
+| `pnpm lint` | Lint the source code |
 
 ## Development with Docker
 
