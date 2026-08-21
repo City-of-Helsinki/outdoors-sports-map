@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => ({
     ...(mode === 'development' ? [eslint()] : [])
   ],
   server: {
+    host: true,
     port: 3000,
     open: true
   },
