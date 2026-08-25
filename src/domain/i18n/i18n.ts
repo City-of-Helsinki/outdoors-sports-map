@@ -57,7 +57,7 @@ i18n
   .init(
     {
       load: "languageOnly",
-      whitelist: supportedLanguages,
+      supportedLngs: supportedLanguages,
       resources: localesByName,
       fallbackLng: DEFAULT_LANG,
       interpolation: {
