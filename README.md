@@ -35,6 +35,7 @@ The application is now available at [http://localhost:3000](http://localhost:300
 |---------|------------|
 | `pnpm start` | Start the development server |
 | `pnpm build` | Generate sitemap, type-check, and build for production |
+| `pnpm typecheck` | Type-check the project without generating build output |
 | `pnpm preview` | Preview the production build locally |
 | `pnpm test` | Run tests in watch mode |
 | `pnpm test:ui` | Run tests with Vitest UI |
