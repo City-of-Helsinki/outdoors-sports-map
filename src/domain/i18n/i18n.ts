@@ -65,7 +65,6 @@ i18n
       },
       detection: {
         order: ["path", "localStorage", "navigator"],
-        checkWhitelist: true,
       },
     },
     (err, t) => {

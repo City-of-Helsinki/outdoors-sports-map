@@ -21,8 +21,9 @@ function OutboundLink({ href, children, className, ...rest }: Props) {
       openInNewTab={true}
       href={href}
       external
-      openInNewTabAriaLabel={openInNewTabAriaLabel}
+      openInNewTabLabel={openInNewTabAriaLabel}
       openInExternalDomainAriaLabel={openInExternalDomainAriaLabel}
+      aria-label={`${children}. ${openInNewTabAriaLabel}`}
       className={classNames(className, "outbound-link")}
       {...rest}
     >

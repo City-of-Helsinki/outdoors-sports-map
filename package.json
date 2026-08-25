@@ -40,7 +40,7 @@
     "classnames": "^2.5.1",
     "d3": "^7.9.0",
     "date-fns": "^4.1.0",
-    "hds-react": "^4.8.1",
+    "hds-react": "^6.0.5",
     "history": "4.10.1",
     "i18next": "^26.3.6",
     "i18next-browser-languagedetector": "^8.2.1",
