@@ -9,6 +9,7 @@
     "build": "tsx --tsconfig ./scripts/tsconfig.json ./scripts/generate-sitemap.ts && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "typecheck": "tsc --noEmit",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint ./src"
@@ -89,7 +90,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.5",
     "vite-plugin-eslint": "^1.8.1",
-    "vitest": "^4.1.0",
+    "vitest": "^4.1.8",
     "vitest-sonar-reporter": "^3.0.0"
   }
 }
