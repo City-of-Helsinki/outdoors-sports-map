@@ -408,8 +408,9 @@ function LocationInfo({ unit }: LocationInfoProps) {
         </p>
       )}
       {unitWww && (
+        // OutboundLink hardcodes `external`, which makes HDS Link render an icon div invalid inside <p>
         <p>
-          <OutboundLink href={unitWww}>
+          <OutboundLink href={unitWww} external={false}>
             {t("UNIT_DETAILS.FURTHER_INFO")}
           </OutboundLink>
         </p>
