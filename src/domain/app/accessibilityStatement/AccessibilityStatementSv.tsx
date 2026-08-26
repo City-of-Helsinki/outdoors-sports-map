@@ -47,7 +47,7 @@ export default function AccessibilityStatementSv() {
         tillgängligt.
       </p>
       <p>
-        <Link external openInNewTab href="https://palautteet.hel.fi/sv">Ge respons med responsblanketten</Link>
+        <Link openInNewTab href="https://palautteet.hel.fi/sv">Ge respons med responsblanketten</Link>
       </p>
       <h3>Tillgänglighetstillsyn</h3>
       <p>
@@ -60,7 +60,7 @@ export default function AccessibilityStatementSv() {
       <p>Transport- och kommunikationsverket Traficom</p>
       <p>Enheten för tillsyn över digital tillgänglighet</p>
       <p>
-        <LinkWithoutLabel external openInNewTab>www.tillganglighetskrav.fi</LinkWithoutLabel>
+        <LinkWithoutLabel openInNewTab>www.tillganglighetskrav.fi</LinkWithoutLabel>
       </p>
       <p>E-post: <Email>saavutettavuus@traficom.fi</Email></p>
       <p>
@@ -71,7 +71,7 @@ export default function AccessibilityStatementSv() {
       <p>Utlåtandet har upprättats den 24 mars 2023.</p>
       <p>Utlåtandet har uppdaterats senast den 10 juni 2026.</p>
       <p>
-        <Link external openInNewTab href="https://www.finlex.fi/sv/laki/alkup/2019/20190306">
+        <Link openInNewTab href="https://www.finlex.fi/sv/laki/alkup/2019/20190306">
           Lagen om tillhandahållande av digitala tjänster (306/2019)
         </Link>
       </p>
