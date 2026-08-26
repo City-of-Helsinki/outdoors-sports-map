@@ -4,8 +4,9 @@
 !docker-entrypoint.sh
 !public/
 !package*.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
 !src/
-!*yarn*
 !tsconfig.json
 !scripts/
 !index.html
