@@ -1,3 +1,20 @@
+.header-button--inline {
+  flex-direction: row;
+  gap: var(--spacing-2-xs);
+
+  .header-button__icon {
+    display: inline-block;
+    margin: 0;
+  }
+
+  .header-button__label {
+    display: inline;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+  }
+}
+
 .application-header {
   padding: $gap;
   margin: $gap $gap 0 $gap;
