@@ -1,12 +1,11 @@
 # ===============================================
-FROM registry.access.redhat.com/ubi9/nodejs-22 AS appbase
+FROM registry.access.redhat.com/ubi9/nodejs-24 AS appbase
 # ===============================================
 
 WORKDIR /app
 
 USER root
-RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
-RUN yum -y install yarn
+RUN npm install -g pnpm
 
 # Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
 ENV NPM_CONFIG_LOGLEVEL warn
@@ -15,10 +14,6 @@ ENV NPM_CONFIG_LOGLEVEL warn
 ENV NPM_CONFIG_PREFIX=/app/.npm-global
 ENV PATH=$PATH:/app/.npm-global/bin
 
-# Yarn
-ENV YARN_VERSION=1.22.22
-RUN yarn policies set-version $YARN_VERSION
-
 RUN chown -R default:root /app
 
 USER default
@@ -26,12 +21,12 @@ USER default
 COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
 ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
 
-# Copy package.json and package-lock.json/yarn.lock files
-COPY --chown=default:root package*.json *yarn* ./
+# Copy package.json and lockfile
+COPY --chown=default:root package*.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 USER default
 
-RUN yarn && yarn cache clean --force && chown -R default:root node_modules
+RUN pnpm install --frozen-lockfile && pnpm store prune && chown -R default:root node_modules
 
 # Use non-root user
 
@@ -59,10 +54,22 @@ ARG REACT_APP_SITE_WIDE_NOTIFICATION_SV
 ARG REACT_APP_SITE_WIDE_NOTIFICATION_EN
 ARG REACT_APP_BYPASS_SEASON_FILTER
 ARG GENERATE_SITEMAP
+ARG REACT_APP_SENTRY_DSN
+ARG REACT_APP_SENTRY_ENVIRONMENT
+ARG REACT_APP_SENTRY_RELEASE
+ARG REACT_APP_SENTRY_TRACES_SAMPLE_RATE
+ARG REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS
+ARG REACT_APP_SENTRY_PROFILE_SESSION_SAMPLE_RATE
+# Org policy: keep these at 0 unless the Session Replay policy is revised
+ARG REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE
+ARG REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE
+# Build-only, used by @sentry/vite-plugin to upload source maps (never REACT_APP_ prefixed)
+ARG SENTRY_AUTH_TOKEN
+ARG SENTRY_PROJECT
 
 COPY --chown=default:root . /app/.
 
-RUN yarn build
+RUN pnpm build
 
 # ===================================
 FROM registry.access.redhat.com/ubi9/nginx-124 AS production
