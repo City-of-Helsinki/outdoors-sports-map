@@ -7,18 +7,26 @@ import "leaflet.heightgraph/dist/L.Control.Heightgraph.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.scss";
 
+import * as Sentry from "@sentry/react";
 import React from "react";
 import { createRoot } from 'react-dom/client';
 
 import Root from "./domain/app/AppRoot";
 import history from "./domain/app/appHistory";
+import initSentry from "./domain/app/initSentry";
 import reportWebVitals from "./reportWebVitals";
+
+initSentry();
 
 const container = document.getElementById("root");
 if (!container) {
   throw new Error("Failed to find the root element");
 }
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
+const root = createRoot(container, {
+  onUncaughtError: Sentry.reactErrorHandler(),
+  onCaughtError: Sentry.reactErrorHandler(),
+  onRecoverableError: Sentry.reactErrorHandler(),
+});
 root.render(
   <React.StrictMode>
     <Root history={history} />
