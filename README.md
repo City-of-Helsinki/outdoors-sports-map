@@ -89,6 +89,18 @@ _(you can add `--name outdoors-sports-map` to the command for easier referencing
 
 The application is now available at [http://localhost](http://localhost/).
 
+## Error tracking (Sentry)
+
+Sentry error tracking, tracing and profiling are disabled by default. To enable, set
+`REACT_APP_SENTRY_DSN` (see `.env.example` for the full list of `REACT_APP_SENTRY_*`
+variables). Session Replay is wired in but its sample rates default to `0`
+(`REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE`/`REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE`)
+and must stay at `0` per Platta organizational policy; only raise them if that policy is revised.
+
+Uploading source maps to `city-of-helsinki.sentry.io` during `pnpm build` is optional and
+only happens when the build-only `SENTRY_AUTH_TOKEN` variable is set (never commit this
+token; it's provided via CI secrets/Docker build args, not `.env`).
+
 ## Environments
 
 ### Test
