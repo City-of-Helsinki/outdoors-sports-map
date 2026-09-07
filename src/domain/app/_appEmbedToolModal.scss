@@ -112,6 +112,8 @@
   gap: 12px;
   overflow-y: auto;
   min-height: 0;
+  margin-left: calc(0 - var(--spacing-s));
+  padding-left: var(--spacing-s);
 }
 
 .embed-tool-modal__section {
@@ -320,10 +322,6 @@
   border: 2px solid $content-text;
   border-radius: $border-radius;
   overflow: hidden;
-
-  &:focus-within {
-    box-shadow: 0 0 0 3px var(--color-focus-outline);
-  }
 }
 
 .embed-tool-modal__copy-text {
@@ -338,4 +336,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.embed-tool-modal__copy-button {
+  outline-color: white !important;
+  outline-offset: -6px !important;
 }
