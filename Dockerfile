@@ -5,7 +5,7 @@ FROM registry.access.redhat.com/ubi9/nodejs-24 AS appbase
 WORKDIR /app
 
 USER root
-RUN npm install -g pnpm
+RUN npm install -g pnpm@11.22.0
 
 # Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
 ENV NPM_CONFIG_LOGLEVEL warn
