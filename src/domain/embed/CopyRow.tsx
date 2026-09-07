@@ -24,6 +24,7 @@ function CopyRow({ id, label, value, copyLabel, copiedLabel, copied, onCopy }: R
           readOnly
         />
         <Button
+          className="embed-tool-modal__copy-button"
           variant={ButtonVariant.Primary}
           iconEnd={<IconCopy aria-hidden />}
           onClick={onCopy}
