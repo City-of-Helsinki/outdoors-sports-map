@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.19.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.18.0...outdoors-sports-map-v2.19.0) (2026-09-12)
+
+
+### Features
+
+* **app:** Wire the embed tool into the app shell ([bbc412b](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/bbc412b2915306e1bc3ec22f1eb5d3137d9076c6))
+* **common/components:** Add reusable CloseButton component ([2743769](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/2743769b20e3dfec6c087d488d8784f15d125f2d))
+* **embed:** Build the embed domain ([ae7b139](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/ae7b1392316f8914336632f3d848d044e1246c97))
+* **i18n:** Add translation keys for the embed tool ([dd8d074](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/dd8d074a1f1f3a91b5b47e450b960492e010f830))
+* **unit:** Pull SportServices map into unitConstants ([3462639](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/34626394d89ed6fd19d3ab7f7f8793ee4bdfd0ac))
+* Upgrade application to React 19 ([38a7bd3](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/38a7bd3a4d2d8e4efcfdfbf08daa183aec89b130))
+
+
+### Bug Fixes
+
+* **a11y:** Remove external prop from links inside &lt;p&gt; elements ([8d6dd52](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/8d6dd52982b577133def739556551ca682b393cc))
+* Enhance copy button styling in CopyRow component ([ff606af](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/ff606afa7f27357c5148a1609476c4b8ea81044b))
+* Install libatomic for pnpm in Node 24 image ([2abf06d](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/2abf06d8cf4762150223af60b2cc5563a0f046dd))
+
 ## [2.18.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.17.0...outdoors-sports-map-v2.18.0) (2026-07-21)
 
 
