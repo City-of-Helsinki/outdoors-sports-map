@@ -5,6 +5,7 @@ import { UnitFilters, SportFilters } from "../unit/unitConstants";
 export const CONTENT_ALL   = "all"   as const;
 export const CONTENT_SPORT = "sport" as const;
 export const CONTENT_UNIT  = "unit"  as const;
+export const EMBED_UNIT_SELECTED_MESSAGE = "outdoors-sports-map:unit-selected" as const;
 export type ContentType = typeof CONTENT_ALL | typeof CONTENT_SPORT | typeof CONTENT_UNIT;
 
 export const CONTENT_OPTIONS: { value: ContentType; labelKey: string }[] = [

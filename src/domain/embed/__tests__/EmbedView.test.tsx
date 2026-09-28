@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { render, screen } from "../../testingLibraryUtils";
+import { render, screen, userEvent } from "../../testingLibraryUtils";
 import EmbedView from "../EmbedView";
+import { EMBED_UNIT_SELECTED_MESSAGE } from "../embedConstants";
 import { Unit } from "../../unit/types";
 import { UnitFilters } from "../../unit/unitConstants";
 import { getOffSeasonSportFilters } from "../../unit/unitHelpers";
@@ -36,15 +37,22 @@ vi.mock("../EmbedMap", () => ({
   default: ({
     units,
     isLoading,
+    onSelectUnit,
   }: {
     units: Unit[];
     isLoading: boolean;
+    onSelectUnit: (unitId: string) => void;
   }) => (
-    <div
-      data-testid="embed-map"
-      data-count={units.length}
-      data-loading={String(isLoading)}
-    />
+    <>
+      <div
+        data-testid="embed-map"
+        data-count={units.length}
+        data-loading={String(isLoading)}
+      />
+      <button onClick={() => onSelectUnit(units[0]?.id ?? "")}>
+        Select unit
+      </button>
+    </>
   ),
 }));
 
@@ -214,6 +222,23 @@ describe("EmbedView", () => {
     setupMocks();
     render(<EmbedView />);
     expect(screen.queryByTestId("embed-unit-panel")).not.toBeInTheDocument();
+  });
+
+  it("sends the selected unit ID to the parent when a map unit is clicked", async () => {
+    const user = userEvent.setup();
+    setupMocks({
+      unitsData: { entities: { unit: { [mockUnit.id]: mockUnit } } },
+    });
+    const postMessage = vi.spyOn(window.parent, "postMessage");
+    render(<EmbedView />);
+
+    await user.click(screen.getByRole("button", { name: "Select unit" }));
+
+    expect(postMessage).toHaveBeenCalledWith(
+      { type: EMBED_UNIT_SELECTED_MESSAGE, unitId: mockUnit.id },
+      window.location.origin,
+    );
+    postMessage.mockRestore();
   });
 
   it("shows the season-ended notice for out-of-season sports", () => {

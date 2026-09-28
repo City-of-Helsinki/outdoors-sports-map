@@ -1,7 +1,7 @@
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
-import { render, screen, fireEvent } from "../../testingLibraryUtils";
+import { act, render, screen, fireEvent } from "../../testingLibraryUtils";
 import AppEmbedToolModal from "../AppEmbedToolModal";
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
@@ -100,6 +100,38 @@ describe("AppEmbedToolModal", () => {
     renderModal();
     fireEvent.click(screen.getByRole("radio", { name: /yksittäinen/i }));
     expect(screen.getByTestId("venue-search")).toBeInTheDocument();
+  });
+
+  it("updates the selected unit when one is clicked in the preview map", async () => {
+    const user = userEvent.setup();
+    renderModal();
+    await user.click(screen.getByRole("radio", { name: /yksittäinen/i }));
+    const iframe = screen.getByTitle("Kartan esikatselu") as HTMLIFrameElement;
+    const message = new MessageEvent("message", {
+      origin: window.location.origin,
+      data: { type: "outdoors-sports-map:unit-selected", unitId: "42" },
+    });
+    Object.defineProperty(message, "source", { value: iframe.contentWindow });
+
+    act(() => window.dispatchEvent(message));
+
+    expect(iframe.src).toContain("?unit=42");
+  });
+
+  it("ignores unit selection messages from a different origin", async () => {
+    const user = userEvent.setup();
+    renderModal();
+    await user.click(screen.getByRole("radio", { name: /yksittäinen/i }));
+    const iframe = screen.getByTitle("Kartan esikatselu") as HTMLIFrameElement;
+    const message = new MessageEvent("message", {
+      origin: "https://example.com",
+      data: { type: "outdoors-sports-map:unit-selected", unitId: "42" },
+    });
+    Object.defineProperty(message, "source", { value: iframe.contentWindow });
+
+    act(() => window.dispatchEvent(message));
+
+    expect(iframe.src).not.toContain("unit=42");
   });
 
   it("shows width pixel input when fixed width mode is selected", () => {
