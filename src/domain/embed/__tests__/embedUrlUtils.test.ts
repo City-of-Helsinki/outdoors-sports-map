@@ -57,6 +57,18 @@ describe("buildEmbedUrl", () => {
     );
   });
 
+  it("adds multiple city filters to the embed URL", () => {
+    expect(buildEmbedUrl("fi", "all", "", ["helsinki", "espoo"])).toBe(
+      "https://example.com/fi/embed?city=helsinki,espoo"
+    );
+  });
+
+  it("combines sport and city filters", () => {
+    expect(buildEmbedUrl("fi", "skiing", "", ["vantaa"])).toBe(
+      "https://example.com/fi/embed?sport=skiing&city=vantaa"
+    );
+  });
+
   it("uses unitId over sport when both are provided", () => {
     // unitId takes priority
     expect(buildEmbedUrl("fi", "skiing", "99")).toBe(

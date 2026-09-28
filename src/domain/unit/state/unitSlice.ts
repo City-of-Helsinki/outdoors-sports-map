@@ -97,7 +97,7 @@ export const fetchAllPaginatedResults = async (
 export const unitApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Query for getting units based on specific services (for map display)
-    getUnits: builder.query<NormalizedUnitSchema, { services?: number[] } | void>({
+    getUnits: builder.query<NormalizedUnitSchema, { services?: number[]; division?: string } | void>({
       queryFn: async (params, api, _options, baseQuery) => {
         const { services, ...otherParams } = params ?? {};
         const servicesToUse = services && services.length > 0 

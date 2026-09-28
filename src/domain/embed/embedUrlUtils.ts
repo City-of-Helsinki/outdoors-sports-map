@@ -1,12 +1,17 @@
-import { CONTENT_ALL, DEFAULT_ABSOLUTE_HEIGHT, DEFAULT_RELATIVE_HEIGHT, DEFAULT_WIDTH_PX, HeightMode, WidthMode } from "./embedConstants";
+import { CONTENT_ALL, DEFAULT_ABSOLUTE_HEIGHT, DEFAULT_RELATIVE_HEIGHT, DEFAULT_WIDTH_PX, CityCode, HeightMode, WidthMode } from "./embedConstants";
 
-export function buildEmbedUrl(lang: string, sport: string, unitId: string): string {
+export function buildEmbedUrl(lang: string, sport: string, unitId: string, cities: CityCode[] = []): string {
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const base = `${origin}/${lang}/embed`;
   const id = String(unitId).trim();
   if (id) return `${base}?unit=${encodeURIComponent(id)}`;
-  if (sport !== CONTENT_ALL) return `${base}?sport=${encodeURIComponent(sport)}`;
-  return base;
+  const params: string[] = [];
+  if (sport !== CONTENT_ALL) params.push(`sport=${encodeURIComponent(sport)}`);
+  if (cities.length > 0) {
+    params.push(`city=${cities.map((city) => encodeURIComponent(city)).join(",")}`);
+  }
+  const query = params.join("&");
+  return query ? `${base}?${query}` : base;
 }
 
 export function buildHtmlCode(

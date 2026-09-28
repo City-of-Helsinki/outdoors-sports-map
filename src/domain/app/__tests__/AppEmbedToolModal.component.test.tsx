@@ -134,6 +134,34 @@ describe("AppEmbedToolModal", () => {
     expect(iframe.src).not.toContain("unit=42");
   });
 
+  it("adds selected cities to the preview URL", async () => {
+    const user = userEvent.setup();
+    renderModal();
+
+    await user.click(screen.getByRole("checkbox", { name: "Helsinki" }));
+    await user.click(screen.getByRole("checkbox", { name: "Espoo" }));
+
+    expect(screen.getByTitle("Kartan esikatselu")).toHaveAttribute(
+      "src",
+      expect.stringContaining("city=helsinki,espoo"),
+    );
+  });
+
+  it("renders city filters in their own section", () => {
+    renderModal();
+
+    const citySection = screen.getByRole("heading", {
+      name: "Kaupunki",
+    }).closest("section");
+
+    expect(citySection?.contains(
+      screen.getByRole("checkbox", { name: "Helsinki" }),
+    )).toBe(true);
+    expect(citySection?.contains(
+      screen.getByRole("radio", { name: /kartta ilman/i }),
+    )).toBe(false);
+  });
+
   it("shows width pixel input when fixed width mode is selected", () => {
     renderModal();
     fireEvent.click(screen.getByRole("radio", { name: /kiinteä leveys/i }));

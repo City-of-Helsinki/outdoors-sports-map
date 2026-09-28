@@ -218,6 +218,16 @@ describe("EmbedView", () => {
     expect(screen.getByTestId("embed-map")).toHaveAttribute("data-loading", "true");
   });
 
+  it("requests units from multiple selected cities", () => {
+    setupMocks({ search: "?city=helsinki,espoo" });
+    render(<EmbedView />);
+
+    expect(mockUseGetUnitsQuery).toHaveBeenLastCalledWith({
+      services: undefined,
+      division: "ocd-division/country:fi/kunta:helsinki,ocd-division/country:fi/kunta:espoo",
+    }, { skip: false });
+  });
+
   it("does not render EmbedUnitPanel initially", () => {
     setupMocks();
     render(<EmbedView />);
