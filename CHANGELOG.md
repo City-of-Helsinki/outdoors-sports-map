@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.20.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.19.0...outdoors-sports-map-v2.20.0) (2026-09-28)
+
+
+### Features
+
+* Filter embedded maps by city ([e8104d0](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/e8104d0945b137655efc5876c422e9ea6c8cb5a4))
+* Select embed unit from map clicks ([b3aa43f](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/b3aa43fd2585253886318d930ea7dbc0fc5ea1cb))
+
 ## [2.19.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.18.0...outdoors-sports-map-v2.19.0) (2026-09-22)
 
 
