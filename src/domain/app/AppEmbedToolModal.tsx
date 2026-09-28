@@ -13,6 +13,7 @@ import {
   CONTENT_OPTIONS,
   CONTENT_SPORT,
   CONTENT_UNIT,
+  EMBED_UNIT_SELECTED_MESSAGE,
   DEFAULT_ABSOLUTE_HEIGHT,
   DEFAULT_HEIGHT_MODE,
   DEFAULT_RELATIVE_HEIGHT,
@@ -65,6 +66,7 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
   const [copiedHtml, setCopiedHtml]     = useState<boolean>(false);
   const [headerTop, setHeaderTop]       = useState<number>(0);
   const overlayRef                      = useRef<HTMLDialogElement>(null);
+  const previewFrameRef                 = useRef<HTMLIFrameElement>(null);
   const embedUrl = useMemo(
     () => buildEmbedUrl(
       embedLang,
@@ -111,6 +113,35 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
     setContentType(type);
     setUnitId("");
   }, []);
+
+  useEffect(() => {
+    if (!show || contentType !== CONTENT_UNIT) return;
+
+    const handleMessage = (event: MessageEvent<unknown>) => {
+      const previewFrame = previewFrameRef.current;
+      if (
+        !previewFrame ||
+        event.origin !== window.location.origin ||
+        event.source !== previewFrame.contentWindow ||
+        typeof event.data !== "object" ||
+        event.data === null
+      ) {
+        return;
+      }
+
+      const message = event.data as { type?: unknown; unitId?: unknown };
+      if (
+        message.type === EMBED_UNIT_SELECTED_MESSAGE &&
+        typeof message.unitId === "string" &&
+        message.unitId.trim()
+      ) {
+        setUnitId(message.unitId.trim());
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [show, contentType]);
 
   // Track app-header height so the overlay starts exactly below it
   useEffect(() => {
@@ -294,6 +325,7 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
             </h3>
             <div className="embed-tool-modal__preview-frame" style={previewFrameStyle}>
               <iframe
+                ref={previewFrameRef}
                 src={embedUrl}
                 title={t("EMBED_TOOL.PREVIEW_LABEL")}
                 className="embed-tool-modal__iframe"

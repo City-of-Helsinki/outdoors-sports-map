@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import EmbedMap from "./EmbedMap";
 import EmbedUnitPanel from "./EmbedUnitPanel";
+import { EMBED_UNIT_SELECTED_MESSAGE } from "./embedConstants";
 import Loading from "../../common/components/Loading";
 import useLanguage from "../../common/hooks/useLanguage";
 import { DETAIL_ZOOM_IN, DEFAULT_ZOOM } from "../map/mapConstants";
@@ -79,7 +80,14 @@ function EmbedView() {
   const selectedUnit = clickedUnit ?? (unitId && singleUnit ? singleUnit : undefined);
 
   const handleSelectUnit = (id: string) => {
-    setClickedUnit(units.find((u) => u.id === id));
+    const unit = units.find((u) => u.id === id);
+    setClickedUnit(unit);
+    if (unit) {
+      window.parent.postMessage(
+        { type: EMBED_UNIT_SELECTED_MESSAGE, unitId: String(unit.id) },
+        window.location.origin,
+      );
+    }
   };
 
   return (
