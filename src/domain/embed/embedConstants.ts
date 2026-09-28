@@ -8,6 +8,14 @@ export const CONTENT_UNIT  = "unit"  as const;
 export const EMBED_UNIT_SELECTED_MESSAGE = "outdoors-sports-map:unit-selected" as const;
 export type ContentType = typeof CONTENT_ALL | typeof CONTENT_SPORT | typeof CONTENT_UNIT;
 
+export const CITIES = [
+  { value: "espoo", division: "ocd-division/country:fi/kunta:espoo", labelKey: "EMBED_TOOL.CITY.ESPOO" },
+  { value: "helsinki", division: "ocd-division/country:fi/kunta:helsinki", labelKey: "EMBED_TOOL.CITY.HELSINKI" },
+  { value: "kirkkonummi", division: "ocd-division/country:fi/kunta:kirkkonummi", labelKey: "EMBED_TOOL.CITY.KIRKKONUMMI" },
+  { value: "vantaa", division: "ocd-division/country:fi/kunta:vantaa", labelKey: "EMBED_TOOL.CITY.VANTAA" },
+] as const;
+export type CityCode = typeof CITIES[number]["value"];
+
 export const CONTENT_OPTIONS: { value: ContentType; labelKey: string }[] = [
   { value: CONTENT_ALL,   labelKey: "EMBED_TOOL.CONTENT.ALL" },
   { value: CONTENT_SPORT, labelKey: "EMBED_TOOL.CONTENT.SPORT" },

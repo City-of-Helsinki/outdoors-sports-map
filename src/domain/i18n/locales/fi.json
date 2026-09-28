@@ -200,6 +200,13 @@
       "UNIT": "Yksittäinen kohde"
     },
     "SPORT_SELECT": "Valitse laji",
+    "CITY_LABEL": "Kaupunki",
+    "CITY": {
+      "ESPOO": "Espoo",
+      "HELSINKI": "Helsinki",
+      "KIRKKONUMMI": "Kirkkonummi",
+      "VANTAA": "Vantaa"
+    },
     "UNIT_ID_LABEL": "Kohteen tunnus",
     "VENUE_SEARCH_LABEL": "Hae kohdetta",
     "WIDTH_LABEL": "Upotuksen leveys",

@@ -199,6 +199,13 @@
       "UNIT": "Specifik plats"
     },
     "SPORT_SELECT": "Välj idrottstyp",
+    "CITY_LABEL": "Stad",
+    "CITY": {
+      "ESPOO": "Esbo",
+      "HELSINKI": "Helsingfors",
+      "KIRKKONUMMI": "Kyrkslätt",
+      "VANTAA": "Vanda"
+    },
     "UNIT_ID_LABEL": "Plats-ID",
     "VENUE_SEARCH_LABEL": "Sök plats",
     "WIDTH_LABEL": "Inbäddningens bredd",

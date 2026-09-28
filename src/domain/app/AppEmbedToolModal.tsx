@@ -1,4 +1,4 @@
-import { IconLayers, SelectionGroup } from "hds-react";
+import { Checkbox, IconLayers, SelectionGroup } from "hds-react";
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -23,6 +23,8 @@ import {
   HEIGHT_OPTIONS,
   LANGUAGES,
   MAX_PREVIEW_HEIGHT_PX,
+  CITIES,
+  CityCode,
   SPORT_OPTIONS,
   WIDTH_MODE_FIXED,
   WIDTH_OPTIONS,
@@ -40,6 +42,7 @@ const HEADER_ID          = "app-header";
 const TITLE_ID           = "embed-tool-overlay-title";
 const LANG_HEADING_ID    = "embed-lang-heading";
 const CONTENT_HEADING_ID = "embed-content-heading";
+const CITY_HEADING_ID    = "embed-city-heading";
 const WIDTH_HEADING_ID   = "embed-width-heading";
 const HEIGHT_HEADING_ID  = "embed-height-heading";
 
@@ -57,6 +60,7 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
   const [embedLang, setEmbedLang]       = useState<string>(locale);
   const [contentType, setContentType]   = useState<ContentType>(CONTENT_ALL);
   const [sport, setSport]               = useState<string>(UnitFilters.SKIING);
+  const [cities, setCities]             = useState<CityCode[]>([]);
   const [unitId, setUnitId]             = useState<string>("");
   const [widthMode, setWidthMode]       = useState<WidthMode>(DEFAULT_WIDTH_MODE);
   const [widthPx, setWidthPx]           = useState<string>(DEFAULT_WIDTH_PX);
@@ -72,8 +76,9 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
       embedLang,
       contentType === CONTENT_SPORT ? sport : CONTENT_ALL,
       contentType === CONTENT_UNIT ? unitId : "",
+      contentType === CONTENT_UNIT ? [] : cities,
     ),
-    [embedLang, contentType, sport, unitId],
+    [embedLang, contentType, sport, unitId, cities],
   );
 
   const htmlCode = useMemo(
@@ -113,6 +118,12 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
     setContentType(type);
     setUnitId("");
   }, []);
+
+  const toggleCity = (city: CityCode) => {
+    setCities((selected) => selected.includes(city)
+      ? selected.filter((value) => value !== city)
+      : [...selected, city]);
+  };
 
   useEffect(() => {
     if (!show || contentType !== CONTENT_UNIT) return;
@@ -271,6 +282,26 @@ function AppEmbedToolModal({ focusAfterCloseRef, show = false, onClose }: Readon
                 </div>
               )}
             </EmbedSection>
+
+            {contentType !== CONTENT_UNIT && (
+              <EmbedSection
+                headingId={CITY_HEADING_ID}
+                title={t("EMBED_TOOL.CITY_LABEL")}
+              >
+                <div className="embed-tool-modal__cities">
+                  {CITIES.map((city) => (
+                    <Checkbox
+                      key={city.value}
+                      id={`embed-city-${city.value}`}
+                      name="embed-city"
+                      label={t(city.labelKey)}
+                      checked={cities.includes(city.value)}
+                      onChange={() => toggleCity(city.value)}
+                    />
+                  ))}
+                </div>
+              </EmbedSection>
+            )}
 
             <EmbedSection headingId={WIDTH_HEADING_ID} title={t("EMBED_TOOL.WIDTH_LABEL")}>
               <SelectionGroup aria-labelledby={WIDTH_HEADING_ID}>

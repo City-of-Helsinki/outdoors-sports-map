@@ -196,6 +196,21 @@ describe('unitSlice', () => {
         expect(request.url).toContain('page_size=500'); // Custom param should override default
       });
 
+      it('should send selected divisions as an API filter', async () => {
+        const mockResponse = { results: mockUnits };
+        mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));
+
+        const store = createApiTestStore();
+        await store.dispatch(unitApi.endpoints.getUnits.initiate({
+          division: 'ocd-division/country:fi/kunta:helsinki,ocd-division/country:fi/kunta:espoo',
+        }));
+
+        const [request] = mockFetch.mock.calls[0];
+        expect(new URL(request.url).searchParams.get('division')).toBe(
+          'ocd-division/country:fi/kunta:helsinki,ocd-division/country:fi/kunta:espoo',
+        );
+      });
+
       it('should use provided services when services array has length > 0', async () => {
         const mockResponse = { results: mockUnits };
         mockFetch.mockResolvedValueOnce(createMockResponse(mockResponse));

@@ -144,6 +144,18 @@
   cursor: pointer;
 }
 
+.embed-tool-modal__cities {
+  display: grid;
+  gap: 6px;
+  margin-top: var(--spacing-xs);
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
 .embed-tool-modal__unit-search {
   margin-top: 8px;
   margin-left: 28px;

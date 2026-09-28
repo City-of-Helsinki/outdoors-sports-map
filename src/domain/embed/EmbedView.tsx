@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import EmbedMap from "./EmbedMap";
 import EmbedUnitPanel from "./EmbedUnitPanel";
-import { EMBED_UNIT_SELECTED_MESSAGE } from "./embedConstants";
+import { CITIES, CityCode, EMBED_UNIT_SELECTED_MESSAGE } from "./embedConstants";
 import Loading from "../../common/components/Loading";
 import useLanguage from "../../common/hooks/useLanguage";
 import { DETAIL_ZOOM_IN, DEFAULT_ZOOM } from "../map/mapConstants";
@@ -48,16 +48,27 @@ function EmbedView() {
   const params = new URLSearchParams(search);
   const unitId = params.get("unit");
   const sport = params.get("sport");
+  const cityCodes = (params.get("city") ?? params.get("municipality") ?? "")
+    .split(",")
+    .filter((code): code is CityCode =>
+      CITIES.some((city) => city.value === code),
+    );
 
   const [clickedUnit, setClickedUnit] = useState<Unit | undefined>(undefined);
 
   const services = sport ? SportServices[sport] : undefined;
+  const division = cityCodes.length > 0
+    ? cityCodes
+      .map((code) => CITIES.find((city) => city.value === code)?.division)
+      .filter((value) => value !== undefined)
+      .join(",")
+    : undefined;
 
   const { data: singleUnit, isLoading: isSingleLoading } =
     useGetUnitByIdQuery(unitId ?? "", { skip: !unitId });
 
   const { data: unitsData, isLoading: isUnitsLoading } = useGetUnitsQuery(
-    services ? { services } : undefined,
+    services || division ? { services, division } : undefined,
     { skip: !!unitId }
   );
 

@@ -204,6 +204,13 @@
       "UNIT": "Specific venue"
     },
     "SPORT_SELECT": "Select sport type",
+    "CITY_LABEL": "City",
+    "CITY": {
+      "ESPOO": "Espoo",
+      "HELSINKI": "Helsinki",
+      "KIRKKONUMMI": "Kirkkonummi",
+      "VANTAA": "Vantaa"
+    },
     "UNIT_ID_LABEL": "Venue ID",
     "VENUE_SEARCH_LABEL": "Search venue",
     "WIDTH_LABEL": "Width of the embedding",
