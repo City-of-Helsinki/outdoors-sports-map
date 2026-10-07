@@ -25,7 +25,7 @@ function useAppSearch() {
     maxUnitCount = state?.search?.maxUnitCount || UNIT_BATCH_SIZE.toString(),
   } = useSearch<AppSearch>();
 
-  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+  const favourites = JSON.parse(localStorage?.getItem("favouriteUnits") || "[]");
   const selectedSport = sport;
   const sportFavourites = favourites.filter(
     (favourite: Unit) => getUnitSport(favourite) === selectedSport,
