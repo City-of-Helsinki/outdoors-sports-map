@@ -373,7 +373,7 @@ export const sortByCondition = (units: Unit[]) =>
   ]);
 
 export const sortByFavorites = (units: Unit[]): Unit[] => {
-  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") || "[]");
+  const favourites = JSON.parse(localStorage?.getItem("favouriteUnits") || "[]");
   return units.filter((unit) =>
     favourites.some((favourite: Unit) => favourite.id === unit.id),
   );
@@ -756,11 +756,14 @@ export const getUnitObservations = (unit: Unit | undefined) => {
 };
 
 export const isUnitInFavourites = (unit: Unit): boolean => {
-  const favourites = JSON.parse(localStorage.getItem("favouriteUnits") ?? "[]") as Unit[];
+  const favourites = JSON.parse(localStorage?.getItem("favouriteUnits") ?? "[]") as Unit[];
   return favourites.some((favourite) => favourite.id === unit.id);
 };
 
 export const toggleFavourite = (unit: Unit): void => {
+  if (!localStorage) {
+    return;
+  }
   const favourites = JSON.parse(localStorage.getItem("favouriteUnits") ?? "[]") as Unit[];
   const updated = favourites.some((f) => f.id === unit.id)
     ? favourites.filter((f) => f.id !== unit.id)
