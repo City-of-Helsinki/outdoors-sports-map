@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.20.1](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.20.0...outdoors-sports-map-v2.20.1) (2026-10-24)
+
+
+### Bug Fixes
+
+* Add null checks for localStorage access ([b0703b1](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/b0703b16a6362b4dffa8163b2d885a12770f3219))
+
 ## [2.20.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.19.0...outdoors-sports-map-v2.20.0) (2026-09-28)
 
 
