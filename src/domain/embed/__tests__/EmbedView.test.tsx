@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { render, screen, userEvent } from "../../testingLibraryUtils";
 import EmbedView from "../EmbedView";
@@ -131,6 +131,14 @@ const filterBySport = (units: Unit[], serviceIds: number[]) =>
 // ─── isSportOutOfSeason ───────────────────────────────────────────────────────
 
 describe("isSportOutOfSeason", () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date("2026-08-15T12:00:00Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("returns false for null sport", () => {
     expect(isSportOutOfSeason(null)).toBe(false);
   });
@@ -186,6 +194,14 @@ describe("embed unit filtering logic", () => {
 // ─── EmbedView component ──────────────────────────────────────────────────────
 
 describe("EmbedView", () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date("2026-08-15T12:00:00Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("renders the map when no unitId param is given", () => {
     setupMocks();
     render(<EmbedView />);
