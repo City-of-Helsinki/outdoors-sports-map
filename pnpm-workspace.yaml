@@ -7,17 +7,6 @@ shamefullyHoist: true
 overrides:
   '@types/react': '^18.3.0'
   '@types/react-dom': '^18.3.0'
-  semver: '>=6.3.1'
-  braces: '>=3.0.3'
-  path-to-regexp: '^1.9.0'
-  cookie: '>=0.7.0 <2'
-  minimatch@>=9.0.0 <9.0.6: ^9.0.6
-  minimatch@>=9.0.0 <9.0.7: ^9.0.7
-  uuid@<11.1.1: ^11.1.1
-  browserslist@4.28.0: ^4.28.8
-  rollup@^4: 4.65.0
-  source-map-js@<1.2.2: 1.2.2
-  js-yaml@>=4.0.0 <4.3.2: 4.3.2
 
 allowBuilds:
   '@sentry/cli': true
