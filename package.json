@@ -7,6 +7,7 @@
   },
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "start": "vite",
     "dev": "vite",
     "build": "tsx --tsconfig ./scripts/tsconfig.json ./scripts/generate-sitemap.ts && tsc && vite build",
@@ -75,6 +76,8 @@
     "whatwg-fetch": "^3.6.20"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@sentry/vite-plugin": "^5.4.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
@@ -90,6 +93,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^17.0.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
     "prettier": "^3.3.2",
     "typescript": "^5.9.3",
