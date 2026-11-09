@@ -7,7 +7,7 @@ WORKDIR /app
 USER root
 RUN dnf install -y libatomic && \
   dnf clean all && \
-  npm install -g pnpm@11.22.0
+  npm install -g pnpm@11.28.11
 
 # Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
 ENV NPM_CONFIG_LOGLEVEL warn
