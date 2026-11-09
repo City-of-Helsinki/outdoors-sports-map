@@ -64,8 +64,9 @@ export function removeLanguageFromPathname(pathname: string) {
 
 export function removeLanguageFromUrl(href: string) {
   const url = new URL(href);
+  url.pathname = removeLanguageFromPathname(url.pathname);
 
-  return new URL(removeLanguageFromPathname(url.pathname), url.href).href;
+  return url.href;
 }
 
 export function hasPathLanguage(pathname: string, language?: string) {

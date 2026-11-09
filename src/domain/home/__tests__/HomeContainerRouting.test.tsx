@@ -84,6 +84,7 @@ describe("HomeContainer Routing Integration", () => {
   describe("invalid routes - should show NotFound", () => {
     it.each([
       "/fi/invalid-path",
+      "/fi//",
       "/fi/random-stuff/more-stuff",
       "/sv/invalid",
       "/en/invalid",
