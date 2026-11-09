@@ -70,8 +70,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       hds-react:
-        specifier: ^6.0.5
-        version: 6.0.5(@types/react@18.3.27)(postcss@8.5.31)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: ^6.0.7
+        version: 6.0.7(@types/react@18.3.27)(postcss@8.5.31)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       history:
         specifier: 4.10.1
         version: 4.10.1
@@ -2290,16 +2290,16 @@ packages:
   hast-util-whitespace@2.0.1:
     resolution: {integrity: sha512-nAxA0v8+vXSBDt3AnRUNjyRIQ0rD+ntpbAp4LnPkumc5M9yUbSMa4XDU9Q6etY4f1Wp4bNgvc1yjiZtsTTrSng==}
 
-  hds-core@6.0.5:
-    resolution: {integrity: sha512-OMI4Thr+aZKuNTx1oXi28bBQ14elqBaF/gzszaNQerlYLR8lHeI6x4nTijU9Jqj6DiVGyQ8Hky6e0pdpLmBRNg==}
+  hds-core@6.0.7:
+    resolution: {integrity: sha512-RTBTGWgq2nxnbf07UmMR9pDWCqaBJZ6jrV2ZDzn6ya5mH1+cYWa1N2JV4PBfHQWOPivDj0yEIHpQzWq3EwI+dg==}
     engines: {node: ^24}
 
-  hds-design-tokens@6.0.5:
-    resolution: {integrity: sha512-J9jlvTRFVxyzy4khDXbWGLXqfzhPyJp4i8WrWwmozEf0cIA3gGkHli0AvYCjjKM3G2L/3rinKqPBk310UZfuPA==}
+  hds-design-tokens@6.0.7:
+    resolution: {integrity: sha512-yYEoNitAJGjZa0AfCUjzytKygorAsqNJwSlb+y6T6KjkJxvoW1yva9SxAQptWpEADE7BlKwn6/MYgkWS2LGf5Q==}
     engines: {node: ^24}
 
-  hds-react@6.0.5:
-    resolution: {integrity: sha512-OFaaPTop9UElK6NN/o99b/N+7+ZqQIYcYFM1OKtSw/yHLwHidoIRDbOsQqnGjSEpiTgNWLZjxhcSlwzNMdqiQg==}
+  hds-react@6.0.7:
+    resolution: {integrity: sha512-jlINoju5VhTsfWzQA8kOcilrtvx2agVAETTdj7BSKClxpYL8HzNrZRLch9XDpIZxziZ9oh7ZMWlM/iX1u0e6hA==}
     engines: {node: ^24}
     peerDependencies:
       postcss: ^8.4.21
@@ -5880,11 +5880,11 @@ snapshots:
 
   hast-util-whitespace@2.0.1: {}
 
-  hds-core@6.0.5: {}
+  hds-core@6.0.7: {}
 
-  hds-design-tokens@6.0.5: {}
+  hds-design-tokens@6.0.7: {}
 
-  hds-react@6.0.5(@types/react@18.3.27)(postcss@8.5.31)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  hds-react@6.0.7(@types/react@18.3.27)(postcss@8.5.31)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       '@apollo/client': 3.14.1(@types/react@18.3.27)(graphql@16.14.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@babel/runtime': 7.29.7
@@ -5899,8 +5899,8 @@ snapshots:
       crc-32: 1.2.2
       date-fns: 2.30.0
       graphql: 16.14.2
-      hds-core: 6.0.5
-      hds-design-tokens: 6.0.5
+      hds-core: 6.0.7
+      hds-design-tokens: 6.0.7
       jwt-decode: 3.1.2
       kashe: 1.2.0
       lodash: 4.18.1
