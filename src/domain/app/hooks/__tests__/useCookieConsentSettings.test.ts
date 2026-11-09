@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import useCookieConsentSettings, { COOKIE_CONSENT_GROUP } from '../useCookieConsentSettings';
@@ -7,35 +7,6 @@ import useCookieConsentSettings, { COOKIE_CONSENT_GROUP } from '../useCookieCons
 vi.mock('../useLocale', () => ({
   default: () => 'en',
 }));
-
-// Mock siteSettings JSON
-const mockSiteSettings = {
-  languages: [
-    { code: 'en', name: 'English', direction: 'ltr' },
-    { code: 'fi', name: 'Finnish', direction: 'ltr' }
-  ],
-  siteName: { en: 'Test Site', fi: 'Testisivusto' },
-  cookieName: 'test-cookie-consents',
-  monitorInterval: 0,
-  fallbackLanguage: 'en',
-  requiredGroups: [
-    {
-      groupId: 'shared',
-      title: { en: 'Required Cookies', fi: 'Pakolliset evästeet' },
-      cookies: []
-    }
-  ],
-  optionalGroups: [
-    {
-      groupId: 'statistics',
-      title: { en: 'Statistics', fi: 'Tilastot' },
-      cookies: []
-    }
-  ]
-};
-
-// Mock the JSON import
-vi.mock('../data/siteSettings.json', () => ({ default: mockSiteSettings }));
 
 // Mock window._paq
 const mockPaq = {
@@ -58,17 +29,9 @@ describe('useCookieConsentSettings', () => {
     vi.restoreAllMocks();
   });
 
-  it('should return null initially while loading', () => {
+  it('should return cookie consent settings immediately', () => {
     const { result } = renderHook(() => useCookieConsentSettings());
-    expect(result.current).toBeNull();
-  });
-
-  it('should load site settings and return cookie consent props', async () => {
-    const { result } = renderHook(() => useCookieConsentSettings());
-
-    await waitFor(() => {
-      expect(result.current).not.toBeNull();
-    });
+    expect(result.current).not.toBeNull();
 
     // Test structure without specific values since we're using real data
     expect(result.current).toMatchObject({
@@ -89,12 +52,8 @@ describe('useCookieConsentSettings', () => {
     expect(typeof result.current?.onChange).toBe('function');
   });
 
-  it('should handle statistics consent acceptance', async () => {
+  it('should handle statistics consent acceptance', () => {
     const { result } = renderHook(() => useCookieConsentSettings());
-
-    await waitFor(() => {
-      expect(result.current).not.toBeNull();
-    });
 
     const changeEvent = {
       acceptedGroups: [COOKIE_CONSENT_GROUP.Statistics],
@@ -109,12 +68,8 @@ describe('useCookieConsentSettings', () => {
     expect(mockPaq.push).toHaveBeenCalledWith(['enableLinkTracking']);
   });
 
-  it('should handle statistics consent rejection', async () => {
+  it('should handle statistics consent rejection', () => {
     const { result } = renderHook(() => useCookieConsentSettings());
-
-    await waitFor(() => {
-      expect(result.current).not.toBeNull();
-    });
 
     const changeEvent = {
       acceptedGroups: [],
@@ -128,16 +83,12 @@ describe('useCookieConsentSettings', () => {
     expect(mockPaq.push).toHaveBeenCalledWith(['forgetConsentGiven']);
   });
 
-  it('should handle missing window._paq gracefully', async () => {
+  it('should handle missing window._paq gracefully', () => {
     // Temporarily remove _paq
     const originalPaq = window._paq;
     delete (window as any)._paq;
 
     const { result } = renderHook(() => useCookieConsentSettings());
-
-    await waitFor(() => {
-      expect(result.current).not.toBeNull();
-    });
 
     const changeEvent = {
       acceptedGroups: [COOKIE_CONSENT_GROUP.Statistics],

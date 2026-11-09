@@ -1,6 +1,7 @@
 import { CookieConsentChangeEvent, CookieConsentReactProps } from "hds-react";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 
+import siteSettings from "./data/siteSettings.json";
 import useLocale from "./useLocale";
 import { MAIN_CONTENT_ID } from "../../../common/a11y/Page";
 
@@ -8,39 +9,8 @@ export enum COOKIE_CONSENT_GROUP {
   Statistics = "statistics",
 }
 
-interface CookieConsentState {
-  siteSettings: CookieConsentReactProps["siteSettings"] | null;
-  isLoading: boolean;
-}
-
-const useCookieConsentSettings = (): CookieConsentReactProps | null => {
+const useCookieConsentSettings = (): CookieConsentReactProps => {
   const locale = useLocale();
-  const [state, setState] = useState<CookieConsentState>({
-    siteSettings: null,
-    isLoading: true,
-  });
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    const loadSettings = async () => {
-      const module = await import("./data/siteSettings.json");
-      const settings = module.default as CookieConsentReactProps["siteSettings"];
-        
-      if (isMounted) {
-        setState({
-          siteSettings: settings,
-          isLoading: false,
-        });
-      }
-    };
-
-    loadSettings();
-    
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const handleConsentChange = useCallback((changeEvent: CookieConsentChangeEvent) => {
     const { acceptedGroups } = changeEvent;
@@ -62,17 +32,13 @@ const useCookieConsentSettings = (): CookieConsentReactProps | null => {
     }
   }, []);
 
-  const cookieConsentProps: CookieConsentReactProps | null = useMemo(() => {
-    if (state.isLoading || !state.siteSettings) {
-      return null;
-    }
-
+  const cookieConsentProps = useMemo(() => {
     return {
       onChange: handleConsentChange,
-      siteSettings: state.siteSettings,
+      siteSettings: siteSettings as CookieConsentReactProps["siteSettings"],
       options: { focusTargetSelector: `#${MAIN_CONTENT_ID}`, language: locale },
     };
-  }, [state.isLoading, state.siteSettings, handleConsentChange, locale]);
+  }, [handleConsentChange, locale]);
 
   return cookieConsentProps;
 };

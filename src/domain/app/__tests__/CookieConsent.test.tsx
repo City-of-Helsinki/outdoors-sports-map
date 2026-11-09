@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { act } from '@testing-library/react';
+import { StrictMode } from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import CookieConsent from '../CookieConsent';
 import useCookieConsentSettings from '../hooks/useCookieConsentSettings';
+import siteSettings from '../hooks/data/siteSettings.json';
 
 // Mock the hook
 vi.mock('../hooks/useCookieConsentSettings');
@@ -15,7 +17,7 @@ vi.mock('hds-react', () => ({
       {children}
     </div>
   )),
-  CookieBanner: () => <div data-testid="cookie-banner">Cookie Banner</div>
+  CookieBanner: vi.fn(() => <div data-testid="cookie-banner">Cookie Banner</div>)
 }));
 
 // Helper function to create mock settings
@@ -37,7 +39,9 @@ const createMockSettings = (overrides = {}) => ({
 // Helper function to render with settings
 const renderWithSettings = (settings = createMockSettings()) => {
   mockUseCookieConsentSettings.mockReturnValue(settings);
-  return render(<CookieConsent />);
+  const result = render(<CookieConsent />);
+  act(() => window.dispatchEvent(new Event('hds-cookie-consent-ready')));
+  return result;
 };
 
 // Helper assertions
@@ -46,22 +50,12 @@ const expectBannerToBeVisible = () => {
   expect(screen.getByTestId('cookie-banner')).toBeInTheDocument();
 };
 
-const expectBannerToBeHidden = () => {
-  expect(screen.queryByTestId('cookie-banner')).not.toBeInTheDocument();
-};
-
 describe('CookieConsent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should render null when cookie consent settings are not loaded', () => {
-    mockUseCookieConsentSettings.mockReturnValue(null);
-    const { container } = render(<CookieConsent />);
-    expect(container.firstChild).toBeNull();
-  });
-
-  it('should render components when settings are loaded', () => {
+  it('should render the cookie banner when HDS is ready', () => {
     renderWithSettings();
     expectBannerToBeVisible();
     expect(screen.getByText('Cookie Banner')).toBeInTheDocument();
@@ -80,31 +74,35 @@ describe('CookieConsent', () => {
     expectBannerToBeVisible();
   });
 
-  it('should handle settings state transitions', () => {
-    // Null -> Loaded
-    mockUseCookieConsentSettings.mockReturnValue(null);
-    const { rerender } = render(<CookieConsent />);
-    expectBannerToBeHidden();
-
-    // Update mock to return settings and rerender
-    mockUseCookieConsentSettings.mockReturnValue(createMockSettings());
-    rerender(<CookieConsent />);
-    expectBannerToBeVisible();
-
-    // Loaded -> Null
-    mockUseCookieConsentSettings.mockReturnValue(null);
-    expect(() => rerender(<CookieConsent />)).not.toThrow();
-    expectBannerToBeHidden();
-  });
-
   it('should handle multiple re-renders', () => {
     const { rerender } = renderWithSettings();
+    mockUseCookieConsentSettings.mockClear();
 
     for (let i = 0; i < 5; i++) {
       act(() => rerender(<CookieConsent />));
     }
 
     expectBannerToBeVisible();
-    expect(mockUseCookieConsentSettings).toHaveBeenCalledTimes(6);
+    expect(mockUseCookieConsentSettings).toHaveBeenCalledTimes(5);
+  });
+
+  it('initializes the real HDS banner when rerendered before settings are ready', async () => {
+    const actualHds = await vi.importActual<typeof import('hds-react')>('hds-react');
+    const mockedHds = await import('hds-react');
+    vi.mocked(mockedHds.CookieConsentContextProvider).mockImplementation(actualHds.CookieConsentContextProvider);
+    vi.mocked(mockedHds.CookieBanner).mockImplementation(actualHds.CookieBanner);
+    mockUseCookieConsentSettings.mockReturnValue({ siteSettings, options: { language: 'en' } });
+
+    const renderBanner = () => (
+      <StrictMode>
+        <CookieConsent />
+      </StrictMode>
+    );
+    const { rerender } = render(renderBanner());
+    rerender(renderBanner());
+
+    await waitFor(() => {
+      expect(document.querySelector('.hds-cc__target')?.shadowRoot?.textContent).toContain('Outdoor Exercise Map');
+    });
   });
 });

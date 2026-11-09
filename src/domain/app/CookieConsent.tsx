@@ -1,6 +1,9 @@
 import { CookieConsentContextProvider, CookieBanner } from 'hds-react';
+import { useEffect, useState } from 'react';
 
 import useCookieConsentSettings from './hooks/useCookieConsentSettings';
+
+const initializedInstances = new WeakSet<object>();
 
 declare global {
   interface Window {
@@ -10,15 +13,26 @@ declare global {
 }
 
 function CookieConsent() {
-  const cookieConsentSettings = useCookieConsentSettings(); 
-  // Don't render until we're on the client side and settings are loaded
-  if (!cookieConsentSettings) {
-    return null;
-  }
+  const cookieConsentSettings = useCookieConsentSettings();
+  const [isReady, setIsReady] = useState(() =>
+    !!window.hds?.cookieConsent && initializedInstances.has(window.hds.cookieConsent)
+  );
+
+  useEffect(() => {
+    const handleReady = () => {
+      if (window.hds?.cookieConsent) {
+        initializedInstances.add(window.hds.cookieConsent);
+      }
+      setIsReady(true);
+    };
+
+    window.addEventListener('hds-cookie-consent-ready', handleReady);
+    return () => window.removeEventListener('hds-cookie-consent-ready', handleReady);
+  }, []);
 
   return (
     <CookieConsentContextProvider {...cookieConsentSettings}>
-      <CookieBanner />
+      {isReady && <CookieBanner />}
     </CookieConsentContextProvider>
   );
 }
