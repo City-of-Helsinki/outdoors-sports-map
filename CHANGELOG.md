@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.20.2](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.20.1...outdoors-sports-map-v2.20.2) (2026-11-10)
+
+
+### Bug Fixes
+
+* Handle double-slash pathnames ([f699304](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/f6993045a81df6521b44402c5630a532f393c1d1))
+
+
+### Dependencies
+
+* Remove outdated dependency overrides ([baa3d05](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/baa3d05155a2126bb36a1634074f07c2f2efc836))
+* Update [@humanfs](https://github.com/humanfs) packages ([887f3be](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/887f3be326f302985cc984274c2e9613bb117980))
+* Update brace-expansion to version 1.1.21 ([db88dbe](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/db88dbe624e83f543e6229b7d14bae85bcface52))
+* Update fflate to version 0.8.3 ([6629288](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/6629288302d83f9b1144f344decf191e1b0ece5b))
+* Update glob to version 14.0.2 ([50535c6](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/50535c67a43fb5dde3eaf48081d29aa251542293))
+* Update js-yaml to version 4.3.2 ([f2e63f5](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/f2e63f5bc603561605d26dfec56b0596b2d2cfa3))
+* Update minimatch overrides in lockfiles to version 11.0.1 ([29fa565](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/29fa5656ed6347ae421431abbea386be5d0a3035))
+* Update pnpm to version 11.28.11 in Dockerfile and package.json ([b2d2434](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/b2d24347834ff3ad3252d5e39f364c5db6b851bf))
+* Update postcss-selector-parser to version 6.1.5 ([052c854](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/052c85457baa86f8743371fb60d60e5f50eaa8ab))
+* Update source-map-js to version 1.2.2 in lockfiles ([1c6e8f6](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/1c6e8f68043575e77c3b12ebbdae768639189672))
+* Update vitest and related packages to version 4.1.12 ([9582a60](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/9582a60296417449a5bc9e99fff1f36184942354))
+* Update zod to version 4.6.6 ([cc90ade](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/cc90ade36f95dfbb4fe3a70f1682b5d3160f7d4c))
+
 ## [2.20.1](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.20.0...outdoors-sports-map-v2.20.1) (2026-11-09)
 
 
