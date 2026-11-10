@@ -1,15 +1,17 @@
-export const API_BASE_URL = import.meta.env.REACT_APP_API_URL;
+import { getEnvValue } from '../../common/utils/envUtils';
 
-export const MAP_URL_TEMPLATE = import.meta.env.REACT_APP_MAP_URL_TEMPLATE;
+export const API_BASE_URL = getEnvValue('REACT_APP_API_URL') ?? '';
+
+export const MAP_URL_TEMPLATE = getEnvValue('REACT_APP_MAP_URL_TEMPLATE') ?? '';
 
 export const DIGITRANSIT_API_BASE_URL =
-  import.meta.env.REACT_APP_DIGITRANSIT_API_URL;
+  getEnvValue('REACT_APP_DIGITRANSIT_API_URL') ?? '';
 
-export const DIGITRANSIT_API_KEY = import.meta.env.REACT_APP_DIGITRANSIT_API_KEY;
+export const DIGITRANSIT_API_KEY = getEnvValue('REACT_APP_DIGITRANSIT_API_KEY') ?? '';
 
-export const APP_NAME = import.meta.env.REACT_APP_APP_NAME;
+export const APP_NAME = getEnvValue('REACT_APP_APP_NAME') ?? '';
 
-export const BYPASS_SEASON_FILTER = import.meta.env.REACT_APP_BYPASS_SEASON_FILTER === "true";
+export const BYPASS_SEASON_FILTER = getEnvValue('REACT_APP_BYPASS_SEASON_FILTER') === "true";
 
 export const DEFAULT_LANG = "fi";
 

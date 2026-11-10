@@ -8,9 +8,10 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "start": "vite",
-    "dev": "vite",
-    "build": "tsx --tsconfig ./scripts/tsconfig.json ./scripts/generate-sitemap.ts && tsc && vite build",
+    "update-runtime-env": "tsx --tsconfig ./scripts/tsconfig.json ./scripts/update-runtime-env.ts",
+    "start": "pnpm update-runtime-env && vite",
+    "dev": "pnpm start",
+    "build": "pnpm update-runtime-env --mode production && tsx --tsconfig ./scripts/tsconfig.json ./scripts/generate-sitemap.ts && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "typecheck": "tsc --noEmit",

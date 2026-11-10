@@ -34,6 +34,7 @@ The application is now available at [http://localhost:3000](http://localhost:300
 | Command | Description |
 |---------|------------|
 | `pnpm start` | Start the development server |
+| `pnpm update-runtime-env` | Generate public browser configuration from environment values |
 | `pnpm build` | Generate sitemap, type-check, and build for production |
 | `pnpm typecheck` | Type-check the project without generating build output |
 | `pnpm preview` | Preview the production build locally |
@@ -67,27 +68,36 @@ The application is now available at [http://localhost:3000](http://localhost:300
 
 Make sure port `8080` is free.
 
-Pass build-time variables (replace `<VAR_X>` with actual variable name from `.env` file) to docker image and build with:
+Build the production image:
 
-```
-source .env
-docker build \
---build-arg <VAR_1>=${<VAR_1>} \
---build-arg <VAR_N>=${<VAR_N>} \
--t outdoors-sports-map .
+```sh
+docker build --target production -t outdoors-sports-map .
 ```
 
 _(you can add `--no-cache` to the command if you don't want to use cache from previous build)_
 
 Start docker container with:
 
-```
-docker container run -p 8080:8080 -d outdoors-sports-map
+```sh
+docker container run --env-file .env -p 8080:8080 -d outdoors-sports-map
 ```
 
 _(you can add `--name outdoors-sports-map` to the command for easier referencing)_
 
-The application is now available at [http://localhost](http://localhost/).
+The application is now available at [http://localhost:8080](http://localhost:8080/).
+
+Public `REACT_APP_*` settings are loaded from `/env-config.js` before the application
+starts. The shared Nginx image generates this file at container startup, using
+runtime environment variables over the defaults baked into the image. Supported
+settings are listed in `.env.example`; new runtime settings must also be listed
+there. The runtime config is served with caching disabled.
+
+Local startup and production builds generate the same browser configuration using
+`.env.example` defaults and Vite's mode-specific environment files. Build arguments
+remain supported as image defaults. Sitemap generation and Sentry source-map uploads
+still run at build time; runtime overrides do not regenerate those artifacts.
+Only `REACT_APP_*` values are included in browser configuration. Never use that
+prefix for secrets.
 
 ## Error tracking (Sentry)
 
