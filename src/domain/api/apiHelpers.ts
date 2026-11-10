@@ -3,7 +3,6 @@ import { normalize, Schema } from "normalizr";
 import {
   API_BASE_URL,
   DIGITRANSIT_API_BASE_URL,
-  DIGITRANSIT_API_KEY,
 } from "../app/appConstants";
 
 export const normalizeEntityResults = <
@@ -28,16 +27,19 @@ export const createUrl = (url: string, params: Record<string, string | number>):
 
 export const digitransitApiHeaders = () => ({
   "Cache-Control": "no-cache",
-  "digitransit-subscription-key": `${DIGITRANSIT_API_KEY}`,
 });
 
 export const createDigitransitUrl = (
   url: string,
   params: Record<string, string | number>,
-): string =>
-  `${DIGITRANSIT_API_BASE_URL || ""}/${url}${
-    params ? `?${stringifyQuery(params)}` : ""
-  }`;
+): string => {
+  const proxyUrl = new URL(
+    `${DIGITRANSIT_API_BASE_URL}/${url}`,
+    window.location.origin,
+  );
+  proxyUrl.search = stringifyQuery(params);
+  return proxyUrl.href;
+};
 
 export const createDigitransitRequest = (
   url: string,

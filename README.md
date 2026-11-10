@@ -29,6 +29,11 @@ pnpm start
 
 The application is now available at [http://localhost:3000](http://localhost:3000/).
 
+Set `DIGITRANSIT_API_KEY` in `.env` for address search. The Vite development and
+preview servers proxy `/api/digitransit/search` and inject the key server-side.
+`DIGITRANSIT_API_URL` sets the upstream geocoding base URL and defaults to
+`https://api.digitransit.fi/geocoding/v1`.
+
 ### Available commands
 
 | Command | Description |
@@ -86,18 +91,22 @@ _(you can add `--name outdoors-sports-map` to the command for easier referencing
 
 The application is now available at [http://localhost:8080](http://localhost:8080/).
 
-Public `REACT_APP_*` settings are loaded from `/env-config.js` before the application
-starts. The shared Nginx image generates this file at container startup, using
-runtime environment variables over the defaults baked into the image. Supported
-settings are listed in `.env.example`; new runtime settings must also be listed
-there. The runtime config is served with caching disabled.
+### Digitransit Proxy
 
-Local startup and production builds generate the same browser configuration using
-`.env.example` defaults and Vite's mode-specific environment files. Build arguments
-remain supported as image defaults. Sitemap generation and Sentry source-map uploads
-still run at build time; runtime overrides do not regenerate those artifacts.
-Only `REACT_APP_*` values are included in browser configuration. Never use that
-prefix for secrets.
+Set `DIGITRANSIT_API_KEY` as a runtime container secret, not a build argument;
+the container will not start without it. Optionally set `DIGITRANSIT_API_URL` to
+an HTTPS geocoding base URL without credentials, query parameters, or fragments.
+These replace `REACT_APP_DIGITRANSIT_API_KEY` and `REACT_APP_DIGITRANSIT_API_URL`;
+rotate any previously browser-exposed key.
+
+Public `REACT_APP_*` settings are served through uncached `/env-config.js`,
+generated at container startup. Runtime values override image defaults; build
+arguments remain supported as defaults. Never use this prefix for secrets.
+List all supported settings in `.env.example`.
+
+Local startup and builds use `.env.example` defaults and Vite's mode-specific
+environment files. Runtime overrides do not regenerate the sitemap or rerun
+Sentry source-map uploads, which happen at build time.
 
 ## Error tracking (Sentry)
 

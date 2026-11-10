@@ -31,7 +31,6 @@ CMD ["pnpm", "start", "--port", "3000"]
 # ============================================================
 FROM appbase AS staticbuilder
 
-ARG REACT_APP_DIGITRANSIT_API_KEY
 ARG GENERATE_SITEMAP
 
 RUN pnpm build
@@ -55,7 +54,14 @@ COPY --from=staticbuilder /app/.env.runtime .env
 # 3. Inject Versioning for the /readiness endpoint from package.json using base image
 COPY package.json .
 
+# 4. Copy Nginx configuration and startup script
+COPY .prod/digitransit.conf.template /etc/nginx/templates/digitransit.conf.template
+COPY .prod/start-nginx.sh /usr/local/bin/start-nginx.sh
+
+CMD ["/bin/sh", "/usr/local/bin/start-nginx.sh", "nginx", "-g", "daemon off;"]
+
+
 # - env.sh      (Inherited from base image at /usr/share/nginx/html/env.sh)
 # - USER 1001   (Inherited from base image)
 # - EXPOSE 8080 (Inherited from base image)
-# - ENTRYPOINT/CMD (Inherited from base image)
+# - ENTRYPOINT  (Inherited from base image)
