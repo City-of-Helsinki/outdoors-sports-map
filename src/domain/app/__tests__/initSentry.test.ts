@@ -15,6 +15,7 @@ describe('initSentry', () => {
   });
 
   afterEach(() => {
+    delete window._env_;
     vi.unstubAllEnvs();
   });
 
@@ -38,6 +39,23 @@ describe('initSentry', () => {
         dsn: 'https://example@sentry.io/1',
         environment: 'staging',
         release: '1.2.3',
+      })
+    );
+  });
+
+  it('uses runtime configuration instead of build-time configuration', () => {
+    vi.stubEnv('REACT_APP_SENTRY_DSN', 'https://build@sentry.io/1');
+    window._env_ = {
+      REACT_APP_SENTRY_DSN: 'https://runtime@sentry.io/2',
+      REACT_APP_SENTRY_ENVIRONMENT: 'production',
+    };
+
+    initSentry();
+
+    expect(Sentry.init).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dsn: 'https://runtime@sentry.io/2',
+        environment: 'production',
       })
     );
   });

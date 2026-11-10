@@ -1,95 +1,61 @@
-# ===============================================
-FROM registry.access.redhat.com/ubi9/nodejs-24 AS appbase
-# ===============================================
+# ============================================================
+# STAGE 1: Build the Static Assets
+# ============================================================
+FROM helsinki.azurecr.io/ubi9/nodejs-24-pnpm-builder-base AS appbase
+
+COPY --chown=default:root package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY --chown=default:root ./public ./public
+COPY --chown=default:root ./scripts ./scripts
+COPY --chown=default:root index.html vite.config.ts tsconfig.json eslint.config.js ./
+COPY --chown=default:root .env.example ./
+COPY --chown=default:root ./src ./src
+
+RUN pnpm install --frozen-lockfile --ignore-scripts && pnpm store prune
+
+# ============================================================
+# STAGE 2: Development
+# ============================================================
+FROM appbase AS development
 
 WORKDIR /app
 
-USER root
-RUN dnf install -y libatomic && \
-  dnf clean all && \
-  npm install -g pnpm@11.28.11
+ARG NODE_ENV=development
+ENV NODE_ENV=$NODE_ENV
 
-# Offical image has npm log verbosity as info. More info - https://github.com/nodejs/docker-node#verbosity
-ENV NPM_CONFIG_LOGLEVEL warn
+EXPOSE 3000
 
-# Global npm deps in a non-root user directory
-ENV NPM_CONFIG_PREFIX=/app/.npm-global
-ENV PATH=$PATH:/app/.npm-global/bin
+CMD ["pnpm", "start", "--port", "3000"]
 
-RUN chown -R default:root /app
-
-USER default
-
-COPY --chown=default:root docker-entrypoint.sh /entrypoint/docker-entrypoint.sh
-ENTRYPOINT ["/entrypoint/docker-entrypoint.sh"]
-
-# Copy package.json and lockfile
-COPY --chown=default:root package*.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-USER default
-
-RUN pnpm install --frozen-lockfile && pnpm store prune && chown -R default:root node_modules
-
-# Use non-root user
-
-# =============================
-FROM appbase AS development
-# =============================
-
-ENV DEV_SERVER=1
-
-# ===================================
+# ============================================================
+# STAGE 3: Static builder for production
+# ============================================================
 FROM appbase AS staticbuilder
-# ===================================
 
-ARG REACT_APP_API_URL
-ARG REACT_APP_MAP_URL_TEMPLATE
-ARG REACT_APP_DIGITRANSIT_API_URL
 ARG REACT_APP_DIGITRANSIT_API_KEY
-ARG REACT_APP_APP_NAME
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_ENABLED
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_FI
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_SV
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_TITLE_EN
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_FI
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_SV
-ARG REACT_APP_SITE_WIDE_NOTIFICATION_EN
-ARG REACT_APP_BYPASS_SEASON_FILTER
 ARG GENERATE_SITEMAP
-ARG REACT_APP_SENTRY_DSN
-ARG REACT_APP_SENTRY_ENVIRONMENT
-ARG REACT_APP_SENTRY_RELEASE
-ARG REACT_APP_SENTRY_TRACES_SAMPLE_RATE
-ARG REACT_APP_SENTRY_TRACE_PROPAGATION_TARGETS
-ARG REACT_APP_SENTRY_PROFILE_SESSION_SAMPLE_RATE
-ARG REACT_APP_SENTRY_REPLAYS_SESSION_SAMPLE_RATE
-ARG REACT_APP_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE
-# Build-only, used by @sentry/vite-plugin to upload source maps (never REACT_APP_ prefixed)
-ARG SENTRY_AUTH_TOKEN
-ARG SENTRY_PROJECT
-
-COPY --chown=default:root . /app/.
 
 RUN pnpm build
 
-# ===================================
-FROM registry.access.redhat.com/ubi9/nginx-124 AS production
-# ===================================
-# Add application sources to a directory that the assemble script expects them
-# and set permissions so that the container runs without root access
-USER root
+# ============================================================
+# STAGE 4: Production Runtime
+# ============================================================
+FROM helsinki.azurecr.io/ubi9/nginx-126-spa-standard AS production
 
-RUN chgrp -R 0 /usr/share/nginx/html && \
-  chmod -R g=u /usr/share/nginx/html
+ARG REACT_APP_SENTRY_RELEASE
+ENV APP_RELEASE=${REACT_APP_SENTRY_RELEASE:-""}
 
-# Copy static build
+# 1. Copy the compiled assets
 COPY --from=staticbuilder /app/build /usr/share/nginx/html
-# Copy nginx config
-COPY .prod/nginx.conf /etc/nginx/nginx.conf
 
-USER 1001
+# 2. Setup Runtime Env Injection
+# env.sh is provided by the base image
+WORKDIR /usr/share/nginx/html
+COPY --from=staticbuilder /app/.env.runtime .env
 
-# Run script uses standard ways to run the application
-CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""]
+# 3. Inject Versioning for the /readiness endpoint from package.json using base image
+COPY package.json .
 
-EXPOSE 8080
+# - env.sh      (Inherited from base image at /usr/share/nginx/html/env.sh)
+# - USER 1001   (Inherited from base image)
+# - EXPOSE 8080 (Inherited from base image)
+# - ENTRYPOINT/CMD (Inherited from base image)

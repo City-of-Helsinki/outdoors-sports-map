@@ -11,3 +11,5 @@
 !scripts/
 !index.html
 !vite.config.ts
+!eslint.config.js
+!.env.example

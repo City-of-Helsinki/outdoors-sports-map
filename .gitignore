@@ -17,3 +17,5 @@ yarn-error.log*
 xeno
 .DS_Store
 public/sitemap.xml
+public/env-config.js
+.env.runtime
