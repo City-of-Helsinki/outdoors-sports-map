@@ -27,10 +27,6 @@ vi.mock('../../../service/serviceHelpers', () => ({
   getOnSeasonServices: vi.fn(() => [123, 456, 789]),
 }));
 
-vi.mock('../../../api/apiHelpers', () => ({
-  digitransitApiHeaders: vi.fn(() => ({ 'Digitransit-Subscription-Key': 'test-key' })),
-}));
-
 import { selectUnitById } from '../unitSlice';
 
 const mockSelectUnitById = selectUnitById as any;
@@ -139,7 +135,11 @@ describe('searchSlice', () => {
         
         const [unitRequest, addressRequest] = mockFetch.mock.calls;
         expectUrlContains(unitRequest[0], 'search/', 'input=helsinki');
-        expectUrlContains(addressRequest[0], 'api.digitransit.fi/geocoding', 'text=helsinki');
+        const addressUrl = new URL(addressRequest[0].url);
+        expect(addressUrl.origin).toBe(window.location.origin);
+        expect(addressUrl.pathname).toBe('/api/digitransit/search');
+        expect(addressUrl.searchParams.get('text')).toBe('helsinki');
+        expect(addressRequest[0].headers.has('digitransit-subscription-key')).toBe(false);
       });
 
       it('should handle empty input by returning empty data', async () => {

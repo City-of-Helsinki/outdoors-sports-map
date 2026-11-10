@@ -1,0 +1,24 @@
+location = /api/digitransit/search {
+    if ($request_method != GET) {
+        return 405;
+    }
+
+    proxy_pass ${DIGITRANSIT_API_URL}/search;
+    proxy_ssl_server_name on;
+    proxy_ssl_verify on;
+    proxy_ssl_trusted_certificate /etc/pki/tls/certs/ca-bundle.crt;
+    proxy_set_header Host ${DIGITRANSIT_API_HOST};
+    proxy_set_header digitransit-subscription-key "${DIGITRANSIT_API_KEY}";
+    proxy_set_header Accept application/json;
+    proxy_set_header Connection "";
+    proxy_set_header Content-Length "";
+    proxy_pass_request_headers off;
+    proxy_pass_request_body off;
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 15s;
+    proxy_hide_header digitransit-subscription-key;
+}
+
+location ^~ /api/digitransit/ {
+    return 404;
+}

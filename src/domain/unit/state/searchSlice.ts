@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { normalize, schema } from "normalizr";
 
 import { selectUnitById } from "./unitSlice";
-import { digitransitApiHeaders } from "../../api/apiHelpers";
+import { createDigitransitUrl } from "../../api/apiHelpers";
 import { apiSlice } from "../../api/apiSlice";
 import type { AppState } from "../../app/types";
 import { getOnSeasonServices } from "../../service/serviceHelpers";
@@ -120,7 +120,7 @@ export const searchApi = apiSlice.injectEndpoints({
 
           // Fetch address suggestions from Digitransit
           const addressResponse = await fetchWithBQ({
-            url: "https://api.digitransit.fi/geocoding/v1/search",
+            url: createDigitransitUrl("search", {}),
             params: {
               text: input,
               "boundary.rect.min_lat": 59.9,
@@ -132,7 +132,6 @@ export const searchApi = apiSlice.injectEndpoints({
               size: 5,
               lang: "fi",
             },
-            headers: digitransitApiHeaders(),
           });
 
           if (unitResponse.error) {
