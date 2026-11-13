@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.21.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.20.2...outdoors-sports-map-v2.21.0) (2026-11-13)
+
+
+### Features
+
+* Add runtime configuration and adopt shared Docker images ([8fb0aae](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/8fb0aaea855629b966f34880462c397f9ceef725))
+* Proxy Digitransit requests through Nginx ([90e8601](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/90e8601311dfe1a3df08b0122bd0545f11b77bf7))
+
 ## [2.20.2](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.20.1...outdoors-sports-map-v2.20.2) (2026-11-10)
 
 
