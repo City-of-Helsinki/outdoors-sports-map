@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.21.1](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.21.0...outdoors-sports-map-v2.21.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* Add default API URL argument for sitemap generation ([954d436](https://github.com/City-of-Helsinki/outdoors-sports-map/commit/954d4362c780d15df688ce5388678865a80d1e2e))
+
 ## [2.21.0](https://github.com/City-of-Helsinki/outdoors-sports-map/compare/outdoors-sports-map-v2.20.2...outdoors-sports-map-v2.21.0) (2026-11-13)
 
 
