@@ -32,6 +32,7 @@ CMD ["pnpm", "start", "--port", "3000"]
 FROM appbase AS staticbuilder
 
 ARG GENERATE_SITEMAP
+ARG REACT_APP_API_URL=https://api.hel.fi/servicemap/v2
 
 RUN pnpm build
 
